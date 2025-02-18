@@ -1,0 +1,14 @@
+{
+    "nodes": [
+        {
+            "runner": "node",
+            "nodeId": "addOne",
+            "input": 5
+        },
+        {
+            "runner": "python",
+            "taskName": "multiplyByTwo",
+            "input": 10
+        }
+    ]
+}
