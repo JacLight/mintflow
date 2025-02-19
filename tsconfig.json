@@ -9,5 +9,11 @@
     {
       "path": "./packages/server"
     },
+    {
+      "path": "./packages/plugins/my-new-plugin"
+    },
+    {
+      "path": "./packages/plugins/my-new-plugin"
+    }
   ]
 }

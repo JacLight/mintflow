@@ -33,6 +33,7 @@ docker run -p 3000:3000 mintflow/mintflow
 ### Quick Start
 
 1. Start the MintFlow server:
+
 ```bash
 mintflow start
 ```
@@ -40,6 +41,7 @@ mintflow start
 2. Open your browser and navigate to `http://localhost:3000`
 
 3. Create your first workflow using the visual editor or chat interface:
+
 ```
 You: Create a workflow that monitors my Gmail and sends Slack notifications for important emails
 MintFlow: I'll help you create that workflow. Let's start with the Gmail trigger node...
@@ -48,6 +50,7 @@ MintFlow: I'll help you create that workflow. Let's start with the Gmail trigger
 ## 💡 Example Workflows
 
 ### Email Processing Pipeline
+
 ```javascript
 // workflow.json
 {
@@ -72,6 +75,7 @@ MintFlow: I'll help you create that workflow. Let's start with the Gmail trigger
 ```
 
 ### Content Generation
+
 ```javascript
 // workflow.json
 {
@@ -137,18 +141,21 @@ MintFlow is released under the [MIT License](LICENSE).
 - Join our [Discord Community](https://discord.gg/mintflow)
 - Follow us on [Twitter](https://twitter.com/mintflow)
 - Read our [Blog](https://blog.mintflow.ai)
-- Email support: support@mintflow.ai
+- Email support: <support@mintflow.ai>
 
 ## 🔐 Security
 
-Please report security vulnerabilities to security@mintflow.ai.
+Please report security vulnerabilities to <security@mintflow.ai>.
 
 ## 🙏 Acknowledgments
 
 MintFlow is inspired by and builds upon the work of many great projects:
+
 - n8n
 - Activepieces
 - LangChain
 - OpenWebUI
+
+pnpm nx generate @nx/js:library --name=my-new-plugin --directory=packages/plugins/my-new-plugin --importPath=@mintflow/plugins/my-new-plugin --projectNameAndRootFormat=as-provided --no-interactive
 
 Thank you to all our contributors and the open-source community!
