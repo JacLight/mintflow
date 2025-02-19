@@ -2,7 +2,10 @@
   "name": "@mintflow-wk/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "register:plugins": "node scripts/register-plugins.mjs",
+    "generate:plugin": "pnpm nx generate @nx/js:library plugins-$1 --directory=packages/plugins/$1 --importPath=@mintflow/plugins-$1 --projectNameAndRootFormat=as-provided --no-interactive"
+  },
   "private": true,
   "dependencies": {},
   "devDependencies": {

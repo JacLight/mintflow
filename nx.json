@@ -1,5 +1,9 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "workspaceLayout": {
+    "appsDir": "packages",
+    "libsDir": "packages"
+  },
   "projects": {
     "server": {
       "root": "packages/server"
@@ -9,15 +13,6 @@
     },
     "python_runner": {
       "root": "packages/python_runner"
-    },
-    "plugins-array": {
-      "root": "packages/plugins/array"
-    },
-    "plugins-inject": {
-      "root": "packages/plugins/inject"
-    },
-    "plugins-mail": {
-      "root": "packages/plugins/mail"
     },
     "common": {
       "root": "packages/common"
@@ -36,43 +31,11 @@
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
   "nxCloudId": "67b4cfb69bfdb27c89dc33b4",
-  "plugins": [
-    {
-      "plugin": "@nx/js/typescript",
-      "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        },
-        "build": {
-          "targetName": "build",
-          "configName": "tsconfig.lib.json",
-          "buildDepsName": "build-deps",
-          "watchDepsName": "watch-deps"
-        }
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "testTargetName": "test",
-        "serveTargetName": "serve",
-        "devTargetName": "dev",
-        "previewTargetName": "preview",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
-      }
-    }
-  ],
   "targetDefaults": {
+     "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
     "test": {
       "dependsOn": ["^build"]
     }
