@@ -47,5 +47,6 @@ export function getPlugin(name: string) {
 // Function to retrieve node actions from a plugin
 export const getNodeAction = (nodeId: string, action: string) => {
     const node = getPlugin(nodeId);
-    return node?.actions.find(a => a.name === action);
+    return node?.actions.find(a => a.name.toLowerCase() === action.toLowerCase());
 };
+

@@ -3,6 +3,7 @@ const injectAction = {
     icon: "GiLoveInjection",
     description: "Injects a variable into the workflow that can be referenced later. The injected data is dynamically structured.",
     id: "inject",
+    runner: "node",
     inputSchema: {
         type: "object",
         properties: {
@@ -28,7 +29,7 @@ const injectAction = {
     method: "exec",
     actions: [
         {
-            name: "Inject",
+            name: "inject",
             inputSchema: {
                 type: "object",
                 properties: {
@@ -77,7 +78,11 @@ const injectAction = {
                     const err: any = error;
                     return { error: err.message };
                 }
-                return { [name]: parsedValue };
+                if (name) {
+                    return { [name]: parsedValue };
+                } else {
+                    return parsedValue;
+                }
             }
         }
     ]

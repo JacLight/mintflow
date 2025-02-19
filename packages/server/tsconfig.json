@@ -12,7 +12,7 @@
   },
   "references": [
     {
-      "path": "../common/tsconfig.json"
+      "path": "../../packages/common"
     }
   ],
   "include": ["src"], 

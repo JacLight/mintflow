@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { logger, PluginDescriptor } from '@mintflow/common';
-import { getPlugin, getPlugins } from '../plugins-register.js';
+import { getNodeAction, getPlugin, getPlugins } from '../plugins-register.js';
+import { FlowEngine } from '../engine/FlowEngine.js';
+import { IFlowNodeState } from '../models/FlowModel.js';
 
 const nodeRouter = Router();
 
@@ -50,7 +52,6 @@ nodeRouter.get('/all', getNodes);
  */
 
 const getNode: any = (req: Request, res: Response) => {
-
     try {
         const { nodeId } = req.params;
         const node = getPlugin(nodeId);
@@ -80,5 +81,21 @@ const getNode: any = (req: Request, res: Response) => {
     }
 };
 nodeRouter.get('/:nodeId', getNode);
+
+
+const runNode: any = async (req: Request, res: Response) => {
+    try {
+        const { nodeId } = req.params;
+        const { tenantId, flowId, input, action } = req.body;
+        const nodeState: IFlowNodeState = FlowEngine.createNodeState();
+        const nodeDef = { nodeId, input, action }
+        const output = await FlowEngine.runNode(tenantId, flowId, nodeState, nodeDef)
+        return res.json({ state: nodeState, output });
+    } catch (err: any) {
+        logger.error('[nodeDefinitions] POST /nodes/:nodeId/run error', { error: err.message });
+        return res.status(500).json({ error: err.message });
+    }
+};
+nodeRouter.post('/:nodeId/run', runNode);
 
 export default nodeRouter;

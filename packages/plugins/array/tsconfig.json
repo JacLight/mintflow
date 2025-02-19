@@ -9,8 +9,16 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"]
-  },
+    "types": ["node"],
+    "paths":{
+      "@mintflow/common": ["../../common/src/index.ts"],
+    },
+  },  
+  "references": [
+    {
+      "path": "../../../packages/common"
+    },
+  ],
+  "exclude": ["node_modules"],
   "include": ["src/**/*.ts"],
-  "references": []
 }

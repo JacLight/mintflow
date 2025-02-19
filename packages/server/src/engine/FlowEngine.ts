@@ -20,7 +20,7 @@ import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
 import { ENV } from '../config/env.js';
 import { FlowModel, IFlow, IFlowNodeState } from '../models/FlowModel.js';
-import { getNodeAction } from '../plugins-register.js';
+import { getNodeAction, getPlugin } from '../plugins-register.js';
 import { logger } from '@mintflow/common';
 
 // If Python tasks are done via bridging in Node:
@@ -79,8 +79,15 @@ export class FlowEngine {
 
         // Start from the first pending node
         await this.executeNextPendingNode(flow);
-
         return flow;
+    }
+
+    static createNodeState(): IFlowNodeState {
+        return {
+            nodeId: '',
+            status: 'pending',
+            logs: [],
+        }
     }
 
     /**
@@ -140,7 +147,11 @@ export class FlowEngine {
 
         try {
             // Actually run or enqueue
-            await this.runNode(flow, nodeState, nodeDef);
+            const nextStep = await this.runNode(flow.tenantId, flow.flowId, nodeState, nodeDef);
+            await flow.save();
+            if (nextStep === 'next') {
+                await this.executeNextPendingNode(flow);
+            }
         } catch (err: any) {
             nodeState.status = 'failed';
             nodeState.logs.push(`[${new Date().toISOString()}] Node error: ${err.message}`);
@@ -154,43 +165,46 @@ export class FlowEngine {
      * runNode: decides if we do inline Node logic or enqueue a Python job, 
      * or if it's a node that "waits for HTTP," etc. 
      */
-    private static async runNode(
-        flow: IFlow,
+    public static async runNode(
+        tenantId: string,
+        flowId: string,
         nodeState: IFlowNodeState,
         nodeDef: any
-    ): Promise<void> {
-        const { tenantId, flowId } = flow;
-        const { nodeId, runner, input, waitForHttp } = nodeDef;
+    ): Promise<any> {
+        const { nodeId, input } = nodeDef;
 
-        if (waitForHttp) {
+        const nodePlugin = await getPlugin(nodeId);
+        if (!nodePlugin) {
+            throw new Error(`Node plugin not found: ${nodeId}`);
+        }
+
+        if (nodePlugin.waitForTrigger) {
             // This node won't proceed until an external call triggers "resumeWaitingNode()"
             nodeState.status = 'waiting';
             nodeState.logs.push(`[${new Date().toISOString()}] Node is waiting for external HTTP/event`);
-            await flow.save();
             // We do NOT call executeNextPendingNode yet, we pause here
-            return;
+            return 'wait'
         }
 
-        if (runner === 'node') {
+        if (nodePlugin.runner === 'node') {
             // Inline logic (like your handleNodeJob) 
             // we do it directly or we can queue it to Bull if you prefer.
             // For demonstration, let's do it inline:
             nodeState.logs.push(`[${new Date().toISOString()}] Running inline Node logic`);
-            await this.runInlineNodeLogic(flow, nodeState, nodeDef);
+            await this.runInlineNodeLogic(tenantId, flowId, nodeState, nodeDef);
             // Once done, node is completed, we proceed
-            await this.executeNextPendingNode(flow);
 
-        } else if (runner === 'python') {
+        } else if (nodePlugin.runner === 'python') {
             // We push to pythonQueue and let python do the job
             nodeState.logs.push(`[${new Date().toISOString()}] Enqueueing Python job: ${nodeId}`);
-            await this.enqueuePythonTask(tenantId, flowId, nodeId, input);
-
+            await this.enqueuePythonTask(tenantId, flowId, nodeDef);
+            return 'wait'
             // We do NOT mark completed here, because we wait for Python to call
             // "FlowEngine.completeNode()" or "failNode()" once it's done.
-            await flow.save();
         } else {
-            throw new Error(`Unknown runner: ${runner}`);
+            throw new Error(`Unknown runner: ${nodePlugin.runner}`);
         }
+        return 'next';
     }
 
     /**
@@ -198,11 +212,11 @@ export class FlowEngine {
      * and if it doesn't throw, we mark the node completed. 
      */
     private static async runInlineNodeLogic(
-        flow: IFlow,
+        tenantId: string,
+        flowId: string,
         nodeState: IFlowNodeState,
         nodeDef: any
     ): Promise<void> {
-        const { tenantId, flowId } = flow;
         const { nodeId, action, input } = nodeDef;
 
         try {
@@ -211,7 +225,7 @@ export class FlowEngine {
             const jobData = { nodeId, input, tenantId, flowId };
             const nodeAction = await getNodeAction(nodeId, action);
             if (!nodeAction) {
-                throw new Error(`Node action not found: ${nodeId} ${action}`);
+                throw new Error(`Node action not found: ${nodeId} -> ${action}`);
             }
             if (nodeAction.execute) {
                 nodeState.result = await nodeAction.execute(input, jobData);
@@ -238,27 +252,26 @@ export class FlowEngine {
             nodeState.status = 'completed';
             nodeState.logs.push(`[${new Date().toISOString()}] Node completed inline with result`);
             nodeState.finishedAt = new Date();
-            await flow.save();
-
         } catch (err: any) {
             nodeState.status = 'failed';
             nodeState.logs.push(`[${new Date().toISOString()}] Inline logic failed: ${err.message}`);
             nodeState.finishedAt = new Date();
-            await flow.save();
             throw err; // rethrow so we handle it
         }
     }
 
-    private static async enqueuePythonTask(tenantId: string, flowId: string, nodeId: string, input: any) {
+    private static async enqueuePythonTask(tenantId: string, flowId: string, nodeDef: any) {
         const queueKey = `pythonQueue_${tenantId}`;
+        const { nodeId, input, action } = nodeDef;
         const payload = {
             taskName: nodeId,
+            action,
             input,
             flowId,
             // optionally pass tenantId so python can call back
             tenantId,
         };
-        await redisClient.rpush(queueKey, JSON.stringify(payload));
+        // await redisClient.rpush(queueKey, JSON.stringify(payload));
     }
 
     /**

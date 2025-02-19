@@ -1,15 +1,15 @@
 // types.ts
 
-export type ActionMethod = "HTTP" | "exec";
+export type ActionMethod = "HTTP" | "exec" | string;
 
 export interface ActionDescriptor {
     name: string;
-    inputSchema: object;    // JSON schema for the input
-    outputSchema: object;   // JSON schema for the output
-    exampleInput: any;      // Sample input
-    exampleOutput: any;     // Sample output
-    description: string;
-    documentation: string;
+    inputSchema?: object;    // JSON schema for the input
+    outputSchema?: object;   // JSON schema for the output
+    exampleInput?: any;      // Sample input
+    exampleOutput?: any;     // Sample output
+    description?: string;
+    documentation?: string;
     method: ActionMethod;
     entry?: {               // Only required for HTTP-based actions
         url: string;
@@ -24,6 +24,8 @@ export interface PluginDescriptor {
     name: string;
     description: string;
     icon: string;
+    runner: string;
     documentation: string;
+    waitForTrigger?: boolean; // Only required for exec-based actions
     actions: ActionDescriptor[];
 }

@@ -4,6 +4,7 @@ import vectorRouter from './routes/vectorRoutes.js';
 import uiRouter from './routes/uiRoutes.js';
 import { loadPlugins } from './plugins-register.js';
 import { logger } from '@mintflow/common';
+import feRouter from './routes/flowEngineRoutes.js';
 
 export async function createApp(): Promise<express.Express> {
     const app = express();
@@ -14,13 +15,12 @@ export async function createApp(): Promise<express.Express> {
         res.send('Node Orchestrator / Runner / Providers / UI is running.');
     });
 
-    // app.use('engine', feRouter)
 
     // Flow routes (Node & Python tasks)
     // app.use('/flow', flowRouter);
 
     // app.use('/listener', listenerRouter);
-
+    // app.use('engine', feRouter)
     app.use('/node', nodeRouter);
     app.use('/vector', vectorRouter);
     app.use('/ui', uiRouter);
