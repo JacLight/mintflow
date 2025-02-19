@@ -12,6 +12,7 @@ const getNodes: any = (req: Request, res: Response) => {
     try {
         // Remove the actual code from each node before sending
         const pluginMap = getPlugins();
+        logger.info('[nodeDefinitions] GET /nodes', pluginMap);
         const nodeDefinitions = Array.from(pluginMap.values());
         const safeNodes: Partial<PluginDescriptor>[] = nodeDefinitions.map(node => ({
             id: node.id,
@@ -19,7 +20,7 @@ const getNodes: any = (req: Request, res: Response) => {
             description: node.description,
             documentation: node.documentation,
             icon: node.icon,
-            actions: node.actions.map(action => ({
+            actions: node.actions?.map(action => ({
                 name: action.name,
                 description: action.description,
                 inputSchema: action.inputSchema,
@@ -40,7 +41,7 @@ const getNodes: any = (req: Request, res: Response) => {
         res.status(500).json({ error: err.message });
     }
 };
-nodeRouter.get('/:nodeId', getNodes);
+nodeRouter.get('/all', getNodes);
 
 
 /**

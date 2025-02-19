@@ -21,11 +21,14 @@ export async function loadPlugins() {
         try {
             const pluginPath = path.join(pluginsDir, plugin, "dist/index.js");
             console.log(`🔍 Trying to load plugin from: ${pluginPath}`);
-
             const pluginModule = await import(pluginPath);
-            pluginMap.set(plugin, pluginModule.default);
-
-            console.log(`✅ Loaded plugin: ${plugin}`);
+            const definition = pluginModule.default;
+            if (definition && definition.name && definition?.id) {
+                pluginMap.set(plugin, definition);
+                console.log(`✅ Loaded plugin: ${plugin}`);
+            } else {
+                console.error(`Invalid plugin: ${plugin}`);
+            }
         } catch (err) {
             console.error(`❌ Failed to load plugin: ${plugin}`, err);
         }

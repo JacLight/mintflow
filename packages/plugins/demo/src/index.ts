@@ -1,8 +1,10 @@
 // mailPluginExec.ts
 
-const mailPlugin = {
-    id: "mailPluginExec",
-    name: "Mail Plugin (Exec)",
+const demoPlugin = {
+    id: "demo",
+    name: "Demo Plugin",
+    description: "A demo plugin for MintFlow",
+    icon: "GrTest",
     actions: [
         {
             name: "processMail",
@@ -48,4 +50,4 @@ const mailPlugin = {
     ],
 };
 
-export default mailPlugin;
+export default demoPlugin;

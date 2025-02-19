@@ -5,6 +5,9 @@ import { exec } from "child_process";
 const mailPluginExec = {
     id: "mailPluginExec",
     name: "Mail Plugin (Exec)",
+    icon: "GrMail",
+    description: "A plugin to process emails using a local Python script",
+    documentation: "https://docs.example.com/mailPluginExec",
     actions: [
         {
             name: "processMail",
@@ -35,8 +38,8 @@ const mailPluginExec = {
                 success: true,
                 message: "Email processed successfully",
             },
-            detailedDescription: "Processes an email by running a local Python script.",
-            helpUrl: "https://docs.example.com/mailPluginExec",
+            description: "Processes an email by running a local Python script.",
+            documentation: "https://docs.example.com/mailPluginExec",
             method: "exec",
             execute: async (input: any, config: any) => {
                 // config should provide the path to the Python script
