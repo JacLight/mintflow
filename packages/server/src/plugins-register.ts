@@ -1,17 +1,30 @@
-import { readdirSync } from "fs";
+import { PluginDescriptor } from "@mintflow/common";
 import path from "path";
-import { PluginDescriptor } from "./types/noteTypes";
+import { fileURLToPath } from "url";
+import fs from "fs";
 
-const pluginsDir = path.join(__dirname, "../packages/plugins");
+// 👇 Define __dirname manually in ES module scope
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ✅ Correct path to plugins directory
+const pluginsDir = path.join(__dirname, "../../plugins");
+
 const pluginMap = new Map<string, PluginDescriptor>();
 
 export async function loadPlugins() {
-    const pluginNames = readdirSync(pluginsDir);
+    const pluginNames = fs.readdirSync(pluginsDir).filter(plugin => {
+        return fs.existsSync(path.join(pluginsDir, plugin, "package.json"));
+    });
 
     for (const plugin of pluginNames) {
         try {
-            const pluginModule = await import(`@mintflow/${plugin}`); // Load dynamically from PNPM workspace
-            pluginMap.set(plugin, pluginModule.default); // Store plugin in the map
+            const pluginPath = path.join(pluginsDir, plugin, "dist/index.js");
+            console.log(`🔍 Trying to load plugin from: ${pluginPath}`);
+
+            const pluginModule = await import(pluginPath);
+            pluginMap.set(plugin, pluginModule.default);
+
             console.log(`✅ Loaded plugin: ${plugin}`);
         } catch (err) {
             console.error(`❌ Failed to load plugin: ${plugin}`, err);
@@ -19,13 +32,13 @@ export async function loadPlugins() {
     }
 }
 
-// Function to fetch plugin by name
+// Function to fetch a plugin by name
 export function getPlugin(name: string) {
     return pluginMap.get(name);
 }
 
+// Function to retrieve node actions from a plugin
 export const getNodeAction = (nodeId: string, action: string) => {
     const node = getPlugin(nodeId);
     return node?.actions.find(a => a.name === action);
-}
-// Compare this snippet from packages/server/src/routes/flowEngineRoutes.ts:
+};

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { ProviderFactory } from '../providers/providerFactory';
 import { logger } from "@mintflow/common";
+import { ProviderFactory } from '../providers/providerFactory.js';
 
 const vectorRouter = Router();
 
@@ -11,7 +11,7 @@ const vectorRouter = Router();
 // POST /vector/initSchema
 vectorRouter.post('/initSchema', async (req: Request, res: Response) => {
     try {
-        const vecDb = ProviderFactory.getVectorDbProvider();
+        const vecDb = await ProviderFactory.getVectorDbProvider();
         await vecDb.initSchema();
         logger.info('[vectorRoutes] initSchema success');
         res.json({ message: 'Vector DB schema initialized.' });
@@ -25,7 +25,7 @@ vectorRouter.post('/initSchema', async (req: Request, res: Response) => {
 // body: { id, vector: [], title?, metadata? }
 vectorRouter.post('/store', async (req: Request, res: Response) => {
     try {
-        const vecDb = ProviderFactory.getVectorDbProvider();
+        const vecDb = await ProviderFactory.getVectorDbProvider();
         const result = await vecDb.storeVector(req.body);
         res.json({ message: 'Vector stored', result });
     } catch (err: any) {
@@ -39,7 +39,7 @@ vectorRouter.post('/store', async (req: Request, res: Response) => {
 vectorRouter.post('/search', async (req: Request, res: Response) => {
     try {
         const { vector, limit } = req.body;
-        const vecDb = ProviderFactory.getVectorDbProvider();
+        const vecDb = await ProviderFactory.getVectorDbProvider();
         const results = await vecDb.searchByVector(vector, limit);
         res.json({ message: 'Search results', results });
     } catch (err: any) {

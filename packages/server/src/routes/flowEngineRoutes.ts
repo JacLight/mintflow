@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { FlowEngine } from '../engine/FlowEngine'; // your big engine file
+import { FlowEngine } from '../engine/FlowEngine.js';
 
 const feRouter = Router();
 

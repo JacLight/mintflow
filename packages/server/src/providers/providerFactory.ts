@@ -1,16 +1,11 @@
-import { logger } from '../utils/logger';
-import { ENV } from '../config/env';
-
-import { IDatabaseProvider } from '../interfaces/IDatabaseProvider';
-import { IVectorDbProvider } from '../interfaces/IVectorDbProvider';
-
-// DB Providers
-import { MongoProvider } from './database/mongoProvider';
-import { PostgresProvider } from './database/postgresProvider';
-
-// Vector DB Providers
-import { WeaviateProvider } from './vectorDb/weaviateProvider';
-import { PineconeProvider } from './vectorDb/pineconeProvider';
+import { logger } from "@mintflow/common";
+import { ENV } from "../config/env.js";
+import { IDatabaseProvider } from "../interfaces/IDatabaseProvider.js";
+import { IVectorDbProvider } from "../interfaces/IVectorDbProvider.js";
+import { MongoProvider } from "./database/mongoProvider.js";
+import { PostgresProvider } from "./database/postgresProvider.js";
+import { WeaviateProvider } from "./vectorDb/weaviateProvider.js";
+import { PineconeProvider } from "./vectorDb/pineconeProvider.js";
 
 /**
  * A factory that instantiates DB/VectorDB providers based on env variables.
@@ -34,10 +29,10 @@ export class ProviderFactory {
         return this.dbInstance;
     }
 
-    public static getVectorDbProvider(): IVectorDbProvider {
+    public static async getVectorDbProvider(): Promise<IVectorDbProvider> {
         if (!this.vectorInstance) {
             if (ENV.VECTOR_DB_PROVIDER === 'weaviate') {
-                this.vectorInstance = WeaviateProvider.getInstance();
+                this.vectorInstance = await WeaviateProvider.getInstance();
                 logger.info('[ProviderFactory] Using WeaviateProvider');
             } else if (ENV.VECTOR_DB_PROVIDER === 'pinecone') {
                 this.vectorInstance = PineconeProvider.getInstance();

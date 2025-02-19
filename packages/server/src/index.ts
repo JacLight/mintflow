@@ -1,7 +1,6 @@
-import { ENV } from './config/env';
-import { logger } from './utils/logger';
-import { ProviderFactory } from './providers/providerFactory';
-import { createApp } from './app';
+import { logger } from '@mintflow/common';
+import { createApp } from './app.js';
+import { ENV } from './config/env.js';
 
 async function main() {
     try {
@@ -17,7 +16,7 @@ async function main() {
         // initializeAllNodeRunners();
 
         // 4) Start Express server
-        const app = createApp();
+        const app = await createApp();
         app.listen(ENV.PORT, () => {
             logger.info(`[Server] Listening on port ${ENV.PORT}`);
         });

@@ -3,11 +3,11 @@
   "compileOnSave": false,
   "files": [],
   "references": [
-    { "path": "packages/common" },
-    { "path": "packages/server" },
-    { "path": "packages/node_runner" },
-    { "path": "packages/plugins/array" },
-    { "path": "packages/plugins/inject" },
-    { "path": "packages/plugins/mail" }
+    {
+      "path": "./packages/common"
+    },
+    {
+      "path": "./packages/server"
+    },
   ]
 }

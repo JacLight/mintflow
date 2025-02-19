@@ -1,4 +1,4 @@
-import { QueueManager } from './queueManager';
+import { QueueManager } from "./queueManager.js";
 
 /**
  * Helper function to enqueue a job for a specific tenant's queue.

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { logger } from '../utils/logger';
-import { saveFlowDesign, loadFlowDesign } from '../ui/flowDesigner';
+import { loadFlowDesign, saveFlowDesign } from '../ui/flowDesigner.js';
+import { logger } from '@mintflow/common';
 
 const uiRouter = Router();
 

@@ -1,9 +1,8 @@
 // mailPluginExec.ts
 
 import { exec } from "child_process";
-import { PluginDescriptor } from "../../../types/node-types";
 
-const mailPluginExec: PluginDescriptor = {
+const mailPluginExec = {
     id: "mailPluginExec",
     name: "Mail Plugin (Exec)",
     actions: [

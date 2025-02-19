@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { logger } from '../../utils/logger';
-import { ENV } from '../../config/env';
-import { IVectorDbProvider } from '../../interfaces/IVectorDbProvider';
+import { ENV } from '../../config/env.js';
+import { logger } from '@mintflow/common';
+import { IVectorDbProvider } from '../../interfaces/IVectorDbProvider.js';
 
 /**
  * A Pinecone-based provider for storing & querying vectors.

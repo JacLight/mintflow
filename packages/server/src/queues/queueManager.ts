@@ -1,7 +1,7 @@
 import Bull from 'bull';
 import { RedisOptions } from 'ioredis';
-import { logger } from '../utils/logger';
-import { ENV } from '../config/env';
+import { ENV } from '../config/env.js';
+import { logger } from '@mintflow/common';
 
 /**
  * A singleton that manages creation of per-tenant Bull queues.

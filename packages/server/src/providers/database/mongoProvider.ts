@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { logger } from '../../utils/logger';
-import { ENV } from '../../config/env';
-import { IDatabaseProvider } from '../../interfaces/IDatabaseProvider';
+import { IDatabaseProvider } from '../../interfaces/IDatabaseProvider.js';
+import { ENV } from '../../config/env.js';
+import { logger } from '@mintflow/common';
 
 /**
  * A robust Mongo DB provider, implementing IDatabaseProvider.

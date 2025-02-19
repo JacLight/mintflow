@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { logger } from "@mintflow/common/helpers";
+import { logger } from "@mintflow/common";
 
 dotenv.config(); // Loads from .env if present
 

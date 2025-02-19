@@ -1,14 +1,11 @@
 import express from 'express';
-import flowRouter from './routes/flowRoutes';
-import vectorRouter from './routes/vectorRoutes';
-import uiRouter from './routes/uiRoutes';
-import { logger } from './utils/logger';
-import feRouter from './routes/flowEngineRoutes';
-import listenerRouter from './routes/listenerRoutes';
-import nodeRouter from './routes/nodeDefinitions';
-import { loadPlugins } from './plugins-register';
+import nodeRouter from './routes/nodeDefinitions.js';
+import vectorRouter from './routes/vectorRoutes.js';
+import uiRouter from './routes/uiRoutes.js';
+import { loadPlugins } from './plugins-register.js';
+import { logger } from '@mintflow/common';
 
-export async function createApp() {
+export async function createApp(): Promise<express.Express> {
     const app = express();
     app.use(express.json());
 

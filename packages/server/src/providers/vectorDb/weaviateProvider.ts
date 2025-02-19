@@ -1,7 +1,7 @@
-import weaviate from 'weaviate-ts-client';
-import { logger } from '../../utils/logger';
-import { ENV } from '../../config/env';
-import { IVectorDbProvider } from '../../interfaces/IVectorDbProvider';
+import { ENV } from '../../config/env.js';
+import { logger } from '@mintflow/common';
+import { IVectorDbProvider } from '../../interfaces/IVectorDbProvider.js';
+import weaviate, { WeaviateClient } from 'weaviate-client'
 
 /**
  * A robust Weaviate provider. Demonstrates schema creation, storeVector, search, etc.
@@ -9,17 +9,28 @@ import { IVectorDbProvider } from '../../interfaces/IVectorDbProvider';
 export class WeaviateProvider implements IVectorDbProvider {
     private static instance: WeaviateProvider;
     private className = 'PhdItem';
-    private client;
+    private client: any
 
     private constructor() {
-        const scheme = ENV.WEAVIATE_HOST.startsWith('https') ? 'https' : 'http';
-        const host = ENV.WEAVIATE_HOST.replace(/^https?:\/\//, '');
-        this.client = weaviate.client({ scheme, host });
+
     }
 
-    public static getInstance(): WeaviateProvider {
+    public static async getInstance(): Promise<WeaviateProvider> {
         if (!WeaviateProvider.instance) {
             WeaviateProvider.instance = new WeaviateProvider();
+
+            const scheme = ENV.WEAVIATE_HOST.startsWith('https') ? 'https' : 'http';
+            const host = ENV.WEAVIATE_HOST.replace(/^https?:\/\//, '');
+            const apiKey = ENV.WEAVIATE_HOST.replace(/^https?:\/\//, '');
+
+            WeaviateProvider.instance.client = await weaviate.connectToWeaviateCloud(
+                host, {
+                authCredentials: new weaviate.ApiKey(apiKey),
+                headers: {
+                    'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY || '',
+                }
+            }
+            )
         }
         return WeaviateProvider.instance;
     }

@@ -1,17 +1,17 @@
 // server/src/routes/flowRoutes.ts
 
 import { Router, Request, Response } from 'express';
-import { FlowModel } from '../models/FlowModel';
-import { FlowEngine } from '../engine/FlowEngine';
-import IORedis from 'ioredis';
-import { ENV } from '../config/env';
-import { logger } from '../utils/logger';
-import { create } from 'domain';
+import Redis from 'ioredis';
+import { ENV } from '../config/env.js';
+import { FlowModel } from '../models/FlowModel.js';
+import { logger } from '@mintflow/common';
+import { FlowEngine } from '../engine/FlowEngine.js';
 
 const flowRouter = Router();
+const aRedis: any = Redis
 
 // For Python tasks bridging (unchanged if you like)
-const redisClient = new IORedis({
+const redisClient = new aRedis({
     host: ENV.REDIS_HOST,
     port: ENV.REDIS_PORT,
 });

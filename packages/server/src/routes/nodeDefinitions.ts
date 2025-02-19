@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { logger } from '../utils/logger';
-import { nodeDefinitions, NodeDefinition } from '../models/NodeDefinition';
+import { NodeDefinition, nodeDefinitions } from '../models/NodeDefinition.js';
+import { logger } from '@mintflow/common';
 
 const nodeRouter = Router();
 
@@ -55,10 +55,10 @@ const getNode: any = (req: Request, res: Response) => {
             uiInputSchema: node.uiInputSchema,
             implementation: { language: node.implementation.language }
         };
-        res.json({ node: safeNode });
+        return res.json({ node: safeNode });
     } catch (err: any) {
         logger.error('[nodeDefinitions] GET /nodes/:nodeId error', { error: err.message });
-        res.status(500).json({ error: err.message });
+        return res.status(500).json({ error: err.message });
     }
 };
 nodeRouter.get('/:nodeId', getNode);

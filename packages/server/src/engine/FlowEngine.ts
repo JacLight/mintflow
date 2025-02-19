@@ -13,18 +13,18 @@
  *  9. Provides “resumeWaitingNode” for external events to un-block a waiting node
  *********************************************************************************************/
 
-import { logger } from '../utils/logger';      // Winston or similar
-import { FlowModel, IFlow, IFlowNodeState } from '../models/FlowModel';
-import { enqueueJob } from '../queues/tenantQueue';        // For Node tasks
-import IORedis from 'ioredis';                 // For Python bridging
-import { ENV } from '../config/env';
+import { Redis } from 'ioredis';                 // For Python bridging
 import axios from 'axios';
 import { Request } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
+import { ENV } from '../config/env.js';
+import { FlowModel, IFlow, IFlowNodeState } from '../models/FlowModel.js';
+import { getNodeAction } from '../plugins-register.js';
+import { logger } from '@mintflow/common';
 
 // If Python tasks are done via bridging in Node:
-const redisClient = new IORedis({
+const redisClient = new Redis({
     host: ENV.REDIS_HOST,
     port: ENV.REDIS_PORT,
 });

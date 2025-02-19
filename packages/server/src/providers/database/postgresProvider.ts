@@ -1,14 +1,15 @@
-import { Pool } from 'pg';
-import { logger } from '../../utils/logger';
-import { ENV } from '../../config/env';
-import { IDatabaseProvider } from '../../interfaces/IDatabaseProvider';
+import pg from 'pg';
+const { Pool } = pg
+import { IDatabaseProvider } from '../../interfaces/IDatabaseProvider.js';
+import { ENV } from '../../config/env.js';
+import { logger } from '@mintflow/common';
 
 /**
  * Postgres provider, implementing IDatabaseProvider.
  */
 export class PostgresProvider implements IDatabaseProvider {
     private static instance: PostgresProvider;
-    private pool: Pool | null = null;
+    private pool: any | null = null;
 
     private constructor() { }
 

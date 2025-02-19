@@ -1,4 +1,4 @@
-const injectAction: ActionDescriptor = {
+const injectAction = {
     name: "Inject",
     inputSchema: {
         type: "object",

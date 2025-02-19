@@ -1,7 +1,6 @@
 // mailPluginExec.ts
-import { PluginDescriptor } from "../../types/noteTypes";
 
-const mailPlugin: PluginDescriptor = {
+const mailPlugin = {
     id: "mailPluginExec",
     name: "Mail Plugin (Exec)",
     actions: [
