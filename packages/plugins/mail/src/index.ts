@@ -38,7 +38,7 @@ const mailPluginExec = {
             detailedDescription: "Processes an email by running a local Python script.",
             helpUrl: "https://docs.example.com/mailPluginExec",
             method: "exec",
-            execute: async (input, config) => {
+            execute: async (input: any, config: any) => {
                 // config should provide the path to the Python script
                 const payload = JSON.stringify(input);
                 return new Promise((resolve, reject) => {

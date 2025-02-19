@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { NodeDefinition, nodeDefinitions } from '../models/NodeDefinition.js';
-import { logger } from '@mintflow/common';
+import { logger, PluginDescriptor } from '@mintflow/common';
+import { getPlugin, getPlugins } from '../plugins-register.js';
 
 const nodeRouter = Router();
 
@@ -11,17 +11,27 @@ const nodeRouter = Router();
 const getNodes: any = (req: Request, res: Response) => {
     try {
         // Remove the actual code from each node before sending
-        const safeNodes: Partial<NodeDefinition>[] = nodeDefinitions.map(node => ({
-            nodeId: node.nodeId,
+        const pluginMap = getPlugins();
+        const nodeDefinitions = Array.from(pluginMap.values());
+        const safeNodes: Partial<PluginDescriptor>[] = nodeDefinitions.map(node => ({
+            id: node.id,
             name: node.name,
             description: node.description,
-            examples: node.examples,
             documentation: node.documentation,
             icon: node.icon,
-            inputSchema: node.inputSchema,
-            outputSchema: node.outputSchema,
-            uiInputSchema: node.uiInputSchema,
-            implementation: { language: node.implementation.language } // Omit code
+            actions: node.actions.map(action => ({
+                name: action.name,
+                description: action.description,
+                inputSchema: action.inputSchema,
+                outputSchema: action.outputSchema,
+                entry: action.entry,
+                exampleInput: action.exampleInput,
+                exampleOutput: action.exampleOutput,
+                method: action.method,
+                documentation: action.documentation,
+
+
+            }))
         }));
 
         res.json({ nodes: safeNodes });
@@ -39,21 +49,28 @@ nodeRouter.get('/:nodeId', getNodes);
  */
 
 const getNode: any = (req: Request, res: Response) => {
+
     try {
         const { nodeId } = req.params;
-        const node = nodeDefinitions.find(n => n.nodeId === nodeId);
+        const node = getPlugin(nodeId);
         if (!node) return res.status(404).json({ error: 'Node not found' });
-        const safeNode: Partial<NodeDefinition> = {
-            nodeId: node.nodeId,
+        const safeNode: Partial<PluginDescriptor> = {
+            id: node.id,
             name: node.name,
             description: node.description,
-            examples: node.examples,
             documentation: node.documentation,
             icon: node.icon,
-            inputSchema: node.inputSchema,
-            outputSchema: node.outputSchema,
-            uiInputSchema: node.uiInputSchema,
-            implementation: { language: node.implementation.language }
+            actions: node.actions.map((action: any) => ({
+                name: action.name,
+                description: action.description,
+                inputSchema: action.inputSchema,
+                outputSchema: action.outputSchema,
+                entry: action.entry,
+                exampleInput: action.exampleInput,
+                exampleOutput: action.exampleOutput,
+                method: action.method,
+                documentation: action.documentation,
+            }))
         };
         return res.json({ node: safeNode });
     } catch (err: any) {

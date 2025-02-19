@@ -8,9 +8,6 @@
     },
     {
       "path": "./packages/server"
-    },
-    {
-      "path": "./packages/plugins/my-new-plugin"
-    },
+    }
   ]
 }

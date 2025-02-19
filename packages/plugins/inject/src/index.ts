@@ -24,7 +24,7 @@ const injectAction = {
     detailedDescription: "Injects a variable into the workflow that can be referenced later. The injected data is dynamically structured.",
     helpUrl: "https://yourdocs.com/inject",
     method: "exec",
-    execute: async (input) => {
+    execute: async (input: any, config: any) => {
         const { name, type, value } = input;
 
         let parsedValue = value;

@@ -8,8 +8,8 @@ export interface ActionDescriptor {
     outputSchema: object;   // JSON schema for the output
     exampleInput: any;      // Sample input
     exampleOutput: any;     // Sample output
-    detailedDescription: string;
-    helpUrl: string;
+    description: string;
+    documentation: string;
     method: ActionMethod;
     entry?: {               // Only required for HTTP-based actions
         url: string;
@@ -22,5 +22,8 @@ export interface ActionDescriptor {
 export interface PluginDescriptor {
     id: string;
     name: string;
+    description: string;
+    icon: string;
+    documentation: string;
     actions: ActionDescriptor[];
 }

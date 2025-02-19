@@ -32,6 +32,10 @@ export async function loadPlugins() {
     }
 }
 
+export function getPlugins() {
+    return pluginMap;
+}
+
 // Function to fetch a plugin by name
 export function getPlugin(name: string) {
     return pluginMap.get(name);
