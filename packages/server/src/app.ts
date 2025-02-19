@@ -6,13 +6,14 @@ import { logger } from './utils/logger';
 import feRouter from './routes/flowEngineRoutes';
 import listenerRouter from './routes/listenerRoutes';
 import nodeRouter from './routes/nodeDefinitions';
+import { loadPlugins } from './plugins-register';
 
-export function createApp() {
+export async function createApp() {
     const app = express();
     app.use(express.json());
 
     // Health check
-    app.get('/', (req, res) => {
+    app.get('/', (req: express.Request, res: express.Response) => {
         res.send('Node Orchestrator / Runner / Providers / UI is running.');
     });
 
@@ -26,6 +27,8 @@ export function createApp() {
     app.use('/node', nodeRouter);
     app.use('/vector', vectorRouter);
     app.use('/ui', uiRouter);
+
+    await loadPlugins();
 
     // Basic error handler
     app.use((err: any, req: any, res: any, next: any) => {

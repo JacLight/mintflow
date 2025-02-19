@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "projects": {
+    "server": { "root": "packages/server" },
+    "node_runner": { "root": "packages/node_runner" },
+    "python_runner": { "root": "packages/python_runner" },
+    "plugins-array": { "root": "packages/plugins/array" },
+    "plugins-inject": { "root": "packages/plugins/inject" },
+    "plugins-mail": { "root": "packages/plugins/mail" }
+  }
+}

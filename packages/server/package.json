@@ -1,5 +1,5 @@
 {
-  "name": "phd-multi-runner-providers",
+  "name": "@mintflow/server",
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
@@ -20,14 +20,10 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.4",
-    "@types/bull": "^4.10.4",
     "@types/express": "^5.0.0",
-    "@types/ioredis": "^5.0.0",
-    "@types/mongoose": "^5.11.97",
     "@types/node": "^22.13.4",
     "@types/pg": "^8.11.11",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }

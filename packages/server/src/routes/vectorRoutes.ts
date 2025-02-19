@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { ProviderFactory } from '../providers/providerFactory';
-import { logger } from '../utils/logger';
+import { logger } from "@mintflow/common";
 
 const vectorRouter = Router();
 
