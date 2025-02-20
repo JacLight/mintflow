@@ -8,7 +8,10 @@
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "paths":{
+      "@mintflow/common": ["../../common/src/index.ts"]
+    },
   },
   // If you want tests compiled by TS, include them; if not, omit them
   "include": ["test/**/*.ts", "src/**/*.ts"]

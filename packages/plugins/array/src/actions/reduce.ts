@@ -51,8 +51,12 @@ export const reduce = {
                 result = array.map((item: any) => item[field]).join(separator);
                 break;
             case 'custom':
-                result = array.reduce((acc: any, current: any) => eval(customOperation), accumulator);
+                const initialValue = !isNaN(parseFloat(accumulator))
+                    ? parseFloat(accumulator)
+                    : accumulator;
+                result = array.reduce((acc: any, current: any) => eval(customOperation), initialValue);
                 break;
+
         }
         return result;
     }

@@ -19,6 +19,8 @@
     "target": "es2022",
     "allowJs": true,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
       "@mintflow/common": ["packages/common/src/index.ts"]

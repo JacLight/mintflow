@@ -37,7 +37,7 @@ export const sort = {
     description: 'Sorts an array of numbers in ascending or descending order',
     execute: async (input: any, config: any) => {
         const sortArrayByField = (array: any, field: string, direction: string) => {
-            const hasField = array?.any((item: any) => item[field]);
+            const hasField = field && array?.some((item: any) => item[field]);
             if (hasField) {
                 return array.sort((a: any, b: any) => direction === 'asc' ? a[field] - b[field] : b[field] - a[field]);
             } else {

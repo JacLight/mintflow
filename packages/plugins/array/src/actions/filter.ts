@@ -1,5 +1,5 @@
+import { ruleOperations } from "@mintflow/common";
 import { commonSchema } from "../common.js";
-import { ActionDescriptor, PluginDescriptor, ruleOperations } from '@mintflow/common';
 
 interface Filter {
     source: 'data' | 'flow';
@@ -7,15 +7,7 @@ interface Filter {
     operation: string;
     value: string;
 }
-
-interface Input {
-    array: any[];
-    join: 'or' | 'and';
-    max?: number;
-    filters: Filter[];
-}
-
-export const filter: ActionDescriptor = {
+export const filter = {
     outputSchema: {
         type: 'array',
         items: { type: 'any' }
@@ -70,20 +62,20 @@ export const filter: ActionDescriptor = {
         },
     },
     description: 'Sorts an array of numbers in ascending or descending order',
-    execute: async (input: Input, config: any) => {
+    execute: async (input: any, config: any): Promise<any> => {
         const { array, filters, join, max } = input;
 
         // Apply filters
-        let filteredArray = array.filter(item => {
+        let filteredArray = array.filter((item: any) => {
             if (join === 'and') {
-                return filters.every(filter => {
+                return filters.every((filter: any) => {
                     const { field, operation, value } = filter;
                     const fieldValue = item[field];
                     const ruleOperation: any = ruleOperations[operation];
                     return ruleOperation(fieldValue, value);
                 });
             } else {
-                return filters.some(filter => {
+                return filters.some((filter: any) => {
                     const { field, operation, value } = filter;
                     const fieldValue = item[field];
                     const ruleOperation: any = ruleOperations[operation];

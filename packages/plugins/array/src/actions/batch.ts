@@ -2,14 +2,6 @@ import { commonSchema } from '../common.js';
 
 type Item = { [key: string]: any };
 
-interface InputType {
-    array: any[];
-    groupBy: 'count' | 'interval' | string;
-    threshold: number;
-    sortBy?: string; // e.g. 'timestamp' or 'student'
-    sortDirection?: 'asc' | 'desc';
-}
-
 /** Splits array into sub-arrays of size `count`. */
 function batchByCount(arr: any[], count: number): any[] {
     const chunks: any[] = [];
@@ -112,7 +104,7 @@ export const batch = {
         }
     },
     description: 'Sorts an array (by a field or raw value) and then batches it by count, interval, or a property.',
-    execute: async (input: InputType, config: any): Promise<any> => {
+    execute: async (input: any, config: any): Promise<any> => {
         // 1) COPY the array so we don't mutate the original
         let arr = [...(input.array || [])];
 

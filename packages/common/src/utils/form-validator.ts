@@ -3,7 +3,8 @@ import * as objectPath from 'object-path';
 import { deepCopy } from './helpers.js';
 import { ruleOperations } from './form-rules.js';
 
-const ajv = new Ajv.default({
+const MAjv: any = Ajv;
+const ajv = new MAjv({
   allErrors: true,
   useDefaults: true,
   strict: false,
@@ -193,134 +194,17 @@ export const validateFormValue = (path: string, value: any, schema: any, data?: 
 };
 
 export const validateValue = (type: string, valueA: any, valueB: any, message?: string): ValidationResult => {
-  const validation = ruleOperations[type];
-  if (!validation) return { valid: true };
+  const rule = ruleOperations[type];
 
-  message = message || validation.message || '';
-  let responseMessage;
-  switch (type) {
-    case 'required':
-      if (!valueA) responseMessage = message;
-      break;
-    case 'minLength':
-      if (valueA.length < valueB) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'maxLength':
-      if (valueA.length > valueB) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'minValue':
-      if (valueA < valueB) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'maxValue':
-      if (valueA > valueB) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'match':
-    case 'pattern':
-      try {
-        const matchResult = new RegExp(valueB).test(valueA);
-        if (!matchResult) {
-          responseMessage = message.replace('{{valueB}}', valueB);
-        }
-      } catch (e) {
-        responseMessage = 'Invalid RegExp pattern ' + valueB;
-        console.error('Invalid RegExp pattern', valueB);
-        console.error(e);
-      }
-      break;
-    case 'notMatch':
-      try {
-        const notMatchResult = new RegExp(valueB).test(valueA);
-        if (notMatchResult) responseMessage = message.replace('{{valueB}}', valueB);
-      } catch (e) {
-        responseMessage = 'Invalid RegExp pattern ' + valueB;
-        console.error('Invalid RegExp pattern', valueB);
-        console.error(e);
-      }
-      break;
-    case 'equal':
-      valueA = !isNaN(valueA) ? parseFloat(valueA) : valueA;
-      valueB = !isNaN(valueB) ? parseFloat(valueB) : valueB;
-      if (valueA !== valueB) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'notEqual':
-      valueA = !isNaN(valueA) ? parseFloat(valueA) : valueA;
-      valueB = !isNaN(valueB) ? parseFloat(valueB) : valueB;
-      if (valueA === valueB) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'in':
-      if (typeof valueB === 'string' && typeof valueA === 'string') {
-        if (valueB.indexOf(valueA) === -1) responseMessage = message.replace('{{valueB}}', valueB);
-      } else if (Array.isArray(valueB) && Array.isArray(valueA)) {
-        if (valueA.filter(v => valueB.includes(v)).length !== valueA.length) responseMessage = message.replace('{{valueB}}', JSON.stringify(valueB));
-      } else if (Array.isArray(valueA)) {
-        if (!valueA.includes(valueB)) responseMessage = message.replace('{{valueB}}', JSON.stringify(valueA));
-      } else if (Array.isArray(valueB)) {
-        if (!valueB.includes(valueA)) responseMessage = message.replace('{{valueB}}', JSON.stringify(valueB));
-      } else if (typeof valueB === 'object') {
-        if (!valueB[valueA]) responseMessage = message.replace('{{values}}', valueB);
-      } else {
-        responseMessage = message.replace('{{values}}', valueB);
-      }
-      break;
-    case 'notIn':
-      if (typeof valueB === 'string' && typeof valueA === 'string') {
-        if (valueB.indexOf(valueA) !== -1) responseMessage = message.replace('{{valueB}}', valueB);
-      } else if (Array.isArray(valueB) && Array.isArray(valueA)) {
-        if (valueB.filter(v => valueA.includes(v)).length === valueA.length) responseMessage = message.replace('{{valueB}}', JSON.stringify(valueB));
-      } else if (Array.isArray(valueA)) {
-        if (valueA.includes(valueB)) responseMessage = message.replace('{{valueB}}', JSON.stringify(valueA));
-      } else if (Array.isArray(valueB)) {
-        if (valueB.includes(valueA)) responseMessage = message.replace('{{valueB}}', JSON.stringify(valueB));
-      } else if (typeof valueB === 'object') {
-        if (valueB[valueA]) responseMessage = message.replace('{{valueB}}', valueB);
-      } else {
-        responseMessage = message.replace('{{valueB}}', valueB);
-      }
-      break;
-    case 'startsWith':
-      if (!valueA.startsWith(valueB)) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'notStartsWith':
-      if (valueA?.startsWith(valueB)) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'endsWith':
-      if (!valueA?.endsWith(valueB)) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'notEndsWith':
-      if (valueA?.endsWith(valueB)) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'isNull':
-    case 'isEmpty':
-      if (valueA !== null && valueA !== undefined && valueA !== '' && valueA.length !== 0) responseMessage = message;
-      break;
-    case 'isNotNull':
-    case 'isNotEmpty':
-      if (valueA === null || valueA === undefined || valueA.length === 0) responseMessage = message;
-      break;
-    case 'isFalsy':
-      if (valueA) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'isTruthy':
-      if (!valueA) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'isDate':
-      const date = new Date(valueA);
-      if (isNaN(date.getTime())) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    case 'isEmail':
-    case 'isURL':
-    case 'isPhone':
-    case 'isCreditCard':
-    case 'isAlpha':
-    case 'isNumeric':
-    case 'isAlphaNumeric':
-      const regResult = new RegExp(validation.pattern || '').test(valueA);
-      if (!regResult) responseMessage = message.replace('{{valueB}}', valueB);
-      break;
-    default:
-      break;
+  if (!rule) {
+    console.warn(`Validation rule "${type}" not found.`);
+    return { valid: true };
   }
-  return { valid: !responseMessage, message: message || responseMessage };
+
+  const isValid = rule.validate(valueA, valueB);
+  const errorMessage = isValid ? '' : message?.replace('{{valueB}}', JSON.stringify(valueB)) || rule.message;
+
+  return { valid: isValid, message: errorMessage };
 };
 
 const replaceIdWithDollarIdAndCleanSchema = (schema: any): any => {

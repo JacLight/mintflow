@@ -55,14 +55,15 @@ export const aggregate = {
                     },
                 },
             },
-        }
+        },
     },
     description: 'Aggregates an array of objects based on specified fields and operations',
     execute: async (input: any, config: any) => {
-        const groupByFields = input.groupBy;
-        const aggregations = input.aggregations;
+        const groupByFields = input.groupBy; // e.g., ['a']
+        const aggregations = input.aggregations; // e.g., [{ field: 'b', operation: 'sum', alias: 'total' }]
         const pivotConfig = input.pivot;
 
+        // Helper: group an array by an array of keys
         const groupBy = (array: any[], keys: string[]) => {
             return array.reduce((result, item) => {
                 const key = keys.map(k => item[k]).join('|');
@@ -71,9 +72,10 @@ export const aggregate = {
                 }
                 result[key].push(item);
                 return result;
-            }, {});
+            }, {} as Record<string, any[]>);
         };
 
+        // Helper: aggregate a group of items using the given aggregations.
         const aggregateGroup = (group: any[], aggregations: any[]) => {
             return aggregations.reduce((result, agg) => {
                 const { field, operation, customOperation, alias } = agg;
@@ -96,33 +98,43 @@ export const aggregate = {
                         result[outputField] = Math.max(...group.map(item => item[field]));
                         break;
                     case 'custom':
-                        result[outputField] = new Function('group', customOperation)(group);
+                    // Create a function that receives the group array.
+                    case 'custom':
+                        const customOp = customOperation.trim();
+                        const opCode = customOp.startsWith('return') ? customOp : 'return ' + customOp;
+                        result[outputField] = new Function('group', opCode)(group);
                         break;
                     default:
                         throw new Error(`Unsupported aggregation operation: ${operation}`);
                 }
 
                 return result;
-            }, {});
+            }, {} as Record<string, any>);
         };
 
-        const pivotData = (data: any[], pivotField: string, valueField: string) => {
-            const pivoted: any = {};
-            data.forEach(item => {
-                const pivotKey = item[pivotField];
-                if (!pivoted[pivotKey]) {
-                    pivoted[pivotKey] = {};
-                }
-                pivoted[pivotKey][valueField] = item[valueField];
-            });
-            return Object.keys(pivoted).map(key => ({ [pivotField]: key, ...pivoted[key] }));
-        };
+        let aggregatedData: any[];
 
-        const groupedData = groupBy(input.array, groupByFields);
-        let aggregatedData = Object.values(groupedData).map((group: any) => aggregateGroup(group, aggregations));
-
+        // If pivot config exists, ignore the groupBy provided and group by pivotField from raw data.
         if (pivotConfig) {
-            aggregatedData = pivotData(aggregatedData, pivotConfig.pivotField, pivotConfig.valueField);
+            const pivotField = pivotConfig.pivotField;
+            const pivotGroups = groupBy(input.array, [pivotField]);
+            aggregatedData = Object.values(pivotGroups).map((group: any) => {
+                const aggResult = aggregateGroup(group, aggregations);
+                // Merge the pivot field value (taken from the first item)
+                aggResult[pivotField] = group[0][pivotField];
+                return aggResult;
+            });
+        } else {
+            // Regular aggregation using the specified groupBy fields.
+            const groupedData = groupBy(input.array, groupByFields);
+            aggregatedData = Object.values(groupedData).map((group: any) => {
+                const aggResult = aggregateGroup(group, aggregations);
+                // Merge each groupBy field from the first item of the group into the result
+                groupByFields.forEach((key: any) => {
+                    aggResult[key] = group[0][key];
+                });
+                return aggResult;
+            });
         }
 
         return aggregatedData;
