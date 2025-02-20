@@ -1,4 +1,4 @@
-import { ruleOperations } from "@mintflow/common";
+import { ruleOperations, validateValue } from "@mintflow/common";
 import { commonSchema } from "../common.js";
 
 interface Filter {
@@ -70,16 +70,14 @@ export const filter = {
             if (join === 'and') {
                 return filters.every((filter: any) => {
                     const { field, operation, value } = filter;
-                    const fieldValue = item[field];
-                    const ruleOperation: any = ruleOperations[operation];
-                    return ruleOperation(fieldValue, value);
+                    const result = validateValue(operation, item[field], value);
+                    return result.valid;
                 });
             } else {
                 return filters.some((filter: any) => {
                     const { field, operation, value } = filter;
-                    const fieldValue = item[field];
-                    const ruleOperation: any = ruleOperations[operation];
-                    return ruleOperation(fieldValue, value);
+                    const result = validateValue(operation, item[field], value);
+                    return result.valid;
                 });
             }
         });
