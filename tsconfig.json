@@ -8,6 +8,9 @@
     },
     {
       "path": "./packages/server"
+    },
+    {
+      "path": "./packages/plugins/timer"
     }
   ]
 }

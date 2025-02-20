@@ -1,5 +1,5 @@
 {
-  "name": "@mintflow/mail",
+  "name": "@mintflow/{{name}}",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,16 +8,8 @@
     "build": "tsc",
     "clean": "rm -rf dist"
   },
-  "dependencies": {
-    "imapflow": "^1.0.181",
-    "mailparser": "^3.7.2",
-    "nodemailer": "^6.10.0"
-  },
   "devDependencies": {
-    "@types/imapflow": "^1.0.19",
     "@types/jest": "^29.5.14",
-    "@types/mailparser": "^3.4.5",
-    "@types/nodemailer": "^6.4.17",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.3"
