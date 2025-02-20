@@ -5,32 +5,34 @@ export const sort = {
     ...commonSchema,
     inputSchema: {
         type: 'object',
-        field1: {
-            type: 'string',
-            displayStyle: 'outlined',
-            displaySize: 'small',
-            group: 'sortA',
-        },
-        direction1: {
-            type: 'string',
-            displayStyle: 'outlined',
-            displaySize: 'small',
-            group: 'sortA',
-            enum: ['asc', 'desc'],
-        },
-        field2: {
-            type: 'string',
-            displayStyle: 'outlined',
-            displaySize: 'small',
-            group: 'sortB',
-        },
-        direction2: {
-            type: 'string',
-            displayStyle: 'outlined',
-            displaySize: 'small',
-            group: 'sortB',
-            enum: ['asc', 'desc'],
-        },
+        properties: {
+            field1: {
+                type: 'string',
+                displayStyle: 'outlined',
+                displaySize: 'small',
+                group: 'sortA',
+            },
+            direction1: {
+                type: 'string',
+                displayStyle: 'outlined',
+                displaySize: 'small',
+                group: 'sortA',
+                enum: ['asc', 'desc'],
+            },
+            field2: {
+                type: 'string',
+                displayStyle: 'outlined',
+                displaySize: 'small',
+                group: 'sortB',
+            },
+            direction2: {
+                type: 'string',
+                displayStyle: 'outlined',
+                displaySize: 'small',
+                group: 'sortB',
+                enum: ['asc', 'desc'],
+            },
+        }
     },
     description: 'Sorts an array of numbers in ascending or descending order',
     execute: async (input: any, config: any) => {

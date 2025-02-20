@@ -3,15 +3,16 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "src",
-    "outDir": "dist",
+    "outDir": "./dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": false,
-    "module": "NodeNext",        // Changed from "nodenext" to "NodeNext"
-    "moduleResolution": "NodeNext", // Changed from "nodenext" to "NodeNext"
+    "module": "NodeNext",        
+    "moduleResolution": "NodeNext", 
+    "target": "ESNext",
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"],
+    "types": ["node","jest"],
     "paths":{
-      "@mintflow/common": ["../../common/src/index.ts"],
+      "@mintflow/common": ["../../common/src/index.ts"]
     },
   },  
   "references": [
@@ -19,6 +20,6 @@
       "path": "../../../packages/common"
     },
   ],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "dist", "test"],
   "include": ["src/**/*.ts"],
 }

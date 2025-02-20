@@ -5,48 +5,127 @@ export const aggregate = {
     ...commonSchema,
     inputSchema: {
         type: 'object',
-        field1: {
-            type: 'string',
-            displayStyle: 'outlined',
-            displaySize: 'small',
-            group: 'sortA',
-        },
-        direction1: {
-            type: 'string',
-            displayStyle: 'outlined',
-            displaySize: 'small',
-            group: 'sortA',
-            enum: ['asc', 'desc'],
-        },
-        field2: {
-            type: 'string',
-            displayStyle: 'outlined',
-            displaySize: 'small',
-            group: 'sortB',
-        },
-        direction2: {
-            type: 'string',
-            displayStyle: 'outlined',
-            displaySize: 'small',
-            group: 'sortB',
-            enum: ['asc', 'desc'],
-        },
+        properties: {
+            groupBy: {
+                type: 'array',
+                description: 'Fields to group by',
+                items: {
+                    type: 'string',
+                    placeholder: 'Enter field name (e.g., category, region)',
+                },
+            },
+            aggregations: {
+                type: 'array',
+                description: 'Fields to aggregate and their operations',
+                items: {
+                    type: 'object',
+                    properties: {
+                        field: {
+                            type: 'string',
+                            placeholder: 'Field to aggregate',
+                        },
+                        operation: {
+                            type: 'string',
+                            enum: ['sum', 'average', 'count', 'min', 'max', 'custom'],
+                            placeholder: 'Aggregation operation',
+                        },
+                        customOperation: {
+                            type: 'string',
+                            placeholder: 'Enter custom JavaScript function',
+                            rules: [{ operation: 'eq', valueA: 'custom', valueB: '{{operation}}', action: 'show' }],
+                        },
+                        alias: {
+                            type: 'string',
+                            placeholder: 'Name of the aggregated field in the output',
+                        },
+                    },
+                },
+            },
+            pivot: {
+                type: 'object',
+                description: 'Pivoting configuration (optional)',
+                properties: {
+                    pivotField: {
+                        type: 'string',
+                        placeholder: 'Field to pivot (e.g., year, month)',
+                    },
+                    valueField: {
+                        type: 'string',
+                        placeholder: 'Field to use as value in pivot (e.g., sales)',
+                    },
+                },
+            },
+        }
     },
-    description: 'Sorts an array of numbers in ascending or descending order',
+    description: 'Aggregates an array of objects based on specified fields and operations',
     execute: async (input: any, config: any) => {
-        const sortArrayByField = (array: any, field: string, direction: string) => {
-            const hasField = array?.any((item: any) => item[field]);
-            if (hasField) {
-                return array.sort((a: any, b: any) => direction === 'asc' ? a[field] - b[field] : b[field] - a[field]);
-            } else {
-                return array.sort((a: any, b: any) => direction === 'asc' ? a - b : b - a);
-            }
+        const groupByFields = input.groupBy;
+        const aggregations = input.aggregations;
+        const pivotConfig = input.pivot;
+
+        const groupBy = (array: any[], keys: string[]) => {
+            return array.reduce((result, item) => {
+                const key = keys.map(k => item[k]).join('|');
+                if (!result[key]) {
+                    result[key] = [];
+                }
+                result[key].push(item);
+                return result;
+            }, {});
+        };
+
+        const aggregateGroup = (group: any[], aggregations: any[]) => {
+            return aggregations.reduce((result, agg) => {
+                const { field, operation, customOperation, alias } = agg;
+                const outputField = alias || field;
+
+                switch (operation) {
+                    case 'sum':
+                        result[outputField] = group.reduce((sum, item) => sum + item[field], 0);
+                        break;
+                    case 'average':
+                        result[outputField] = group.reduce((sum, item) => sum + item[field], 0) / group.length;
+                        break;
+                    case 'count':
+                        result[outputField] = group.length;
+                        break;
+                    case 'min':
+                        result[outputField] = Math.min(...group.map(item => item[field]));
+                        break;
+                    case 'max':
+                        result[outputField] = Math.max(...group.map(item => item[field]));
+                        break;
+                    case 'custom':
+                        result[outputField] = new Function('group', customOperation)(group);
+                        break;
+                    default:
+                        throw new Error(`Unsupported aggregation operation: ${operation}`);
+                }
+
+                return result;
+            }, {});
+        };
+
+        const pivotData = (data: any[], pivotField: string, valueField: string) => {
+            const pivoted: any = {};
+            data.forEach(item => {
+                const pivotKey = item[pivotField];
+                if (!pivoted[pivotKey]) {
+                    pivoted[pivotKey] = {};
+                }
+                pivoted[pivotKey][valueField] = item[valueField];
+            });
+            return Object.keys(pivoted).map(key => ({ [pivotField]: key, ...pivoted[key] }));
+        };
+
+        const groupedData = groupBy(input.array, groupByFields);
+        let aggregatedData = Object.values(groupedData).map((group: any) => aggregateGroup(group, aggregations));
+
+        if (pivotConfig) {
+            aggregatedData = pivotData(aggregatedData, pivotConfig.pivotField, pivotConfig.valueField);
         }
-        let result = input.array;
-        if (input.field2) {
-            result = sortArrayByField(result, input.field2, input.direction2)
-        }
-        return sortArrayByField(result, input.field1, input.direction1)
+
+        return aggregatedData;
     }
 };
 

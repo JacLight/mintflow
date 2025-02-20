@@ -68,37 +68,37 @@ export const filter: ActionDescriptor = {
                 },
             }
         },
-        description: 'Sorts an array of numbers in ascending or descending order',
-        execute: async (input: Input, config: any) => {
-            const { array, filters, join, max } = input;
+    },
+    description: 'Sorts an array of numbers in ascending or descending order',
+    execute: async (input: Input, config: any) => {
+        const { array, filters, join, max } = input;
 
-            // Apply filters
-            let filteredArray = array.filter(item => {
-                if (join === 'and') {
-                    return filters.every(filter => {
-                        const { field, operation, value } = filter;
-                        const fieldValue = item[field];
-                        const ruleOperation: any = ruleOperations[operation];
-                        return ruleOperation(fieldValue, value);
-                    });
-                } else {
-                    return filters.some(filter => {
-                        const { field, operation, value } = filter;
-                        const fieldValue = item[field];
-                        const ruleOperation: any = ruleOperations[operation];
-                        return ruleOperation(fieldValue, value);
-                    });
-                }
-            });
-
-            // If max is not set or 0, return all elements found
-            if (!max || max === 0) {
-                return filteredArray;
+        // Apply filters
+        let filteredArray = array.filter(item => {
+            if (join === 'and') {
+                return filters.every(filter => {
+                    const { field, operation, value } = filter;
+                    const fieldValue = item[field];
+                    const ruleOperation: any = ruleOperations[operation];
+                    return ruleOperation(fieldValue, value);
+                });
+            } else {
+                return filters.some(filter => {
+                    const { field, operation, value } = filter;
+                    const fieldValue = item[field];
+                    const ruleOperation: any = ruleOperations[operation];
+                    return ruleOperation(fieldValue, value);
+                });
             }
+        });
 
-            // Return up to max elements
-            return filteredArray.slice(0, max);
+        // If max is not set or 0, return all elements found
+        if (!max || max === 0) {
+            return filteredArray;
         }
+
+        // Return up to max elements
+        return filteredArray.slice(0, max);
     }
 };
 
