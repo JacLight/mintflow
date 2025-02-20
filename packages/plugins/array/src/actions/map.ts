@@ -1,5 +1,5 @@
-import { ActionDescriptor } from "@mintflow/common";
-import { commonSchema } from "src/index.js";
+import { ActionDescriptor, isEmpty } from "@mintflow/common";
+import { commonSchema } from "../common.js";
 
 export const map: ActionDescriptor = {
     name: 'map',
@@ -40,17 +40,29 @@ export const map: ActionDescriptor = {
         const { array, name, max, mappings } = input;
         const limit = max === 0 ? array.length : max;
 
-        const applyPattern = (item: any, pattern: string) => {
+        if (isEmpty(array) || !Array.isArray(array)) {
+            return [];
+        }
+
+        if (isEmpty(mappings) || !Array.isArray(mappings)) {
+            return array;
+        }
+
+        const applyPattern = (row: any, pattern: string) => {
             return pattern.replace(/{{(.*?)}}/g, (_, expr) => {
-                const func = new Function('item', `return ${expr}`);
-                return func(item);
+                const func = new Function('row', `return ${expr}`);
+                return func(row);
             });
         };
 
         const result = array.slice(0, limit).map((item: any) => {
-            const newItem: any = { ...item };
+            const newItem: any = {};
             mappings.forEach((mapping: any) => {
-                newItem[mapping.newField] = applyPattern(item, mapping.pattern);
+                if (mapping.pattern.startsWith('{{') && mapping.pattern.endsWith('}}')) {
+                    newItem[mapping.newField] = applyPattern(item, mapping.pattern);
+                } else {
+                    newItem[mapping.newField] = item[mapping.pattern];
+                }
             });
             return newItem;
         });

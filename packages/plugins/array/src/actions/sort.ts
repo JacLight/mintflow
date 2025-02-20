@@ -1,4 +1,4 @@
-import { commonSchema } from "src/index.js";
+import { commonSchema } from "../common.js";
 
 export const sort = {
     name: 'sort',

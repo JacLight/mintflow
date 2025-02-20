@@ -129,12 +129,6 @@ importers:
 
   packages/plugins/mail: {}
 
-  packages/plugins/my-new-plugin:
-    dependencies:
-      tslib:
-        specifier: ^2.3.0
-        version: 2.8.1
-
   packages/server:
     dependencies:
       axios:

@@ -1,4 +1,4 @@
-import { commonSchema } from "src/index.js";
+import { commonSchema } from "../common.js";
 import { ActionDescriptor, PluginDescriptor, ruleOperations } from '@mintflow/common';
 
 interface Filter {
@@ -21,7 +21,7 @@ export const filter: ActionDescriptor = {
         items: { type: 'any' }
     },
     exampleOutput: [],
-    name: 'sort',
+    name: 'filter',
     ...commonSchema,
     inputSchema: {
         type: 'object',

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'tsx src/index.ts'",
+    "dev": "nodemon",
+    "dev:watch": "tsx watch src/index.ts",
     "build": "tsc",
     "build:watch": "tsc -w"
   },

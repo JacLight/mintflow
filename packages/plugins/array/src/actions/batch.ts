@@ -1,7 +1,7 @@
-import { commonSchema } from "src/index.js";
+import { commonSchema } from "../common.js";
 
 export const batch = {
-    name: 'sort',
+    name: 'batch',
     ...commonSchema,
     inputSchema: {
         type: 'object',

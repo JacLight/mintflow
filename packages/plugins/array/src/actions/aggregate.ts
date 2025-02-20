@@ -1,7 +1,7 @@
-import { commonSchema } from "src/index.js";
+import { commonSchema } from "../common.js";
 
 export const aggregate = {
-    name: 'sort',
+    name: 'aggregate',
     ...commonSchema,
     inputSchema: {
         type: 'object',

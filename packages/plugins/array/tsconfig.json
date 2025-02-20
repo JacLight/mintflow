@@ -6,8 +6,8 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": false,
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",        // Changed from "nodenext" to "NodeNext"
+    "moduleResolution": "NodeNext", // Changed from "nodenext" to "NodeNext"
     "forceConsistentCasingInFileNames": true,
     "types": ["node"],
     "paths":{
