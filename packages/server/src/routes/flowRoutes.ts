@@ -41,7 +41,7 @@ const createFlow: any = async (req: Request, res: Response) => {
         return res.status(500).json({ error: err.message });
     }
 };
-flowRouter.post('/', createFlow);
+flowRouter.post('/create', createFlow);
 
 /**
  * 2) LIST FLOWS FOR A TENANT
@@ -61,7 +61,7 @@ const listFlows: any = async (req: Request, res: Response) => {
         return res.status(500).json({ error: err.message });
     }
 };
-flowRouter.get('/', listFlows);
+flowRouter.get('/list', listFlows);
 
 /**
  * 3) GET FLOW DETAILS
@@ -84,7 +84,7 @@ const getFlow: any = async (req: Request, res: Response) => {
         return res.status(500).json({ error: err.message });
     }
 };
-flowRouter.get('/:flowId', getFlow);
+flowRouter.get('/list:flowId', getFlow);
 
 /**
  * 4) UPDATE FLOW
@@ -113,7 +113,7 @@ const updateFlow: any = async (req: Request, res: Response) => {
         return res.status(500).json({ error: err.message });
     }
 };
-flowRouter.put('/:flowId', updateFlow);
+flowRouter.put('/update/:flowId', updateFlow);
 
 /**
  * 5) DELETE FLOW
@@ -136,7 +136,7 @@ const deleteFlow: any = async (req: Request, res: Response) => {
         return res.status(500).json({ error: err.message });
     }
 };
-flowRouter.delete('/:flowId', deleteFlow);
+flowRouter.delete('/delete:flowId', deleteFlow);
 
 /**
  * 6) RUN FLOW
