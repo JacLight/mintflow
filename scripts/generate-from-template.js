@@ -12,7 +12,7 @@ if (!pluginName) {
     process.exit(1);
 }
 
-const templateDir = path.join(__dirname, '../packages/plugins/_template');
+const templateDir = path.join(__dirname, './_template');
 const pluginDir = path.join(__dirname, `../packages/plugins/${pluginName}`);
 
 // Copy template directory to new plugin directory

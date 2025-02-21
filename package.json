@@ -5,7 +5,8 @@
   "scripts": {
     "register:plugins": "node scripts/register-plugins.mjs",
     "generate:plugin": "node scripts/generate-plugin.js",
-    "generate:template": "node scripts/generate-from-template.js"
+    "generate:template": "node scripts/generate-from-template.js",
+    "test:all-plugins": "node scripts/test-all-plugins.js"
   },
   "private": true,
   "devDependencies": {
