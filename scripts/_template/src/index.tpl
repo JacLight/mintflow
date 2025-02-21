@@ -1,8 +1,8 @@
 const {{name}}Plugin = {
-    name: "Inject",
+    name: "{{name}}",
     icon: "",
     description: "Description for {{name}}",
-    id: "inject",
+    id: "{{name}}",
     runner: "node",
     inputSchema: {
         type: "object",

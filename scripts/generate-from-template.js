@@ -42,6 +42,6 @@ const replaceInDir = (dir) => {
 replaceInDir(pluginDir);
 
 // Rename index.tpl to index.tsx
-fs.renameSync(path.join(pluginDir, 'src/index.tpl'), path.join(pluginDir, 'src/index.tsx'));
+fs.renameSync(path.join(pluginDir, 'src/index.tpl'), path.join(pluginDir, 'src/index.ts'));
 
 console.log(`Plugin ${pluginName} generated successfully.`);
