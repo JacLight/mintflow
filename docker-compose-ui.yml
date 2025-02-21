@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  keydb:
+    image: eqalpha/keydb
+    container_name: keydb
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - my-network
+    volumes:
+      - keydb_data:/data
+
+  redisinsight:
+    image: redislabs/redisinsight
+    container_name: redisinsight
+    restart: always
+    ports:
+      - "8001:8001"
+    networks:
+      - my-network
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: mintflow
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - my-network
+
+  weaviate:
+    image: semitechnologies/weaviate
+    container_name: weaviate
+    restart: always
+    environment:
+      QUERY_DEFAULTS_LIMIT: 50
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      DEFAULT_VECTORIZER_MODULE: "text2vec-openai"
+      ENABLE_MODULES: "text2vec-openai"
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "27017:27017"
+    networks:
+      - my-network
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    ports:
+      - "8081:8081"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  keydb_data:
+  postgres_data:
+  mongo_data:
