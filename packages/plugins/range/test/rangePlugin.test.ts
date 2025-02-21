@@ -48,6 +48,10 @@ describe('rangePlugin', () => {
         ],
     };
 
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should map flow context value to new value', async () => {
         mockFlowContext.get.mockReturnValue(5);
         const input = { data: {} };
@@ -98,6 +102,89 @@ describe('rangePlugin', () => {
         const input = { data: {} };
         const result = await rangePlugin.actions[0].execute(input, customConfig);
         expect(mockFlowContext.set).toHaveBeenCalledWith('temperature', 'cold');
+        expect(result).toEqual({});
+    });
+
+    it('should handle empty input data gracefully', async () => {
+        const input = { data: {} };
+        const result = await rangePlugin.actions[0].execute(input, config);
+        expect(result).toEqual({});
+    });
+
+    it('should handle invalid range values', async () => {
+        const invalidConfig = {
+            ...config,
+            options: [
+                {
+                    source: 'flow',
+                    name: 'temperature',
+                    valueFrom: 10,
+                    valueTto: 0,
+                    newName: 'tempRange',
+                    newValue: 'cold',
+                },
+            ],
+        };
+        mockFlowContext.get.mockReturnValue(5);
+        const input = { data: {} };
+        const result = await rangePlugin.actions[0].execute(input, invalidConfig);
+        expect(mockFlowContext.set).not.toHaveBeenCalled();
+        expect(result).toEqual({});
+    });
+
+    it('should handle overlapping ranges correctly', async () => {
+        const overlappingConfig = {
+            ...config,
+            options: [
+                {
+                    source: 'flow',
+                    name: 'temperature',
+                    valueFrom: 0,
+                    valueTto: 10,
+                    newName: 'tempRange',
+                    newValue: 'cold',
+                },
+                {
+                    source: 'flow',
+                    name: 'temperature',
+                    valueFrom: 5,
+                    valueTto: 15,
+                    newName: 'tempRange',
+                    newValue: 'warm',
+                },
+            ],
+        };
+        mockFlowContext.get.mockReturnValue(7);
+        const input = { data: {} };
+        const result = await rangePlugin.actions[0].execute(input, overlappingConfig);
+        expect(mockFlowContext.set).toHaveBeenCalledWith('tempRange', 'cold');
+        expect(result).toEqual({});
+    });
+
+    it('should handle non-numeric input values', async () => {
+        const nonNumericConfig = {
+            ...config,
+            options: [
+                {
+                    source: 'flow',
+                    name: 'temperature',
+                    valueFrom: 0,
+                    valueTto: 10,
+                    newName: 'tempRange',
+                    newValue: 'cold',
+                },
+            ],
+        };
+        mockFlowContext.get.mockReturnValue('five');
+        const input = { data: {} };
+        const result = await rangePlugin.actions[0].execute(input, nonNumericConfig);
+        expect(mockFlowContext.set).not.toHaveBeenCalled();
+        expect(result).toEqual({});
+    });
+
+    it('should handle missing source values gracefully', async () => {
+        const input = { data: { humidity: undefined } };
+        const result = await rangePlugin.actions[0].execute(input, config);
         expect(result).toEqual({});
     });
 });

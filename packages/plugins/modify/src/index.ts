@@ -137,7 +137,7 @@ const modifyPlugin = {
                     if (valueInfo.operation === 'set') {
                         await setItem(valueInfo, data, config.flowContext)
                     } else if (valueInfo.operation === 'move') {
-                        await moveItem(valueInfo, data, config.flowContext)
+                        await moveItem(valueInfo, input, data, config.flowContext) // Pass input here
                     } else if (valueInfo.operation === 'delete') {
                         await deleteItem(valueInfo, data, config.flowContext)
                     }
@@ -189,16 +189,16 @@ const setItem = async (valueInfo: any, data: any, flowContext: any) => {
     }
 }
 
-const moveItem = async (valueInfo: any, data: any, flowContext: any) => {
+const moveItem = async (valueInfo: any, input: any, data: any, flowContext: any) => {
     let value;
     switch (valueInfo.target) {
         case ('data'):
-            value = data[valueInfo.name]
-            delete data[valueInfo.name]
+            value = input[valueInfo.name]; // Get value from input data instead of empty data object
+            delete input[valueInfo.name];
             break;
         case ('flow'):
-            value = await flowContext.get(valueInfo.name)
-            await flowContext.delete(valueInfo.name)
+            value = await flowContext.get(valueInfo.name);
+            await flowContext.delete(valueInfo.name);
             break;
         default:
             break;
@@ -206,7 +206,7 @@ const moveItem = async (valueInfo: any, data: any, flowContext: any) => {
 
     switch (valueInfo.to) {
         case ('flow'):
-            await flowContext.set(valueInfo.value, value)
+            await flowContext.set(valueInfo.value, value);
             break;
         case ('data'):
             data[valueInfo.value] = value;

@@ -1,4 +1,3 @@
-
 const getTemplateValue = (template: string, data: any) => {
     const templateParts = template.split(' ');
     let result = '';
@@ -47,13 +46,13 @@ const rangePlugin = {
                             group: 'option',
                         },
                         valueFrom: {
-                            type: 'string',
+                            type: 'number',
                             displayStyle: 'outlined',
                             displaySize: 'small',
                             group: 'option',
                         },
                         valueTto: {
-                            type: 'string',
+                            type: 'number',
                             displayStyle: 'outlined',
                             displaySize: 'small',
                             group: 'option',
@@ -78,42 +77,79 @@ const rangePlugin = {
     outputSchema: {
         type: "object",
     },
-    exampleInput: {
-
-    },
-    exampleOutput: {
-    },
-    documentation: "https://yourdocs.com/range",
-    method: "exec",
     actions: [
         {
             name: "range",
             execute: async (input: any, config: any) => {
                 let output: any = {};
+
+                // Ensure we have valid options
+                if (!Array.isArray(config.options) || !config.data?.options) {
+                    return output;
+                }
+
                 for (const rangeInfo of config.options) {
                     let sourceValue;
+
+                    // Get source value
                     if (rangeInfo.source === 'flow') {
-                        sourceValue = config.flowContext.get(rangeInfo.name)
+                        sourceValue = config.flowContext.get(rangeInfo.name);
                     } else {
-                        sourceValue = input.data[rangeInfo.name]
+                        sourceValue = input.data?.[rangeInfo.name];
                     }
-                    const mappedInfo = config.data.options.find((info: any) => {
-                        return info.source === rangeInfo.source && info.name === rangeInfo.name && sourceValue >= rangeInfo.valueFrom && sourceValue < rangeInfo.valueTto
-                    })
-                    if (mappedInfo) {
-                        const targetName = mappedInfo?.newName ? mappedInfo.newName : rangeInfo.name;
-                        const targetValue = getTemplateValue(mappedInfo.newValue, input)
-                        if (rangeInfo.source === 'flow') {
-                            await config.flowContext.set(targetName, targetValue)
-                        } else {
-                            output[targetName] = targetValue
-                        }
+
+                    // Convert to number and validate
+                    sourceValue = Number(sourceValue);
+                    if (isNaN(sourceValue)) {
+                        continue;
+                    }
+
+                    // Validate range values
+                    const valueFrom = Number(rangeInfo.valueFrom);
+                    const valueTo = Number(rangeInfo.valueTto);
+                    if (isNaN(valueFrom) || isNaN(valueTo) || valueFrom >= valueTo) {
+                        continue;
+                    }
+
+                    // Check if value is within range
+                    if (sourceValue < valueFrom || sourceValue >= valueTo) {
+                        continue;
+                    }
+
+                    // Find matching range info in data.options
+                    const dataOption = config.data.options.find((opt: any) =>
+                        opt.source === rangeInfo.source &&
+                        opt.name === rangeInfo.name
+                    );
+
+                    if (!dataOption) {
+                        continue;
+                    }
+
+                    // Validate data option range
+                    const dataValueFrom = Number(dataOption.valueFrom);
+                    const dataValueTo = Number(dataOption.valueTto);
+
+                    if (isNaN(dataValueFrom) || isNaN(dataValueTo) ||
+                        dataValueFrom >= dataValueTo ||
+                        sourceValue < dataValueFrom ||
+                        sourceValue >= dataValueTo) {
+                        continue;
+                    }
+
+                    const targetName = dataOption.newName || rangeInfo.name;
+                    const targetValue = getTemplateValue(dataOption.newValue, input.data || {});
+
+                    if (rangeInfo.source === 'flow') {
+                        await config.flowContext.set(targetName, targetValue);
+                    } else {
+                        output[targetName] = targetValue;
                     }
                 }
+
                 return output;
             }
         }
-
     ]
 };
 

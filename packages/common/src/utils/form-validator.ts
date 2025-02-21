@@ -197,7 +197,7 @@ export const validateValue = (type: string, valueA: any, valueB: any, message?: 
   const rule = ruleOperations[type];
 
   if (!rule) {
-    return { valid: true, message: "not-found" };
+    throw new Error(`Rule ${type} not found`);
   }
 
   const isValid = rule.validate(valueA, valueB);
