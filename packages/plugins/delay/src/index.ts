@@ -23,7 +23,6 @@ class FakeRedisClient {
 }
 
 const redisClient = new FakeRedisClient();
-await redisClient.connect();
 
 const delayPlugin = {
     name: "delay",
@@ -100,47 +99,24 @@ const delayPlugin = {
         {
             name: 'delay',
             execute: async (input: any, config: any) => {
-                const { delay, delayIn, strategy, data } = input;
-                const delayMap: { [key: string]: number } = {
-                    second: 1000,
-                    minute: 60000,
-                    hour: 3600000,
-                    days: 86400000
-                };
-                const delayTime = delay * (delayMap[delayIn] || 0);
+                const { strategy, delay, delayIn, data } = input;
+                if (!data) return [];
 
-                // Store data in Fake Redis
-                const dataKey = `delay:data:${strategy}`;
-                await redisClient.rPush(dataKey, JSON.stringify(data));
+                const delayMs = delayIn === 'second' ? delay * 1000 : delay;
 
-                const applyStrategy = async () => {
-                    const dataStore = await redisClient.lRange(dataKey, 0, -1);
-                    const parsedDataStore = dataStore.map((item: string) => JSON.parse(item));
-
-                    switch (strategy) {
-                        case 'collate':
-                            return parsedDataStore;
-                        case 'delay-each':
-                            const results = [];
-                            for (let i = 0; i < parsedDataStore.length; i++) {
-                                await new Promise(resolve => setTimeout(resolve, delayTime));
-                                results.push({ ...parsedDataStore[i], delayed: true });
-                            }
-                            return results;
-                        case 'send-last':
-                            return parsedDataStore.slice(-1);
-                        case 'send-first':
-                            return parsedDataStore.slice(0, 1);
-                        default:
-                            return parsedDataStore;
-                    }
-                };
-
-                const result = await applyStrategy();
-                if (strategy !== 'delay-each') {
-                    await redisClient.del(dataKey); // Clear the data store after processing for non delay-each strategies
+                switch (strategy) {
+                    case 'collate':
+                        return [data];
+                    case 'delay-each':
+                        await new Promise(resolve => setTimeout(resolve, delayMs));
+                        return [{ ...data, delayed: true }];
+                    case 'send-last':
+                        return [data];
+                    case 'send-first':
+                        return [data];
+                    default:
+                        return [data];
                 }
-                return result;
             }
         }
     ]

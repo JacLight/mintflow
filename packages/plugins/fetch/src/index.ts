@@ -77,8 +77,9 @@ const fetchPlugin = {
         {
             name: 'fetch',
             execute: async (input: any, ctx: any) => {
+                const axiosInstance = ctx.axiosInstance || axios;
                 try {
-                    const response = await axios({
+                    const response = await axiosInstance({
                         method: input.method,
                         url: input.url,
                         headers: input.headers.reduce((acc: any, header: any) => {

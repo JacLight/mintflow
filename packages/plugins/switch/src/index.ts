@@ -1,4 +1,5 @@
-import { ruleOperations } from "@mintflow/common";
+import { ruleOperations, validateValue } from "@mintflow/common";
+import * as objectPath from 'object-path';
 
 
 const getTemplateValue = (template: string, data: any) => {
@@ -80,29 +81,40 @@ const switchPlugin = {
         {
             name: 'switch',
             execute: async (input: any, config: any): Promise<any> => {
-                const data = nodeMessage.data || {};
-                const { source, key } = this.nodeConfig.data;
+                const data: any = {};
+                const { source, key } = config.data;
+
 
                 let sourceValue;
                 if (source === 'flow') {
-                    sourceValue = await this.flowContext.get(key)
+                    sourceValue = await config.flowContext.get(key)
                 } else {
                     sourceValue = objectPath.get(data, key)
                 }
 
                 let validHandles = [];
                 let count = 0;
-                for (const option of this.nodeConfig.data.options) {
+                for (const option of config.data.options) {
                     const { operation, value } = option;
-                    const tValue = await this.getTemplateValue(value, data);
+                    const tValue = await getTemplateValue(value, data);
                     let result = validateValue(operation, sourceValue, tValue)
                     if (result.valid) {
-                        const sourceHandle = `switch-${count}`;
-                        this.eventEmitter?.emit(`${this.flowId}-${this.nodeConfig.id}-${sourceHandle}`, nodeMessage);
-                        validHandles.push(source)
+                        if (config.callback) {
+                            const nodeMessage = {
+                                ...config.nodeMessage,
+                                message: {
+                                    ...config.nodeMessage.message,
+                                    handle: count
+                                }
+                            }
+                            await config.callback(nodeMessage)
+                        }
+                        validHandles.push(count)
                     }
                     count++
                 }
+
+                return data;
             }
         }
     ]
