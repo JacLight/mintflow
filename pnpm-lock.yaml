@@ -294,6 +294,10 @@ importers:
         version: 5.7.3
 
   packages/plugins/switch:
+    dependencies:
+      object-path:
+        specifier: ^0.11.8
+        version: 0.11.8
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2316,6 +2320,7 @@ packages:
   bson@6.10.2:
     resolution: {integrity: sha512-5afhLTjqDSA3akH56E+/2J6kTDuSIlBxyXPdQslj9hcIgOUE378xdOfZvC/9q3LifJNI6KR/juZ+d0NRNYBwXg==}
     engines: {node: '>=16.20.1'}
+    deprecated: a critical bug affecting only useBigInt64=true deserialization usage is fixed in bson@6.10.3
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}

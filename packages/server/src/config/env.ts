@@ -1,32 +1,63 @@
 import dotenv from 'dotenv';
 import { logger } from "@mintflow/common";
 
-dotenv.config(); // Loads from .env if present
+dotenv.config(); // Load .env variables
 
 /**
  * Environment variables controlling the providers & services.
  * For production, ensure these are set in your deployment environment or secrets manager.
  */
 export const ENV = {
+    // 🌍 Application Configuration
     PORT: process.env.PORT || '7001',
+    NODE_ENV: process.env.NODE_ENV || 'development',
+    LOG_LEVEL: process.env.LOG_LEVEL || 'info',
 
-    // DB provider
+    // 🛢️ Database Configuration
     DB_PROVIDER: process.env.DB_PROVIDER || 'mongo',
-    MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/phd_db',
-    POSTGRES_URI: process.env.POSTGRES_URI || 'postgres://user:pass@localhost:5432/phd_db',
 
-    // Redis
+    // MongoDB Configuration
+    MONGO_URI: process.env.MONGO_URI || 'mongodb://admin:admin@localhost:27017/mintflow',
+
+    // PostgreSQL Configuration
+    POSTGRES_USER: process.env.POSTGRES_USER || 'admin',
+    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || 'admin',
+    POSTGRES_DB: process.env.POSTGRES_DB || 'mintflow',
+    POSTGRES_URI: process.env.POSTGRES_URI || `postgres://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@localhost:5432/${process.env.POSTGRES_DB}`,
+
+    // 🚀 Redis/KeyDB Configuration
     REDIS_HOST: process.env.REDIS_HOST || 'localhost',
     REDIS_PORT: parseInt(process.env.REDIS_PORT || '6379', 10),
+    REDIS_PASSWORD: process.env.REDIS_PASSWORD || '',
+    REDIS_DB: parseInt(process.env.REDIS_DB || '0', 10),
 
-    // Vector DB provider
+    // 🧠 Vector Database Configuration
     VECTOR_DB_PROVIDER: process.env.VECTOR_DB_PROVIDER || 'weaviate',
-    WEAVIATE_HOST: process.env.WEAVIATE_HOST || 'http://localhost:8080',
 
+    // Weaviate Configuration
+    WEAVIATE_HOST: process.env.WEAVIATE_HOST || 'http://localhost:8080',
+    WEAVIATE_API_KEY: process.env.WEAVIATE_API_KEY || '',
+
+    // Pinecone Configuration (If using Pinecone)
     PINECONE_API_KEY: process.env.PINECONE_API_KEY || '',
     PINECONE_ENV: process.env.PINECONE_ENV || '',
     PINECONE_INDEX: process.env.PINECONE_INDEX || 'phd-index',
+
+    // 🔑 Security & Authentication
+    JWT_SECRET: process.env.JWT_SECRET || 'your_jwt_secret',
+    ACCESS_TOKEN_EXPIRY: process.env.ACCESS_TOKEN_EXPIRY || '1h',
+    REFRESH_TOKEN_EXPIRY: process.env.REFRESH_TOKEN_EXPIRY || '7d',
+
+    // 📡 API Keys (if required)
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
+    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY || '',
 };
 
-// Quick log to confirm environment config
-logger.info('[ENV] Loaded environment config', { ENV });
+// Quick log to confirm environment config (but avoid logging secrets)
+logger.info('[ENV] Loaded environment config', {
+    PORT: ENV.PORT,
+    DB_PROVIDER: ENV.DB_PROVIDER,
+    VECTOR_DB_PROVIDER: ENV.VECTOR_DB_PROVIDER,
+    NODE_ENV: ENV.NODE_ENV,
+    LOG_LEVEL: ENV.LOG_LEVEL
+});

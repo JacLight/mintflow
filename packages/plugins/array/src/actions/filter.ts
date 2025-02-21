@@ -70,14 +70,26 @@ export const filter = {
             if (join === 'and') {
                 return filters.every((filter: any) => {
                     const { field, operation, value } = filter;
-                    const result = validateValue(operation, item[field], value);
-                    return result.valid;
+                    try {
+                        const result = validateValue(operation, item[field], value);
+                        return result.valid;
+                    }
+                    catch (e) {
+                        console.error(e);
+                        return false;
+                    }
                 });
             } else {
                 return filters.some((filter: any) => {
                     const { field, operation, value } = filter;
-                    const result = validateValue(operation, item[field], value);
-                    return result.valid;
+                    try {
+                        const result = validateValue(operation, item[field], value);
+                        return result.valid;
+                    }
+                    catch (e) {
+                        console.error(e);
+                        return false;
+                    }
                 });
             }
         });

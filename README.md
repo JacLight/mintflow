@@ -124,6 +124,68 @@ For detailed documentation, visit [docs.mintflow.ai](https://docs.mintflow.ai):
 - [Deployment Guide](https://docs.mintflow.ai/deployment)
 - [Security Best Practices](https://docs.mintflow.ai/security)
 
+# 🐳 Docker Compose for KeyDB, Weaviate, PostgreSQL, and MongoDB
+
+This setup provides **KeyDB, Weaviate, PostgreSQL, and MongoDB** using Docker Compose.
+
+## 🚀 Quick Start
+
+1. **Ensure you have Docker & Docker Compose installed**  
+   - [Install Docker](https://docs.docker.com/get-docker/)
+   - [Install Docker Compose](https://docs.docker.com/compose/install/)
+
+2. **Clone or Copy this repository**
+
+   ```sh
+   git clone https://github.com/your-repo/docker-services.git
+   cd docker-services
+   ```
+
+3. **Start the Services**
+
+   ```sh
+   docker-compose up -d
+   ```
+
+4. **Verify Running Containers**
+
+   ```sh
+   docker ps
+   ```
+
+5. **Stop All Services**
+
+   ```sh
+   docker-compose down
+   ```
+
+---
+
+## 📦 Services Included
+
+| Service    | Description                       | Port  |
+|------------|-----------------------------------|-------|
+| **KeyDB**  | High-performance Redis alternative | `6379` |
+| **PostgreSQL** | Relational database | `5432` |
+| **Weaviate** | Vector search database | `8080` |
+| **MongoDB** | NoSQL database | `27017` |
+
+---
+
+## 🛠 Environment Variables
+
+You can modify environment variables inside `docker-compose.yml` as needed.
+
+| Variable | Description | Default |
+|----------|------------|---------|
+| `POSTGRES_USER` | PostgreSQL Username | `admin` |
+| `POSTGRES_PASSWORD` | PostgreSQL Password | `admin` |
+| `POSTGRES_DB` | Default Database | `mydatabase` |
+| `MONGO_INITDB_ROOT_USERNAME` | MongoDB Username | `admin` |
+| `MONGO_INITDB_ROOT_PASSWORD` | MongoDB Password | `admin` |
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.

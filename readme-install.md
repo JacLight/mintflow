@@ -10,7 +10,6 @@
 
 [Click here to finish setting up your workspace!](https://cloud.nx.app/connect/VQL3OLjAtb)
 
-
 ## Generate a library
 
 ```sh
@@ -65,7 +64,6 @@ npx nx sync:check
 
 [Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
 
-
 [Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 ## Install Nx Console
@@ -84,7 +82,18 @@ Learn more:
 - [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 And join the Nx community:
+
 - [Discord](https://go.nx.dev/community)
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+
+pnpm run --filter=@mintflow/array test
+pnpm run --filter=@mintflow/array build
+pnpm run --filter=@mintflow/array test
+pnpm nx show project
+pnpm nx run server:dev
+pnpm generate:tempalate fetch
+pnpm nx run-many --target=test --all
+npx jest
+npx jest /Users/_projects/mintflow-wk/packages/plugins/array/test/filter.test.ts

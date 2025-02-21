@@ -5,6 +5,7 @@ import uiRouter from './routes/uiRoutes.js';
 import { loadPlugins } from './plugins-register.js';
 import { logger } from '@mintflow/common';
 import feRouter from './routes/flowEngineRoutes.js';
+import { QueueManager } from './queues/queueManager.js';
 
 export async function createApp(): Promise<express.Express> {
     const app = express();
@@ -26,6 +27,7 @@ export async function createApp(): Promise<express.Express> {
     app.use('/ui', uiRouter);
 
     await loadPlugins();
+    QueueManager.getInstance().getTenantQueue('default');
 
     // Basic error handler
     app.use((err: any, req: any, res: any, next: any) => {
