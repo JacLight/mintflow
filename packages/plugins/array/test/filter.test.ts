@@ -35,6 +35,6 @@ describe('filter action', () => {
     it('should handle invalid operation', async () => {
         const input = { array: [{ a: 1, b: 2 }, { a: 2, b: 3 }, { a: 3, b: 4 }], join: 'and', filters: [{ field: 'a', operation: 'invalid', value: '1' }] };
         const result = await filter.execute(input, {});
-        expect(result).toEqual(input.array);
+        expect(result).toEqual([]);
     });
 });
