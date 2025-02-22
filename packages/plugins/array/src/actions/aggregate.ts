@@ -1,3 +1,4 @@
+import { isEmpty } from "@mintflow/common";
 import { commonSchema } from "../common.js";
 
 export const aggregate = {
@@ -63,9 +64,17 @@ export const aggregate = {
         const aggregations = input.aggregations; // e.g., [{ field: 'b', operation: 'sum', alias: 'total' }]
         const pivotConfig = input.pivot;
 
+        if (isEmpty(groupByFields) || isEmpty(aggregations)) {
+            throw new Error('groupBy and aggregations are required');
+        }
+
+        if (!Array.isArray(groupByFields) || !Array.isArray(aggregations)) {
+            throw new Error('groupBy and aggregations must be arrays');
+        }
+
         // Helper: group an array by an array of keys
         const groupBy = (array: any[], keys: string[]) => {
-            return array.reduce((result, item) => {
+            return array?.reduce((result, item) => {
                 const key = keys.map(k => item[k]).join('|');
                 if (!result[key]) {
                     result[key] = [];
@@ -77,7 +86,7 @@ export const aggregate = {
 
         // Helper: aggregate a group of items using the given aggregations.
         const aggregateGroup = (group: any[], aggregations: any[]) => {
-            return aggregations.reduce((result, agg) => {
+            return aggregations?.reduce((result, agg) => {
                 const { field, operation, customOperation, alias } = agg;
                 const outputField = alias || field;
 
