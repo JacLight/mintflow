@@ -145,7 +145,7 @@ export class FlowEngine {
     /**
      * Initializes and persists a new flow context.
      */
-    private static async initFlowContext(tenantId: string, flowId: string): Promise<void> {
+    public static async initFlowContext(tenantId: string, flowId: string): Promise<void> {
         const context: IFlowContext = {
             flowId,
             tenantId,

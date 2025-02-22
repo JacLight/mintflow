@@ -5,7 +5,15 @@ import { EventEmitter } from 'events';
 import mqtt from 'mqtt';
 
 jest.mock('../../src/services/DatabaseService');
-jest.mock('ioredis');
+jest.mock('ioredis', () => {
+    const Redis = jest.fn().mockImplementation(() => ({
+        set: jest.fn(),
+        get: jest.fn(),
+        rpush: jest.fn(),
+        del: jest.fn()
+    }));
+    return { Redis };
+});
 jest.mock('events');
 jest.mock('mqtt');
 
@@ -19,7 +27,7 @@ describe('FlowEngine', () => {
         dbMock = new DatabaseService() as jest.Mocked<DatabaseService>;
         redisMock = new Redis() as jest.Mocked<Redis>;
         eventEmitterMock = new EventEmitter() as jest.Mocked<EventEmitter>;
-        mqttClientMock = mqtt.connect() as jest.Mocked<mqtt.MqttClient>;
+        mqttClientMock = mqtt.connect('mqtt://broker-url') as jest.Mocked<mqtt.MqttClient>;
 
         (FlowEngine as any).redis = redisMock;
         (FlowEngine as any).contextStore = redisMock;
@@ -28,7 +36,7 @@ describe('FlowEngine', () => {
     });
 
     it('should initialize flow context', async () => {
-        await FlowEngine.initFlowContext('tenant1', 'flow1');
+        await (FlowEngine as any).initFlowContext('tenant1', 'flow1');
 
         expect(redisMock.set).toHaveBeenCalledWith(
             'flow_context:tenant1:flow1',
