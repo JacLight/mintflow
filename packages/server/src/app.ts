@@ -1,18 +1,25 @@
 import express from 'express';
-import nodeRouter from './routes/nodeDefinitions.js';
-import vectorRouter from './routes/vectorRoutes.js';
-import uiRouter from './routes/uiRoutes.js';
 import { loadPlugins } from './plugins-register.js';
-import { logger } from '@mintflow/common';
-import feRouter from './routes/flowEngineRoutes.js';
+// import { logger } from '@mintflow/common';
 import { QueueManager } from './queues/queueManager.js';
-import listenerRouter from './routes/listenerRoutes.js';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import { logger } from './utils/logger.js';
+import tenantRouter from './routes/old/tenantRoutes.js';
+import userRouter from './routes/userRoutes.js';
 import flowRouter from './routes/flowRoutes.js';
-import tenantRouter from './routes/tenantRoutes.js';
+import flowRunRouter from './routes/flowRunRoutes.js';
+import logRouter from './routes/logRoutes.js';
+
 
 export async function createApp(): Promise<express.Express> {
     const app = express();
     app.use(express.json());
+    app.use(cors());
+    app.use(helmet());
+    app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+
 
     // Health check
     app.get('/', (req: express.Request, res: express.Response) => {
@@ -21,13 +28,21 @@ export async function createApp(): Promise<express.Express> {
 
 
     // Flow routes (Node & Python tasks)
-    app.use('/flow', flowRouter);
-    app.use('/tenant', tenantRouter);
-    app.use('/listener', listenerRouter);
-    app.use('engine', feRouter)
-    app.use('/node', nodeRouter);
-    app.use('/vector', vectorRouter);
-    app.use('/ui', uiRouter);
+    // app.use('/flow', flowRouter);
+    // app.use('/tenant', tenantRouter);
+    // app.use('/listener', listenerRouter);
+    // app.use('engine', feRouter)
+    // app.use('/node', nodeRouter);
+    // app.use('/vector', vectorRouter);
+    // app.use('/ui', uiRouter);
+
+    app.use('/api/tenants', tenantRouter);
+    app.use('/api/users', userRouter);
+    app.use('/api/flows', flowRouter);
+    app.use('/api/flow-runs', flowRunRouter);
+    app.use('/api/logs', logRouter);
+
+
 
     await loadPlugins();
     QueueManager.getInstance().getTenantQueue('default');
