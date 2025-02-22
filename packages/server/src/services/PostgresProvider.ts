@@ -1,6 +1,11 @@
 import { Sequelize } from 'sequelize';
 import { logger } from '@mintflow/common';
 import { ENV } from '../config/env.js';
+import { User } from '../models/postgres-models/User.js';
+import { Tenant } from '../models/postgres-models/Tenant.js';
+import { Log } from '../models/postgres-models/Log.js';
+import { FlowRun } from '../models/postgres-models/FlowRun.js';
+import { Flow } from '../models/postgres-models/Flow.js';
 
 export const sequelize = new Sequelize(ENV.POSTGRES_URI, {
     dialect: 'postgres',
@@ -12,7 +17,15 @@ export class PostgresProvider {
 
     private constructor() {
         sequelize.authenticate()
-            .then(() => logger.info(`[PostgreSQL] Connected to ${ENV.POSTGRES_URI}`))
+            .then(() => {
+                logger.info(`[PostgreSQL] Connected to ${ENV.POSTGRES_URI}`);
+                // Register all models
+                User.initModel(sequelize);
+                Tenant.initModel(sequelize);
+                Log.initModel(sequelize);
+                FlowRun.initModel(sequelize);
+                Flow.initModel(sequelize);
+            })
             .catch(err => logger.error('[PostgreSQL] Connection error', err));
     }
 
@@ -23,28 +36,32 @@ export class PostgresProvider {
         return PostgresProvider.instance;
     }
 
-    async create(table: string, data: any) {
-        const Model = sequelize.models[table];
-        return await Model.create(data);
+    async create(model: any, data: any) {
+        return await model.create(data);
     }
 
-    async find(table: string, query: any = {}) {
-        const Model = sequelize.models[table];
-        return await Model.findAll({ where: query });
+    async find(model: any, query: any = {}) {
+        return await model.findAll({ where: query });
     }
 
-    async findOne(table: string, query: any) {
-        const Model = sequelize.models[table];
-        return await Model.findOne({ where: query });
+    async findOne(model: any, query: any) {
+        return await model.findOne({ where: query });
     }
 
-    async update(table: string, query: any, updateData: any) {
-        const Model = sequelize.models[table];
-        return await Model.update(updateData, { where: query });
+    async update(model: any, query: any, updateData: any) {
+        const record = await model.findOne({ where: query });
+        if (record) {
+            return await record.update(updateData);
+        }
+        return null;
     }
 
-    async delete(table: string, query: any) {
-        const Model = sequelize.models[table];
-        return await Model.destroy({ where: query });
+    async delete(model: any, query: any) {
+        const record = await model.findOne({ where: query });
+        if (record) {
+            await record.destroy();
+            return record;
+        }
+        return null;
     }
 }

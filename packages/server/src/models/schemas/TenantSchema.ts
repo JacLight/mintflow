@@ -10,11 +10,6 @@ const TenantSchemaDefinition = {
         unique: true,
         required: true,
     },
-    userId: {
-        type: String,
-        unique: true,
-        required: true,
-    },
     name: {
         type: String,
         unique: true,

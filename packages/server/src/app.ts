@@ -5,12 +5,12 @@ import { QueueManager } from './queues/queueManager.js';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import tenantRouter from './routes/old/tenantRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import flowRouter from './routes/flowRoutes.js';
 import flowRunRouter from './routes/flowRunRoutes.js';
 import logRouter from './routes/logRoutes.js';
 import nodeRouter from './routes/nodeRoutes.js';
+import tenantRouter from './routes/tenantRoutes.js';
 
 
 export async function createApp(): Promise<express.Express> {
@@ -35,7 +35,7 @@ export async function createApp(): Promise<express.Express> {
     // app.use('/vector', vectorRouter);
     // app.use('/ui', uiRouter);
 
-    app.use('/node', nodeRouter);
+    app.use('/api/nodes', nodeRouter);
     app.use('/api/tenants', tenantRouter);
     app.use('/api/users', userRouter);
     app.use('/api/flows', flowRouter);

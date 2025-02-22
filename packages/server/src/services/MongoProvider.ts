@@ -1,13 +1,18 @@
 import mongoose from 'mongoose';
 import { logger } from '@mintflow/common';
 import { ENV } from '../config/env.js';
+import * as models from '../models/mongo-models/index.js';
 
 export class MongoProvider {
     private static instance: MongoProvider;
 
     private constructor() {
-        mongoose.connect(ENV.MONGO_URI, {})
-            .then(() => logger.info(`[MongoDB] Connected to ${ENV.MONGO_URI}`))
+        mongoose.connect(ENV.MONGO_URI, { dbName: ENV.DB_NAME })
+            .then(() => {
+                logger.info(`[MongoDB] Connected to ${ENV.MONGO_URI}`);
+                // Register all models
+                Object.values(models).forEach(model => mongoose.model(model.modelName, model.schema));
+            })
             .catch(err => logger.error('[MongoDB] Connection error', err));
     }
 

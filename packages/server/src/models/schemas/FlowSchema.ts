@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import mongoose from 'mongoose';
-import Joi from 'joi';
 import { v4 as uuidv4 } from 'uuid';
 
 const FlowSchemaDefinition = {

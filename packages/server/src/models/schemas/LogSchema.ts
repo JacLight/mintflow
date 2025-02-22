@@ -23,10 +23,10 @@ const LogSchemaDefinition = {
     createdAt: { type: Date, default: Date.now },
 };
 
-// ✅ **Mongoose Schema (MongoDB)**
+//  **Mongoose Schema (MongoDB)**
 export const getMongooseLogSchema = () => new mongoose.Schema(LogSchemaDefinition, { timestamps: true });
 
-// ✅ **Sequelize Schema (PostgreSQL)**
+//  **Sequelize Schema (PostgreSQL)**
 export const getSequelizeLogSchema = () => ({
     logId: { type: DataTypes.STRING, primaryKey: true, defaultValue: () => `log_${uuidv4()}` },
     flowId: { type: DataTypes.STRING, allowNull: false },
