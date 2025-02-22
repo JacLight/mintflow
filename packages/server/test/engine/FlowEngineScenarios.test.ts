@@ -38,6 +38,13 @@ describe('FlowEngine', () => {
     let executeNodeMock: jest.SpyInstance<Promise<void>, [IFlow, string, any?]>;
     let getNodeActionMock: jest.Mock;
 
+    // Define mock flow variables
+    let mockFlow: IFlow;
+    let mockDecisionFlow: IFlow;
+    let mockEventFlow: IFlow;
+    let mockHttpFlow: IFlow;
+    let mockInputFlow: IFlow;
+
     beforeEach(() => {
         // Reset all mocks
         jest.clearAllMocks();
@@ -80,6 +87,184 @@ describe('FlowEngine', () => {
 
         // Mock getNodeAction
         getNodeActionMock = getNodeAction as jest.Mock;
+
+        // Initialize mock flows
+        mockFlow = {
+            tenantId: 'tenant1',
+            flowId: 'flow1',
+            definition: {
+                nodes: [
+                    { nodeId: 'start', type: 'start' },
+                    { nodeId: 'process', type: 'process', nextNodes: ['end'] },
+                    { nodeId: 'end', type: 'end' }
+                ]
+            },
+            nodeStates: [],
+            overallStatus: 'draft',
+            workingState: {},
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            status: 'draft',
+            logs: [],
+            URL: ''
+        };
+
+        mockDecisionFlow = {
+            tenantId: 'tenant1',
+            flowId: 'flow1',
+            definition: {
+                nodes: [
+                    {
+                        nodeId: 'decision1',
+                        type: 'decision',
+                        conditions: [
+                            { condition: 'context.value > 10', nextNodeId: 'path1' },
+                            { condition: 'context.value <= 10', nextNodeId: 'path2' }
+                        ]
+                    },
+                    { nodeId: 'path1', type: 'process' },
+                    { nodeId: 'path2', type: 'process' }
+                ]
+            },
+            nodeStates: [],
+            overallStatus: 'running',
+            workingState: { value: 15 },
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            status: 'running',
+            logs: [],
+            URL: ''
+        };
+
+        mockEventFlow = {
+            tenantId: 'tenant1',
+            flowId: 'flow1',
+            definition: {
+                nodes: [
+                    {
+                        nodeId: 'event1',
+                        type: 'event',
+                        executionMode: 'event',
+                        event: {
+                            eventName: 'test-event',
+                            timeout: 1800
+                        }
+                    }
+                ]
+            },
+            nodeStates: [],
+            overallStatus: 'running',
+            workingState: {},
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            status: 'running',
+            logs: [],
+            URL: ''
+        };
+
+        mockHttpFlow = {
+            tenantId: 'tenant1',
+            flowId: 'flow1',
+            definition: {
+                nodes: [
+                    {
+                        nodeId: 'http1',
+                        type: 'http',
+                        entry: {
+                            url: 'http://test.com/api',
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            timeout: 5000
+                        },
+                        input: { data: 'test' }
+                    }
+                ]
+            },
+            nodeStates: [],
+            overallStatus: 'running',
+            workingState: {},
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            status: 'running',
+            logs: [],
+            URL: ''
+        };
+
+        mockInputFlow = {
+            tenantId: 'tenant1',
+            flowId: 'flow1',
+            definition: {
+                nodes: [
+                    {
+                        nodeId: 'input1',
+                        type: 'input',
+                        executionMode: 'wait_for_input',
+                        input: {
+                            requirements: ['field1', 'field2']
+                        }
+                    },
+                    {
+                        nodeId: 'auto1',
+                        type: 'process',
+                        executionMode: 'auto',
+                        branches: [
+                            {
+                                condition: 'context.value > 10',
+                                targetNodeId: 'success'
+                            }
+                        ]
+                    }
+                ]
+            },
+            nodeStates: [],
+            overallStatus: 'running',
+            workingState: { value: 15 },
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            status: 'running',
+            logs: [],
+            URL: ''
+        };
+
+        // Ensure nodeStates array is initialized
+        mockFlow.nodeStates = mockFlow.definition.nodes.map((node: any) => ({
+            nodeId: node.nodeId,
+            status: 'pending',
+            logs: []
+        }));
+
+        // Ensure nodeStates array is initialized for decision flow
+        mockDecisionFlow.nodeStates = mockDecisionFlow.definition.nodes.map((node: any) => ({
+            nodeId: node.nodeId,
+            status: 'pending',
+            logs: []
+        }));
+
+        // Ensure nodeStates array is initialized for event flow
+        mockEventFlow.nodeStates = mockEventFlow.definition.nodes.map((node: any) => ({
+            nodeId: node.nodeId,
+            status: 'pending',
+            logs: []
+        }));
+
+        // Ensure nodeStates array is initialized for HTTP flow
+        mockHttpFlow.nodeStates = mockHttpFlow.definition.nodes.map((node: any) => ({
+            nodeId: node.nodeId,
+            status: 'pending',
+            logs: []
+        }));
+
+        // Ensure nodeStates array is initialized for input flow
+        mockInputFlow.nodeStates = mockInputFlow.definition.nodes.map((node: any) => ({
+            nodeId: node.nodeId,
+            status: 'pending',
+            logs: []
+        }));
+
+        // Mock axios
+        jest.mock('axios', () => ({
+            default: jest.fn().mockResolvedValue({ data: { success: true } })
+        }));
     });
 
     describe('Context Management', () => {
@@ -558,6 +743,11 @@ describe('FlowEngine', () => {
         it('should handle input resumption correctly', async () => {
             dbMock.getFlow.mockResolvedValue(mockInputFlow);
             const mockInput = { field1: 'value1', field2: 'value2' };
+
+            // Mock getNodeAction to return a valid action
+            getNodeActionMock.mockResolvedValue({
+                execute: jest.fn().mockResolvedValue({ success: true })
+            });
 
             await FlowEngine.resumeWithInput('tenant1', 'flow1', 'input1', mockInput);
 
