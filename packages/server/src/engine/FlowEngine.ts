@@ -362,15 +362,14 @@ export class FlowEngine {
 
         // const flowContext = await FlowEngine.getFlowContext(tenantId, flowId);
         const input = { ...contextData };
-        return nodeAction.execute(input, nodeDef);
+        return await nodeAction.execute(input, nodeDef);
     }
 
     /**
      * Decision node execution – evaluates conditions using the working state.
      */
-    private static async handleDecisionNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async handleDecisionNode(flow: IFlow, nodeDef: any, nodeState: IFlowNodeState): Promise<void> {
         nodeState.status = 'running';
-        // Use working state for condition evaluation.
         const workingState = flow.workingState || {};
         for (const condition of nodeDef.conditions || []) {
             try {
@@ -386,6 +385,8 @@ export class FlowEngine {
                 logger.error('Error evaluating condition', { error, condition });
             }
         }
+        nodeState.status = 'completed';
+        nodeState.selectedBranch = nodeDef.nextNodes?.[0] || null;
         if (nodeDef.nextNodes?.[0]) {
             await this.executeNode(flow, nodeDef.nextNodes[0]);
         }
@@ -666,6 +667,7 @@ export class FlowEngine {
      * Automatic node execution – runs node logic and handles branching using the working state.
      */
     private static async handleAutoNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: any): Promise<void> {
+
         nodeState.status = 'running';
         // Use the in-memory working state for execution.
         const workingState = flow.workingState || {};
@@ -735,6 +737,7 @@ export class FlowEngine {
             flow.nodeStates.push(targetState);
         }
         await DatabaseService.getInstance().saveFlow(flow);
+        await this.executeNode(flow, targetNodeId);
     }
 
     /**
