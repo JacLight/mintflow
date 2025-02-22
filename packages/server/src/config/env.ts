@@ -52,6 +52,9 @@ export const ENV = {
     // 📡 API Keys (if required)
     OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
     GOOGLE_API_KEY: process.env.GOOGLE_API_KEY || '',
+
+    METRICS_ENABLED: process.env.METRICS_ENABLED === 'true',
+    MQTT_URL: process.env.MQTT_URL || 'mqtt://localhost:1883'
 };
 
 // Quick log to confirm environment config (but avoid logging secrets)
