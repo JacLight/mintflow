@@ -393,6 +393,9 @@ importers:
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
+      mqtt:
+        specifier: ^5.10.3
+        version: 5.10.3
       pg:
         specifier: ^8.13.3
         version: 8.13.3
