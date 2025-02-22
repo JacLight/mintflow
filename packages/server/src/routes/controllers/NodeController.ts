@@ -1,8 +1,7 @@
 import { logger, PluginDescriptor } from "@mintflow/common";
 import { getPlugin, getPlugins } from "../../plugins-register.js";
 import { Request, Response } from "express";
-import { IFlowNodeState } from "../../interfaces/IFlowState.js";
-import { FlowEngine } from "../../engine/FlowEngine.js";
+import { FlowEngine, IFlowNodeState } from "../../engine/FlowEngine.js";
 
 export const getNodes = async (req: Request, res: Response): Promise<any> => {
     try {

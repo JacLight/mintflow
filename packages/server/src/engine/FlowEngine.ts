@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 // === INTERFACES & TYPES ===
 //
 
-// Flow context stored in Redis
+// Flow context stored in Redis (for persistence/recovery)
 interface IFlowContext {
     flowId: string;
     tenantId: string;
@@ -51,12 +51,12 @@ interface IBranchCondition {
     evaluator?: (context: any) => boolean;
 }
 
-// Unified node definition interface that includes properties from all your code versions
+// Unified node definition interface (includes properties from all versions)
 export interface INodeDefinition {
     nodeId: string;
     type: string;
     runner: 'node' | 'python';
-    executionMode?: NodeExecutionMode; // Optional – if not set, fallback logic based on type is used.
+    executionMode?: NodeExecutionMode; // Optional – fallback logic based on type if not provided.
     input?: any;
     nextNodes?: string[];
     conditions?: { // For decision/switch nodes
@@ -86,7 +86,7 @@ export interface INodeDefinition {
     };
 }
 
-// Node state (can be extended as needed)
+// Node state (for logging/recovery)
 export interface IFlowNodeState {
     nodeId: string;
     status: NodeStatus;
@@ -97,17 +97,23 @@ export interface IFlowNodeState {
     error?: string;
     selectedBranch?: string;
     availableNextNodes?: string[];
+    inputData?: any;
+    selectedNext?: string;
 }
 
-// (Assuming IFlow is defined externally, otherwise you can define it here as needed.)
-// interface IFlow {
-//   flowId: string;
-//   tenantId: string;
-//   definition: { nodes: INodeDefinition[] };
-//   nodeStates: IFlowNodeState[];
-//   overallStatus: string;
-//   context?: any;
-// }
+
+export interface IFlow extends Document {
+    tenantId: string;
+    flowId: string;
+    definition: any;     // e.g., { nodes: [...], edges: [...] }
+    overallStatus: 'draft' | 'running' | 'paused' | 'completed' | 'failed';
+    nodeStates: IFlowNodeState[];    // track each node’s status/logs
+    createdAt: Date;
+    updatedAt: Date;
+    logs?: string[];                 // store general flow logs
+    status: string;                  // e.g., "draft", "running", "completed"
+    workingState?: Record<string, any>;
+}
 
 //
 // === FLOW ENGINE CLASS ===
@@ -120,7 +126,7 @@ export class FlowEngine {
         port: ENV.REDIS_PORT,
     });
 
-    // Separate Redis client for flow context (using a different DB)
+    // Separate Redis client for persistent flow context (different DB)
     private static contextStore = new Redis({
         host: ENV.REDIS_HOST,
         port: ENV.REDIS_PORT,
@@ -131,15 +137,13 @@ export class FlowEngine {
     private static eventEmitter = new EventEmitter();
 
     // MQTT client for MQTT nodes
-    private static mqttClient = mqtt.connect(ENV.MQTT_URL, {
-        username: ENV.MQTT_USERNAME,
-        password: ENV.MQTT_PASSWORD,
+    private static mqttClient = mqtt.connect('', {
     });
 
     // -------------------- CONTEXT MANAGEMENT --------------------
 
     /**
-     * Initializes and stores a new flow context.
+     * Initializes and persists a new flow context.
      */
     private static async initFlowContext(tenantId: string, flowId: string): Promise<void> {
         const context: IFlowContext = {
@@ -158,7 +162,7 @@ export class FlowEngine {
     }
 
     /**
-     * Retrieves the flow context.
+     * Retrieves the persistent flow context.
      */
     private static async getFlowContext(tenantId: string, flowId: string): Promise<IFlowContext | null> {
         const data = await this.contextStore.get(`flow_context:${tenantId}:${flowId}`);
@@ -166,7 +170,7 @@ export class FlowEngine {
     }
 
     /**
-     * Updates the flow context with provided updates.
+     * Updates the persistent flow context with provided updates.
      */
     private static async updateFlowContext(
         tenantId: string,
@@ -183,19 +187,29 @@ export class FlowEngine {
         }
     }
 
+    static createNodeState(): IFlowNodeState {
+        return {
+            nodeId: '',
+            status: 'pending',
+            logs: [],
+        }
+    }
+
     // -------------------- FLOW EXECUTION --------------------
 
     /**
-     * Starts the flow by initializing context, node states, and executing the start node.
+     * Starts the flow by initializing persistent context, node states, and an in‑memory working state.
      */
-    public static async runFlow(tenantId: string, flowId: string): Promise<any> {
-        const flow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
+    public static async runFlow(tenantId: string, flowId: string): Promise<IFlow> {
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) {
             throw new Error(`Flow not found: tenant=${tenantId}, flowId=${flowId}`);
         }
 
-        // Initialize context and node state
+        // Initialize persistent context
         await this.initFlowContext(tenantId, flowId);
+
+        // Initialize node states if not already set
         const startNode = flow.definition.nodes.find((n: INodeDefinition) => n.type === 'start');
         if (!startNode) {
             throw new Error('No start node found in flow definition');
@@ -206,6 +220,10 @@ export class FlowEngine {
             logs: []
         }];
         flow.overallStatus = 'running';
+
+        // Initialize the in‑memory working state for fast data passing
+        flow.workingState = {};
+
         await DatabaseService.getInstance().saveFlow(flow);
 
         // Begin execution from the start node
@@ -216,7 +234,7 @@ export class FlowEngine {
     /**
      * Executes a specific node based on its definition.
      */
-    private static async executeNode(flow: any, nodeId: string): Promise<void> {
+    private static async executeNode(flow: IFlow, nodeId: string, workingData?: any): Promise<void> {
         const nodeDef = flow.definition.nodes.find((n: INodeDefinition) => n.nodeId === nodeId);
         if (!nodeDef) {
             throw new Error(`Node definition not found: ${nodeId}`);
@@ -225,7 +243,7 @@ export class FlowEngine {
         // Ensure node state exists
         let nodeState = flow.nodeStates.find((ns: IFlowNodeState) => ns.nodeId === nodeId);
         if (!nodeState) {
-            nodeState = { nodeId, status: 'pending', logs: [] };
+            nodeState = { nodeId, status: 'pending', logs: [], inputData: workingData };
             flow.nodeStates.push(nodeState);
         }
 
@@ -295,7 +313,7 @@ export class FlowEngine {
     /**
      * Proceeds to the next nodes specified in the current node definition.
      */
-    private static async proceedToNextNodes(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async proceedToNextNodes(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         if (nodeDef.nextNodes && nodeDef.nextNodes.length > 0) {
             for (const nextNodeId of nodeDef.nextNodes) {
                 await this.executeNode(flow, nextNodeId);
@@ -306,20 +324,23 @@ export class FlowEngine {
     // -------------------- NODE HANDLERS --------------------
 
     /**
-     * Standard (synchronous) node execution.
+     * Standard (synchronous) node execution using the working state.
+     * Uses the workingState (in-memory) for node processing and then updates the persistent context.
      */
-    private static async handleStandardNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async handleStandardNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         nodeState.status = 'running';
         nodeState.startedAt = new Date();
-        const context = await this.getFlowContext(flow.tenantId, flow.flowId);
+        // Use the in-memory working state for faster access.
+        const workingState = flow.workingState || {};
         try {
-            const result = await this.executeNodeLogic(nodeDef, context?.data);
+            const result = await this.executeNodeLogic(nodeDef, workingState);
             nodeState.status = 'completed';
             nodeState.result = result;
             nodeState.finishedAt = new Date();
-            await this.updateFlowContext(flow.tenantId, flow.flowId, {
-                [`${nodeDef.nodeId}_result`]: result
-            });
+            // Merge the node's result into the working state.
+            workingState[`${nodeDef.nodeId}_result`] = result;
+            // Also update the persistent flow context for recovery.
+            await this.updateFlowContext(flow.tenantId, flow.flowId, { [`${nodeDef.nodeId}_result`]: result });
             await this.proceedToNextNodes(flow, nodeDef, nodeState);
         } catch (error: any) {
             nodeState.status = 'failed';
@@ -330,26 +351,30 @@ export class FlowEngine {
 
     /**
      * Executes node logic via a registered node action.
+     * Merges node input with the provided context (working state).
      */
     private static async executeNodeLogic(nodeDef: INodeDefinition, contextData: Record<string, any> = {}): Promise<any> {
         const nodeAction = await getNodeAction(nodeDef.nodeId, nodeDef.type);
         if (!nodeAction?.execute) {
             throw new Error(`No execute function found for node: ${nodeDef.nodeId}`);
         }
-        // Merge node input with context data
-        const input = { ...nodeDef.input, context: contextData };
-        return nodeAction.execute(input);
+
+        // const flowContext = await FlowEngine.getFlowContext(tenantId, flowId);
+        const input = { ...contextData };
+        return nodeAction.execute(input, nodeDef);
     }
 
     /**
-     * Decision node execution – evaluates conditions and branches accordingly.
+     * Decision node execution – evaluates conditions using the working state.
      */
-    private static async handleDecisionNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async handleDecisionNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         nodeState.status = 'running';
-        const context = await this.getFlowContext(flow.tenantId, flow.flowId);
+        // Use working state for condition evaluation.
+        const workingState = flow.workingState || {};
         for (const condition of nodeDef.conditions || []) {
             try {
-                const result = await this.evaluateCondition(condition.condition, context?.data);
+                const safeEval = new Function('context', `"use strict"; return (${condition.condition});`);
+                const result = safeEval(workingState);
                 if (result) {
                     nodeState.selectedBranch = condition.nextNodeId;
                     nodeState.status = 'completed';
@@ -366,29 +391,16 @@ export class FlowEngine {
     }
 
     /**
-     * Evaluates a condition expression safely.
-     */
-    private static async evaluateCondition(condition: string, contextData: Record<string, any> = {}): Promise<boolean> {
-        try {
-            const safeEval = new Function('context', `"use strict"; return (${condition});`);
-            return safeEval(contextData);
-        } catch (error) {
-            logger.error('Error evaluating condition', { error, condition });
-            return false;
-        }
-    }
-
-    /**
      * Switch node handling – alias for decision.
      */
-    private static async handleSwitchNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async handleSwitchNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         await this.handleDecisionNode(flow, nodeDef, nodeState);
     }
 
     /**
      * HTTP node execution – makes an HTTP request.
      */
-    private static async handleHttpNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async handleHttpNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         if (!nodeDef.entry?.url) {
             throw new Error('HTTP node missing URL configuration');
         }
@@ -398,9 +410,7 @@ export class FlowEngine {
             nodeState.result = response.data;
             nodeState.status = 'completed';
             nodeState.logs.push(`HTTP call successful: ${method} ${url}`);
-            await this.updateFlowContext(flow.tenantId, flow.flowId, {
-                [`${nodeDef.nodeId}_result`]: response.data
-            });
+            await this.updateFlowContext(flow.tenantId, flow.flowId, { [`${nodeDef.nodeId}_result`]: response.data });
             await this.proceedToNextNodes(flow, nodeDef, nodeState);
         } catch (error: any) {
             throw new Error(`HTTP call failed: ${error.message}`);
@@ -410,7 +420,7 @@ export class FlowEngine {
     /**
      * HTTP listener node – waits for an HTTP callback.
      */
-    private static async handleHttpListenerNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async handleHttpListenerNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         nodeState.status = 'waiting';
         nodeState.logs.push('Waiting for HTTP callback');
         const waitKey = `http_wait:${flow.tenantId}:${flow.flowId}:${nodeDef.nodeId}`;
@@ -418,9 +428,17 @@ export class FlowEngine {
     }
 
     /**
+ * HTTP listener node – waits for an HTTP callback.
+ */
+    public static async handleHttpRequest(tenantId: string, flowId: string, nodeId: string, req: any): Promise<any> {
+        return null
+    }
+
+
+    /**
      * Python node execution – enqueues a Python task.
      */
-    private static async handlePythonNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async handlePythonNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         nodeState.status = 'waiting';
         nodeState.logs.push('Enqueueing Python task');
         const queueKey = `pythonQueue_${flow.tenantId}`;
@@ -436,7 +454,7 @@ export class FlowEngine {
      * Complete node – to be called by external services.
      */
     public static async completeNode(tenantId: string, flowId: string, nodeId: string, result?: any): Promise<void> {
-        const flow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) return;
         const nodeState = flow.nodeStates.find((ns: IFlowNodeState) => ns.nodeId === nodeId);
         const nodeDef = flow.definition.nodes.find((n: INodeDefinition) => n.nodeId === nodeId);
@@ -456,7 +474,7 @@ export class FlowEngine {
     /**
      * MQTT node execution – subscribes and waits for a message.
      */
-    private static async executeMqttNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async executeMqttNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         if (!nodeDef.mqtt?.topic) {
             throw new Error('MQTT topic not specified');
         }
@@ -469,24 +487,24 @@ export class FlowEngine {
             nodeDef.mqtt.timeout || 3600
         );
         this.mqttClient.subscribe(nodeDef.mqtt.topic);
-        this.mqttClient.on('message', async (topic, message) => {
-            if (topic === nodeDef.mqtt.topic) {
-                const waitingState = await this.redis.get(`mqtt_wait:${correlationId}`);
-                if (waitingState) {
-                    const { flow, nodeDef, nodeState } = JSON.parse(waitingState);
-                    nodeState.status = 'completed';
-                    nodeState.result = JSON.parse(message.toString());
-                    await this.proceedToNextNodes(flow, nodeDef, nodeState);
-                    await this.redis.del(`mqtt_wait:${correlationId}`);
-                }
-            }
-        });
+        // this.mqttClient.on('message', async (topic, message) => {
+        //     if (topic === nodeDef.mqtt.topic) {
+        //         const waitingState = await this.redis.get(`mqtt_wait:${correlationId}`);
+        //         if (waitingState) {
+        //             const { flow, nodeDef, nodeState } = JSON.parse(waitingState);
+        //             nodeState.status = 'completed';
+        //             nodeState.result = JSON.parse(message.toString());
+        //             await this.proceedToNextNodes(flow, nodeDef, nodeState);
+        //             await this.redis.del(`mqtt_wait:${correlationId}`);
+        //         }
+        //     }
+        // });
     }
 
     /**
      * HTTP callback node execution – stores state and returns a callback URL.
      */
-    private static async executeHttpCallbackNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<any> {
+    private static async executeHttpCallbackNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<any> {
         if (!nodeDef.http?.callbackUrl) {
             throw new Error('HTTP callback URL not specified');
         }
@@ -518,7 +536,7 @@ export class FlowEngine {
     /**
      * Event node execution – waits for a custom event.
      */
-    private static async executeEventNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async executeEventNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         if (!nodeDef.event?.eventName) {
             throw new Error('Event name not specified');
         }
@@ -545,13 +563,14 @@ export class FlowEngine {
     /**
      * External node execution – enqueues a task for an external service.
      */
-    private static async executeExternalNode(flow: any, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    private static async executeExternalNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         nodeState.status = 'waiting';
         await this.redis.rpush('external_tasks', JSON.stringify({
             flowId: flow.flowId,
             nodeId: nodeDef.nodeId,
             input: nodeDef.input,
-            context: flow.context
+            // Here we pass the workingState as the current context for external processing.
+            context: flow.workingState
         }));
     }
 
@@ -559,7 +578,7 @@ export class FlowEngine {
      * Handles external completion notifications.
      */
     public static async handleExternalCompletion(flowId: string, nodeId: string, result: any): Promise<void> {
-        const flow = await DatabaseService.getInstance().getFlow(flowId);
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(flowId);
         if (!flow) return;
         const nodeDef = flow.definition.nodes.find((n: INodeDefinition) => n.nodeId === nodeId);
         const nodeState = flow.nodeStates.find((ns: IFlowNodeState) => ns.nodeId === nodeId);
@@ -575,7 +594,7 @@ export class FlowEngine {
     /**
      * Handles nodes that require manual progression.
      */
-    private static async handleManualNode(flow: any, nodeDef: INodeDefinition, nodeState: any): Promise<void> {
+    private static async handleManualNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: any): Promise<void> {
         nodeState.status = 'manual_wait';
         nodeState.logs.push('Waiting for manual progression');
         if (nodeDef.manualNextNodes?.length) {
@@ -587,7 +606,7 @@ export class FlowEngine {
      * Progresses a manual node to its next step.
      */
     public static async progressManualNode(tenantId: string, flowId: string, nodeId: string, selectedNextNode: string, userInput?: any): Promise<void> {
-        const flow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) return;
         const nodeState = flow.nodeStates.find((ns: IFlowNodeState) => ns.nodeId === nodeId);
         const nodeDef = flow.definition.nodes.find((n: INodeDefinition) => n.nodeId === nodeId);
@@ -596,7 +615,10 @@ export class FlowEngine {
             throw new Error(`Invalid next node selection: ${selectedNextNode}`);
         }
         if (userInput) {
+            // Update both persistent context and the in-memory working state.
             await this.updateFlowContext(tenantId, flowId, { [`${nodeId}_input`]: userInput });
+            flow.workingState = flow.workingState || {};
+            flow.workingState[`${nodeId}_input`] = userInput;
         }
         nodeState.status = 'completed';
         nodeState.selectedNext = selectedNextNode;
@@ -607,7 +629,7 @@ export class FlowEngine {
     /**
      * Handles nodes waiting for user input.
      */
-    private static async handleWaitForInputNode(flow: any, nodeDef: INodeDefinition, nodeState: any): Promise<void> {
+    private static async handleWaitForInputNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: any): Promise<void> {
         nodeState.status = 'waiting';
         nodeState.logs.push('Waiting for user input');
         if (nodeDef.input?.requirements) {
@@ -619,35 +641,40 @@ export class FlowEngine {
      * Resumes a node waiting for user input.
      */
     public static async resumeWithInput(tenantId: string, flowId: string, nodeId: string, userInput: any): Promise<void> {
-        const flow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) return;
         const nodeState = flow.nodeStates.find((ns: IFlowNodeState) => ns.nodeId === nodeId);
         const nodeDef = flow.definition.nodes.find((n: INodeDefinition) => n.nodeId === nodeId);
         if (!nodeState || !nodeDef) return;
         await this.updateFlowContext(tenantId, flowId, { [`${nodeId}_input`]: userInput });
+        flow.workingState = flow.workingState || {};
+        flow.workingState[`${nodeId}_input`] = userInput;
         await this.handleAutoNode(flow, nodeDef, nodeState);
     }
 
     /**
-     * Automatic node execution – runs node logic and handles branching.
+     * Automatic node execution – runs node logic and handles branching using the working state.
      */
-    private static async handleAutoNode(flow: any, nodeDef: INodeDefinition, nodeState: any): Promise<void> {
+    private static async handleAutoNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: any): Promise<void> {
         nodeState.status = 'running';
-        const context = await this.getFlowContext(flow.tenantId, flow.flowId);
-        const result = await this.executeNodeLogic(nodeDef, context?.data);
+        // Use the in-memory working state for execution.
+        const workingState = flow.workingState || {};
+        const result = await this.executeNodeLogic(nodeDef, workingState);
+        // Merge result into the working state.
+        workingState[`${nodeDef.nodeId}_result`] = result;
         await this.updateFlowContext(flow.tenantId, flow.flowId, { [`${nodeDef.nodeId}_result`]: result });
-        const nextNodes = await this.handleBranching(flow, nodeDef, nodeState, context?.data);
+        const nextNodes = await this.handleBranching(flow, nodeDef, nodeState, workingState);
         nodeState.status = 'completed';
         nodeState.result = result;
         for (const nextNodeId of nextNodes) {
-            await this.executeNode(flow, nextNodeId);
+            await this.executeNode(flow, nextNodeId, result);
         }
     }
 
     /**
-     * Evaluates branch conditions and returns the list of next nodes.
+     * Evaluates branch conditions using the working state and returns the list of next nodes.
      */
-    private static async handleBranching(flow: any, nodeDef: INodeDefinition, nodeState: any, context: any): Promise<string[]> {
+    private static async handleBranching(flow: IFlow, nodeDef: INodeDefinition, nodeState: any, workingState: any): Promise<string[]> {
         const nextNodes: string[] = [];
         if (!nodeDef.branches || nodeDef.branches.length === 0) {
             return nodeDef.manualNextNodes || [];
@@ -656,10 +683,10 @@ export class FlowEngine {
             try {
                 let conditionMet = false;
                 if (branch.evaluator) {
-                    conditionMet = branch.evaluator(context);
+                    conditionMet = branch.evaluator(workingState);
                 } else {
                     const evalFn = new Function('context', `"use strict"; try { return (${branch.condition}); } catch (e) { return false; }`);
-                    conditionMet = evalFn(context);
+                    conditionMet = evalFn(workingState);
                 }
                 if (conditionMet) {
                     nextNodes.push(branch.targetNodeId);
@@ -678,12 +705,13 @@ export class FlowEngine {
      * Jumps to a specific node in the flow (for recovery or manual override).
      */
     public static async jumpToNode(tenantId: string, flowId: string, targetNodeId: string, context?: any): Promise<void> {
-        const flow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) throw new Error(`Flow not found: ${flowId}`);
         const targetNode = flow.definition.nodes.find((n: INodeDefinition) => n.nodeId === targetNodeId);
         if (!targetNode) throw new Error(`Target node not found: ${targetNodeId}`);
         if (context) {
             await this.updateFlowContext(tenantId, flowId, context);
+            flow.workingState = { ...flow.workingState, ...context };
         }
         flow.nodeStates.forEach((ns: IFlowNodeState) => {
             if (ns.status === 'running') {
@@ -699,4 +727,74 @@ export class FlowEngine {
         await DatabaseService.getInstance().saveFlow(flow);
         await this.executeNode(flow, targetNodeId);
     }
+
+    /**
+ * runNode: decides if we do inline Node logic or enqueue a Python job, 
+ * or if it's a node that "waits for HTTP," etc. 
+ */
+    public static async runNode(
+        tenantId: string,
+        flowId: string,
+        nodeState: IFlowNodeState,
+        nodeDef: any
+    ): Promise<any> {
+        const { nodeId, input } = nodeDef;
+
+        const nodePlugin = await getPlugin(nodeId);
+        if (!nodePlugin) {
+            throw new Error(`Node plugin not found: ${nodeId}`);
+        }
+
+        if (nodePlugin.waitForTrigger) {
+            // This node won't proceed until an external call triggers "resumeWaitingNode()"
+            nodeState.status = 'waiting';
+            nodeState.logs.push(`[${new Date().toISOString()}] Node is waiting for external HTTP/event`);
+            // We do NOT call executeNextPendingNode yet, we pause here
+            return 'wait'
+        }
+
+        if (nodePlugin.runner === 'node') {
+            // Inline logic (like your handleNodeJob) 
+            // we do it directly or we can queue it to Bull if you prefer.
+            // For demonstration, let's do it inline:
+            nodeState.logs.push(`[${new Date().toISOString()}] Running inline Node logic`);
+            // await this.runInlineNodeLogic(tenantId, flowId, nodeState, nodeDef);
+            // Once done, node is completed, we proceed
+
+        } else if (nodePlugin.runner === 'python') {
+            // We push to pythonQueue and let python do the job
+            nodeState.logs.push(`[${new Date().toISOString()}] Enqueueing Python job: ${nodeId}`);
+            // await this.enqueuePythonTask(tenantId, flowId, nodeDef);
+            return 'wait'
+            // We do NOT mark completed here, because we wait for Python to call
+            // "FlowEngine.completeNode()" or "failNode()" once it's done.
+        } else {
+            throw new Error(`Unknown runner: ${nodePlugin.runner}`);
+        }
+        return 'next';
+    }
+
+    /**
+    * failNode: used if the Node/Python job wants to indicate an error.
+    */
+    public static async failNode(
+        tenantId: string,
+        flowId: string,
+        nodeId: string,
+        errorMsg: string
+    ): Promise<void> {
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
+        if (!flow) return;
+
+        const nodeState = flow.nodeStates.find(ns => ns.nodeId === nodeId);
+        if (!nodeState) return;
+
+        nodeState.status = 'failed';
+        nodeState.logs.push(`[${new Date().toISOString()}] Node failed: ${errorMsg}`);
+        nodeState.finishedAt = new Date();
+
+        flow.overallStatus = 'failed';
+        await DatabaseService.getInstance().saveFlow(flow);
+    }
+
 }
