@@ -229,8 +229,6 @@ export class FlowEngine {
 
         await DatabaseService.getInstance().saveFlow(flow);
 
-        // Begin execution from the start node
-        await this.executeNode(flow, startNode.nodeId);
         return flow;
     }
 
@@ -376,7 +374,7 @@ export class FlowEngine {
         const workingState = flow.workingState || {};
         for (const condition of nodeDef.conditions || []) {
             try {
-                const safeEval = new Function('context', `"use strict"; return (${condition.condition});`);
+                const safeEval = new Function('context', `return (${condition.condition});`);
                 const result = safeEval(workingState);
                 if (result) {
                     nodeState.selectedBranch = condition.nextNodeId;
@@ -407,15 +405,20 @@ export class FlowEngine {
         if (!nodeDef.entry?.url) {
             throw new Error('HTTP node missing URL configuration');
         }
-        const { url, method = 'GET', headers = {}, timeout = 30000 } = nodeDef.entry;
+        const { url, method = 'GET', headers = {}, timeout } = nodeDef.entry;
+        const axiosConfig: any = { method, url, headers, data: nodeDef.input };
+        if (timeout) axiosConfig.timeout = timeout;
+
         try {
-            const response = await axios({ method, url, headers, timeout, data: nodeDef.input });
+            const response = await axios(axiosConfig);
             nodeState.result = response.data;
             nodeState.status = 'completed';
             nodeState.logs.push(`HTTP call successful: ${method} ${url}`);
             await this.updateFlowContext(flow.tenantId, flow.flowId, { [`${nodeDef.nodeId}_result`]: response.data });
             await this.proceedToNextNodes(flow, nodeDef, nodeState);
         } catch (error: any) {
+            nodeState.status = 'failed';
+            nodeState.error = error.message;
             throw new Error(`HTTP call failed: ${error.message}`);
         }
     }
@@ -552,15 +555,19 @@ export class FlowEngine {
             nodeDef.event.timeout || 3600
         );
         this.eventEmitter.once(nodeDef.event.eventName, async (data) => {
-            const waitingState = await this.redis.get(`event_wait:${eventId}`);
-            if (waitingState) {
-                const { flow, nodeDef, nodeState } = JSON.parse(waitingState);
-                nodeState.status = 'completed';
-                nodeState.result = data;
-                await this.proceedToNextNodes(flow, nodeDef, nodeState);
-                await this.redis.del(`event_wait:${eventId}`);
-            }
+            await this.handleEventCompletion(`event_wait:${eventId}`, data);
         });
+    }
+
+    public static async handleEventCompletion(eventKey: string, data: any): Promise<void> {
+        const storedState = await this.redis.get(eventKey);
+        if (!storedState) return;
+        const { flow, nodeDef, nodeState } = JSON.parse(storedState);
+        nodeState.status = 'completed';
+        nodeState.result = data;
+        await this.redis.del(eventKey);
+        await this.proceedToNextNodes(flow, nodeDef, nodeState);
+        await DatabaseService.getInstance().saveFlow(flow);
     }
 
     /**
@@ -728,7 +735,6 @@ export class FlowEngine {
             flow.nodeStates.push(targetState);
         }
         await DatabaseService.getInstance().saveFlow(flow);
-        await this.executeNode(flow, targetNodeId);
     }
 
     /**
