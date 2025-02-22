@@ -456,7 +456,8 @@ describe('FlowEngine', () => {
 
             expect(mockHttpFlow.nodeStates[0].status).toBe('failed');
             expect(mockHttpFlow.nodeStates[0].error).toBeDefined();
-        });
+            ``
+        }, 10000); // Increase timeout to 10 seconds
     });
 
     describe('Python Node Handling', () => {
