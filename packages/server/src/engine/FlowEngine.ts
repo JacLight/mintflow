@@ -16,8 +16,6 @@
 import { Redis } from 'ioredis';                 // For Python bridging
 import axios from 'axios';
 import { Request } from 'express';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
 import { ENV } from '../config/env.js';
 import { FlowModel, IFlow, IFlowNodeState } from '../models/FlowModel.js';
 import { getNodeAction, getPlugin } from '../plugins-register.js';
@@ -48,7 +46,7 @@ export class FlowEngine {
     static stopFlow(arg0: string, arg1: string) {
         throw new Error('Method not implemented.');
     }
-    static handleHttpListenerNode(tenantId: string, flowId: string, nodeId: string, req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>) {
+    static handleHttpListenerNode(tenantId: string, flowId: string, nodeId: string, req: Request<any, any, any, any, Record<string, any>>) {
         return null;
     }
 

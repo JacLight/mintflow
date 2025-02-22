@@ -1,6 +1,8 @@
 import { logger } from '@mintflow/common';
 import { createApp } from './app.js';
 import { ENV } from './config/env.js';
+import { Server } from 'socket.io';
+import http from 'http';
 
 async function main() {
     try {
@@ -17,7 +19,14 @@ async function main() {
 
         // 4) Start Express server
         const app = await createApp();
-        app.listen(ENV.PORT, () => {
+        const server = http.createServer(app);
+
+        const io = new Server(server);
+        io.on('connection', (socket) => {
+            logger.info(`[Socket] Client connected: ${socket.id}`);
+        });
+
+        server.listen(ENV.PORT, () => {
             logger.info(`[Server] Listening on port ${ENV.PORT}`);
         });
     } catch (err: any) {

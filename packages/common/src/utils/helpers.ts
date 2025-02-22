@@ -1,12 +1,3 @@
-export function logInfo(message: string) {
-    console.log(`ℹ️ ${message}`);
-}
-
-export function logError(error: string) {
-    console.error(`❌ ${error}`);
-}
-
-
 export const toTitleCase = (str: string) => {
     if (!str) return str;
     if (typeof str !== 'string') return str;
