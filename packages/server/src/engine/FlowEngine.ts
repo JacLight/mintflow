@@ -97,12 +97,13 @@ export interface IFlowNodeState {
     error?: string;
     selectedBranch?: string;
     availableNextNodes?: string[];
+    inputRequirements?: any;
     inputData?: any;
     selectedNext?: string;
 }
 
 
-export interface IFlow extends Document {
+export interface IFlow {
     tenantId: string;
     flowId: string;
     definition: any;     // e.g., { nodes: [...], edges: [...] }
@@ -112,7 +113,9 @@ export interface IFlow extends Document {
     updatedAt: Date;
     logs?: string[];                 // store general flow logs
     status: string;                  // e.g., "draft", "running", "completed"
-    workingState?: Record<string, any>;
+    workingState?: any;
+    URL: string;                    // Add any other required properties
+    // Add any other required properties to match the Document type
 }
 
 //
@@ -234,7 +237,7 @@ export class FlowEngine {
     /**
      * Executes a specific node based on its definition.
      */
-    private static async executeNode(flow: IFlow, nodeId: string, workingData?: any): Promise<void> {
+    public static async executeNode(flow: IFlow, nodeId: string, workingData?: any): Promise<void> {
         const nodeDef = flow.definition.nodes.find((n: INodeDefinition) => n.nodeId === nodeId);
         if (!nodeDef) {
             throw new Error(`Node definition not found: ${nodeId}`);
@@ -474,7 +477,7 @@ export class FlowEngine {
     /**
      * MQTT node execution – subscribes and waits for a message.
      */
-    private static async executeMqttNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    public static async executeMqttNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         if (!nodeDef.mqtt?.topic) {
             throw new Error('MQTT topic not specified');
         }
@@ -504,7 +507,7 @@ export class FlowEngine {
     /**
      * HTTP callback node execution – stores state and returns a callback URL.
      */
-    private static async executeHttpCallbackNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<any> {
+    public static async executeHttpCallbackNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<any> {
         if (!nodeDef.http?.callbackUrl) {
             throw new Error('HTTP callback URL not specified');
         }
@@ -563,7 +566,7 @@ export class FlowEngine {
     /**
      * External node execution – enqueues a task for an external service.
      */
-    private static async executeExternalNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
+    public static async executeExternalNode(flow: IFlow, nodeDef: INodeDefinition, nodeState: IFlowNodeState): Promise<void> {
         nodeState.status = 'waiting';
         await this.redis.rpush('external_tasks', JSON.stringify({
             flowId: flow.flowId,
