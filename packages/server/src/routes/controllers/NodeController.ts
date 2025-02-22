@@ -1,16 +1,10 @@
-import { Router, Request, Response } from 'express';
-import { logger, PluginDescriptor } from '@mintflow/common';
-import { getNodeAction, getPlugin, getPlugins } from '../../plugins-register.js';
-import { FlowEngine } from '../../engine/FlowEngine.js';
-import { IFlowNodeState } from '../../models/FlowModel.js';
+import { logger, PluginDescriptor } from "@mintflow/common";
+import { getPlugin, getPlugins } from "../../plugins-register.js";
+import { Request, Response } from "express";
+import { IFlowNodeState } from "../../models/FlowModel.js";
+import { FlowEngine } from "../../engine/FlowEngine.js";
 
-const nodeRouter: Router = Router();
-
-/**
- * GET /nodes
- * Returns the list of node definitions, omitting the actual implementation code.
- */
-const getNodes: any = (req: Request, res: Response) => {
+export const getNodes = async (req: Request, res: Response): Promise<any> => {
     try {
         // Remove the actual code from each node before sending
         const pluginMap = getPlugins();
@@ -36,22 +30,15 @@ const getNodes: any = (req: Request, res: Response) => {
 
             }))
         }));
-
         res.json({ nodes: safeNodes });
     } catch (err: any) {
         logger.error('[nodeDefinitions] GET /nodes error', { error: err.message });
         res.status(500).json({ error: err.message });
     }
 };
-nodeRouter.get('/all', getNodes);
 
 
-/**
- * Optionally, provide a route to get a single node definition by nodeId.
- * GET /nodes/:nodeId
- */
-
-const getNode: any = (req: Request, res: Response) => {
+export const getNode = async (req: Request, res: Response): Promise<any> => {
     try {
         const { nodeId } = req.params;
         const node = getPlugin(nodeId);
@@ -80,10 +67,9 @@ const getNode: any = (req: Request, res: Response) => {
         return res.status(500).json({ error: err.message });
     }
 };
-nodeRouter.get('/:nodeId', getNode);
 
 
-const runNode: any = async (req: Request, res: Response) => {
+export const runNode = async (req: Request, res: Response): Promise<any> => {
     try {
         const { nodeId } = req.params;
         const { tenantId, flowId, input, action } = req.body;
@@ -95,7 +81,5 @@ const runNode: any = async (req: Request, res: Response) => {
         logger.error('[nodeDefinitions] POST /nodes/:nodeId/run error', { error: err.message });
         return res.status(500).json({ error: err.message });
     }
-};
-nodeRouter.post('/:nodeId/run', runNode);
+}
 
-export default nodeRouter;
