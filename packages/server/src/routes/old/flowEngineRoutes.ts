@@ -10,12 +10,13 @@ const completeNode: any = async (req: Request, res: Response) => {
         return res.status(400).json({ error: 'tenantId, flowId, nodeId required' });
     }
     try {
-        await FlowEngine.completeNode(tenantId, flowId, nodeId, result);
+        await FlowEngine.getInstance().completeExternalNode(tenantId, flowId, nodeId, result);
         res.json({ message: 'Node completed' });
     } catch (err: any) {
         res.status(500).json({ error: err.message });
     }
 };
+
 feRouter.post('/completeNode', completeNode);
 
 // POST /flowengine/failNode
@@ -25,7 +26,7 @@ const failedNode: any = async (req: Request, res: Response) => {
         return res.status(400).json({ error: 'tenantId, flowId, nodeId required' });
     }
     try {
-        await FlowEngine.failNode(tenantId, flowId, nodeId, errorMsg || 'Unknown error');
+        await FlowEngine.getInstance().failNode(tenantId, flowId, nodeId, errorMsg || 'Unknown error');
         res.json({ message: 'Node failed' });
     } catch (err: any) {
         res.status(500).json({ error: err.message });

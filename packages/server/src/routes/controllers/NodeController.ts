@@ -1,7 +1,8 @@
 import { logger, PluginDescriptor } from "@mintflow/common";
 import { getPlugin, getPlugins } from "../../plugins-register.js";
 import { Request, Response } from "express";
-import { FlowEngine, IFlowNodeState } from "../../engine/FlowEngine.js";
+import { IFlowNodeState } from "../../engine/FlowInterfaces.js";
+import { FlowEngine } from "../../engine/FlowEngine.js";
 
 export const getNodes = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -74,7 +75,7 @@ export const runNode = async (req: Request, res: Response): Promise<any> => {
         const { tenantId, flowId, input, action } = req.body;
         const nodeState: IFlowNodeState = FlowEngine.createNodeState();
         const nodeDef = { nodeId, input, action }
-        const output = await FlowEngine.runNode(tenantId, flowId, nodeState, nodeDef)
+        const output = await FlowEngine.getInstance().runNode(tenantId, flowId, nodeState, nodeDef)
         return res.json({ state: nodeState, output });
     } catch (err: any) {
         logger.error('[nodeDefinitions] POST /nodes/:nodeId/run error', { error: err.message });

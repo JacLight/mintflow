@@ -8,17 +8,17 @@ const listenerRouter: Router = Router();
 const processRequest: any = async (req: Request, res: Response) => {
     const { tenantId, flowId, nodeId } = req.params;
     try {
-        // FlowEngine checks if there's a node with type= "httpListener" 
-        // and status= "waiting" or "listening" for that tenant/flow/node
-        const responseData = await FlowEngine.handleHttpRequest(tenantId, flowId, nodeId, req);
+        // // FlowEngine checks if there's a node with type= "httpListener" 
+        // // and status= "waiting" or "listening" for that tenant/flow/node
+        // const responseData = await FlowEngine.getInstance().handleHttpRequest(tenantId, flowId, nodeId, req);
 
-        // If handleHttpListenerNode resolves, we respond with the data
-        if (responseData) {
-            return res.json(responseData);
-        } else {
-            // if handleHttpListenerNode returned null or something
-            return res.status(404).json({ error: 'No active listener node found or node is not in waiting state' });
-        }
+        // // If handleHttpListenerNode resolves, we respond with the data
+        // if (responseData) {
+        //     return res.json(responseData);
+        // } else {
+        //     // if handleHttpListenerNode returned null or something
+        //     return res.status(404).json({ error: 'No active listener node found or node is not in waiting state' });
+        // }
     } catch (err: any) {
         if (err.message === 'TIMEOUT') {
             return res.status(504).json({ error: 'Node did not respond in time' });
