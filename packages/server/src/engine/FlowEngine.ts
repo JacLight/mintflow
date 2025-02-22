@@ -17,9 +17,10 @@ import { Redis } from 'ioredis';                 // For Python bridging
 import axios from 'axios';
 import { Request } from 'express';
 import { ENV } from '../config/env.js';
-import { FlowModel, IFlow, IFlowNodeState } from '../models/FlowModel.js';
 import { getNodeAction, getPlugin } from '../plugins-register.js';
 import { logger } from '@mintflow/common';
+import { IFlow, IFlowNodeState } from '../interfaces/IFlowState.js';
+import { DatabaseService } from '../services/DatabaseService.js';
 
 // If Python tasks are done via bridging in Node:
 const redisClient = new Redis({
@@ -58,7 +59,7 @@ export class FlowEngine {
      *  - Attempts to execute the first pending node
      */
     public static async runFlow(tenantId: string, flowId: string): Promise<IFlow> {
-        const flow = await FlowModel.findOne({ tenantId, flowId });
+        const flow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) {
             throw new Error(`Flow not found: tenant=${tenantId}, flowId=${flowId}`);
         }
@@ -73,7 +74,7 @@ export class FlowEngine {
             }));
         }
         flow.overallStatus = 'running';
-        await flow.save();
+        await DatabaseService.getInstance().saveFlow(flow);
 
         // Start from the first pending node
         await this.executeNextPendingNode(flow);
@@ -122,7 +123,7 @@ export class FlowEngine {
                     logger.info(`[FlowEngine] Flow ended with a failure`, { flowId: flow.flowId });
                 }
             }
-            await flow.save();
+            await DatabaseService.getInstance().saveFlow(flow);
             return;
         }
 
@@ -130,7 +131,7 @@ export class FlowEngine {
         nodeState.status = 'running';
         nodeState.startedAt = new Date();
         nodeState.logs.push(`[${new Date().toISOString()}] Node started`);
-        await flow.save();
+        await DatabaseService.getInstance().saveFlow(flow);
 
         // Get the definition for that node
         const nodeDef = flow.definition?.nodes?.find((n: any) => n.nodeId === nodeState.nodeId);
@@ -138,7 +139,7 @@ export class FlowEngine {
             // Immediately fail
             nodeState.status = 'failed';
             nodeState.logs.push(`Node definition not found in flow.definition`);
-            await flow.save();
+            await DatabaseService.getInstance().saveFlow(flow);
             await this.executeNextPendingNode(flow);
             return;
         }
@@ -146,14 +147,14 @@ export class FlowEngine {
         try {
             // Actually run or enqueue
             const nextStep = await this.runNode(flow.tenantId, flow.flowId, nodeState, nodeDef);
-            await flow.save();
+            await DatabaseService.getInstance().saveFlow(flow);
             if (nextStep === 'next') {
                 await this.executeNextPendingNode(flow);
             }
         } catch (err: any) {
             nodeState.status = 'failed';
             nodeState.logs.push(`[${new Date().toISOString()}] Node error: ${err.message}`);
-            await flow.save();
+            await DatabaseService.getInstance().saveFlow(flow);
             await this.executeNextPendingNode(flow);
             return;
         }
@@ -283,7 +284,7 @@ export class FlowEngine {
         nodeId: string,
         result?: any
     ): Promise<void> {
-        const flow = await FlowModel.findOne({ tenantId, flowId });
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) return;
 
         const nodeState = flow.nodeStates.find(ns => ns.nodeId === nodeId);
@@ -294,7 +295,7 @@ export class FlowEngine {
         nodeState.result = result;
         nodeState.logs.push(`[${new Date().toISOString()}] Node externally completed`);
         nodeState.finishedAt = new Date();
-        await flow.save();
+        await DatabaseService.getInstance().saveFlow(flow);
 
         // proceed with next node
         await this.executeNextPendingNode(flow);
@@ -309,7 +310,7 @@ export class FlowEngine {
         nodeId: string,
         errorMsg: string
     ): Promise<void> {
-        const flow = await FlowModel.findOne({ tenantId, flowId });
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) return;
 
         const nodeState = flow.nodeStates.find(ns => ns.nodeId === nodeId);
@@ -320,7 +321,7 @@ export class FlowEngine {
         nodeState.finishedAt = new Date();
 
         flow.overallStatus = 'failed';
-        await flow.save();
+        await DatabaseService.getInstance().saveFlow(flow);
     }
 
     /**
@@ -333,7 +334,7 @@ export class FlowEngine {
         nodeId: string,
         finalResult?: any
     ): Promise<void> {
-        const flow = await FlowModel.findOne({ tenantId, flowId });
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
         if (!flow) return;
 
         const nodeState = flow.nodeStates.find(ns => ns.nodeId === nodeId);
@@ -348,7 +349,7 @@ export class FlowEngine {
         nodeState.result = finalResult;
         nodeState.logs.push(`[${new Date().toISOString()}] Node resumed from waiting => completed`);
         nodeState.finishedAt = new Date();
-        await flow.save();
+        await DatabaseService.getInstance().saveFlow(flow);
 
         // now see if we can proceed
         await this.executeNextPendingNode(flow);

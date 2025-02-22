@@ -12,12 +12,16 @@ export async function createTenant(req: Request, res: Response): Promise<any> {
     try {
         const { error } = TenantValidator.validate(req.body);
         if (error) return res.status(400).json({ error: error.details[0].message });
-
         const tenant = await tenantService.createTenant(req.body);
         return res.status(201).json(tenant);
     } catch (err: any) {
         logger.error(`[TenantController] Error creating tenant: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to create tenant' });
+        if (err.code === 23505) {
+            return res.status(400).json({ error: 'Tenant already exists' });
+        } else if (err.code === 11000) {
+            return res.status(400).json({ error: 'Tenant already exists' });
+        }
+        return res.status(500).json({ error: 'Failed to create tenant: ' + err.message });
     }
 }
 
@@ -30,7 +34,7 @@ export async function getAllTenants(req: Request, res: Response): Promise<any> {
         return res.status(200).json(tenants);
     } catch (err: any) {
         logger.error(`[TenantController] Error fetching tenants: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to fetch tenants' });
+        return res.status(500).json({ error: 'Failed to fetch tenants: ' + err.message });
     }
 }
 
@@ -45,7 +49,7 @@ export async function getTenantById(req: Request, res: Response): Promise<any> {
         return res.status(200).json(tenant);
     } catch (err: any) {
         logger.error(`[TenantController] Error fetching tenant: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to fetch tenant' });
+        return res.status(500).json({ error: 'Failed to fetch tenant: ' + err.message });
     }
 }
 
@@ -63,7 +67,7 @@ export async function updateTenant(req: Request, res: Response): Promise<any> {
         return res.status(200).json(updatedTenant);
     } catch (err: any) {
         logger.error(`[TenantController] Error updating tenant: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to update tenant' });
+        return res.status(500).json({ error: 'Failed to update tenant: ' + err.message });
     }
 }
 
@@ -78,6 +82,6 @@ export async function deleteTenant(req: Request, res: Response): Promise<any> {
         return res.status(200).json({ message: 'Tenant deleted successfully' });
     } catch (err: any) {
         logger.error(`[TenantController] Error deleting tenant: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to delete tenant' });
+        return res.status(500).json({ error: 'Failed to delete tenant: ' + err.message });
     }
 }

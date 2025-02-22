@@ -12,12 +12,14 @@ export async function createFlow(req: Request, res: Response): Promise<any> {
     try {
         const { error } = FlowValidator.validate(req.body);
         if (error) return res.status(400).json({ error: error.details[0].message });
-
         const flow = await flowService.createFlow(req.body);
         return res.status(201).json(flow);
     } catch (err: any) {
         logger.error(`[FlowController] Error creating flow: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to create flow' });
+        if (err.message.includes('Tenant not found')) {
+            return res.status(400).json({ error: 'Invalid tenant ID' });
+        }
+        return res.status(500).json({ error: `Failed to create flow: ${err.message}` });
     }
 }
 

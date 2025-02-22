@@ -14,6 +14,7 @@ export const ENV = {
     LOG_LEVEL: process.env.LOG_LEVEL || 'info',
 
     // 🛢️ Database Configuration
+    DB_NAME: process.env.DB_NAME || 'mintflow',
     DB_PROVIDER: process.env.DB_PROVIDER || 'mongo',
 
     // MongoDB Configuration

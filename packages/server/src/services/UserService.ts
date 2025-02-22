@@ -1,45 +1,46 @@
 import { logger } from '@mintflow/common';
 import { DatabaseService } from './DatabaseService.js';
 
+const TABLE_NAME = 'user';
 export class UserService {
     private db = DatabaseService.getInstance();
 
     async createUser(data: any) {
         try {
-            const user = await this.db.create('users', data);
+            const user = await this.db.create(TABLE_NAME, data);
             logger.info(`[UserService] User created: ${user.userId}`);
             return user;
         } catch (error) {
             logger.error(`[UserService] Error creating user: ${(error as any).message}`);
-            throw new Error('Failed to create user.');
+            throw error;
         }
     }
 
     async getAllUsers() {
         try {
-            return await this.db.find('users');
+            return await this.db.find(TABLE_NAME);
         } catch (error) {
             logger.error(`[UserService] Error fetching users: ${(error as any).message}`);
-            throw new Error('Failed to fetch users.');
+            throw error;
         }
     }
 
     async getUserById(userId: string) {
         try {
-            const user = await this.db.findOne('users', { userId });
+            const user = await this.db.findOne(TABLE_NAME, { userId });
             if (!user) {
                 throw new Error('User not found.');
             }
             return user;
         } catch (error) {
             logger.error(`[UserService] Error fetching user: ${(error as any).message}`);
-            throw new Error((error as any).message);
+            throw error;
         }
     }
 
     async updateUser(userId: string, updateData: any) {
         try {
-            const result = await this.db.update('users', { userId }, updateData);
+            const result = await this.db.update(TABLE_NAME, { userId }, updateData);
             if (!result) {
                 throw new Error('User not found or update failed.');
             }
@@ -51,7 +52,7 @@ export class UserService {
                 throw new Error((error as any).message);
             } else {
                 logger.error(`[UserService] Error updating user: ${error}`);
-                throw new Error('Failed to update user.');
+                throw error;
             }
 
 
@@ -60,7 +61,7 @@ export class UserService {
 
     async deleteUser(userId: string) {
         try {
-            const result = await this.db.delete('users', { userId });
+            const result = await this.db.delete(TABLE_NAME, { userId });
             if (!result) {
                 throw new Error('User not found or deletion failed.');
             }
@@ -72,7 +73,7 @@ export class UserService {
                 throw new Error((error as any).message);
             } else {
                 logger.error(`[UserService] Error deleting user: ${error}`);
-                throw new Error('Failed to delete user.');
+                throw error;
             }
         }
     }
