@@ -10,7 +10,7 @@ const processRequest: any = async (req: Request, res: Response) => {
     try {
         // FlowEngine checks if there's a node with type= "httpListener" 
         // and status= "waiting" or "listening" for that tenant/flow/node
-        const responseData = await FlowEngine.handleHttpListenerNode(tenantId, flowId, nodeId, req);
+        const responseData = await FlowEngine.handleHttpRequest(tenantId, flowId, nodeId, req);
 
         // If handleHttpListenerNode resolves, we respond with the data
         if (responseData) {
