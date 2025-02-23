@@ -3,13 +3,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 
-// 👇 Define __dirname manually in ES module scope
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-
-
-// ✅ Correct path to plugins directory
-const pluginsDir = path.join(__dirname, "../../plugins");
+let _dirname;
+if (typeof __dirname !== 'undefined') {
+    _dirname = __dirname;
+} else {
+    const __filename = fileURLToPath(import.meta.url);
+    _dirname = path.dirname(__filename);
+}
+const pluginsDir = path.join(_dirname, "../../plugins");
 
 const pluginMap = new Map<string, PluginDescriptor>();
 

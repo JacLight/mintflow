@@ -1,4 +1,3 @@
-// src/interfaces/FlowInterfaces.ts
 
 export type NodeStatus =
     | 'pending'

@@ -1,8 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 import { createLogger, format, transports } from 'winston';
+import { fileURLToPath } from 'url';
 
-const logDirectory = path.join(__dirname, '../logs');
+
+let _dirname;
+if (typeof __dirname !== 'undefined') {
+    _dirname = __dirname;
+} else {
+    const __filename = fileURLToPath(import.meta.url);
+    _dirname = path.dirname(__filename);
+}
+const logDirectory = path.join(_dirname, '../logs');
 
 // Ensure the logs directory exists
 if (!fs.existsSync(logDirectory)) {

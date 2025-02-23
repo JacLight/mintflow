@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { logger } from '@mintflow/common';
 import { FlowService } from '../../services/FlowService.js';
 import { FlowValidator } from '../../models/validators/FlowValidator.js';
+import { FlowEngine } from '../../engine/FlowEngine.js';
+import { DatabaseService } from '../../services/DatabaseService.js';
 
 const flowService = new FlowService();
 
@@ -82,4 +84,50 @@ export async function deleteFlow(req: Request, res: Response): Promise<any> {
         logger.error(`[FlowController] Error deleting flow: ${err.message}`);
         return res.status(500).json({ error: 'Failed to delete flow' });
     }
+}
+
+
+export async function getManualNodeStatus(req: Request & { tenantId: string }, res: Response) {
+    const { flowId, nodeId } = req.params;
+    const flow = await DatabaseService.getInstance().getFlow(req.tenantId, flowId);
+
+    const nodeState = flow.nodeStates.find((ns: any) => ns.nodeId === nodeId);
+    const nodeDef = flow.definition.nodes.find((n: any) => n.nodeId === nodeId);
+
+    res.json({
+        status: nodeState.status,
+        availableNextNodes: nodeState.availableNextNodes,
+        inputRequirements: nodeState.inputRequirements
+    });
+}
+
+// Endpoint to progress manual node
+export async function progressManualNode(req: Request & { tenantId: string }, res: Response) {
+    const { flowId, nodeId } = req.params;
+    const { selectedNext, input } = req.body;
+
+    await FlowEngine.getInstance().progressManualNode(
+        req.tenantId,
+        flowId,
+        nodeId,
+        selectedNext,
+        input
+    );
+
+    res.json({ success: true });
+}
+
+// Endpoint for external service callback
+export async function handleExternalCallback(req: Request & { tenantId: string }, res: Response) {
+    const { flowId, nodeId } = req.params;
+    const result = req.body;
+
+    await FlowEngine.getInstance().completeNode(
+        req.tenantId,
+        flowId,
+        nodeId,
+        result
+    );
+
+    res.json({ success: true });
 }

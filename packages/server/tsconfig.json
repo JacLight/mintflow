@@ -9,6 +9,7 @@
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
+    "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "types": ["node","jest"],
   },
