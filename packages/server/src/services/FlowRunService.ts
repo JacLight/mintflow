@@ -157,7 +157,7 @@ export class FlowRunService {
 
     async updateFlowRunStatus(flowRunId: string, status: string) {
         try {
-            const result = await this.db.update(TABLE_NAME, { flowRunId }, { status });
+            const result = await this.db.update(TABLE_NAME, { flowRunId }, { status, updatedAt: new Date() });
             if (!result) {
                 throw new Error('FlowRun not found or update failed.');
             }
@@ -183,11 +183,12 @@ export class FlowRunService {
         }
     }
 
-    async completeFlowRun(flowRunId: string) {
+    async completeFlowRun(flowRunId: string, status = 'completed') {
         try {
             const result = await this.db.update(TABLE_NAME, { flowRunId }, {
-                status: 'completed',
-                finishedAt: new Date()
+                status,
+                finishedAt: new Date(),
+                updatedAt: new Date()
             });
             if (!result) {
                 throw new Error('FlowRun not found or completion failed.');
