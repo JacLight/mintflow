@@ -1,8 +1,9 @@
 import { logger, PluginDescriptor } from "@mintflow/common";
 import { getPlugin, getPlugins } from "../../plugins-register.js";
 import { Request, Response } from "express";
-import { IFlowNodeState } from "../../engine/FlowInterfaces.js";
+import { IFlowNodeState, INodeDefinition } from "../../engine/FlowInterfaces.js";
 import { FlowEngine } from "../../engine/FlowEngine.js";
+import { NodeExecutorService } from "../../engine/NodeExecutorService.js";
 
 export const getNodes = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -71,12 +72,11 @@ export const getNode = async (req: Request, res: Response): Promise<any> => {
 
 export const runNode = async (req: Request, res: Response): Promise<any> => {
     try {
-        const { nodeId } = req.params;
-        const { tenantId, flowId, input, action } = req.body;
-        const nodeState: IFlowNodeState = FlowEngine.createNodeState();
-        const nodeDef = { nodeId, input, action }
-        const output = await FlowEngine.getInstance().runNode(tenantId, flowId, nodeState, nodeDef)
-        return res.json({ state: nodeState, output });
+        // const { nodeId } = req.params;
+        const { tenantId, flowId, input, action, nodeType } = req.body;
+        const nodeDef: INodeDefinition = { nodeId: nodeType, input, action, type: nodeType, runner: 'node' };
+        const output = await NodeExecutorService.getInstance().testNode(nodeDef, input)
+        return res.json(output);
     } catch (err: any) {
         logger.error('[nodeDefinitions] POST /nodes/:nodeId/run error', { error: err.message });
         return res.status(500).json({ error: err.message });

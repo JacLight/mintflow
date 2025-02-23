@@ -3,15 +3,18 @@ import readline from 'readline';
 import chalk from 'chalk';
 import { FlowEngine } from '../engine/FlowEngine.js';
 import { DatabaseService } from '../services/DatabaseService.js';
+import { FlowService } from '../services/FlowService.js';
 
 export function setupServerConsole() {
     // Wrap service initialization in try-catch
     let flowEngine: FlowEngine;
     let db: DatabaseService;
+    let flowService: FlowService;
 
     try {
         flowEngine = FlowEngine.getInstance();
         db = DatabaseService.getInstance();
+        flowService = FlowService.getInstance();
     } catch (error) {
         console.error(chalk.red('Error initializing services:'), error);
         return; // Exit setup if critical services can't be initialized
@@ -87,7 +90,7 @@ export function setupServerConsole() {
                     throw new Error('No tenant set. Use "tenant <tenantId>" first.');
                 }
 
-                const flows = await safeDbOperation(() => db.getFlows(currentTenant!));
+                const flows = await safeDbOperation(() => flowService.getFlows({ tenantId: currentTenant }));
                 if (!flows) return;
 
                 console.log(chalk.yellow('\nServer Status:'));
@@ -112,7 +115,7 @@ export function setupServerConsole() {
                     throw new Error('No tenant set. Use "tenant <tenantId>" first.');
                 }
 
-                const flows = await safeDbOperation(() => db.getFlows(currentTenant!));
+                const flows = await safeDbOperation(() => flowService.getFlows({ tenantId: currentTenant }));
                 if (!flows) return;
 
                 console.log(chalk.yellow(`\nCurrent Flows (Tenant: ${currentTenant}):`));
@@ -133,7 +136,7 @@ export function setupServerConsole() {
                     throw new Error('Flow ID required');
                 }
 
-                const flow = await safeDbOperation(() => db.getFlow(currentTenant!, flowId));
+                const flow = await safeDbOperation(() => flowService.getFlow(currentTenant!, flowId));
                 if (!flow) {
                     throw new Error(`Flow ${flowId} not found`);
                 }
@@ -183,7 +186,7 @@ export function setupServerConsole() {
             try {
                 intervalId = setInterval(async () => {
                     try {
-                        const flow = await safeDbOperation(() => db.getFlow(currentTenant!, flowId));
+                        const flow = await safeDbOperation(() => flowService.getFlow(currentTenant!, flowId));
                         if (!flow) {
                             console.log(chalk.red(`Flow ${flowId} not found`));
                             if (intervalId) clearInterval(intervalId);

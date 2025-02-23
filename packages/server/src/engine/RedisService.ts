@@ -62,19 +62,41 @@ export class RedisService {
         return RedisService.instance;
     }
 
-    getContextKey(tenantId: string, flowId: string): string {
+    getFlowContextKey(tenantId: string, flowId: string): string {
         return `flow_context:${tenantId}:${flowId}`;
     }
 
-    async initFlowContext(tenantId: string, flowId: string): Promise<void> {
+    private getRunningFlowKey(tenantId: string, flowId: string, flowRunId: string): string {
+        return `running_flow:${tenantId}:${flowId}:${flowRunId}`;
+    }
+
+    async setFlowRunning(tenantId: string, flowId: string, flowRunId: string): Promise<boolean> {
+        const key = this.getRunningFlowKey(tenantId, flowId, flowRunId);
+        // Use Redis SET with NX option to ensure atomic operation
+        const result = await this.mainClient.set(key, 'NX', 'EX', 3600); // 1 hour timeout
+        return result === 'OK';
+    }
+
+    async getRunningFlowRun(tenantId: string, flowId: string, flowRunId: string): Promise<string | null> {
+        const key = this.getRunningFlowKey(tenantId, flowId, flowRunId);
+        return await this.mainClient.get(key);
+    }
+
+    async removeRunningFlow(tenantId: string, flowId: string, flowRunId: string): Promise<void> {
+        const key = this.getRunningFlowKey(tenantId, flowId, flowRunId);
+        await this.mainClient.del(key);
+    }
+
+    async initFlowContext(tenantId: string, flowId: string, flowRunId: string): Promise<void> {
         const context: IFlowContext = {
             flowId,
             tenantId,
+            flowRunId,
             data: {},
             startedAt: new Date(),
             lastUpdatedAt: new Date(),
         };
-        await this.contextClient.set(this.getContextKey(tenantId, flowId), JSON.stringify(context), 'EX', 86400);
+        await this.contextClient.set(this.getContextKey(tenantId, flowId, flowRunId), JSON.stringify(context), 'EX', 86400);
     }
 
     async setFlowContext(key: string, value: any, ttl: number = this.config.timeout): Promise<void> {
@@ -114,10 +136,6 @@ export class RedisService {
         } catch (error: any) {
             throw new ExternalServiceError('Redis', `Failed to get flow context: ${error.message}`);
         }
-    }
-
-    async getFlowContextWithFlowId(tenantId: string, flowId: string): Promise<IFlowContext | null> {
-        return await this.getFlowContext(this.getContextKey(tenantId, flowId));
     }
 
     async setWaitingState(key: string, value: any, ttl: number): Promise<void> {

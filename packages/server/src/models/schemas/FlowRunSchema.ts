@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 const FlowRunSchemaDefinition = {
     flowRunId: {
         type: String,
-        default: () => `flowrun_${uuidv4()}`,
+        default: () => `flow_run_${uuidv4()}`,
         unique: true,
         required: true
     },
@@ -14,7 +14,7 @@ const FlowRunSchemaDefinition = {
     tenantId: { type: String, required: true }, // Foreign key to Tenant
     status: {
         type: String,
-        enum: ['pending', 'running', 'completed', 'failed', 'waiting'],
+        enum: ['pending', 'running', 'completed', 'failed', 'waiting', 'paused', 'stopped'],
         required: true
     },
     nodeStates: [{
@@ -30,12 +30,13 @@ const FlowRunSchemaDefinition = {
     finishedAt: { type: Date, default: null },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
+    workingData: { type: Object, default: {} }, // Working data for the flow run
 };
 
 export const getMongooseFlowRunSchema = () => new mongoose.Schema(FlowRunSchemaDefinition, { timestamps: true });
 
 export const getSequelizeFlowRunSchema = () => ({
-    flowRunId: { type: DataTypes.STRING, primaryKey: true, defaultValue: () => `flowrun_${uuidv4()}` },
+    flowRunId: { type: DataTypes.STRING, primaryKey: true, defaultValue: () => `flow_run_${uuidv4()}` },
     flowId: { type: DataTypes.STRING, allowNull: false },
     tenantId: { type: DataTypes.STRING, allowNull: false },
     status: {

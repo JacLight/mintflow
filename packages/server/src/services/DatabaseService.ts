@@ -52,16 +52,4 @@ export class DatabaseService {
     async delete(collection: string, query: any) {
         return await this.retryOperation(DatabaseService.getInstance().delete, collection, query);
     }
-
-    async saveFlow(flow: any) {
-        return await this.update('flow', { flowId: flow.flowId }, flow);
-    }
-
-    async getFlow(tenantId: string, flowId: string) {
-        return await this.findOne('flow', { tenantId, flowId });
-    }
-
-    async getFlows(tenantId: string) {
-        return await this.find('flow', { tenantId });
-    }
 }
