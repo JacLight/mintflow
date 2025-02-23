@@ -30,6 +30,7 @@ export interface INodeDefinition {
     executionMode?: NodeExecutionMode;
     input?: any;
     nextNodes?: string[];
+    action: string;
     conditions?: {
         condition: string;
         nextNodeId: string;
@@ -76,19 +77,32 @@ export interface IFlow {
     tenantId: string;
     flowId: string;
     definition: any;
-    overallStatus: 'draft' | 'running' | 'paused' | 'completed' | 'failed';
-    nodeStates: IFlowNodeState[];
+    overallStatus: 'draft' | 'running' | 'paused' | 'completed' | 'failed' | 'waiting' | 'stopped';
     createdAt: Date;
     updatedAt: Date;
     logs?: string[];
-    status: string;
     workingState?: any;
     URL: string;
+}
+
+export interface IFlowRun {
+    tenantId: string;
+    flowId: string;
+    flowRunId: string;
+    status: 'pending' | 'running' | 'paused' | 'completed' | 'failed' | 'waiting' | 'stopped';
+    nodeStates: IFlowNodeState[];
+    createdAt: Date;
+    finishedAt: Date;
+    startedAt: Date;
+    updatedAt: Date;
+    logs?: string[];
+    workingData?: any;
 }
 
 export interface IFlowContext {
     flowId: string;
     tenantId: string;
+    flowRunId: string;
     data: Record<string, any>;
     startedAt: Date;
     lastUpdatedAt: Date;

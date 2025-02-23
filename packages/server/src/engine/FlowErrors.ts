@@ -11,9 +11,10 @@ export class FlowExecutionError extends FlowError {
     constructor(
         public nodeId: string,
         public flowId: string,
+        public flowRunId: string,
         message: string
     ) {
-        super(`Flow execution error in node ${nodeId} (flow: ${flowId}): ${message}`);
+        super(`Flow execution error in node ${nodeId} (flow: ${flowId}, run: ${flowRunId}): ${message}`);
         this.name = 'FlowExecutionError';
     }
 }
@@ -29,6 +30,13 @@ export class FlowNotFoundError extends FlowError {
     constructor(flowId: string) {
         super(`Flow not found: ${flowId}`);
         this.name = 'FlowNotFoundError';
+    }
+}
+
+export class FlowRunNotFoundError extends FlowError {
+    constructor(flowRunId: string) {
+        super(`Flow run not found: ${flowRunId}`);
+        this.name = 'FlowRunNotFoundError';
     }
 }
 

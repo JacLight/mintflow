@@ -5,6 +5,6 @@ const nodeRouter: Router = Router();
 
 nodeRouter.get('/all', getNodes);
 nodeRouter.get('/:nodeId', getNode);
-nodeRouter.post('/:nodeId/run', runNode);
+nodeRouter.post('/run', runNode);
 
 export default nodeRouter;

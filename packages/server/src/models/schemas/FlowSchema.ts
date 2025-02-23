@@ -13,7 +13,7 @@ const FlowSchemaDefinition = {
     definition: { type: Object, required: true },
     overallStatus: {
         type: String,
-        enum: ['draft', 'running', 'paused', 'completed', 'failed'],
+        enum: ['draft', 'running', 'paused', 'completed', 'failed', 'waiting', 'stopped'],
         required: true,
     },
     nodeStates: [{
