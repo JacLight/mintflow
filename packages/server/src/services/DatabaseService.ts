@@ -7,7 +7,7 @@ export class DatabaseService {
     private static readonly MAX_RETRIES = 3;
     private static readonly RETRY_DELAY = 1000; // 1 second
 
-    static getInstance(): any {
+    static getInstance(): DatabaseService {
         if (!DatabaseService.provider) {
             if (ENV.DB_PROVIDER === 'postgres') {
                 DatabaseService.provider = PostgresProvider.getInstance();

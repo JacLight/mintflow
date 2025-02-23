@@ -5,8 +5,9 @@ import { ConfigService } from './ConfigService.js';
 import { RedisService } from './RedisService.js';
 import { NodeExecutorService } from './NodeExecutorService.js';
 import { MetricsService } from './MetricsService.js';
-import { FlowNotFoundError, NodeNotFoundError } from './FlowErrors.js';
+import { FlowExecutionError, FlowNotFoundError, NodeNotFoundError } from './FlowErrors.js';
 import { DatabaseService } from '../services/DatabaseService.js';
+import { logger } from '@mintflow/common';
 
 export class FlowEngine {
     private static instance: FlowEngine;
@@ -99,57 +100,6 @@ export class FlowEngine {
     }
 
     /**
-     * Jumps to a specific node in the flow (for recovery or manual override)
-     */
-    public async jumpToNode(
-        tenantId: string,
-        flowId: string,
-        targetNodeId: string,
-        context?: any
-    ): Promise<void> {
-        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
-        if (!flow) {
-            throw new FlowNotFoundError(flowId);
-        }
-
-        const targetNode = flow.definition.nodes.find(
-            (n: INodeDefinition) => n.nodeId === targetNodeId
-        );
-        if (!targetNode) {
-            throw new NodeNotFoundError(targetNodeId);
-        }
-
-        // Update context if provided
-        if (context) {
-            flow.workingState = { ...flow.workingState, ...context };
-            await this.redis.setFlowContext(`${tenantId}:${flowId}`, context);
-        }
-
-        // Mark any running nodes as completed
-        flow.nodeStates.forEach((ns: IFlowNodeState) => {
-            if (ns.status === 'running') {
-                ns.status = 'completed';
-                ns.logs.push(`Jumped to node: ${targetNodeId}`);
-            }
-        });
-
-        // Initialize target node state if not exists
-        let targetState = flow.nodeStates.find(ns => ns.nodeId === targetNodeId);
-        if (!targetState) {
-            targetState = {
-                nodeId: targetNodeId,
-                status: 'pending',
-                logs: []
-            };
-            flow.nodeStates.push(targetState);
-        }
-
-        // Save flow state and execute target node
-        await DatabaseService.getInstance().saveFlow(flow);
-        await this.nodeExecutor.executeNode(flow, targetNodeId);
-    }
-
-    /**
      * Handles HTTP callback for nodes waiting on HTTP response
      */
     public async handleHttpCallback(
@@ -237,9 +187,163 @@ export class FlowEngine {
         await this.nodeExecutor.executeNode(flow, nodeId);
     }
 
+    public async runNode(tenantId: string, flowId: string, nodeState: IFlowNodeState, nodeDef: any): Promise<any> {
+        // Implement the logic for running a node
+        // This is a placeholder implementation
+        return { success: true };
+    }
+
     /**
-  * failNode: used if the Node/Python job wants to indicate an error.
-  */
+    * Jumps to a specific node in the flow, preserving existing state
+    */
+    public async jumpToNode(
+        tenantId: string,
+        flowId: string,
+        targetNodeId: string,
+        context?: Record<string, any>
+    ): Promise<void> {
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
+        if (!flow) {
+            throw new FlowNotFoundError(flowId);
+        }
+
+        const targetNode = flow.definition.nodes.find(
+            (n: INodeDefinition) => n.nodeId === targetNodeId
+        );
+        if (!targetNode) {
+            throw new NodeNotFoundError(targetNodeId);
+        }
+
+        try {
+            // Update working state with new context if provided
+            if (context) {
+                flow.workingState = { ...flow.workingState || {}, ...context };
+                await this.redis.setFlowContext(
+                    `${tenantId}:${flowId}`,
+                    context,
+                    this.config.redis.timeout
+                );
+            }
+
+            // Mark any running nodes as completed with jump notification
+            flow.nodeStates.forEach((ns: IFlowNodeState) => {
+                if (ns.status === 'running' || ns.status === 'waiting') {
+                    ns.status = 'completed';
+                    ns.finishedAt = new Date();
+                    ns.logs.push(`Flow jumped to node: ${targetNodeId} at ${new Date().toISOString()}`);
+                }
+            });
+
+            // Initialize or reset target node state
+            let targetState = flow.nodeStates.find(ns => ns.nodeId === targetNodeId);
+            if (!targetState) {
+                targetState = {
+                    nodeId: targetNodeId,
+                    status: 'pending',
+                    logs: [],
+                    startedAt: new Date()
+                };
+                flow.nodeStates.push(targetState);
+            } else {
+                targetState.status = 'pending';
+                targetState.startedAt = new Date();
+                targetState.finishedAt = undefined;
+                targetState.error = undefined;
+                targetState.logs.push(`Node restarted by jump operation at ${new Date().toISOString()}`);
+            }
+
+            // Save flow state before execution
+            await DatabaseService.getInstance().saveFlow(flow);
+
+            // Execute the target node
+            await this.nodeExecutor.executeNode(flow, targetNodeId);
+
+            logger.info('Successfully jumped to node', {
+                tenantId,
+                flowId,
+                targetNodeId,
+                timestamp: new Date().toISOString()
+            });
+
+        } catch (error: any) {
+            logger.error('Error during node jump', {
+                tenantId,
+                flowId,
+                targetNodeId,
+                error: error.message
+            });
+            throw new FlowExecutionError(targetNodeId, flowId, `Jump failed: ${error.message}`);
+        }
+    }
+
+    /**
+     * Completes a node with the provided result
+     */
+    public async completeNode(
+        tenantId: string,
+        flowId: string,
+        nodeId: string,
+        result?: any
+    ): Promise<void> {
+        const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
+        if (!flow) {
+            throw new FlowNotFoundError(flowId);
+        }
+
+        const nodeState = flow.nodeStates.find(ns => ns.nodeId === nodeId);
+        const nodeDef = flow.definition.nodes.find((n: any) => n.nodeId === nodeId);
+
+        if (!nodeState || !nodeDef) {
+            throw new NodeNotFoundError(nodeId);
+        }
+
+        try {
+            // Update node state
+            nodeState.status = 'completed';
+            nodeState.result = result;
+            nodeState.finishedAt = new Date();
+            nodeState.logs.push(`Node completed successfully at ${new Date().toISOString()}`);
+
+            // Update working state and context
+            flow.workingState = flow.workingState || {};
+            flow.workingState[`${nodeId}_result`] = result;
+
+            await this.redis.setFlowContext(
+                `${tenantId}:${flowId}`,
+                { [`${nodeId}_result`]: result }
+            );
+
+            // Save flow state
+            await DatabaseService.getInstance().saveFlow(flow);
+
+            // Proceed to next nodes if any
+            if (nodeDef.nextNodes?.length) {
+                for (const nextNodeId of nodeDef.nextNodes) {
+                    await this.nodeExecutor.executeNode(flow, nextNodeId);
+                }
+            }
+
+            logger.info('Node completed successfully', {
+                tenantId,
+                flowId,
+                nodeId,
+                timestamp: new Date().toISOString()
+            });
+
+        } catch (error: any) {
+            logger.error('Error completing node', {
+                tenantId,
+                flowId,
+                nodeId,
+                error: error.message
+            });
+            throw new FlowExecutionError(nodeId, flowId, `Completion failed: ${error.message}`);
+        }
+    }
+
+    /**
+     * Marks a node as failed with the provided error message
+     */
     public async failNode(
         tenantId: string,
         flowId: string,
@@ -247,25 +351,52 @@ export class FlowEngine {
         errorMsg: string
     ): Promise<void> {
         const flow: IFlow = await DatabaseService.getInstance().getFlow(tenantId, flowId);
-        if (!flow) return;
+        if (!flow) {
+            throw new FlowNotFoundError(flowId);
+        }
 
         const nodeState = flow.nodeStates.find(ns => ns.nodeId === nodeId);
-        if (!nodeState) return;
+        if (!nodeState) {
+            throw new NodeNotFoundError(nodeId);
+        }
 
-        nodeState.status = 'failed';
-        nodeState.logs.push(`[${new Date().toISOString()}] Node failed: ${errorMsg}`);
-        nodeState.finishedAt = new Date();
+        try {
+            // Update node state
+            nodeState.status = 'failed';
+            nodeState.error = errorMsg;
+            nodeState.finishedAt = new Date();
+            nodeState.logs.push(`Node failed at ${new Date().toISOString()}: ${errorMsg}`);
 
-        flow.overallStatus = 'failed';
-        await DatabaseService.getInstance().saveFlow(flow);
+            // Update flow status
+            flow.overallStatus = 'failed';
+            if (!flow.logs) flow.logs = [];
+            flow.logs.push(`Flow failed at node ${nodeId}: ${errorMsg}`);
+
+            // Track metric
+            this.metrics.recordNodeFailure(nodeId);
+
+            // Save flow state
+            await DatabaseService.getInstance().saveFlow(flow);
+
+            logger.error('Node execution failed', {
+                tenantId,
+                flowId,
+                nodeId,
+                error: errorMsg,
+                timestamp: new Date().toISOString()
+            });
+
+        } catch (error: any) {
+            logger.error('Error marking node as failed', {
+                tenantId,
+                flowId,
+                nodeId,
+                originalError: errorMsg,
+                newError: error.message
+            });
+            throw new FlowExecutionError(nodeId, flowId, `Failed to mark node as failed: ${error.message}`);
+        }
     }
-
-    public async runNode(tenantId: string, flowId: string, nodeState: IFlowNodeState, nodeDef: any): Promise<any> {
-        // Implement the logic for running a node
-        // This is a placeholder implementation
-        return { success: true };
-    }
-
 
     /**
      * Retrieves metrics for the flow engine
@@ -283,4 +414,5 @@ export class FlowEngine {
             this.nodeExecutor.cleanup()
         ]);
     }
+
 }

@@ -4,6 +4,7 @@ import { Redis } from 'ioredis';
 import { ConfigService } from './ConfigService.js';
 import { logger } from '@mintflow/common';
 import { ExternalServiceError } from './FlowErrors.js';
+import { IFlowContext } from './FlowInterfaces.js';
 
 export class RedisService {
     private static instance: RedisService;
@@ -61,6 +62,21 @@ export class RedisService {
         return RedisService.instance;
     }
 
+    getContextKey(tenantId: string, flowId: string): string {
+        return `flow_context:${tenantId}:${flowId}`;
+    }
+
+    async initFlowContext(tenantId: string, flowId: string): Promise<void> {
+        const context: IFlowContext = {
+            flowId,
+            tenantId,
+            data: {},
+            startedAt: new Date(),
+            lastUpdatedAt: new Date(),
+        };
+        await this.contextClient.set(this.getContextKey(tenantId, flowId), JSON.stringify(context), 'EX', 86400);
+    }
+
     async setFlowContext(key: string, value: any, ttl: number = this.config.timeout): Promise<void> {
         try {
             await this.withRetry(() =>
@@ -76,6 +92,19 @@ export class RedisService {
         }
     }
 
+    async updateFlowContext(tenantId: string, flowId: string, updates: Record<string, any>
+    ): Promise<void> {
+        const key = this.getContextKey(tenantId, flowId);
+        const context = await this.getFlowContext(key);
+        if (context) {
+            Object.assign(context.data, updates);
+            context.lastUpdatedAt = new Date();
+            await this.contextClient.set(key, JSON.stringify(context), 'EX', 86400);
+        } else {
+            await this.setFlowContext(key, updates);
+        }
+    }
+
     async getFlowContext(key: string): Promise<any | null> {
         try {
             const data = await this.withRetry(() =>
@@ -85,6 +114,10 @@ export class RedisService {
         } catch (error: any) {
             throw new ExternalServiceError('Redis', `Failed to get flow context: ${error.message}`);
         }
+    }
+
+    async getFlowContextWithFlowId(tenantId: string, flowId: string): Promise<IFlowContext | null> {
+        return await this.getFlowContext(this.getContextKey(tenantId, flowId));
     }
 
     async setWaitingState(key: string, value: any, ttl: number): Promise<void> {

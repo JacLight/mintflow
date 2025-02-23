@@ -3,6 +3,7 @@ import { createApp } from './app.js';
 import { ENV } from './config/env.js';
 import { Server } from 'socket.io';
 import http from 'http';
+import { initCLI, setupFlowEngineCLI, setupServerConsole } from './cli/index.js';
 
 async function main() {
     try {
@@ -28,7 +29,9 @@ async function main() {
 
         server.listen(ENV.PORT, () => {
             logger.info(`[Server] Listening on port ${ENV.PORT}`);
+            setupServerConsole();  // Sta
         });
+
     } catch (err: any) {
         logger.error('[Main] Fatal startup error', { error: err });
         process.exit(1);

@@ -6,7 +6,7 @@ import { RedisService } from './RedisService.js';
 import { MQTTService } from './MQTTService.js';
 import { HTTPCallbackService } from './HTTPCallbackService.js';
 import { MetricsService } from './MetricsService.js';
-import { SafeExpressionEvaluator } from '../utils/SafeExpressionEvaluator.js';
+import { SafeExpressionEvaluator } from './SafeExpressionEvaluator.js';
 import {
     FlowExecutionError,
     InvalidNodeConfigurationError,
@@ -16,6 +16,7 @@ import { logger } from '@mintflow/common';
 import { EventEmitter } from 'events';
 import { DatabaseService } from '../services/DatabaseService.js';
 import { getNodeAction } from '../plugins-register.js';
+import axios from 'axios';
 
 export class NodeExecutorService {
     private static instance: NodeExecutorService;
@@ -172,6 +173,12 @@ export class NodeExecutorService {
         if (nodeDef.manualNextNodes?.length) {
             nodeState.availableNextNodes = nodeDef.manualNextNodes;
         }
+
+        nodeState.availableNextNodes = nodeDef.manualNextNodes;
+        nodeState.inputRequirements = nodeDef.input?.requirements;
+
+        // Save the state
+        await DatabaseService.getInstance().saveFlow(flow);
     }
 
     private async handleWaitForInputNode(
@@ -303,13 +310,48 @@ export class NodeExecutorService {
         nodeDef: INodeDefinition,
         nodeState: IFlowNodeState
     ): Promise<void> {
+        const { entry } = nodeDef;
+        if (!entry?.url) {
+            throw new Error('External node missing URL configuration');
+        }
+
         nodeState.status = 'waiting';
-        await this.redis.enqueueExternalTask({
-            flowId: flow.flowId,
-            nodeId: nodeDef.nodeId,
-            input: nodeDef.input,
-            context: flow.workingState
-        });
+
+        try {
+            // Make external service call
+            const response = await axios({
+                method: entry.method || 'POST',
+                url: entry.url,
+                headers: entry.headers || {},
+                data: {
+                    ...nodeDef.input,
+                    flowId: flow.flowId,
+                    nodeId: nodeDef.nodeId,
+                    context: flow.workingState
+                }
+            });
+
+            // Update node state with response
+            nodeState.status = 'completed';
+            nodeState.result = response.data;
+            nodeState.finishedAt = new Date();
+
+            // Update working state
+            flow.workingState[`${nodeDef.nodeId}_result`] = response.data;
+
+            // Save flow state
+            await DatabaseService.getInstance().saveFlow(flow);
+
+            // Continue to next nodes
+            for (const nextNodeId of nodeDef.nextNodes || []) {
+                await this.executeNode(flow, nextNodeId);
+            }
+
+        } catch (error: any) {
+            nodeState.status = 'failed';
+            nodeState.error = error.message;
+            throw error;
+        }
     }
 
     private async executeNodeLogic(
@@ -418,6 +460,10 @@ export class NodeExecutorService {
 
         nodeState.status = 'completed';
         nodeState.selectedNext = selectedNextNode;
+        nodeState.result = userInput;
+        nodeState.finishedAt = new Date();
+
+        // await DatabaseService.getInstance().saveFlow(flow);
         await this.executeNode(flow, selectedNextNode);
     }
 
