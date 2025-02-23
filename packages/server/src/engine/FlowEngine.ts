@@ -1,6 +1,6 @@
 // src/FlowEngine.ts
 
-import { IFlow, IFlowContext, INodeDefinition, IFlowNodeState } from './FlowInterfaces.js';
+import { IFlow, IFlowContext, INodeDefinition, IFlowNodeState, IFlowRun } from './FlowInterfaces.js';
 import { ConfigService } from './ConfigService.js';
 import { RedisService } from './RedisService.js';
 import { NodeExecutorService } from './NodeExecutorService.js';
@@ -31,7 +31,7 @@ export class FlowEngine {
     /**
      * Initializes and starts a new flow execution
      */
-    public async runFlow(tenantId: string, flowId: string): Promise<IFlow> {
+    public async runFlow(tenantId: string, flowId: string): Promise<IFlowRun> {
         const flow: IFlow = await this.flowService.getFlow(tenantId, flowId);
         if (!flow) {
             throw new FlowNotFoundError(flowId);
@@ -51,7 +51,7 @@ export class FlowEngine {
             logger.info(`Flow ${flowId} already has active run: ${activeRun.flowRunId}`);
             // Set the Redis key to match DB state
             await this.redis.setFlowRunning(tenantId, flowId, activeRun.flowRunId);
-            return flow;
+            return activeRun;
         }
 
         // Initialize flow context
@@ -87,7 +87,7 @@ export class FlowEngine {
             if (raceCheckRun) {
                 await this.flowRunService.updateFlowRunStatus(flowRun.flowRunId, 'cancelled');
                 logger.info(`Flow ${flowId} was started by another instance`);
-                return flow;
+                return flowRun;
             }
         }
 
@@ -121,16 +121,27 @@ export class FlowEngine {
             this.metrics.recordFlowStart();
             // Start execution from the start node
             await this.nodeExecutor.executeNode(flow, flowRun, startNode.nodeId, flowRun.workingData);
-            return flow;
+            await this.flowRunService.completeFlowRun(flowRun.flowRunId, this.getOverallNodeStatus(flowRun.nodeStates));
+            return this.flowRunService.getFlowRunById(flowRun.flowRunId);
         } catch (error: any) {
             flow.overallStatus = 'failed';
+            flowRun.status = 'failed';
             await FlowService.getInstance().saveFlow(flow);
             await FlowRunService.getInstance().logFlowRun(flowRun.flowRunId, error.message);
             throw error;
         } finally {
-            await FlowRunService.getInstance().completeFlowRun(flowRun.flowRunId);
             await this.redis.removeRunningFlow(tenantId, flowId, flowRun.flowRunId);
         }
+    }
+
+    private getOverallNodeStatus(nodeStates: IFlowNodeState[]): string {
+        let overallStatus = 'completed';
+        for (const ns of nodeStates) {
+            if (ns.status !== 'completed') {
+                overallStatus = 'running';
+            }
+        }
+        return overallStatus;
     }
 
     /**
@@ -491,7 +502,7 @@ export class FlowEngine {
         });
     }
 
-    public async startFlow(tenantId: string, flowId: string): Promise<IFlow> {
+    public async startFlow(tenantId: string, flowId: string): Promise<IFlowRun> {
         const flow = await FlowService.getInstance().getFlowById(flowId);
         if (!flow) {
             throw new FlowNotFoundError(flowId);

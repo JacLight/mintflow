@@ -6,7 +6,7 @@ import { RedisService } from './RedisService.js';
 import { logger } from '@mintflow/common';
 import { ExternalServiceError } from './FlowErrors.js';
 import { EventEmitter } from 'events';
-import { IFlow, INodeDefinition, IFlowNodeState } from './FlowInterfaces.js';
+import { IFlow, INodeDefinition, IFlowNodeState, IFlowRun } from './FlowInterfaces.js';
 
 export class HTTPCallbackService {
     private static instance: HTTPCallbackService;
@@ -25,8 +25,8 @@ export class HTTPCallbackService {
 
     async setupCallback(
         flow: IFlow,
+        flowRun: IFlowRun,
         nodeDef: INodeDefinition,
-        nodeState: IFlowNodeState
     ): Promise<string> {
         const callbackId = uuidv4();
         const timeout = nodeDef.http?.timeout || this.config.timeouts.http;
@@ -34,13 +34,9 @@ export class HTTPCallbackService {
         try {
             await this.redis.setWaitingState(
                 `http_callback:${callbackId}`,
-                { flow, nodeDef, nodeState },
+                { flow, flowRun, nodeDef },
                 timeout
             );
-
-            nodeState.status = 'waiting';
-            nodeState.logs.push(`Waiting for HTTP callback with ID: ${callbackId}`);
-
             return callbackId;
         } catch (error: any) {
             throw new ExternalServiceError(
