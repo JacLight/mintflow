@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 import mongoose from 'mongoose';
 import Joi from 'joi';
 import { v4 as uuidv4 } from 'uuid';
+import { metrics } from 'weaviate-client';
 
 const FlowRunSchemaDefinition = {
     flowRunId: {
@@ -31,6 +32,11 @@ const FlowRunSchemaDefinition = {
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     workingData: { type: Object, default: {} }, // Working data for the flow run
+    metrics: {
+        completionTimes: { type: [Number], default: [] }, // Array of numbers
+        averageCompletionTime: { type: Number, default: 0 },
+        activeFlows: { type: Number, default: 0 },
+    }, // Metrics for the flow run
 };
 
 export const getMongooseFlowRunSchema = () => new mongoose.Schema(FlowRunSchemaDefinition, { timestamps: true });

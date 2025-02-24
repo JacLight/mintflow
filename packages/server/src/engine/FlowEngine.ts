@@ -116,17 +116,17 @@ export class FlowEngine {
 
             // Save initial state
             flow.overallStatus = 'running';
-            await this.flowService.saveFlow(flow);
+            await this.flowService.updateFlowStatus(flowId, 'running');
 
             // Start metrics tracking
             this.metrics.recordFlowStart();
             // Start execution from the start node
             await this.nodeExecutor.executeNode(flow, flowRun, startNode.nodeId);
             await this.flowRunService.completeFlowRun(flowRun.flowRunId, this.getOverallNodeStatus(flowRun.nodeStates));
+            await this.flowService.updateFlow(flowId, { overallStatus: 'completed', metrics: this.metrics.getFlowMetrics(flowId) });
             return this.flowRunService.getFlowRunById(flowRun.flowRunId);
         } catch (error: any) {
-            flow.overallStatus = 'failed';
-            await FlowService.getInstance().saveFlow(flow);
+            await this.flowService.updateFlowStatus(flowId, 'failed');
             await this.flowRunService.completeFlowRun(flowRun.flowRunId, 'failed', error.message);
             throw error;
         } finally {
@@ -714,13 +714,6 @@ export class FlowEngine {
             });
             throw error;
         }
-    }
-
-    /**
-     * Retrieves metrics for the flow engine
-     */
-    public getMetrics(): any {
-        return this.metrics.getMetrics();
     }
 
     /**

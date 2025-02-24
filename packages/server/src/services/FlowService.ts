@@ -80,25 +80,13 @@ export class FlowService {
 
     async updateFlow(flowId: string, data: any) {
         try {
-
-            const tenant = await this.tenantService.getTenantById(data.tenantId);
-            if (!tenant) {
-                throw new Error('Invalid tenant ID.');
-            }
-
-            // const existingFlow = await this.db.findOne(TABLE_NAME, { flowId });
-            // if (!existingFlow) {
-            //     throw new Error('Flow not found.');
-            // }
-
             const updatedData = { ...data };
-            updatedData.tenantId = tenant.tenantId;
-            updatedData.tenantName = tenant.name;
+            delete updatedData.tenantId;
+            delete updatedData.tenantName;
             delete updatedData._id;
             delete updatedData.flowId;
             delete updatedData.createdAt;
             updatedData.updatedAt = new Date().toISOString();
-
 
             const result = await this.db.update(TABLE_NAME, { flowId }, updatedData);
             if (!result) {
@@ -114,7 +102,7 @@ export class FlowService {
 
     async updateFlowStatus(flowId: string, status: string) {
         try {
-            const result = await this.db.update(TABLE_NAME, { flowId }, { overallStatus: status });
+            const result = await this.db.update(TABLE_NAME, { flowId }, { overallStatus: status, updatedAt: new Date().toISOString() });
             if (!result) {
                 throw new Error('Flow not found or update failed.');
             }

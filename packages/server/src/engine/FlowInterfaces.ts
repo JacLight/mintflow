@@ -99,6 +99,7 @@ export interface IFlowRun {
     updatedAt: Date;
     logs?: string[];
     workingData?: any;
+    metrics?: any;
 }
 
 export interface IFlowContext {

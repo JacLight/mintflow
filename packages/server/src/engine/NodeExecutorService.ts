@@ -330,7 +330,7 @@ export class NodeExecutorService {
             );
         }
 
-        const input = { ...workingData, ...nodeDef.input };
+        const input = JSON.parse(JSON.stringify({ ...workingData, ...nodeDef.input }));
         return await nodeAction.execute(input, nodeDef);
     }
 
