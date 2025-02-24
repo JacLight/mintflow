@@ -45,7 +45,7 @@ export class DatabaseService {
         return await this.retryOperation(DatabaseService.getInstance().findOne, collection, query);
     }
 
-    async update(collection: string, query: any, updateData: any = {}, arrayUpdate: { [key: string]: any } | undefined) {
+    async update(collection: string, query: any, updateData: any = {}, arrayUpdate?: { [key: string]: any }) {
         return await this.retryOperation(DatabaseService.getInstance().update, collection, query, updateData, arrayUpdate);
     }
 
