@@ -145,7 +145,7 @@ export class NodeExecutorService {
         nodeDef: INodeDefinition,
     ): Promise<void> {
         await this.updateNodeState(flowRun, nodeDef, { status: 'running', startedAt: new Date() });
-        const result = await this.executeNodeLogic(flowRun, nodeDef, flowRun.workingData || {});
+        const result = await this.executeNodeLogic(nodeDef, flowRun.workingData || {});
         flowRun.workingData = result;
         await this.updateNodeState(flowRun, nodeDef, { status: 'completed', result, finishedAt: new Date() });
         await this.updateFlowContext(flowRun, nodeDef.nodeId, result);
@@ -318,7 +318,6 @@ export class NodeExecutorService {
     }
 
     private async executeNodeLogic(
-        flowRun: IFlowRun,
         nodeDef: INodeDefinition,
         workingData: Record<string, any>
     ): Promise<any> {
@@ -385,8 +384,8 @@ export class NodeExecutorService {
     }
 
 
-    async testNode(flowRun: IFlowRun, nodeDef: INodeDefinition): Promise<any> {
-        return this.executeNodeLogic(flowRun, nodeDef, {});
+    async testNode(nodeDef: INodeDefinition): Promise<any> {
+        return this.executeNodeLogic(nodeDef, {});
     }
 
     async progressManualNode(
