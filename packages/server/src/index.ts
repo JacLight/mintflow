@@ -3,7 +3,7 @@ import { createApp } from './app.js';
 import { ENV } from './config/env.js';
 import { Server } from 'socket.io';
 import http from 'http';
-import { initCLI, setupFlowEngineCLI, setupServerConsole } from './cli/index.js';
+import { setupServerConsole } from './cli/index.js';
 
 async function main() {
     try {

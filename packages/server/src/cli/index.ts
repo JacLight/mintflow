@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import { FlowEngine } from '../engine/FlowEngine.js';
 import { DatabaseService } from '../services/DatabaseService.js';
 import { FlowService } from '../services/FlowService.js';
+import { MetricsService } from '../engine/MetricsService.js';
 
 export function setupServerConsole() {
     // Wrap service initialization in try-catch
@@ -100,7 +101,7 @@ export function setupServerConsole() {
                 console.log('Engine status:', flowEngine ? 'Running' : 'Stopped');
 
                 try {
-                    console.log('Metrics:', flowEngine.getMetrics());
+                    console.log('Metrics:', MetricsService.getInstance().getMetrics());
                 } catch (error) {
                     console.log('Metrics: Unavailable');
                 }

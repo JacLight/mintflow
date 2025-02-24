@@ -2,6 +2,7 @@ import { PluginDescriptor } from "@mintflow/common";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import timerPlugin from "./plugins/timer-plugin.js";
 
 let _dirname;
 if (typeof __dirname !== 'undefined') {
@@ -35,6 +36,8 @@ export async function loadPlugins() {
             console.error(`❌ Failed to load plugin: ${plugin}`, err);
         }
     }
+
+    pluginMap.set("timer", timerPlugin);
 }
 
 export function getPlugins() {

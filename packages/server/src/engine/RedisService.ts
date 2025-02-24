@@ -96,7 +96,7 @@ export class RedisService {
             startedAt: new Date(),
             lastUpdatedAt: new Date(),
         };
-        await this.contextClient.set(this.getContextKey(tenantId, flowId, flowRunId), JSON.stringify(context), 'EX', 86400);
+        await this.contextClient.set(this.getRunningFlowKey(tenantId, flowId, flowRunId), JSON.stringify(context), 'EX', 86400);
     }
 
     async setFlowContext(key: string, value: any, ttl: number = this.config.timeout): Promise<void> {
@@ -114,9 +114,10 @@ export class RedisService {
         }
     }
 
-    async updateFlowContext(tenantId: string, flowId: string, updates: Record<string, any>
+    async updateFlowContext(flowRun, updates: Record<string, any>
     ): Promise<void> {
-        const key = this.getContextKey(tenantId, flowId);
+        const { tenantId, flowId, flowRunId } = flowRun;
+        const key = this.getRunningFlowKey(tenantId, flowId, flowRunId);
         const context = await this.getFlowContext(key);
         if (context) {
             Object.assign(context.data, updates);
