@@ -28,7 +28,7 @@ export class NodeExecutorService {
     private httpCallback = HTTPCallbackService.getInstance();
     private metrics = MetricsService.getInstance();
     private eventEmitter = new EventEmitter();
-    // private flowService = FlowService.getInstance();
+    private flowService = FlowService.getInstance();
     private flowRunService = FlowRunService.getInstance();
 
     private constructor() {
@@ -148,7 +148,7 @@ export class NodeExecutorService {
         const result = await this.executeNodeLogic(nodeDef, flowRun.workingData || {});
         flowRun.workingData = result;
         await this.updateNodeState(flowRun, nodeDef, { status: 'completed', result, finishedAt: new Date() });
-        await this.updateFlowContext(flowRun, nodeDef.nodeId, result);
+        await this.redis.updateFlowContext(flowRun, { [`${nodeDef.nodeId}_result`]: result });
         await this.proceedToNextNodes(flow, flowRun, nodeDef);
     }
 
@@ -192,7 +192,7 @@ export class NodeExecutorService {
             const result = await this.mqtt.waitForMessage(nodeDef.mqtt.topic, timeout);
             await this.updateNodeState(flowRun, nodeDef, { status: 'completed', result, finishedAt: new Date() });
             flowRun.workingData = result;
-            await this.updateFlowContext(flowRun, nodeDef.nodeId, result);
+            await this.redis.updateFlowContext(flowRun, { [`${nodeDef.nodeId}_result`]: result });
             await this.proceedToNextNodes(flow, flowRun, nodeDef);
         } catch (error: any) {
             throw new FlowExecutionError(
@@ -220,7 +220,7 @@ export class NodeExecutorService {
             const result = await this.httpCallback.waitForCallback(callbackId, timeout);
             await this.updateNodeState(flowRun, nodeDef, { status: 'completed', result, finishedAt: new Date() });
             flowRun.workingData = result;
-            await this.updateFlowContext(flowRun, nodeDef.nodeId, result);
+            await this.redis.updateFlowContext(flowRun, { [`${nodeDef.nodeId}_result`]: result });
             await this.proceedToNextNodes(flow, flowRun, nodeDef);
         } catch (error: any) {
             throw new FlowExecutionError(
@@ -262,7 +262,7 @@ export class NodeExecutorService {
                     try {
                         await this.updateNodeState(flowRun, nodeDef, { status: 'completed', result: data, finishedAt: new Date() });
                         flowRun.workingData = data;
-                        await this.updateFlowContext(flowRun, nodeDef.nodeId, data);
+                        await this.redis.updateFlowContext(flowRun, { [`${nodeDef.nodeId}_result`]: data });
                         await this.proceedToNextNodes(flow, flowRun, nodeDef);
                         resolve();
                     } catch (error: any) {
@@ -372,18 +372,6 @@ export class NodeExecutorService {
         }
     }
 
-    private async updateFlowContext(
-        flowRun: IFlowRun,
-        nodeId: string,
-        result: any
-    ): Promise<void> {
-        await this.redis.setFlowContext(
-            `${flowRun.tenantId}:${flowRun.flowId}:${flowRun.flowRunId}`,
-            { [`${nodeId}_result`]: result }
-        );
-    }
-
-
     async testNode(nodeDef: INodeDefinition): Promise<any> {
         return this.executeNodeLogic(nodeDef, {});
     }
@@ -414,7 +402,7 @@ export class NodeExecutorService {
         if (userInput) {
             flowRun.workingData = flowRun.workingData || {};
             flowRun.workingData[`${nodeId}_input`] = userInput;
-            await this.updateFlowContext(flowRun, nodeId, { input: userInput });
+            await this.redis.updateFlowContext(flowRun, { input: userInput });
         }
         this.updateNodeState(flowRun, nodeDef, { status: 'completed', selectedNext: selectedNextNode, result: userInput, finishedAt: new Date() });
         // await DatabaseService.getInstance().saveFlow(flow);
@@ -437,9 +425,40 @@ export class NodeExecutorService {
         }
 
         flowRun.workingData = flowRun.workingData || {};
-        await this.updateFlowContext(flowRun, nodeId, { input: userInput });
+        await this.redis.updateFlowContext(flowRun, { input: userInput });
         await this.handleStandardNode(flow, flowRun, nodeDef);
     }
+
+    async resumeScheduledTask(
+        flowRunId: string,
+        nodeId: string,
+        result: any
+    ): Promise<void> {
+        const flowRun = await this.flowRunService.getFlowRunById(flowRunId);
+        if (!flowRun) {
+            throw new Error(`Flow run not found: ${flowRunId}`);
+        }
+
+        const flow = await this.flowService.getFlowById(flowRun.flowId);
+        if (!flow) {
+            throw new Error(`Flow not found: ${flowRun.flowId}`);
+        }
+
+        const nodeState = flowRun.nodeStates.find(ns => ns.nodeId === nodeId);
+        const nodeDef = flow.definition.nodes.find(
+            (n: INodeDefinition) => n.nodeId === nodeId
+        );
+
+        if (!nodeState || !nodeDef) {
+            throw new NodeNotFoundError(nodeId);
+        }
+        this.updateNodeState(flowRun, nodeDef, { status: 'completed', result, finishedAt: new Date() });
+        flowRun.workingData = result
+        await this.redis.updateFlowContext(flowRun, { [`${nodeId}_result`]: result });
+        await this.proceedToNextNodes(flow, flowRun, nodeDef);
+    }
+
+
 
     emitEvent(eventName: string, data: any): void {
         this.eventEmitter.emit(eventName, data);

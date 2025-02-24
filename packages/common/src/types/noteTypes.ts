@@ -4,13 +4,13 @@ export type ActionMethod = "HTTP" | "exec" | string;
 
 export interface ActionDescriptor {
     name: string;
-    inputSchema?: object;    // JSON schema for the input
-    outputSchema?: object;   // JSON schema for the output
+    inputSchema?: object | string;
+    outputSchema?: object | string;
     exampleInput?: any;      // Sample input
     exampleOutput?: any;     // Sample output
     description?: string;
     documentation?: string;
-    method: ActionMethod;
+    method?: ActionMethod;
     entry?: {               // Only required for HTTP-based actions
         url: string;
         method: string;       // e.g. "POST"
@@ -25,7 +25,12 @@ export interface PluginDescriptor {
     description: string;
     icon: string;
     runner: string;
+    type: string;
     documentation: string;
+    inputSchema?: object | string;
+    outputSchema?: object | string;
+    exampleInput?: any;
+    exampleOutput?: any;
     waitForTrigger?: boolean; // Only required for exec-based actions
     actions: ActionDescriptor[];
 }

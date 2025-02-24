@@ -1,8 +1,7 @@
-import cron from 'node-cron';
-import { scheduleTask, getTasks } from './scheduler.js';
-import { v4 as uuidv4 } from 'uuid';
+import { PluginDescriptor } from "@mintflow/common";
+import { TimerJob, TimerQueueService } from "../engine/TimerQueueService.js";
 
-const timerPlugin = {
+const timerPlugin: PluginDescriptor = {
     name: "Timer",
     icon: "",
     description: "Description for timer",
@@ -45,43 +44,65 @@ const timerPlugin = {
                 rules: [{ operation: 'notEqual', valueA: 'timeout', valueB: '{{type}}', action: 'hide' }],
             },
         },
-
     },
     outputSchema: 'string',
     exampleInput: 'undefined',
     exampleOutput: new Date().toISOString(),
     documentation: "https://yourdocs.com/timer",
-    method: "exec",
+    type: "node",
     actions: [
         {
             name: 'cron',
-            execute: async (input: any, config: any) => {
-                const { cron: cronExpression } = input;
-                if (!cron.validate(cronExpression)) {
-                    throw new Error('Invalid cron expression');
-                }
-                const taskId = scheduleTask({ id: uuidv4(), type: 'cron', expression: cronExpression });
-                return `Cron job scheduled with expression: ${cronExpression}, Task ID: ${taskId}`;
+            execute: async (input: any, context: any) => {
+                const { cron: expression } = input;
+                const { flowRunId, nodeId } = context;
+
+                const timerJob: TimerJob = {
+                    type: 'cron',
+                    flowRunId,
+                    nodeId,
+                    data: { timestamp: new Date().toISOString() },
+                    expression
+                };
+
+                const jobId = await TimerQueueService.getInstance().scheduleTimer(timerJob);
+                return `Cron job scheduled with expression: ${expression}, Job ID: ${jobId}`;
             }
         },
         {
             name: 'interval',
-            execute: async (input: any, config: any) => {
+            execute: async (input: any, context: any) => {
                 const { interval = 5 } = input;
-                const existingTasks = getTasks().filter(task => task.type === 'interval');
-                if (existingTasks.length > 0) {
-                    throw new Error('An interval task is already scheduled');
-                }
-                const taskId = scheduleTask({ id: uuidv4(), type: 'interval', expression: '', interval });
-                return `Interval set for every ${interval} seconds, Task ID: ${taskId}`;
+                const { flowRunId, nodeId } = context;
+
+                const timerJob: TimerJob = {
+                    type: 'interval',
+                    flowRunId,
+                    nodeId,
+                    data: { timestamp: new Date().toISOString() },
+                    interval
+                };
+
+                const jobId = await TimerQueueService.getInstance().scheduleTimer(timerJob);
+                return `Interval set for every ${interval} seconds, Job ID: ${jobId}`;
             }
         },
         {
             name: 'timeout',
-            execute: async (input: any, config: any) => {
+            execute: async (input: any, context: any) => {
                 const { timeout = 5 } = input;
-                const taskId = scheduleTask({ id: uuidv4(), type: 'timeout', expression: '', timeout });
-                return `Timeout set for ${timeout} seconds, Task ID: ${taskId}`;
+                const { flowRunId, nodeId } = context;
+
+                const timerJob: TimerJob = {
+                    type: 'timeout',
+                    flowRunId,
+                    nodeId,
+                    data: { timestamp: new Date().toISOString() },
+                    timeout
+                };
+
+                const jobId = await TimerQueueService.getInstance().scheduleTimer(timerJob);
+                return `Timeout set for ${timeout} seconds, Job ID: ${jobId}`;
             }
         },
     ]

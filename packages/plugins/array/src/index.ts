@@ -8,6 +8,7 @@ const arrayPlugin: PluginDescriptor = {
     icon: "TbMathFunction",
     description: "A plugin to perform array operations",
     documentation: "https://docs.example.com/arrayPlugin",
+    type: 'node',
     actions: [
         actions.filter,
         actions.map,

@@ -33,15 +33,15 @@ export default {
             documentation: "https://docs.example.com/execPluginExec",
             method: "exec",
             execute: async (input: any, config: any) => {
-                const { command } = input;
+                const { command, inputData } = input;
                 return new Promise((resolve, reject) => {
                     exec(command, (error: any, stdout: any, stderr: any) => {
                         if (error) {
-                            resolve({ success: false, message: error.message });
+                            resolve({ success: false, message: error.message, inputData });
                         } else if (stderr) {
-                            resolve({ success: false, message: stderr });
+                            resolve({ success: false, message: stderr, inputData });
                         } else {
-                            resolve({ success: true, message: stdout });
+                            resolve({ success: true, message: stdout, inputData });
                         }
                     });
                 });
