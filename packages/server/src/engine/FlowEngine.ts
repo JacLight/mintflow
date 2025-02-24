@@ -107,6 +107,7 @@ export class FlowEngine {
             // Initialize node states
             flowRun.nodeStates = [{
                 nodeId: startNode.nodeId,
+                plugin: startNode.plugin,
                 status: 'pending',
                 logs: []
             }];
@@ -120,14 +121,13 @@ export class FlowEngine {
             // Start metrics tracking
             this.metrics.recordFlowStart();
             // Start execution from the start node
-            await this.nodeExecutor.executeNode(flow, flowRun, startNode.nodeId, flowRun.workingData);
+            await this.nodeExecutor.executeNode(flow, flowRun, startNode.nodeId);
             await this.flowRunService.completeFlowRun(flowRun.flowRunId, this.getOverallNodeStatus(flowRun.nodeStates));
             return this.flowRunService.getFlowRunById(flowRun.flowRunId);
         } catch (error: any) {
             flow.overallStatus = 'failed';
-            flowRun.status = 'failed';
             await FlowService.getInstance().saveFlow(flow);
-            await FlowRunService.getInstance().logFlowRun(flowRun.flowRunId, error.message);
+            await this.flowRunService.completeFlowRun(flowRun.flowRunId, 'failed', error.message);
             throw error;
         } finally {
             await this.redis.removeRunningFlow(tenantId, flowId, flowRun.flowRunId);
@@ -508,7 +508,7 @@ export class FlowEngine {
             throw new FlowNotFoundError(flowId);
         }
         // Can only start flows that are in draft or paused state
-        if (!['draft', 'paused', 'stopped', 'completed'].includes(flow.overallStatus)) {
+        if (!['draft', 'paused', 'stopped', 'completed', 'failed'].includes(flow.overallStatus)) {
             throw new Error(`Cannot start flow ${flowId} - invalid state: ${flow.overallStatus}`);
         }
         // Start flow execution
@@ -672,7 +672,6 @@ export class FlowEngine {
             // No active instances
             if (activeInstances.length === 0) {
                 const flowStatus = await this.flowService.updateFlowStatus(flowId, 'stopped');
-                results.overallStatus = 'stopped';
                 results.overallStatus = 'stopped';
                 results.message = 'No active instances to stop';
                 return results;

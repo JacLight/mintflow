@@ -1,3 +1,5 @@
+import { exec } from "child_process";
+
 export default {
     name: "Exec Plugin",
     id: "exec",
@@ -33,7 +35,6 @@ export default {
             execute: async (input: any, config: any) => {
                 const { command } = input;
                 return new Promise((resolve, reject) => {
-                    const { exec } = require("child_process");
                     exec(command, (error: any, stdout: any, stderr: any) => {
                         if (error) {
                             resolve({ success: false, message: error.message });

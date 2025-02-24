@@ -45,11 +45,15 @@ export class DatabaseService {
         return await this.retryOperation(DatabaseService.getInstance().findOne, collection, query);
     }
 
-    async update(collection: string, query: any, updateData: any) {
-        return await this.retryOperation(DatabaseService.getInstance().update, collection, query, updateData);
+    async update(collection: string, query: any, updateData: any = {}, arrayUpdate: { [key: string]: any } | undefined) {
+        return await this.retryOperation(DatabaseService.getInstance().update, collection, query, updateData, arrayUpdate);
     }
 
     async delete(collection: string, query: any) {
         return await this.retryOperation(DatabaseService.getInstance().delete, collection, query);
+    }
+
+    async deleteMany(collection: string, query: any) {
+        return await this.retryOperation(DatabaseService.getInstance().deleteMany, collection, query);
     }
 }

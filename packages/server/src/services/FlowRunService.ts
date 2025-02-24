@@ -61,7 +61,7 @@ export class FlowRunService {
             updatedData.updatedAt = new Date().toISOString();
 
 
-            const result = await this.db.update(TABLE_NAME, { flowRunId }, updatedData);
+            const result = await this.db.update(TABLE_NAME, { flowRunId }, updatedData, undefined);
             if (!result) {
                 throw new Error(`FlowRun not found or update failed: ${flowRunId}`);
             }
@@ -75,7 +75,7 @@ export class FlowRunService {
 
     async updateFlowStatus(flowId: string, status: string) {
         try {
-            const result = await this.db.update(TABLE_NAME, { flowId }, { overallStatus: status });
+            const result = await this.db.update(TABLE_NAME, { flowId }, { overallStatus: status }, undefined);
             if (!result) {
                 throw new Error('Flow not found or update failed.');
             }
@@ -115,8 +115,7 @@ export class FlowRunService {
                 {
                     status: 'failed',
                     finishedAt: new Date(),
-                    $push: { logs: 'Flow run marked as failed due to inactivity' }
-                },
+                }, { logs: 'Flow run marked as failed due to inactivity' }
             );
         } catch (error) {
             logger.error(`[FlowRunService] Error cleaning up stale runs: ${(error as any).message}`);
@@ -157,7 +156,7 @@ export class FlowRunService {
 
     async updateFlowRunStatus(flowRunId: string, status: string) {
         try {
-            const result = await this.db.update(TABLE_NAME, { flowRunId }, { status, updatedAt: new Date() });
+            const result = await this.db.update(TABLE_NAME, { flowRunId }, { status, updatedAt: new Date() }, undefined);
             if (!result) {
                 throw new Error('FlowRun not found or update failed.');
             }
@@ -171,7 +170,7 @@ export class FlowRunService {
 
     async logFlowRun(flowRunId: string, log: string) {
         try {
-            const result = await this.db.update(TABLE_NAME, { flowRunId }, { $push: { logs: log } });
+            const result = await this.db.update(TABLE_NAME, { flowRunId }, {}, { logs: log });
             if (!result) {
                 throw new Error('FlowRun not found or log update failed.');
             }
@@ -183,13 +182,13 @@ export class FlowRunService {
         }
     }
 
-    async completeFlowRun(flowRunId: string, status = 'completed') {
+    async completeFlowRun(flowRunId: string, status = 'completed', log?: string) {
         try {
             const result = await this.db.update(TABLE_NAME, { flowRunId }, {
                 status,
                 finishedAt: new Date(),
-                updatedAt: new Date()
-            });
+                updatedAt: new Date(),
+            }, { logs: log });
             if (!result) {
                 throw new Error('FlowRun not found or completion failed.');
             }
@@ -211,6 +210,20 @@ export class FlowRunService {
             return result;
         } catch (error) {
             logger.error(`[FlowRunService] Error deleting flow run: ${(error as any).message}`);
+            throw error;
+        }
+    }
+
+    async deleteAllFlowRuns(flowId: string) {
+        try {
+            const result = await this.db.deleteMany(TABLE_NAME, { flowId });
+            if (!result) {
+                throw new Error('FlowRuns not found or deletion failed.');
+            }
+            logger.info(`[FlowRunService] All FlowRuns deleted for flow: ${flowId}`);
+            return result;
+        } catch (error) {
+            logger.error(`[FlowRunService] Error deleting all flow runs: ${(error as any).message}`);
             throw error;
         }
     }

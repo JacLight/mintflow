@@ -20,7 +20,7 @@ const startPlugin = {
     method: "exec",
     actions: [
         {
-            name: "range",
+            name: "start",
             execute: async (input: any, config: any) => {
                 return input;
             }
