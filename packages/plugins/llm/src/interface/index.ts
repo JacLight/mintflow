@@ -1,6 +1,9 @@
+// interface/index.ts
 
+// Provider types
 export type ProviderType = 'openai' | 'anthropic' | 'google' | 'ollama';
 
+// Provider configurations
 export interface OpenAIConfig {
     apiKey: string;
     baseUrl?: string;
@@ -14,7 +17,6 @@ export interface AnthropicConfig {
     apiVersion?: string;
 }
 
-
 export interface GoogleConfig {
     apiKey: string;
     projectId?: string;
@@ -26,6 +28,7 @@ export interface OllamaConfig {
     keepAlive?: boolean;
 }
 
+// Configuration for the AI plugin
 export interface AIPluginConfig {
     defaultProvider: ProviderType;
     fallbackProvider?: ProviderType;
@@ -37,80 +40,7 @@ export interface AIPluginConfig {
     };
 }
 
-export interface EventSourceParser {
-    (onParse: (event: { type: string; data?: string; }) => void): { feed: (chunk: string) => void };
-}
-
-// Input parameters for AI plugin actions
-export interface TextGenInput {
-    provider?: ProviderType;
-    model: string;
-    prompt: string;
-    systemPrompt?: string;
-    temperature?: number;
-    maxTokens?: number;
-    topP?: number;
-    stream?: boolean;
-}
-
-export interface EmbeddingInput {
-    provider?: ProviderType;
-    model: string;
-    input: string | string[];
-}
-
-export interface ListModelsInput {
-    provider?: ProviderType;
-    capability?: string;
-}
-
-
-export interface TextGenerationParams {
-    model: string;
-    prompt: string;
-    systemPrompt?: string;
-    temperature?: number;
-    maxTokens?: number;
-    topP?: number;
-    stream?: boolean;
-}
-
-export interface EmbeddingParams {
-    model: string;
-    input: string | string[];
-}
-
-export interface TextGenerationResponse {
-    text: string;
-    usage?: {
-        promptTokens: number;
-        completionTokens: number;
-        totalTokens: number;
-    };
-}
-
-export interface StreamChunk {
-    text: string;
-    isComplete: boolean;
-}
-
-export interface EmbeddingResponse {
-    embeddings: number[][];
-    usage?: {
-        promptTokens: number;
-        totalTokens: number;
-    };
-}
-
-export interface Model {
-    id: string;
-    name: string;
-    capabilities: string[];
-    contextWindow: number;
-    tokenLimit?: number;
-    provider: string;
-}
-
+// Common interfaces for all AI operations
 export interface TextGenerationParams {
     model: string;
     prompt: string;
@@ -157,4 +87,36 @@ export interface Model {
     contextWindow: number;
     tokenLimit?: number;
     provider: string;
+}
+
+// Input parameters for AI plugin actions
+export interface TextGenInput {
+    config: AIPluginConfig;
+    provider?: ProviderType;
+    model: string;
+    prompt: string;
+    systemPrompt?: string;
+    temperature?: number;
+    maxTokens?: number;
+    topP?: number;
+    stream?: boolean;
+}
+
+export interface EmbeddingInput {
+    config: AIPluginConfig;
+    provider?: ProviderType;
+    model: string;
+    input: string | string[];
+}
+
+export interface ListModelsInput {
+    config: AIPluginConfig;
+    provider?: ProviderType;
+    capability?: string;
+}
+
+export interface ValidateModelInput {
+    config: AIPluginConfig;
+    provider?: ProviderType;
+    model: string;
 }

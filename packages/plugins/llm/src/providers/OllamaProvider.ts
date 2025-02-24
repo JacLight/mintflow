@@ -1,9 +1,21 @@
-// src/plugins/ai/providers/OllamaProvider.ts
+// providers/OllamaProvider.ts
 
 import axios from 'axios';
-import { TextGenerationParams, EmbeddingParams, TextGenerationResponse, EmbeddingResponse, StreamCallback, Model, OllamaConfig, EventSourceParser } from '../interface/index.js';
-import { BaseProvider, } from './BaseProvider.js';
+import { BaseProvider } from './BaseProvider.js';
+import {
+    OllamaConfig,
+    TextGenerationParams,
+    EmbeddingParams,
+    TextGenerationResponse,
+    EmbeddingResponse,
+    StreamCallback,
+    Model
+} from '../interface/index.js';
 
+// Define our own interface for the event parser callback to avoid dependency issues
+interface EventSourceParser {
+    (onParse: (event: { type: string; data?: string; }) => void): { feed: (chunk: string) => void };
+}
 
 // Simple implementation of createParser that matches what we need
 const createParser: EventSourceParser = (onParse) => {

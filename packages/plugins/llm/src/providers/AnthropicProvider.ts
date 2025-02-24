@@ -1,10 +1,16 @@
-// src/plugins/ai/providers/AnthropicProvider.ts
+// providers/AnthropicProvider.ts
 
 import axios from 'axios';
-import { TextGenerationParams, EmbeddingParams, TextGenerationResponse, EmbeddingResponse, StreamCallback, Model } from '../interface/index.js';
-import { AnthropicConfig } from 'src/interface/index.js';
 import { BaseProvider } from './BaseProvider.js';
-
+import {
+    AnthropicConfig,
+    TextGenerationParams,
+    EmbeddingParams,
+    TextGenerationResponse,
+    EmbeddingResponse,
+    StreamCallback,
+    Model
+} from '../interface/index.js';
 
 export class AnthropicProvider extends BaseProvider {
     private config: AnthropicConfig;

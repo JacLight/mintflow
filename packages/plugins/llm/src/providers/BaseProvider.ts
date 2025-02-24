@@ -1,10 +1,14 @@
-// src/plugins/ai/providers/BaseProvider.ts
+// providers/BaseProvider.ts
 
-import { ProviderServiceError } from 'src/errors/index.js';
-import { EmbeddingParams, EmbeddingResponse, Model, StreamCallback, TextGenerationParams, TextGenerationResponse } from 'src/interface/index.js';
-
-// Common interfaces for all AI operations
-
+import {
+    TextGenerationParams,
+    EmbeddingParams,
+    TextGenerationResponse,
+    EmbeddingResponse,
+    StreamCallback,
+    Model
+} from '../interface/index.js';
+import { ProviderServiceError } from '../errors/index.js';
 
 // Base provider interface that all AI providers must implement
 export abstract class BaseProvider {

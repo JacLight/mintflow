@@ -1,146 +1,173 @@
-// Example of how to use the AI Plugin in your workflow
+// demo.ts
 
-import aiPlugin from "./index.js";
+import aiPlugin from './index.js';
+import { AIPluginConfig } from './interface/index.js';
+// import redis from 'redis';
 
-// Initialize the plugin with configuration including fallback
-const initializeAIPlugin = () => {
-    aiPlugin.initialize({
-        defaultProvider: 'openai', // Primary provider
-        fallbackProvider: 'ollama', // Fallback if primary fails
-        providers: {
-            openai: {
-                apiKey: process.env.OPENAI_API_KEY || '',
-                organization: process.env.OPENAI_ORG_ID
-            },
-            anthropic: {
-                apiKey: process.env.ANTHROPIC_API_KEY || ''
-            },
-            google: {
-                apiKey: process.env.GOOGLE_API_KEY || ''
-            },
-            ollama: {
-                baseUrl: process.env.OLLAMA_BASE_URL || 'http://localhost:11434'
-            }
+// Example configuration for the AI plugin
+const createConfig = (): AIPluginConfig => ({
+    defaultProvider: 'openai', // Primary provider
+    fallbackProvider: 'ollama', // Fallback if primary fails
+    providers: {
+        openai: {
+            apiKey: process.env.OPENAI_API_KEY || '',
+            organization: process.env.OPENAI_ORG_ID
+        },
+        anthropic: {
+            apiKey: process.env.ANTHROPIC_API_KEY || ''
+        },
+        google: {
+            apiKey: process.env.GOOGLE_API_KEY || ''
+        },
+        ollama: {
+            baseUrl: process.env.OLLAMA_BASE_URL || 'http://localhost:11434'
         }
-    });
+    }
+});
 
-    return aiPlugin;
-};
+// Redis client for caching
+// const redisClient = redis.createClient({
+//     url: process.env.REDIS_URL || 'redis://localhost:6379'
+// });
 
-// Example: Text generation
-const generateTextExample = async () => {
-    const plugin: any = initializeAIPlugin();
+// Function to get or compute embeddings with caching
+// async function getCachedEmbeddings(text: string, model: string, userId: string) {
+//     const config = createConfig();
+//     const cacheKey = `embeddings:${userId}:${model}:${Buffer.from(text).toString('base64')}`;
 
-    // First, list available models
-    const models = await plugin.actions
-        .find((a: any) => a.name === 'listModels')
-        ?.execute({ capability: 'text-generation' });
+//     try {
+//         // Try to get from cache first
+//         const cachedEmbeddings = await redisClient.get(cacheKey);
+//         if (cachedEmbeddings) {
+//             console.log('Using cached embeddings');
+//             return JSON.parse(cachedEmbeddings);
+//         }
 
-    console.log('Available models:', models.map((m: any) => `${m.name} (${m.provider})`));
+//         // Not in cache, compute new embeddings
+//         console.log('Computing new embeddings');
+//         const response = await aiPlugin.actions
+//             .find(a => a.name === 'generateEmbedding')
+//             ?.execute({
+//                 config,
+//                 provider: 'openai',
+//                 model: model,
+//                 input: text
+//             });
 
-    // Generate text with OpenAI (default provider)
-    const response = await plugin.actions
-        .find((a: any) => a.name === 'generateText')
-        ?.execute({
-            model: 'gpt-3.5-turbo',
-            prompt: 'Explain quantum computing in simple terms',
-            systemPrompt: 'You are a helpful assistant that explains complex topics simply.',
-            temperature: 0.7,
-            maxTokens: 500
-        });
+//         // Cache the result (with 24 hour expiry)
+//         await redisClient.set(cacheKey, JSON.stringify(response.embeddings), {
+//             EX: 86400 // 24 hours
+//         });
 
-    console.log('Response:', response.text);
-    console.log('Token usage:', response.usage);
+//         return response.embeddings;
+//     } catch (error) {
+//         console.error('Error generating embeddings:', error);
+//         throw error;
+//     }
+// }
 
-    // Generate text with Anthropic (explicit provider)
-    const anthropicResponse = await plugin.actions
-        .find((a: any) => a.name === 'generateText')
-        ?.execute({
-            provider: 'anthropic',
-            model: 'claude-3-sonnet-20240229',
-            prompt: 'Explain quantum computing in simple terms',
-            temperature: 0.7
-        });
+// // Example of multi-tenant usage with different API keys
+// async function multiTenantExample() {
+//     // Tenant 1 with OpenAI
+//     const tenant1Config: AIPluginConfig = {
+//         defaultProvider: 'openai',
+//         providers: {
+//             openai: {
+//                 apiKey: 'tenant1-openai-key'
+//             }
+//         }
+//     };
 
-    console.log('Anthropic response:', anthropicResponse.text);
-};
+//     // Tenant 2 with Anthropic
+//     const tenant2Config: AIPluginConfig = {
+//         defaultProvider: 'anthropic',
+//         providers: {
+//             anthropic: {
+//                 apiKey: 'tenant2-anthropic-key'
+//             }
+//         }
+//     };
 
-// Example: Streaming text generation
-const streamingExample = async () => {
-    const plugin: any = initializeAIPlugin();
+//     // Process requests for different tenants
+//     const [tenant1Response, tenant2Response] = await Promise.all([
+//         aiPlugin.actions
+//             .find(a => a.name === 'generateText')
+//             ?.execute({
+//                 config: tenant1Config,
+//                 model: 'gpt-3.5-turbo',
+//                 prompt: 'Explain quantum computing'
+//             }),
+//         aiPlugin.actions
+//             .find(a => a.name === 'generateText')
+//             ?.execute({
+//                 config: tenant2Config,
+//                 model: 'claude-3-haiku-20240307',
+//                 prompt: 'Explain quantum computing'
+//             })
+//     ]);
 
-    let fullText = '';
+//     console.log('Tenant 1 (OpenAI):', tenant1Response.text.substring(0, 100) + '...');
+//     console.log('Tenant 2 (Anthropic):', tenant2Response.text.substring(0, 100) + '...');
+// }
 
-    // Stream text with callback for each chunk
-    await plugin.actions
-        .find((a: any) => a.name === 'streamText')
-        ?.execute({
-            provider: 'ollama',
-            model: 'llama3', // Local model
-            prompt: 'Write a short story about a robot learning to paint',
-            temperature: 0.8,
-            maxTokens: 1000
-        }, (chunk: any) => {
-            // Process each chunk as it arrives
-            process.stdout.write(chunk.text);
-            fullText += chunk.text;
+// // Example: Generate text with streaming callback
+// async function streamingExample() {
+//     const config = createConfig();
 
-            if (chunk.isComplete) {
-                console.log('\n--- Generation complete ---');
-            }
-        });
+//     let fullText = '';
+//     console.log('Streaming response:');
 
-    return fullText;
-};
+//     await aiPlugin.actions
+//         .find(a => a.name === 'streamText')
+//         ?.execute({
+//             config,
+//             provider: 'ollama',
+//             model: 'llama3',
+//             prompt: 'Write a short poem about AI',
+//             temperature: 0.8
+//         }, (chunk) => {
+//             // Process each chunk as it arrives
+//             process.stdout.write(chunk.text);
+//             fullText += chunk.text;
 
-// Example: Embedding generation
-const embeddingExample = async () => {
-    const plugin: any = initializeAIPlugin();
+//             if (chunk.isComplete) {
+//                 console.log('\n--- Generation complete ---');
+//             }
+//         });
 
-    // List models with embedding capability
-    const embeddingModels = await plugin.actions
-        .find((a: any) => a.name === 'listModels')
-        ?.execute({ capability: 'embeddings' });
+//     return fullText;
+// }
 
-    console.log('Available embedding models:', embeddingModels.map((m: any) => `${m.name} (${m.provider})`));
+// // Example: Using the plugin in a workflow engine
+// async function workflowNodeExample(nodeData: any, flowData: any) {
+//     const config = createConfig();
 
-    // Generate embeddings for multiple texts
-    const embeddings = await plugin.actions
-        .find((a: any) => a.name === 'generateEmbedding')
-        ?.execute({
-            provider: 'openai',
-            model: 'text-embedding-3-small',
-            input: [
-                'This is the first document',
-                'This is the second document',
-                'This is the third document'
-            ]
-        });
+//     // Extract input from workflow
+//     const { prompt, systemPrompt, temperature } = nodeData.inputs;
+//     const userQuery = flowData.nodes.input_node.data.userQuery;
 
-    console.log(`Generated ${embeddings.embeddings.length} embeddings`);
-    console.log(`Each embedding has ${embeddings.embeddings[0].length} dimensions`);
+//     // Execute the AI action
+//     const result = await aiPlugin.actions
+//         .find(a => a.name === 'generateText')
+//         ?.execute({}, {
+//             config,
+//             model: 'gpt-4',
+//             prompt: prompt.replace('{{$userQuery}}', userQuery),
+//             systemPrompt,
+//             temperature
+//         });
 
-    return embeddings;
-};
+//     // Return the result to the workflow engine
+//     return {
+//         text: result.text,
+//         usage: result.usage
+//     };
+// }
 
-// Example: Using with your flow engine
-const aiFlowNodeExample = {
-    id: 'ai-text-generation',
-    type: 'ai',
-    action: 'generateText',
-    inputs: {
-        model: 'gpt-4',
-        prompt: '{{$node["input_node"].data.userQuery}}',
-        systemPrompt: 'You are a helpful assistant.',
-        temperature: 0.7
-    },
-    outputs: ['text', 'usage']
-};
-
-// Export examples
-export {
-    generateTextExample,
-    streamingExample,
-    embeddingExample,
-    aiFlowNodeExample
-};
+// // Export examples
+// export {
+//     getCachedEmbeddings,
+//     multiTenantExample,
+//     streamingExample,
+//     workflowNodeExample
+// };
