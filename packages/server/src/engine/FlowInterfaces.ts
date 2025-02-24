@@ -28,6 +28,7 @@ export interface INodeDefinition {
     type: string;
     plugin: string;
     runner: 'node' | 'python';
+    config?: any;
     executionMode?: NodeExecutionMode;
     input?: any;
     nextNodes?: string[];

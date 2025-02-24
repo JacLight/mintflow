@@ -1,16 +1,16 @@
-import { Twilio } from 'twilio';
+import * as twilio from 'twilio';
 import { logger } from '@mintflow/common';
 import { TwilioValidation } from '../utils/index.js';
 
 export abstract class BaseTwilioService {
-    protected client: Twilio;
+    protected client: twilio.Twilio;
     protected accountSid: string;
     protected authToken: string;
 
     constructor(accountSid: string, authToken: string) {
         this.accountSid = accountSid;
         this.authToken = authToken;
-        this.client = new Twilio(accountSid, authToken);
+        this.client = new twilio.Twilio(accountSid, authToken);
     }
 
     protected async executeWithRetry<T>(
