@@ -1,4 +1,4 @@
-// src/plugins/ai/errors/AIPluginErrors.ts
+// errors/index.ts
 
 export class AIPluginError extends Error {
     constructor(message: string) {

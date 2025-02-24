@@ -1,9 +1,16 @@
-// src/plugins/ai/providers/OpenAIProvider.ts
+// providers/OpenAIProvider.ts
 
 import axios from 'axios';
-import { OpenAIConfig } from 'src/interface/index.js';
-import { TextGenerationParams, EmbeddingParams, TextGenerationResponse, EmbeddingResponse, StreamCallback, Model } from '../interface/index.js';
-import { BaseProvider, } from './BaseProvider.js';
+import { BaseProvider } from './BaseProvider.js';
+import {
+    OpenAIConfig,
+    TextGenerationParams,
+    EmbeddingParams,
+    TextGenerationResponse,
+    EmbeddingResponse,
+    StreamCallback,
+    Model
+} from '../interface/index.js';
 
 export class OpenAIProvider extends BaseProvider {
     private config: OpenAIConfig;

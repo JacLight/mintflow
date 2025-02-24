@@ -1,9 +1,16 @@
-// src/plugins/ai/providers/GoogleProvider.ts
+// providers/GoogleProvider.ts
 
 import axios from 'axios';
-import { TextGenerationParams, EmbeddingParams, TextGenerationResponse, EmbeddingResponse, StreamCallback, Model } from '../interface/index.js';
-import { BaseProvider, } from './BaseProvider.js';
-import { GoogleConfig } from 'src/interface/index.js';
+import { BaseProvider } from './BaseProvider.js';
+import {
+    GoogleConfig,
+    TextGenerationParams,
+    EmbeddingParams,
+    TextGenerationResponse,
+    EmbeddingResponse,
+    StreamCallback,
+    Model
+} from '../interface/index.js';
 
 export class GoogleProvider extends BaseProvider {
     private config: GoogleConfig;
