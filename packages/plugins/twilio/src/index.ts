@@ -8,11 +8,11 @@ const twilioPlugin = {
     id: "twilio",
     runner: "node",
     inputSchema: twilioSchemas.inputSchema,
-    actions: {
+    actions: [
         ...smsActions,
         ...voiceActions,
         ...configActions
-    }
+    ]
 };
 
 export default twilioPlugin;

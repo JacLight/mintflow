@@ -1,8 +1,8 @@
-import { twiml } from 'twilio';
+import * as twilio from 'twilio';
 
 export class TwiMLTemplates {
     static getBasicVoiceResponse(message: string): string {
-        const response = new twiml.VoiceResponse();
+        const response = new twilio.twiml.VoiceResponse();
         response.say(message);
         return response.toString();
     }
@@ -15,7 +15,7 @@ export class TwiMLTemplates {
         numDigits?: number;
         input?: string[];
     }): string {
-        const response = new twiml.VoiceResponse();
+        const response = new twilio.twiml.VoiceResponse();
         const input: any = options.input || ['dtmf', 'speech'];
         const gather = response.gather({
             input,
@@ -34,7 +34,7 @@ export class TwiMLTemplates {
         menuOptions: { digit: string; description: string }[];
         action: string;
     }): string {
-        const response = new twiml.VoiceResponse();
+        const response = new twilio.twiml.VoiceResponse();
         const input: any = 'dtmf';//['dtmf', 'speech'];
         const gather = response.gather({
             input,
@@ -61,7 +61,7 @@ export class TwiMLTemplates {
         startOnEnter?: boolean;
         endOnExit?: boolean;
     }): string {
-        const response = new twiml.VoiceResponse();
+        const response = new twilio.twiml.VoiceResponse();
         const dial = response.dial();
         dial.conference(options.roomName as any);
         // dial.conference(options.roomName as any, {

@@ -17,7 +17,7 @@ export const getNodes = async (req: Request, res: Response): Promise<any> => {
             description: node.description,
             documentation: node.documentation,
             icon: node.icon,
-            actions: node.actions?.map(action => ({
+            actions: Array.isArray(node.actions) && node.actions?.map(action => ({
                 name: action.name,
                 description: action.description,
                 inputSchema: action.inputSchema,
@@ -73,8 +73,8 @@ export const getNode = async (req: Request, res: Response): Promise<any> => {
 export const runNode = async (req: Request, res: Response): Promise<any> => {
     try {
         // const { nodeId } = req.params;
-        const { tenantId, flowId, input, action, plugin } = req.body;
-        const nodeDef: INodeDefinition = { nodeId: `run_node_${plugin}`, input, action, type: plugin, plugin, runner: 'node' };
+        const { tenantId, flowId, input, action, plugin, config } = req.body;
+        const nodeDef: INodeDefinition = { nodeId: `run_node_${plugin}`, input, action, config, type: plugin, plugin, runner: 'node' };
         const output = await NodeExecutorService.getInstance().testNode(nodeDef)
         return res.json(output);
     } catch (err: any) {

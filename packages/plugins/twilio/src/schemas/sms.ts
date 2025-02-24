@@ -15,7 +15,7 @@ export const smsSchema = {
         properties: {
             to: {
                 type: "string",
-                pattern: "^\\+[1-9]\\d{1,14}$",
+                pattern: "^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)?[-.\s]?\d{1,4}([-.\s]?\d{1,4}){1,3}$", //"^\\+[1-9]\\d{1,14}$",
                 description: "Recipient phone number (E.164 format)"
             },
             body: {

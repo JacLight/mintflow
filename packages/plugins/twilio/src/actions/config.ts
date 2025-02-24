@@ -1,8 +1,8 @@
 import { ConfigurationService } from '../services/index.js';
 import { TwilioSetupConfig } from '../types/index.js';
 
-export const configActions = {
-    setup: {
+export const configActions = [
+    {
         name: 'setup',
         execute: async (input: TwilioSetupConfig, config: any) => {
             const { accountSid, authToken } = config;
@@ -10,4 +10,4 @@ export const configActions = {
             return await configService.configureService(input);
         }
     }
-};
+];
