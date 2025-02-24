@@ -38,13 +38,24 @@ export class MongoProvider {
         return await Model.findOne(query);
     }
 
-    async update(collection: string, query: any, updateData: any) {
+    async update(collection: string, query: any, updateData: any, arrayUpdate?: { [key: string]: any }) {
         const Model = mongoose.model(collection);
-        return await Model.updateOne(query, { $set: updateData });
+        const updateQuery = { $set: updateData };
+        if (arrayUpdate) {
+            Object.keys(arrayUpdate).forEach(key => {
+                updateQuery['$push'] = { [key]: arrayUpdate[key] };
+            });
+        }
+        return await Model.updateOne(query, updateQuery);
     }
 
     async delete(collection: string, query: any) {
         const Model = mongoose.model(collection);
         return await Model.deleteOne(query);
+    }
+
+    async deleteMany(collection: string, query: any) {
+        const Model = mongoose.model(collection);
+        return await Model.deleteMany(query);
     }
 }

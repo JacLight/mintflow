@@ -48,10 +48,17 @@ export class PostgresProvider {
         return await model.findOne({ where: query });
     }
 
-    async update(model: any, query: any, updateData: any) {
+    async update(model: any, query: any, updateData: any, arrayUpdate?: { [key: string]: any }) {
         const record = await model.findOne({ where: query });
         if (record) {
-            return await record.update(updateData);
+            await record.update(updateData);
+            if (arrayUpdate) {
+                Object.keys(arrayUpdate).forEach(key => {
+                    record[key].push(arrayUpdate[key]);
+                });
+                await record.save();
+            }
+            return record;
         }
         return null;
     }
@@ -61,6 +68,15 @@ export class PostgresProvider {
         if (record) {
             await record.destroy();
             return record;
+        }
+        return null;
+    }
+
+    async deleteMany(model: any, query: any) {
+        const records = await model.findAll({ where: query });
+        if (records) {
+            await model.destroy({ where: query });
+            return records;
         }
         return null;
     }

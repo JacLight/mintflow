@@ -1,6 +1,5 @@
 import express, { Router } from 'express';
-import { createFlow, getAllFlows, getFlowById, updateFlow, deleteFlow, startFlow, stopFlowRun, pauseFlowRun, stopAllFlowRuns, pauseAllFlowRuns, getFlowRuns } from './controllers/FlowController.js';
-import { start } from 'repl';
+import { createFlow, getAllFlows, getFlowById, updateFlow, deleteFlow, startFlow, stopFlowRun, pauseFlowRun, stopAllFlowRuns, pauseAllFlowRuns, getFlowRuns, deleteAllFlowRuns } from './controllers/FlowController.js';
 
 const flowRouter: Router = express.Router();
 
@@ -15,5 +14,6 @@ flowRouter.post('/:flowId/all/pause', pauseAllFlowRuns);
 flowRouter.post('/:flowId/runs/:flowRunId/stop', stopFlowRun);
 flowRouter.post('/:flowId/runs/:flowRunId/pause', pauseFlowRun);
 flowRouter.get('/:flowId/runs', getFlowRuns);
+flowRouter.delete('/:flowId/runs', deleteAllFlowRuns);
 
 export default flowRouter;

@@ -26,6 +26,7 @@ export interface IBranchCondition {
 export interface INodeDefinition {
     nodeId: string;
     type: string;
+    plugin: string;
     runner: 'node' | 'python';
     executionMode?: NodeExecutionMode;
     input?: any;
@@ -61,6 +62,7 @@ export interface INodeDefinition {
 export interface IFlowNodeState {
     nodeId: string;
     status: NodeStatus;
+    plugin: string;
     result?: any;
     logs: string[];
     startedAt?: Date;

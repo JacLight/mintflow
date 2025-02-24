@@ -5,6 +5,7 @@ import { FlowValidator } from '../../models/validators/FlowValidator.js';
 import { FlowEngine } from '../../engine/FlowEngine.js';
 import { DatabaseService } from '../../services/DatabaseService.js';
 import { FlowNotFoundError } from '../../engine/FlowErrors.js';
+import { FlowRunService } from '../../services/FlowRunService.js';
 
 const flowService = new FlowService();
 
@@ -232,7 +233,7 @@ export async function stopAllFlowRuns(req: Request & { tenantId?: string }, res:
     }
 }
 
-const checkFields = (req: Request, res: Response, fields: string[]) => {
+export const checkFields = (req: Request, res: Response, fields: string[]) => {
     if (fields.includes('flowRunId') && !req.params.flowRunId) {
         return res.status(400).json({ error: 'Flow run ID is required' });
     }
@@ -243,4 +244,19 @@ const checkFields = (req: Request, res: Response, fields: string[]) => {
         return res.status(400).json({ error: 'Tenant ID is required' });
     }
 };
+
+
+export async function deleteAllFlowRuns(req: Request, res: Response): Promise<any> {
+    checkFields(req, res, ['flowId', 'tenantId']);
+
+    const { flowId, flowRunId } = req.params;
+    const { tenantId } = req.query;
+    try {
+        await FlowRunService.getInstance().deleteAllFlowRuns(flowId);
+        return res.status(204).send();
+    } catch (err: any) {
+        logger.error(`[FlowRunController] Error deleting all flow runs: ${err.message}`);
+        return res.status(500).json({ error: 'Failed to delete all flow runs' });
+    }
+}
 
