@@ -6,13 +6,7 @@
  */
 
 // Import your workflow engine services and the plugins
-import { FlowEngine } from './services/FlowEngine.js';
-import { NodeExecutorService } from './services/NodeExecutorService.js';
 import { ConfigService } from './services/ConfigService.js';
-import { chatPlugin } from './adapters/ChatPlugin.js';
-import { createLangChainModel } from './adapters/LangChainAdapterPlugin.js';
-import { BaseChatModel } from 'langchain/chat_models/base';
-import { HumanMessage, SystemMessage } from 'langchain/schema';
 
 /**
  * Example 1: Basic Chat Workflow
@@ -568,7 +562,6 @@ export async function exampleEmbeddingMemoryWithRAG() {
     const config = ConfigService.getInstance().getConfig();
 
     // Import RAG plugin
-    import ragPlugin from './plugins/RAGPlugin.js';
 
     // Create a sample workflow definition
     const embeddingMemoryFlow = {

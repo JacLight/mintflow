@@ -2,9 +2,9 @@
 
 import { ConfigService } from './services/ConfigService.js';
 import { createLangChainModel } from './adapters/LangChainAdapterPlugin.js';
-import { HumanMessage, SystemMessage } from 'langchain/schema';
-import { BaseChatModel } from 'langchain/chat_models/base';
 import { chatPlugin } from './adapters/ChatPlugin.js';
+import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 
 /**
  * This example demonstrates direct usage of the LangChain adapter
@@ -46,10 +46,13 @@ async function runDirectDemo() {
             throw new Error('createChatSession action not found');
         }
 
-        const sessionId = await createSessionAction.execute({
-            userId,
+        const sessionMsg: any = {
+            userId: "",
+            initialContext: {},
+            message: 'What is LangChain and how does it help with building AI applications?',
             initialSystemMessage: 'You are a helpful AI assistant.'
-        });
+        }
+        const sessionId = await createSessionAction.execute(sessionMsg);
         console.log(`Created chat session: ${sessionId}`);
 
         // 4. Send a message using the chat plugin
@@ -59,15 +62,14 @@ async function runDirectDemo() {
             throw new Error('sendMessage action not found');
         }
 
-        const chatResponse = await sendMessageAction.execute({
-            sessionId,
-            message: 'How can I use LangChain with TypeScript?',
-            config: {
-                ...config,
-                provider: 'openai',
-                model: 'gpt-3.5-turbo'
-            }
-        });
+        const chatMessage: any = {
+            userId: "",
+            initialContext: {},
+            sessionId: sessionId,
+            message: 'What is LangChain and how does it help with building AI applications?',
+            initialSystemMessage: 'You are a helpful AI assistant.'
+        }
+        const chatResponse = await sendMessageAction.execute(chatMessage);
 
         console.log('\nChat Response:');
         console.log(chatResponse.response.content);
