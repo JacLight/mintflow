@@ -7,14 +7,13 @@ import {
 import { logger } from '@mintflow/common';
 import { RedisService } from '../services/RedisService.js';
 import { ConfigService } from '../services/ConfigService.js';
-import axios from 'axios';
 
 /**
  * Message interface for conversation
  */
-interface ChatMessage {
+export interface ChatMessage {
     role: 'user' | 'assistant' | 'system' | 'function' | 'human_agent';
-    content: string;
+    content: string | null;
     name?: string;
     function_call?: {
         name: string;
@@ -26,13 +25,14 @@ interface ChatMessage {
         agentId?: string;
         embedding?: number[];
         handoffReason?: string;
+        error?: string;
     };
 }
 
 /**
  * Tool interface for chat function calling
  */
-interface ChatTool {
+export interface ChatTool {
     name: string;
     description: string;
     parameters: {
@@ -46,7 +46,7 @@ interface ChatTool {
 /**
  * Chat memory options
  */
-interface ChatMemoryOptions {
+export interface ChatMemoryOptions {
     useEmbeddings?: boolean;
     maxMessages?: number;
     summarizeThreshold?: number;
@@ -57,7 +57,7 @@ interface ChatMemoryOptions {
 /**
  * Session context for a chat conversation
  */
-interface ChatSessionContext {
+export interface ChatSessionContext {
     sessionId: string;
     userId: string;
     metadata: Record<string, any>;
@@ -156,7 +156,7 @@ export class ChatService {
         // Check if the session has specific tool restrictions
         if (context.metadata.enabledTools) {
             return context.metadata.enabledTools
-                .map(name => this.tools.get(name))
+                .map((name: string) => this.tools.get(name))
                 .filter(Boolean);
         }
 
@@ -348,8 +348,13 @@ export class ChatService {
     /**
      * Generates embedding for text
      */
-    private async generateEmbedding(text: string): Promise<number[]> {
+    private async generateEmbedding(text: string | null): Promise<number[]> {
         try {
+            // Handle null content
+            if (text === null) {
+                text = '';
+            }
+
             // TODO: In production, call your AI embedding provider here
 
             // Mock implementation - replace with actual embedding API call
@@ -813,7 +818,7 @@ export class ChatService {
         tools?: any[],
         latestMessage?: string
     ): Promise<{
-        content: string;
+        content: string | null;
         function_call?: {
             name: string;
             arguments: string;
@@ -1138,3 +1143,5 @@ const chatPlugin = {
         }
     ]
 };
+
+export { chatPlugin };

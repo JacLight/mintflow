@@ -5,7 +5,7 @@ import { logger } from '@mintflow/common';
 /**
  * Output format types
  */
-enum OutputFormat {
+export enum OutputFormat {
     TEXT = 'text',
     JSON = 'json',
     MARKDOWN = 'markdown',
@@ -18,7 +18,7 @@ enum OutputFormat {
 /**
  * Parser options for controlling parsing behavior
  */
-interface ParserOptions {
+export interface ParserOptions {
     format?: OutputFormat;
     schema?: Record<string, any>;
     removeExtraKeys?: boolean;
@@ -29,7 +29,7 @@ interface ParserOptions {
 /**
  * Parse result containing parsed data and metadata
  */
-interface ParseResult<T> {
+export interface ParseResult<T> {
     data: T;
     format: OutputFormat;
     success: boolean;
@@ -98,7 +98,7 @@ export class OutputParserService {
     /**
      * Detects the format of the output
      */
-    private detectOutputFormat(output: string): OutputFormat {
+    detectOutputFormat(output: string): OutputFormat {
         const trimmed = output.trim();
 
         // Check for JSON format

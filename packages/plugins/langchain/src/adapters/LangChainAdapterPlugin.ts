@@ -8,16 +8,16 @@ import {
 } from '../interface/index.js';
 import { BaseProvider } from '../providers/BaseProvider.js';
 import { OpenAIProvider } from '../providers/OpenAIProvider.js';
-import { AnthropicProvider } from '../providers/AnthropicProvider.js';
-import { GoogleProvider } from '../providers/GoogleProvider.js';
-import { OllamaProvider } from '../providers/OllamaProvider.js';
+// import { AnthropicProvider } from '../providers/AnthropicProvider.js';
+// import { GoogleProvider } from '../providers/GoogleProvider.js';
+// import { OllamaProvider } from '../providers/OllamaProvider.js';
 import { ProviderServiceError } from '../errors/index.js';
 
 // LangChain imports
-import { BaseChatModel } from 'langchain/chat_models/base';
-import { BaseLanguageModel } from 'langchain/base_language';
-import { CallbackManagerForLLMRun } from 'langchain/callbacks';
-import { HumanMessage, AIMessage, SystemMessage, BaseMessage } from 'langchain/schema';
+import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { BaseLanguageModel } from '@langchain/core/language_models/base';
+import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
+import { HumanMessage, AIMessage, SystemMessage, BaseMessage } from '@langchain/core/messages';
 
 /**
  * LangChain adapter that wraps our AI plugin infrastructure
@@ -63,28 +63,28 @@ export class LangChainAdapterModel extends BaseChatModel {
 
         switch (providerType) {
             case 'openai':
-                if (!this.config.providers.openai) {
+                if (!this.config.providers?.openai) {
                     throw new Error('OpenAI configuration missing');
                 }
                 return new OpenAIProvider(this.config.providers.openai);
 
-            case 'anthropic':
-                if (!this.config.providers.anthropic) {
-                    throw new Error('Anthropic configuration missing');
-                }
-                return new AnthropicProvider(this.config.providers.anthropic);
+            // case 'anthropic':
+            //     if (!this.config.providers?.anthropic) {
+            //         throw new Error('Anthropic configuration missing');
+            //     }
+            //     return new AnthropicProvider(this.config.providers.anthropic);
 
-            case 'google':
-                if (!this.config.providers.google) {
-                    throw new Error('Google configuration missing');
-                }
-                return new GoogleProvider(this.config.providers.google);
+            // case 'google':
+            //     if (!this.config.providers?.google) {
+            //         throw new Error('Google configuration missing');
+            //     }
+            //     return new GoogleProvider(this.config.providers.google);
 
-            case 'ollama':
-                if (!this.config.providers.ollama) {
-                    throw new Error('Ollama configuration missing');
-                }
-                return new OllamaProvider(this.config.providers.ollama);
+            // case 'ollama':
+            //     if (!this.config.providers?.ollama) {
+            //         throw new Error('Ollama configuration missing');
+            //     }
+            //     return new OllamaProvider(this.config.providers.ollama);
 
             default:
                 throw new Error(`Unknown provider type: ${providerType}`);

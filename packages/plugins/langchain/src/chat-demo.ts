@@ -1,15 +1,18 @@
-// Chat Plugin Usage Examples
+// Chat and LangChain Plugin Usage Examples
 
 /**
- * This guide demonstrates how to use the comprehensive Chat Plugin within your workflow
- * and how it integrates with human-in-the-loop scenarios.
+ * This guide demonstrates how to use the comprehensive Chat Plugin within your workflow,
+ * how it integrates with human-in-the-loop scenarios, and how to use the LangChain adapter.
  */
 
-// Import your workflow engine services and the chat plugin
+// Import your workflow engine services and the plugins
 import { FlowEngine } from './services/FlowEngine.js';
 import { NodeExecutorService } from './services/NodeExecutorService.js';
 import { ConfigService } from './services/ConfigService.js';
-import chatPlugin from './plugins/ChatPlugin.js';
+import { chatPlugin } from './adapters/ChatPlugin.js';
+import { createLangChainModel } from './adapters/LangChainAdapterPlugin.js';
+import { BaseChatModel } from 'langchain/chat_models/base';
+import { HumanMessage, SystemMessage } from 'langchain/schema';
 
 /**
  * Example 1: Basic Chat Workflow
@@ -713,6 +716,83 @@ export async function exampleEmbeddingMemoryWithRAG() {
     };
 
     return embeddingMemoryFlow;
+}
+
+/**
+ * Example 5: Using LangChain Adapter
+ * 
+ * This example demonstrates how to use the LangChain adapter to integrate
+ * with LangChain's ecosystem of tools and capabilities.
+ */
+export async function exampleLangChainAdapter() {
+    // Get your existing configuration
+    const config = ConfigService.getInstance().getConfig();
+
+    // Create a sample workflow definition
+    const langChainFlow = {
+        flowId: 'langchain-adapter-flow',
+        tenantId: 'demo',
+        name: 'LangChain Adapter Flow',
+        description: 'Demonstrates using LangChain with MintFlow',
+        overallStatus: 'draft',
+        definition: {
+            nodes: [
+                {
+                    nodeId: 'start',
+                    type: 'start',
+                    plugin: 'system',
+                    action: 'start',
+                    nextNodes: ['createLangChainModel']
+                },
+                {
+                    nodeId: 'createLangChainModel',
+                    type: 'process',
+                    plugin: 'langchain-adapter',
+                    action: 'createLangChainModel',
+                    input: {
+                        config: config.ai,
+                        provider: 'openai',
+                        model: 'gpt-4o',
+                        systemPrompt: 'You are a helpful AI assistant specialized in explaining technical concepts.',
+                        temperature: 0.7
+                    },
+                    nextNodes: ['generateResponse']
+                },
+                {
+                    nodeId: 'generateResponse',
+                    type: 'process',
+                    plugin: 'langchain-adapter',
+                    action: 'generateFromMessages',
+                    input: {
+                        config: config.ai,
+                        provider: 'openai',
+                        model: 'gpt-4o',
+                        systemPrompt: 'You are a helpful AI assistant specialized in explaining technical concepts.',
+                        temperature: 0.7,
+                        messages: [
+                            { role: 'system', content: 'You are a helpful AI assistant specialized in explaining technical concepts.' },
+                            { role: 'user', content: '{{$userMessage}}' }
+                        ]
+                    },
+                    nextNodes: ['returnResponse']
+                },
+                {
+                    nodeId: 'returnResponse',
+                    type: 'end',
+                    plugin: 'system',
+                    action: 'end',
+                    input: {
+                        response: {
+                            message: '{{generateResponse_result.text}}',
+                            usage: '{{generateResponse_result.usage}}'
+                        }
+                    }
+                }
+            ]
+        }
+    };
+
+    return langChainFlow;
 }
 
 // Additional examples and usage information could be added here

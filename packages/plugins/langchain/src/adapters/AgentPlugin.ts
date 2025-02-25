@@ -12,7 +12,7 @@ import { RedisService } from '../services/RedisService.js';
 /**
  * Tool interface for agent function calling
  */
-interface Tool {
+export interface Tool {
     name: string;
     description: string;
     parameters: {
@@ -20,13 +20,13 @@ interface Tool {
         properties: Record<string, any>;
         required?: string[];
     };
-    execute: (params: Record<string, any>) => Promise<any>;
+    execute: (params: any) => Promise<any>;
 }
 
 /**
  * Agent state for tracking execution
  */
-interface AgentState {
+export interface AgentState {
     agentId: string;
     messages: Array<{
         role: string;
@@ -230,8 +230,6 @@ export class AgentService {
 
             // Prepare the model config with tools
             const modelConfig: TextGenInput = {
-                config: input.config,
-                provider: input.provider,
                 model: input.model,
                 systemPrompt: this.generateSystemPrompt(input.systemPrompt, tools),
                 temperature: input.temperature || 0.7,

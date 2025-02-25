@@ -1,18 +1,56 @@
 // plugins/LangGraphPlugin.ts
 
-import {
-    IFlow,
-    IFlowNodeState,
-    IFlowRun,
-    INodeDefinition
-} from '../services/FlowInterfaces.js';
-import { ConfigService } from '../services/ConfigService.js';
-import { RedisService } from '../services/RedisService.js';
-import { NodeExecutorService } from '../services/NodeExecutorService.js';
-import { FlowRunService } from '../services/FlowRunService.js';
-import { FlowService } from '../services/FlowService.js';
 import { ProviderServiceError } from '../errors/index.js';
 import { logger } from '@mintflow/common';
+import { ConfigService } from '../services/ConfigService.js';
+import { RedisService } from '../services/RedisService.js';
+import '@langchain/langgraph';
+
+// Flow interfaces - these would typically be imported from a shared location
+interface IFlow {
+    id: string;
+    name: string;
+    definition: {
+        nodes: INodeDefinition[];
+    };
+}
+
+interface IFlowNodeState {
+    nodeId: string;
+    status: string;
+    result?: any;
+}
+
+interface IFlowRun {
+    id: string;
+    flowId: string;
+    status: string;
+    workingData: Record<string, any>;
+    nodeStates: IFlowNodeState[];
+}
+
+interface INodeDefinition {
+    nodeId: string;
+    type: string;
+    nextNodes?: string[];
+    branches?: {
+        condition: string;
+        targetNodeId: string;
+    }[];
+}
+
+// Service interfaces
+interface INodeExecutorService {
+    executeNode(flow: IFlow, flowRun: IFlowRun, nodeId: string): Promise<void>;
+}
+
+interface IFlowService {
+    getFlowById(flowId: string): Promise<IFlow | null>;
+}
+
+interface IFlowRunService {
+    getFlowRunById(runId: string): Promise<IFlowRun | null>;
+}
 
 /**
  * Graph Node interface for LangGraph integration
@@ -31,7 +69,7 @@ interface GraphNode {
 /**
  * Graph State Type
  */
-interface GraphState {
+export interface GraphState {
     values: Record<string, any>;
     run_id: string;
     current_node: string;
@@ -46,17 +84,49 @@ interface GraphState {
  */
 export class LangGraphManager {
     private static instance: LangGraphManager;
-    private config = ConfigService.getInstance().getConfig();
-    private redis = RedisService.getInstance();
-    private nodeExecutor = NodeExecutorService.getInstance();
-    private flowService = FlowService.getInstance();
-    private flowRunService = FlowRunService.getInstance();
+    private config;
+    private redis;
+    private nodeExecutor;
+    private flowService;
+    private flowRunService;
 
-    private constructor() { }
+    private constructor(
+        configService: ConfigService,
+        redisService: RedisService,
+        nodeExecutor: INodeExecutorService,
+        flowService: IFlowService,
+        flowRunService: IFlowRunService
+    ) {
+        this.config = configService.getConfig();
+        this.redis = redisService;
+        this.nodeExecutor = nodeExecutor;
+        this.flowService = flowService;
+        this.flowRunService = flowRunService;
+    }
 
-    static getInstance(): LangGraphManager {
+    static getInstance(
+        configService?: ConfigService,
+        redisService?: RedisService,
+        nodeExecutor?: INodeExecutorService,
+        flowService?: IFlowService,
+        flowRunService?: IFlowRunService
+    ): LangGraphManager {
         if (!LangGraphManager.instance) {
-            LangGraphManager.instance = new LangGraphManager();
+            if (!configService) configService = ConfigService.getInstance();
+            if (!redisService) redisService = RedisService.getInstance();
+
+            // These services must be provided if instance doesn't exist
+            if (!nodeExecutor || !flowService || !flowRunService) {
+                throw new Error('Required services must be provided when creating LangGraphManager instance');
+            }
+
+            LangGraphManager.instance = new LangGraphManager(
+                configService,
+                redisService,
+                nodeExecutor,
+                flowService,
+                flowRunService
+            );
         }
         return LangGraphManager.instance;
     }
@@ -102,8 +172,9 @@ export class LangGraphManager {
 
                         // Return the node's result to be incorporated into the graph state
                         return nodeState?.result || null;
-                    } catch (error: any) {
-                        logger.error(`Error executing node ${node.nodeId} in graph:`, error);
+                    } catch (error) {
+                        const errorMessage = error instanceof Error ? error.message : String(error);
+                        logger.error(`Error executing node ${node.nodeId} in graph:`, { error: errorMessage });
                         throw error;
                     }
                 },
@@ -259,12 +330,13 @@ export class LangGraphManager {
                 history,
                 completed
             });
-        } catch (error: any) {
-            logger.error(`Error executing graph step for node ${currentNode.id}:`, error);
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            logger.error(`Error executing graph step for node ${currentNode.id}:`, { error: errorMessage });
 
             // Update the state with the error
             return this.updateGraphState(flowRunId, {
-                error: error.message,
+                error: errorMessage,
                 completed: true
             });
         }
@@ -280,7 +352,8 @@ export class LangGraphManager {
             const result = new Function('state', `return ${condition}`)(values);
             return Boolean(result);
         } catch (error) {
-            logger.error(`Error evaluating condition: ${condition}`, error);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            logger.error(`Error evaluating condition: ${condition}`, { error: errorMessage });
             return false;
         }
     }
@@ -396,14 +469,43 @@ const langGraphPlugin = {
         checkpointId: { type: 'string' }
     },
 
+    // Services to be injected at runtime
+    services: {
+        nodeExecutor: { required: true },
+        flowService: { required: true },
+        flowRunService: { required: true },
+        configService: { required: false },
+        redisService: { required: false }
+    },
+
+    // Initialize the plugin with injected services
+    initialize: function (services: {
+        nodeExecutor: INodeExecutorService,
+        flowService: IFlowService,
+        flowRunService: IFlowRunService,
+        configService?: ConfigService,
+        redisService?: RedisService
+    }) {
+        // Initialize the LangGraphManager with the injected services
+        LangGraphManager.getInstance(
+            services.configService,
+            services.redisService,
+            services.nodeExecutor,
+            services.flowService,
+            services.flowRunService
+        );
+    },
+
     actions: [
         {
             name: 'initializeGraph',
             execute: async function (input: {
                 flowRunId: string;
                 values?: Record<string, any>;
-            }): Promise<GraphState> {
-                return LangGraphManager.getInstance().initializeGraphState(
+            }, services: any): Promise<GraphState> {
+                // Get the LangGraphManager instance with the injected services
+                const manager = LangGraphManager.getInstance();
+                return manager.initializeGraphState(
                     input.flowRunId,
                     input.values || {}
                 );
@@ -413,8 +515,9 @@ const langGraphPlugin = {
             name: 'executeStep',
             execute: async function (input: {
                 flowRunId: string;
-            }): Promise<GraphState> {
-                return LangGraphManager.getInstance().executeGraphStep(input.flowRunId);
+            }, services: any): Promise<GraphState> {
+                const manager = LangGraphManager.getInstance();
+                return manager.executeGraphStep(input.flowRunId);
             }
         },
         {
@@ -422,8 +525,9 @@ const langGraphPlugin = {
             execute: async function (input: {
                 flowRunId: string;
                 values?: Record<string, any>;
-            }): Promise<GraphState> {
-                return LangGraphManager.getInstance().runGraph(
+            }, services: any): Promise<GraphState> {
+                const manager = LangGraphManager.getInstance();
+                return manager.runGraph(
                     input.flowRunId,
                     input.values || {}
                 );
@@ -433,16 +537,18 @@ const langGraphPlugin = {
             name: 'createCheckpoint',
             execute: async function (input: {
                 flowRunId: string;
-            }): Promise<string> {
-                return LangGraphManager.getInstance().checkpointGraph(input.flowRunId);
+            }, services: any): Promise<string> {
+                const manager = LangGraphManager.getInstance();
+                return manager.checkpointGraph(input.flowRunId);
             }
         },
         {
             name: 'restoreCheckpoint',
             execute: async function (input: {
                 checkpointId: string;
-            }): Promise<GraphState> {
-                return LangGraphManager.getInstance().restoreFromCheckpoint(input.checkpointId);
+            }, services: any): Promise<GraphState> {
+                const manager = LangGraphManager.getInstance();
+                return manager.restoreFromCheckpoint(input.checkpointId);
             }
         }
     ]
