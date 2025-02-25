@@ -89,7 +89,7 @@ describe('LangGraphPlugin', () => {
                 ]
             };
 
-            const result = await createGraphAction!.execute(input as any);
+            const result: any = await createGraphAction!.execute(input as any);
 
             // Restore the original implementation
             createGraphAction!.execute = originalExecute;
@@ -145,7 +145,7 @@ describe('LangGraphPlugin', () => {
                 }
             };
 
-            const result = await runGraphAction!.execute(input as any);
+            const result: any = await runGraphAction!.execute(input as any);
 
             // Restore the original implementation
             runGraphAction!.execute = originalExecute;
@@ -192,7 +192,7 @@ describe('LangGraphPlugin', () => {
                 graphId: 'graph-123'
             };
 
-            const result = await getGraphStateAction!.execute(input as any);
+            const result: any = await getGraphStateAction!.execute(input as any);
 
             // Restore the original implementation
             getGraphStateAction!.execute = originalExecute;
@@ -248,7 +248,7 @@ describe('LangGraphPlugin', () => {
                 }
             };
 
-            const result = await updateGraphAction!.execute(input as any);
+            const result: any = await updateGraphAction!.execute(input as any);
 
             // Restore the original implementation
             updateGraphAction!.execute = originalExecute;
@@ -282,7 +282,7 @@ describe('LangGraphPlugin', () => {
                 graphId: 'graph-123'
             };
 
-            const result = await deleteGraphAction!.execute(input as any);
+            const result: any = await deleteGraphAction!.execute(input as any);
 
             // Restore the original implementation
             deleteGraphAction!.execute = originalExecute;

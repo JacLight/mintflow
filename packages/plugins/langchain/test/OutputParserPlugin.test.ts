@@ -12,7 +12,7 @@ describe('OutputParserPlugin', () => {
                 text: '{"name": "John", "age": 30, "isActive": true}'
             };
 
-            const result = await parseJSONAction!.execute(input as any);
+            const result: any = await parseJSONAction!.execute(input as any);
 
             expect(result).toEqual({
                 success: true,
@@ -32,7 +32,7 @@ describe('OutputParserPlugin', () => {
                 text: '{"name": "John", "age": 30, missing quotes}'
             };
 
-            const result = await parseJSONAction!.execute(input as any);
+            const result: any = await parseJSONAction!.execute(input as any);
 
             expect(result.success).toBe(false);
             expect(result.parsed).toBeNull();
@@ -55,7 +55,7 @@ describe('OutputParserPlugin', () => {
                 }
             };
 
-            const result = await parseJSONAction!.execute(input as any);
+            const result: any = await parseJSONAction!.execute(input as any);
 
             expect(result.success).toBe(true);
             expect(result.parsed).toEqual({
@@ -81,7 +81,7 @@ describe('OutputParserPlugin', () => {
                 }
             };
 
-            const result = await parseJSONAction!.execute(input as any);
+            const result: any = await parseJSONAction!.execute(input as any);
 
             expect(result.success).toBe(false);
             expect(result.parsed).toBeNull();
@@ -98,7 +98,7 @@ describe('OutputParserPlugin', () => {
                 text: 'name,age,isActive\nJohn,30,true\nJane,25,false'
             };
 
-            const result = await parseCSVAction!.execute(input as any);
+            const result: any = await parseCSVAction!.execute(input as any);
 
             expect(result.success).toBe(true);
             expect(result.parsed).toEqual([
@@ -114,7 +114,7 @@ describe('OutputParserPlugin', () => {
                 text: 'name,age,isActive\nJohn,30,true\nJane,25' // missing a value
             };
 
-            const result = await parseCSVAction!.execute(input as any);
+            const result: any = await parseCSVAction!.execute(input as any);
 
             expect(result.success).toBe(false);
             expect(result.error).toBeTruthy();
@@ -130,7 +130,7 @@ describe('OutputParserPlugin', () => {
                 }
             };
 
-            const result = await parseCSVAction!.execute(input as any);
+            const result: any = await parseCSVAction!.execute(input as any);
 
             expect(result.success).toBe(true);
             expect(result.parsed).toEqual([
@@ -156,7 +156,7 @@ describe('OutputParserPlugin', () => {
                 `
             };
 
-            const result = await parseYAMLAction!.execute(input as any);
+            const result: any = await parseYAMLAction!.execute(input as any);
 
             expect(result.success).toBe(true);
             expect(result.parsed).toEqual({
@@ -178,7 +178,7 @@ describe('OutputParserPlugin', () => {
                 `
             };
 
-            const result = await parseYAMLAction!.execute(input as any);
+            const result: any = await parseYAMLAction!.execute(input as any);
 
             expect(result.success).toBe(false);
             expect(result.parsed).toBeNull();
@@ -199,7 +199,7 @@ describe('OutputParserPlugin', () => {
                 ]
             };
 
-            const result = await extractRegexAction!.execute(input as any);
+            const result: any = await extractRegexAction!.execute(input as any);
 
             expect(result.success).toBe(true);
             expect(result.matches).toEqual({
@@ -219,7 +219,7 @@ describe('OutputParserPlugin', () => {
                 ]
             };
 
-            const result = await extractRegexAction!.execute(input as any);
+            const result: any = await extractRegexAction!.execute(input as any);
 
             expect(result.success).toBe(true);
             expect(result.matches).toEqual({
@@ -238,7 +238,7 @@ describe('OutputParserPlugin', () => {
                 ]
             };
 
-            const result = await extractRegexAction!.execute(input as any);
+            const result: any = await extractRegexAction!.execute(input as any);
 
             expect(result.success).toBe(false);
             expect(result.error).toBeTruthy();
@@ -283,7 +283,7 @@ describe('OutputParserPlugin', () => {
             const originalExecute = extractStructuredAction!.execute;
             extractStructuredAction!.execute = mockExtract;
 
-            const result = await extractStructuredAction!.execute(input as any);
+            const result: any = await extractStructuredAction!.execute(input as any);
 
             // Restore the original implementation
             extractStructuredAction!.execute = originalExecute;
@@ -312,7 +312,7 @@ describe('OutputParserPlugin', () => {
                 template: 'Name: {{name}}\nAge: {{age}}\nContact: {{email}}'
             };
 
-            const result = await formatOutputAction!.execute(input as any);
+            const result: any = await formatOutputAction!.execute(input as any);
 
             expect(result).toBe('Name: John Smith\nAge: 30\nContact: john@example.com');
         });
@@ -334,7 +334,7 @@ describe('OutputParserPlugin', () => {
                 template: 'User: {{user.name}}\nEmail: {{user.contact.email}}\nStatus: {{status}}'
             };
 
-            const result = await formatOutputAction!.execute(input as any);
+            const result: any = await formatOutputAction!.execute(input as any);
 
             expect(result).toBe('User: John Smith\nEmail: john@example.com\nStatus: active');
         });
@@ -350,7 +350,7 @@ describe('OutputParserPlugin', () => {
                 template: 'Name: {{name}}\nHobbies: {{hobbies.join(", ")}}'
             };
 
-            const result = await formatOutputAction!.execute(input as any);
+            const result: any = await formatOutputAction!.execute(input as any);
 
             expect(result).toBe('Name: John Smith\nHobbies: reading, coding, hiking');
         });
