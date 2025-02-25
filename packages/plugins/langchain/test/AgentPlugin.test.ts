@@ -35,7 +35,7 @@ describe('AgentPlugin', () => {
                 systemPrompt: 'You are a helpful assistant'
             };
 
-            const result = await createAgentAction!.execute(input as any);
+            const result: any = await createAgentAction!.execute(input as any);
 
             // Restore the original implementation
             createAgentAction!.execute = originalExecute;
@@ -81,7 +81,7 @@ describe('AgentPlugin', () => {
                 input: 'What is 6 * 7?'
             };
 
-            const result = await executeAgentAction!.execute(input as any);
+            const result: any = await executeAgentAction!.execute(input as any);
 
             // Restore the original implementation
             executeAgentAction!.execute = originalExecute;
@@ -122,7 +122,7 @@ describe('AgentPlugin', () => {
                 agentId: 'test-agent-123'
             };
 
-            const result = await getAgentStateAction!.execute(input as any);
+            const result: any = await getAgentStateAction!.execute(input as any);
 
             // Restore the original implementation
             getAgentStateAction!.execute = originalExecute;
@@ -165,7 +165,7 @@ describe('AgentPlugin', () => {
                 ]
             };
 
-            const result = await updateAgentToolsAction!.execute(input as any);
+            const result: any = await updateAgentToolsAction!.execute(input as any);
 
             // Restore the original implementation
             updateAgentToolsAction!.execute = originalExecute;
@@ -198,7 +198,7 @@ describe('AgentPlugin', () => {
                 agentId: 'test-agent-123'
             };
 
-            const result = await resetAgentMemoryAction!.execute(input as any);
+            const result: any = await resetAgentMemoryAction!.execute(input as any);
 
             // Restore the original implementation
             resetAgentMemoryAction!.execute = originalExecute;
@@ -228,7 +228,7 @@ describe('AgentPlugin', () => {
                 agentId: 'test-agent-123'
             };
 
-            const result = await deleteAgentAction!.execute(input as any);
+            const result: any = await deleteAgentAction!.execute(input as any);
 
             // Restore the original implementation
             deleteAgentAction!.execute = originalExecute;

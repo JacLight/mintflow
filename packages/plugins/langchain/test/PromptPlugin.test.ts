@@ -63,23 +63,23 @@ describe('PromptPlugin', () => {
             const originalDateNow = Date.now;
             Date.now = jest.fn().mockReturnValue(123456789);
 
-            const result = await createTemplateAction!.execute({
+            const result: any = await createTemplateAction!.execute({
                 template
             } as any);
 
             // Restore original Date.now
             Date.now = originalDateNow;
 
-            expect(result.id).toBe('test-template-6umssh');
-            expect(result.name).toBe('Test Template');
-            expect(result.description).toBe('A test template');
-            expect(result.template).toBe('Hello {{name}}, welcome to {{service}}!');
-            expect(result.variables).toEqual(['name', 'service']);
-            expect(result.tags).toEqual(['test', 'greeting']);
-            expect(result.version).toBe('1.0.0');
-            expect(result.metadata).toEqual({ author: 'Test User' });
-            expect(result.createdAt).toBeInstanceOf(Date);
-            expect(result.updatedAt).toBeInstanceOf(Date);
+            expect(result?.id).toBe('test-template-6umssh');
+            expect(result?.name).toBe('Test Template');
+            expect(result?.description).toBe('A test template');
+            expect(result?.template).toBe('Hello {{name}}, welcome to {{service}}!');
+            expect(result?.variables).toEqual(['name', 'service']);
+            expect(result?.tags).toEqual(['test', 'greeting']);
+            expect(result?.version).toBe('1.0.0');
+            expect(result?.metadata).toEqual({ author: 'Test User' });
+            expect(result?.createdAt).toBeInstanceOf(Date);
+            expect(result?.updatedAt).toBeInstanceOf(Date);
 
             // Check that the template was saved to Redis
             expect(redisClient.set).toHaveBeenCalledTimes(2); // Once for template, once for version
@@ -116,14 +116,14 @@ describe('PromptPlugin', () => {
             const originalDateNow = Date.now;
             Date.now = jest.fn().mockReturnValue(987654321);
 
-            const result = await createTemplateAction!.execute({
+            const result: any = await createTemplateAction!.execute({
                 template
             } as any);
 
             // Restore original Date.now
             Date.now = originalDateNow;
 
-            expect(result.variables).toEqual(['name', 'orderId', 'product', 'price']);
+            expect(result?.variables).toEqual(['name', 'orderId', 'product', 'price']);
 
             // Check that the template was saved with the correct variables
             const setCall = redisClient.set.mock.calls[0];
@@ -152,7 +152,7 @@ describe('PromptPlugin', () => {
             const getTemplateAction = promptPlugin.actions.find(a => a.name === 'getTemplate');
             expect(getTemplateAction).toBeDefined();
 
-            const result = await getTemplateAction!.execute({
+            const result: any = await getTemplateAction!.execute({
                 id: 'test-template'
             } as any);
 
@@ -165,7 +165,7 @@ describe('PromptPlugin', () => {
 
             const getTemplateAction = promptPlugin.actions.find(a => a.name === 'getTemplate');
 
-            const result = await getTemplateAction!.execute({
+            const result: any = await getTemplateAction!.execute({
                 id: 'non-existent-template'
             } as any);
 
@@ -206,7 +206,7 @@ describe('PromptPlugin', () => {
                 metadata: { author: 'New Author' }
             };
 
-            const result = await updateTemplateAction!.execute({
+            const result: any = await updateTemplateAction!.execute({
                 id: 'test-template',
                 updates
             } as any);
@@ -214,15 +214,15 @@ describe('PromptPlugin', () => {
             // Restore original Date
             global.Date = originalDateConstructor;
 
-            expect(result.id).toBe('test-template');
-            expect(result.description).toBe('Updated description');
-            expect(result.template).toBe('Hello {{name}}!'); // Unchanged
-            expect(result.variables).toEqual(['name']); // Unchanged
-            expect(result.tags).toEqual(['test', 'updated']);
-            expect(result.version).toBe('1.0.0'); // Unchanged since template text didn't change
-            expect(result.metadata).toEqual({ author: 'New Author' });
-            expect(result.createdAt).toEqual(new Date('2023-01-01')); // Unchanged
-            expect(result.updatedAt).toEqual(updatedDate);
+            expect(result?.id).toBe('test-template');
+            expect(result?.description).toBe('Updated description');
+            expect(result?.template).toBe('Hello {{name}}!'); // Unchanged
+            expect(result?.variables).toEqual(['name']); // Unchanged
+            expect(result?.tags).toEqual(['test', 'updated']);
+            expect(result?.version).toBe('1.0.0'); // Unchanged since template text didn't change
+            expect(result?.metadata).toEqual({ author: 'New Author' });
+            expect(result?.createdAt).toEqual(new Date('2023-01-01')); // Unchanged
+            expect(result?.updatedAt).toEqual(updatedDate);
 
             // Check that the updated template was saved
             expect(redisClient.set).toHaveBeenCalledTimes(1);
@@ -260,14 +260,14 @@ describe('PromptPlugin', () => {
                 metadata: { versionNotes: 'Added service variable' }
             };
 
-            const result = await updateTemplateAction!.execute({
+            const result: any = await updateTemplateAction!.execute({
                 id: 'test-template',
                 updates
             } as any);
 
-            expect(result.template).toBe('Hello {{name}}, welcome to {{service}}!');
-            expect(result.variables).toEqual(['name', 'service']); // Updated with new variable
-            expect(result.version).toBe('1.0.1'); // Incremented
+            expect(result?.template).toBe('Hello {{name}}, welcome to {{service}}!');
+            expect(result?.variables).toEqual(['name', 'service']); // Updated with new variable
+            expect(result?.version).toBe('1.0.1'); // Incremented
 
             // Check that both template and version were saved
             expect(redisClient.set).toHaveBeenCalledTimes(2);
@@ -304,7 +304,7 @@ describe('PromptPlugin', () => {
             const formatTemplateAction = promptPlugin.actions.find(a => a.name === 'formatTemplate');
             expect(formatTemplateAction).toBeDefined();
 
-            const result = await formatTemplateAction!.execute({
+            const result: any = await formatTemplateAction!.execute({
                 templateIdOrObject: 'greeting-template',
                 variables: {
                     name: 'John',
@@ -331,7 +331,7 @@ describe('PromptPlugin', () => {
 
             const formatTemplateAction = promptPlugin.actions.find(a => a.name === 'formatTemplate');
 
-            const result = await formatTemplateAction!.execute({
+            const result: any = await formatTemplateAction!.execute({
                 templateIdOrObject: templateObject,
                 variables: {
                     orderId: '12345',
@@ -361,7 +361,7 @@ describe('PromptPlugin', () => {
 
             const formatTemplateAction = promptPlugin.actions.find(a => a.name === 'formatTemplate');
 
-            const result = await formatTemplateAction!.execute({
+            const result: any = await formatTemplateAction!.execute({
                 templateIdOrObject: 'incomplete-template',
                 variables: {
                     name: 'Jane'
@@ -410,7 +410,7 @@ describe('PromptPlugin', () => {
             const listTemplatesAction = promptPlugin.actions.find(a => a.name === 'listTemplates');
             expect(listTemplatesAction).toBeDefined();
 
-            const result = await listTemplatesAction!.execute({} as any);
+            const result: any = await listTemplatesAction!.execute({} as any);
 
             expect(result).toHaveLength(2);
             // Should be sorted by updatedAt (descending)
@@ -453,7 +453,7 @@ describe('PromptPlugin', () => {
 
             const listTemplatesAction = promptPlugin.actions.find(a => a.name === 'listTemplates');
 
-            const result = await listTemplatesAction!.execute({
+            const result: any = await listTemplatesAction!.execute({
                 filters: { tag: 'tag1' }
             } as any);
 
@@ -496,7 +496,7 @@ describe('PromptPlugin', () => {
 
             const listTemplatesAction = promptPlugin.actions.find(a => a.name === 'listTemplates');
 
-            const result = await listTemplatesAction!.execute({
+            const result: any = await listTemplatesAction!.execute({
                 filters: { query: 'order' }
             } as any);
 
@@ -513,7 +513,7 @@ describe('PromptPlugin', () => {
             const deleteTemplateAction = promptPlugin.actions.find(a => a.name === 'deleteTemplate');
             expect(deleteTemplateAction).toBeDefined();
 
-            const result = await deleteTemplateAction!.execute({
+            const result: any = await deleteTemplateAction!.execute({
                 id: 'test-template'
             } as any);
 
@@ -543,7 +543,7 @@ describe('PromptPlugin', () => {
             const getTemplateVersionAction = promptPlugin.actions.find(a => a.name === 'getTemplateVersion');
             expect(getTemplateVersionAction).toBeDefined();
 
-            const result = await getTemplateVersionAction!.execute({
+            const result: any = await getTemplateVersionAction!.execute({
                 templateId: 'test-template',
                 version: '1.0.0'
             } as any);
@@ -592,7 +592,7 @@ describe('PromptPlugin', () => {
             const listTemplateVersionsAction = promptPlugin.actions.find(a => a.name === 'listTemplateVersions');
             expect(listTemplateVersionsAction).toBeDefined();
 
-            const result = await listTemplateVersionsAction!.execute({
+            const result: any = await listTemplateVersionsAction!.execute({
                 templateId: 'test-template'
             } as any);
 

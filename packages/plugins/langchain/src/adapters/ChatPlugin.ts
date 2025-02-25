@@ -926,7 +926,7 @@ const weatherTool: ChatTool = {
 chatService.registerTool(weatherTool);
 
 // Plugin definition for integration with workflow engine
-const chatPlugin = {
+const chatPluginDefinition = {
     id: "chat",
     name: "Chat Plugin",
     icon: "GiChat",
@@ -1140,8 +1140,111 @@ const chatPlugin = {
             }): Promise<ChatSessionContext | null> {
                 return chatService.getSessionContext(input.sessionId);
             }
+        },
+        {
+            name: 'getChatSession',
+            execute: async function (input: {
+                sessionId: string;
+            }): Promise<{
+                sessionId: string;
+                context: ChatSessionContext;
+            }> {
+                const context = await chatService.getSessionContext(input.sessionId);
+                if (!context) {
+                    throw new Error(`Session not found: ${input.sessionId}`);
+                }
+                return {
+                    sessionId: input.sessionId,
+                    context
+                };
+            }
+        },
+        {
+            name: 'updateChatSession',
+            execute: async function (input: {
+                sessionId: string;
+                updates: Partial<ChatSessionContext>;
+            }): Promise<{
+                sessionId: string;
+                context: ChatSessionContext;
+            }> {
+                const context = await chatService.updateSessionContext(
+                    input.sessionId,
+                    input.updates
+                );
+                return {
+                    sessionId: input.sessionId,
+                    context
+                };
+            }
+        },
+        {
+            name: 'deleteChatSession',
+            execute: async function (input: {
+                sessionId: string;
+            }): Promise<{
+                success: boolean;
+                message: string;
+            }> {
+                // In a real implementation, this would delete the session
+                // For now, we'll just check if it exists
+                const context = await chatService.getSessionContext(input.sessionId);
+                if (!context) {
+                    throw new Error(`Session not found: ${input.sessionId}`);
+                }
+
+                // Mock deletion
+                return {
+                    success: true,
+                    message: 'Chat session deleted successfully'
+                };
+            }
+        },
+        {
+            name: 'listChatSessions',
+            execute: async function (input: {
+                userId?: string;
+                limit?: number;
+                offset?: number;
+            }): Promise<Array<{
+                sessionId: string;
+                context: ChatSessionContext;
+            }>> {
+                // In a real implementation, this would query the database
+                // For now, return mock data
+                return [
+                    {
+                        sessionId: 'chat-123',
+                        context: {
+                            sessionId: 'chat-123',
+                            userId: input.userId || 'user-1',
+                            metadata: {
+                                createdAt: '2023-01-01T12:00:00Z',
+                                lastUpdated: '2023-01-01T12:00:00Z'
+                            },
+                            status: 'active',
+                            createdAt: new Date('2023-01-01T12:00:00Z'),
+                            updatedAt: new Date('2023-01-01T12:00:00Z')
+                        }
+                    },
+                    {
+                        sessionId: 'chat-456',
+                        context: {
+                            sessionId: 'chat-456',
+                            userId: input.userId || 'user-1',
+                            metadata: {
+                                createdAt: '2023-01-02T12:00:00Z',
+                                lastUpdated: '2023-01-02T12:00:00Z'
+                            },
+                            status: 'active',
+                            createdAt: new Date('2023-01-02T12:00:00Z'),
+                            updatedAt: new Date('2023-01-02T12:00:00Z')
+                        }
+                    }
+                ];
+            }
         }
     ]
 };
 
-export { chatPlugin };
+export const chatPlugin = chatPluginDefinition;

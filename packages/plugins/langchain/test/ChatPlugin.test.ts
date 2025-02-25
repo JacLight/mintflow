@@ -33,7 +33,7 @@ describe('ChatPlugin', () => {
                 }
             };
 
-            const result = await createChatSessionAction!.execute(input as any);
+            const result: any = await createChatSessionAction!.execute(input as any);
 
             // Restore the original implementation
             createChatSessionAction!.execute = originalExecute;
@@ -77,7 +77,7 @@ describe('ChatPlugin', () => {
                 message: 'Hi there'
             };
 
-            const result = await sendMessageAction!.execute(input as any);
+            const result: any = await sendMessageAction!.execute(input as any);
 
             // Restore the original implementation
             sendMessageAction!.execute = originalExecute;
@@ -123,7 +123,7 @@ describe('ChatPlugin', () => {
                 additionalContext: 'The user is asking about a specific topic.'
             };
 
-            const result = await sendMessageAction!.execute(input as any);
+            const result: any = await sendMessageAction!.execute(input as any);
 
             // Restore the original implementation
             sendMessageAction!.execute = originalExecute;
@@ -163,7 +163,7 @@ describe('ChatPlugin', () => {
                 sessionId: 'chat-123'
             };
 
-            const result = await getChatSessionAction!.execute(input as any);
+            const result: any = await getChatSessionAction!.execute(input as any);
 
             // Restore the original implementation
             getChatSessionAction!.execute = originalExecute;
@@ -213,7 +213,7 @@ describe('ChatPlugin', () => {
                 }
             };
 
-            const result = await updateChatSessionAction!.execute(input as any);
+            const result: any = await updateChatSessionAction!.execute(input as any);
 
             // Restore the original implementation
             updateChatSessionAction!.execute = originalExecute;
@@ -244,7 +244,7 @@ describe('ChatPlugin', () => {
                 sessionId: 'chat-123'
             };
 
-            const result = await deleteChatSessionAction!.execute(input as any);
+            const result: any = await deleteChatSessionAction!.execute(input as any);
 
             // Restore the original implementation
             deleteChatSessionAction!.execute = originalExecute;
@@ -292,7 +292,7 @@ describe('ChatPlugin', () => {
             const originalExecute = listChatSessionsAction!.execute;
             listChatSessionsAction!.execute = mockList;
 
-            const result = await listChatSessionsAction!.execute({} as any);
+            const result: any = await listChatSessionsAction!.execute({} as any);
 
             // Restore the original implementation
             listChatSessionsAction!.execute = originalExecute;
