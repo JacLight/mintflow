@@ -14,14 +14,10 @@ const timerPlugin: PluginDescriptor = {
                 name: 'type',
                 type: 'string',
                 enum: ['cron', 'interval', 'timeout'],
-                displayStyle: 'outlined',
-                displaySize: 'small',
             },
             cron: {
                 name: 'cron',
                 type: 'string',
-                displaySize: 'small',
-                displayStyle: 'outlined',
                 'x-control': 'cron',
                 rules: [{ operation: 'notEqual', valueA: 'cron', valueB: '{{type}}', action: 'hide' }],
             },
@@ -29,19 +25,19 @@ const timerPlugin: PluginDescriptor = {
                 name: 'interval',
                 type: 'number',
                 description: 'seconds',
-                displayStyle: 'outlined',
-                displaySize: 'small',
                 default: 5,
                 rules: [{ operation: 'notEqual', valueA: 'interval', valueB: '{{type}}', action: 'hide' }],
             },
             timeout: {
                 name: 'timeout',
                 type: 'number',
-                displayStyle: 'outlined',
                 description: 'seconds',
                 default: 5,
-                displaySize: 'small',
                 rules: [{ operation: 'notEqual', valueA: 'timeout', valueB: '{{type}}', action: 'hide' }],
+            },
+            endDate: {
+                name: 'endDate',
+                type: 'string',
             },
         },
     },
@@ -53,16 +49,17 @@ const timerPlugin: PluginDescriptor = {
     actions: [
         {
             name: 'cron',
-            execute: async (input: any, context: any) => {
+            execute: async (input: any, nodeDef: any) => {
                 const { cron: expression } = input;
-                const { flowRunId, nodeId } = context;
+                const { flowRunId, nodeId } = nodeDef;
 
                 const timerJob: TimerJob = {
                     type: 'cron',
                     flowRunId,
                     nodeId,
                     data: { timestamp: new Date().toISOString() },
-                    expression
+                    expression,
+                    endDate: input.endDate
                 };
 
                 const jobId = await TimerQueueService.getInstance().scheduleTimer(timerJob);
@@ -71,16 +68,17 @@ const timerPlugin: PluginDescriptor = {
         },
         {
             name: 'interval',
-            execute: async (input: any, context: any) => {
+            execute: async (input: any, nodeDef: any) => {
                 const { interval = 5 } = input;
-                const { flowRunId, nodeId } = context;
+                const { flowRunId, nodeId } = nodeDef;
 
                 const timerJob: TimerJob = {
                     type: 'interval',
                     flowRunId,
                     nodeId,
                     data: { timestamp: new Date().toISOString() },
-                    interval
+                    interval,
+                    endDate: input.endDate
                 };
 
                 const jobId = await TimerQueueService.getInstance().scheduleTimer(timerJob);
@@ -89,22 +87,30 @@ const timerPlugin: PluginDescriptor = {
         },
         {
             name: 'timeout',
-            execute: async (input: any, context: any) => {
+            execute: async (input: any, nodeDef: any) => {
                 const { timeout = 5 } = input;
-                const { flowRunId, nodeId } = context;
+                const { flowRunId, nodeId } = nodeDef;
 
                 const timerJob: TimerJob = {
                     type: 'timeout',
                     flowRunId,
                     nodeId,
                     data: { timestamp: new Date().toISOString() },
-                    timeout
+                    timeout,
                 };
 
                 const jobId = await TimerQueueService.getInstance().scheduleTimer(timerJob);
                 return `Timeout set for ${timeout} seconds, Job ID: ${jobId}`;
             }
         },
+        {
+            name: 'cancel',
+            execute: async (input: any, nodeDef: any) => {
+                const { flowRunId, nodeId } = nodeDef;
+                await TimerQueueService.getInstance().cleanupTimer(flowRunId, nodeId);
+                return 'Timer cancelled';
+            }
+        }
     ]
 };
 
