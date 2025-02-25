@@ -12,6 +12,7 @@ export interface TimerJob {
     expression?: string;  // for cron
     interval?: number;    // for interval
     timeout?: number;     // for timeout
+    endDate?: Date;
 }
 
 export class TimerQueueService {
@@ -50,9 +51,14 @@ export class TimerQueueService {
     }
 
     private setupQueueProcessor(): void {
-        this.timerQueue.process(async (job) => {
+        this.timerQueue.process(async (job: any) => {
             const { flowRunId, nodeId, data } = job.data;
             try {
+                if (job.id.endsWith(':end')) {
+                    logger.info('End job processing', { flowRunId, nodeId });
+                    this.cleanupTimer(flowRunId, nodeId);
+                    return { success: true };
+                }
                 await this.nodeExecutor.resumeScheduledTask(flowRunId, nodeId, data);
                 return { success: true };
             } catch (error: any) {
@@ -103,6 +109,7 @@ export class TimerQueueService {
                         jobId: jobKey
                     }
                 );
+                await this.scheduleEndDate(jobKey, job);
                 return repeatableJob.id as string;
 
             case 'interval':
@@ -116,6 +123,7 @@ export class TimerQueueService {
                         jobId: jobKey
                     }
                 );
+                await this.scheduleEndDate(jobKey, job);
                 return intervalJob.id as string;
 
             case 'timeout':
@@ -133,6 +141,26 @@ export class TimerQueueService {
 
             default:
                 throw new Error(`Unsupported timer type: ${job.type}`);
+        }
+    }
+
+    async scheduleEndDate(jobKey, job,) {
+        if (job.endDate) {
+            const endDate = new Date(job.endDate);
+            if (endDate.getTime() <= Date.now()) {
+                logger.info('End date is in the past, skipping scheduling end job', {
+                    jobKey,
+                    endDate: job.endDate
+                });
+                return;
+            }
+            await this.timerQueue.add(
+                job,
+                {
+                    delay: endDate.getTime() - Date.now(),
+                    jobId: `${jobKey}:end`
+                }
+            );
         }
     }
 

@@ -172,4 +172,14 @@ export class ConfigurationService extends BaseTwilioService {
             throw new Error(`Cleanup failed: ${error.message}`);
         }
     }
+
+    async listNumbers(): Promise<any[]> {
+        try {
+            const numbers = await this.client.incomingPhoneNumbers.list();
+            return numbers;
+        } catch (error: any) {
+            this.logError(error);
+            throw new Error(`Failed to list phone numbers: ${error.message}`);
+        }
+    }
 }

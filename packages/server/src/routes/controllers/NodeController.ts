@@ -74,7 +74,7 @@ export const runNode = async (req: Request, res: Response): Promise<any> => {
     try {
         // const { nodeId } = req.params;
         const { tenantId, flowId, input, action, plugin, config } = req.body;
-        const nodeDef: INodeDefinition = { nodeId: `run_node_${plugin}`, input, action, config, type: plugin, plugin, runner: 'node' };
+        const nodeDef: INodeDefinition & { flowRunId } = { flowRunId: `flow_run_node_${plugin}`, nodeId: `run_node_${plugin}`, input, action, config, type: plugin, plugin, runner: 'node' };
         const output = await NodeExecutorService.getInstance().testNode(nodeDef)
         return res.json(output);
     } catch (err: any) {
