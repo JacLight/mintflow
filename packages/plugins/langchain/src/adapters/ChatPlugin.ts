@@ -1248,3 +1248,4 @@ const chatPluginDefinition = {
 };
 
 export const chatPlugin = chatPluginDefinition;
+export default chatPluginDefinition;
