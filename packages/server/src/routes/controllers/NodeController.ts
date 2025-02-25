@@ -17,7 +17,7 @@ export const getNodes = async (req: Request, res: Response): Promise<any> => {
             description: node.description,
             documentation: node.documentation,
             icon: node.icon,
-            actions: Array.isArray(node.actions) && node.actions?.map(action => ({
+            actions: node.actions?.map(action => ({
                 name: action.name,
                 description: action.description,
                 inputSchema: action.inputSchema,
