@@ -6,7 +6,7 @@ import { logger } from '@mintflow/common';
 /**
  * Memory options for configuring memory behavior
  */
-interface MemoryOptions {
+export interface MemoryOptions {
     maxMessages?: number; // Maximum number of messages to keep in buffer
     summarizeThreshold?: number; // Number of messages that triggers summarization
     ttl?: number; // Time to live in seconds for memory
@@ -16,7 +16,7 @@ interface MemoryOptions {
 /**
  * Memory state interface for storing in Redis
  */
-interface MemoryState {
+export interface MemoryState {
     messages: Message[];
     summary?: string;
     metadata: Record<string, any>;
@@ -27,7 +27,7 @@ interface MemoryState {
 /**
  * Message interface for conversation history
  */
-interface Message {
+export interface Message {
     role: 'user' | 'assistant' | 'system';
     content: string;
     timestamp?: Date;

@@ -12,7 +12,7 @@ import { ConfigService } from '../services/ConfigService.js';
 /**
  * Document interface for storing in the vector database
  */
-interface Document {
+export interface Document {
     id: string;
     text: string;
     metadata: Record<string, any>;
@@ -22,7 +22,7 @@ interface Document {
 /**
  * Chunk options for document splitting
  */
-interface ChunkOptions {
+export interface ChunkOptions {
     chunkSize?: number;
     chunkOverlap?: number;
     separator?: string;
@@ -31,7 +31,7 @@ interface ChunkOptions {
 /**
  * Retrieval options for vector search
  */
-interface RetrievalOptions {
+export interface RetrievalOptions {
     maxResults?: number;
     minScore?: number;
     filter?: Record<string, any>;
@@ -40,7 +40,7 @@ interface RetrievalOptions {
 /**
  * Vector search result
  */
-interface SearchResult {
+export interface SearchResult {
     document: Document;
     score: number;
 }
@@ -190,10 +190,8 @@ export class RAGService {
 
                 // Create embeddings request
                 const embeddingInput: EmbeddingInput = {
-                    config,
-                    provider,
-                    model,
-                    input: texts
+                    model: model || 'text-embedding-ada-002',
+                    text: texts
                 };
 
                 // Call the embedding API (using AI plugin)
@@ -228,7 +226,8 @@ export class RAGService {
      */
     private async mockEmbeddingAPI(input: EmbeddingInput): Promise<EmbeddingResponse> {
         // Create mock embeddings of dimension 1536 (OpenAI's default)
-        const embeddings = (input.input as string[]).map(() => {
+        const texts = Array.isArray(input.text) ? input.text : [input.text];
+        const embeddings = texts.map(() => {
             return Array.from({ length: 1536 }, () => Math.random() * 2 - 1);
         });
 
@@ -334,10 +333,8 @@ export class RAGService {
 
             // Create embedding request
             const embeddingInput: EmbeddingInput = {
-                config,
-                provider,
-                model,
-                input: query
+                model: model || 'text-embedding-ada-002',
+                text: query
             };
 
             // Call the embedding API (using AI plugin)

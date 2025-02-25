@@ -7,7 +7,7 @@ import { logger } from '@mintflow/common';
 /**
  * Template interface for prompt management
  */
-interface PromptTemplate {
+export interface PromptTemplate {
     id: string;
     name: string;
     description: string;
@@ -23,7 +23,7 @@ interface PromptTemplate {
 /**
  * Template version interface for tracking changes
  */
-interface TemplateVersion {
+export interface TemplateVersion {
     version: string;
     template: string;
     variables: string[];

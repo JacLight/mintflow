@@ -3,8 +3,8 @@
   "compilerOptions": {
     // Ensure outDir is explicitly set and not "."
     "outDir": "./dist-test",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
