@@ -51,7 +51,7 @@ export interface AgentState {
  */
 export class AgentService {
     private static instance: AgentService;
-    private redis = RedisService.getInstance();
+    public redis = RedisService.getInstance();
     private config = ConfigService.getInstance().getConfig();
     private tools: Map<string, Tool> = new Map();
 
@@ -139,7 +139,7 @@ export class AgentService {
     /**
      * Saves an agent's state
      */
-    private async saveAgentState(agentId: string, state: AgentState): Promise<void> {
+    async saveAgentState(agentId: string, state: AgentState): Promise<void> {
         const key = `agent:${agentId}`;
         await this.redis.client.set(key, JSON.stringify(state));
     }
@@ -536,12 +536,202 @@ const agentPlugin = {
                 tools?: string[];
                 messages?: any[];
                 metadata?: Record<string, any>;
-            }): Promise<string> {
-                return agentService.createAgent(
+            }): Promise<{
+                agentId: string;
+                state: AgentState;
+            }> {
+                const agentId = await agentService.createAgent(
                     input.tools,
                     input.messages,
                     input.metadata
                 );
+
+                const state = await agentService.getAgentState(agentId);
+
+                return {
+                    agentId,
+                    state: state || {
+                        agentId,
+                        messages: input.messages || [],
+                        tools: input.tools?.map(name => agentService.getTool(name)).filter(Boolean) as Tool[] || [],
+                        status: 'idle',
+                        metadata: input.metadata || {},
+                        createdAt: new Date(),
+                        updatedAt: new Date()
+                    }
+                };
+            }
+        },
+        {
+            name: 'executeAgentAction',
+            execute: async function (input: {
+                agentId: string;
+                input: string;
+            }): Promise<{
+                result: string;
+                actions: Array<{
+                    tool: string;
+                    input: string;
+                    output: string;
+                }>;
+                state: AgentState;
+            }> {
+                // First add the user message
+                await agentService.addMessage(
+                    input.agentId,
+                    {
+                        role: 'user',
+                        content: input.input
+                    }
+                );
+
+                // Execute the agent step
+                const state = await agentService.executeStep(
+                    input.agentId,
+                    {
+                        model: 'gpt-4', // Default model
+                        provider: 'openai',
+                        temperature: 0.7,
+                        maxTokens: 1000
+                    }
+                );
+
+                // Extract the result from the last assistant message
+                const assistantMessages = state.messages.filter(m => m.role === 'assistant');
+                const result = assistantMessages.length > 0
+                    ? assistantMessages[assistantMessages.length - 1].content || ''
+                    : '';
+
+                // Extract tool actions from function calls
+                const actions = state.messages
+                    .filter(m => m.function_call)
+                    .map(m => {
+                        const args = JSON.parse(m.function_call?.arguments || '{}');
+                        const outputMessage = state.messages.find(
+                            om => om.role === 'function' && om.name === m.function_call?.name
+                        );
+                        const output = outputMessage?.content || '{}';
+
+                        return {
+                            tool: m.function_call?.name || '',
+                            input: JSON.stringify(args),
+                            output
+                        };
+                    });
+
+                return {
+                    result,
+                    actions,
+                    state
+                };
+            }
+        },
+        {
+            name: 'getAgentState',
+            execute: async function (input: {
+                agentId: string;
+            }): Promise<AgentState | null> {
+                return agentService.getAgentState(input.agentId);
+            }
+        },
+        {
+            name: 'updateAgentTools',
+            execute: async function (input: {
+                agentId: string;
+                tools: Array<{
+                    name: string;
+                    description: string;
+                }>;
+            }): Promise<AgentState> {
+                const state = await agentService.getAgentState(input.agentId);
+                if (!state) {
+                    throw new Error(`Agent not found: ${input.agentId}`);
+                }
+
+                // Get the tool objects from the names
+                const tools = input.tools.map(tool => {
+                    const existingTool = agentService.getTool(tool.name);
+                    if (existingTool) return existingTool;
+
+                    // If tool doesn't exist, create a mock tool
+                    return {
+                        name: tool.name,
+                        description: tool.description,
+                        parameters: {
+                            type: 'object',
+                            properties: {},
+                            required: []
+                        },
+                        execute: async () => ({ result: 'Mock tool execution' })
+                    };
+                });
+
+                // Update the state with new tools
+                const updatedState: AgentState = {
+                    ...state,
+                    tools,
+                    updatedAt: new Date()
+                };
+
+                // Save the updated state
+                await agentService.saveAgentState(input.agentId, updatedState);
+
+                return updatedState;
+            }
+        },
+        {
+            name: 'resetAgentMemory',
+            execute: async function (input: {
+                agentId: string;
+            }): Promise<AgentState> {
+                const state = await agentService.getAgentState(input.agentId);
+                if (!state) {
+                    throw new Error(`Agent not found: ${input.agentId}`);
+                }
+
+                // Keep only system messages
+                const systemMessages = state.messages.filter(m => m.role === 'system');
+
+                // Update the state with cleared messages
+                const updatedState: AgentState = {
+                    ...state,
+                    messages: systemMessages,
+                    status: 'idle',
+                    currentTool: undefined,
+                    error: undefined,
+                    updatedAt: new Date()
+                };
+
+                // Save the updated state
+                await agentService.saveAgentState(input.agentId, updatedState);
+
+                return updatedState;
+            }
+        },
+        {
+            name: 'deleteAgent',
+            execute: async function (input: {
+                agentId: string;
+            }): Promise<{
+                success: boolean;
+                message: string;
+            }> {
+                const state = await agentService.getAgentState(input.agentId);
+                if (!state) {
+                    return {
+                        success: false,
+                        message: `Agent not found: ${input.agentId}`
+                    };
+                }
+
+                // Delete the agent state from Redis
+                const key = `agent:${input.agentId}`;
+                await agentService.redis.client.del(key);
+
+                return {
+                    success: true,
+                    message: 'Agent deleted successfully'
+                };
             }
         },
         {
@@ -598,14 +788,6 @@ const agentPlugin = {
                     input,
                     input.maxSteps
                 );
-            }
-        },
-        {
-            name: 'getAgentState',
-            execute: async function (input: {
-                agentId: string;
-            }): Promise<AgentState | null> {
-                return agentService.getAgentState(input.agentId);
             }
         },
         {

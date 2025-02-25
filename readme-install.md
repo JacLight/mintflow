@@ -98,3 +98,4 @@ pnpm nx run-many --target=test --all
 pnpm nx run-many --target=build --all
 npx jest
 npx jest /Users/_projects/mintflow-wk/packages/plugins/array/test/filter.test.ts
+npm test -- -t "OutputParserPlugin"

@@ -1,4 +1,4 @@
-// plugins/PromptPlugin.ts
+a// plugins/PromptPlugin.ts
 
 import { RedisService } from '../services/RedisService.js';
 import { ConfigService } from '../services/ConfigService.js';
@@ -247,7 +247,12 @@ export class PromptService {
 
         // Apply pagination
         return filtered
-            .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+            .sort((a, b) => {
+                // Handle both Date objects and ISO strings
+                const dateA = a.updatedAt instanceof Date ? a.updatedAt : new Date(a.updatedAt);
+                const dateB = b.updatedAt instanceof Date ? b.updatedAt : new Date(b.updatedAt);
+                return dateB.getTime() - dateA.getTime();
+            })
             .slice(offset, offset + limit);
     }
 
