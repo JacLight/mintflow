@@ -1,6 +1,58 @@
 /// <reference types="jest" />
 
 import langGraphPlugin, { GraphState } from '../src/adapters/LangGraphPlugin.js';
+import { assertType } from '../src/utils/testHelpers.js';
+
+// Define interfaces for test result types
+interface CreateGraphResult {
+    graphId: string;
+    state: {
+        nodes: any[];
+        edges: any[];
+        status: string;
+    };
+}
+
+interface RunGraphResult {
+    result: {
+        answer: string;
+    };
+    state: {
+        nodes: any[];
+        edges: any[];
+        execution: {
+            steps: any[];
+            startTime: string;
+            endTime: string;
+        };
+        status: string;
+    };
+}
+
+interface GetGraphStateResult {
+    nodes: any[];
+    edges: any[];
+    execution: {
+        steps: any[];
+        startTime: string;
+        endTime: string;
+    };
+    status: string;
+}
+
+interface UpdateGraphResult {
+    graphId: string;
+    state: {
+        nodes: any[];
+        edges: any[];
+        status: string;
+    };
+}
+
+interface DeleteGraphResult {
+    success: boolean;
+    message: string;
+}
 
 describe('LangGraphPlugin', () => {
     describe('createGraph action', () => {
@@ -42,10 +94,12 @@ describe('LangGraphPlugin', () => {
             // Restore the original implementation
             createGraphAction!.execute = originalExecute;
 
-            expect(result.graphId).toBe('graph-123');
-            expect(result.state.nodes).toHaveLength(2);
-            expect(result.state.edges).toHaveLength(1);
-            expect(result.state.status).toBe('created');
+            // Use type assertion to help TypeScript understand the result type
+            const typedResult = assertType<CreateGraphResult>(result);
+            expect(typedResult.graphId).toBe('graph-123');
+            expect(typedResult.state.nodes).toHaveLength(2);
+            expect(typedResult.state.edges).toHaveLength(1);
+            expect(typedResult.state.status).toBe('created');
             expect(mockCreate).toHaveBeenCalledWith(input);
         });
     });
@@ -96,9 +150,11 @@ describe('LangGraphPlugin', () => {
             // Restore the original implementation
             runGraphAction!.execute = originalExecute;
 
-            expect(result.result.answer).toBe('The capital of France is Paris.');
-            expect(result.state.execution.steps).toHaveLength(2);
-            expect(result.state.status).toBe('completed');
+            // Use type assertion to help TypeScript understand the result type
+            const typedResult = assertType<RunGraphResult>(result);
+            expect(typedResult.result.answer).toBe('The capital of France is Paris.');
+            expect(typedResult.state.execution.steps).toHaveLength(2);
+            expect(typedResult.state.status).toBe('completed');
             expect(mockRun).toHaveBeenCalledWith(input);
         });
     });
@@ -141,10 +197,12 @@ describe('LangGraphPlugin', () => {
             // Restore the original implementation
             getGraphStateAction!.execute = originalExecute;
 
-            expect(result.nodes).toHaveLength(2);
-            expect(result.edges).toHaveLength(1);
-            expect(result.execution.steps).toHaveLength(2);
-            expect(result.status).toBe('completed');
+            // Use type assertion to help TypeScript understand the result type
+            const typedResult = assertType<GetGraphStateResult>(result);
+            expect(typedResult.nodes).toHaveLength(2);
+            expect(typedResult.edges).toHaveLength(1);
+            expect(typedResult.execution.steps).toHaveLength(2);
+            expect(typedResult.status).toBe('completed');
             expect(mockGetState).toHaveBeenCalledWith(input);
         });
     });
@@ -195,10 +253,12 @@ describe('LangGraphPlugin', () => {
             // Restore the original implementation
             updateGraphAction!.execute = originalExecute;
 
-            expect(result.state.nodes).toHaveLength(3);
-            expect(result.state.edges).toHaveLength(2);
-            expect(result.state.nodes[0].config.model).toBe('gpt-4-turbo');
-            expect(result.state.status).toBe('updated');
+            // Use type assertion to help TypeScript understand the result type
+            const typedResult = assertType<UpdateGraphResult>(result);
+            expect(typedResult.state.nodes).toHaveLength(3);
+            expect(typedResult.state.edges).toHaveLength(2);
+            expect(typedResult.state.nodes[0].config.model).toBe('gpt-4-turbo');
+            expect(typedResult.state.status).toBe('updated');
             expect(mockUpdate).toHaveBeenCalledWith(input);
         });
     });
@@ -227,8 +287,10 @@ describe('LangGraphPlugin', () => {
             // Restore the original implementation
             deleteGraphAction!.execute = originalExecute;
 
-            expect(result.success).toBe(true);
-            expect(result.message).toBe('Graph deleted successfully');
+            // Use type assertion to help TypeScript understand the result type
+            const typedResult = assertType<DeleteGraphResult>(result);
+            expect(typedResult.success).toBe(true);
+            expect(typedResult.message).toBe('Graph deleted successfully');
             expect(mockDelete).toHaveBeenCalledWith(input);
         });
     });

@@ -4,12 +4,18 @@ import { createLogger, format, transports } from 'winston';
 import { fileURLToPath } from 'url';
 
 
+// Determine the directory path in a way that works in both CommonJS and ESM
 let _dirname;
-if (typeof __dirname !== 'undefined') {
-    _dirname = __dirname;
-} else {
-    const __filename = fileURLToPath(import.meta.url);
-    _dirname = path.dirname(__filename);
+try {
+    // For CommonJS
+    if (typeof __dirname !== 'undefined') {
+        _dirname = __dirname;
+    } else {
+        // Fallback to current working directory
+        _dirname = process.cwd();
+    }
+} catch (e) {
+    _dirname = process.cwd();
 }
 const logDirectory = path.join(_dirname, '../logs');
 
@@ -51,4 +57,3 @@ if (process.env.NODE_ENV !== 'production') {
         )
     }));
 }
-
