@@ -81,7 +81,7 @@ const initialNodes: Node[] = [
         data: {
             label: 'Dynamic Node',
             schema: sampleSchema,
-            icon: 'box'
+            icon: 'Box'
         }
     },
     {
@@ -91,7 +91,7 @@ const initialNodes: Node[] = [
         data: {
             label: 'App View Node',
             componentType: 'ChatInterface',
-            icon: 'zap'
+            icon: 'Zap'
         }
     }
 ];

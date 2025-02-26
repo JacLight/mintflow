@@ -5,7 +5,7 @@ import { useChat } from 'ai/react';
 import { useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
-import { ChatHeader } from '@/components/chat-header';
+import { ChatHeader } from '@/components/chat/chat-header';
 import type { Vote } from '@/lib/db/schema';
 import { fetcher, generateUUID } from '@/lib/utils';
 

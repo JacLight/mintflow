@@ -1,5 +1,5 @@
-import { Artifact } from '@/components/create-artifact';
-import { CodeEditor } from '@/components/code-editor';
+import { Artifact } from '@/components/chat/create-artifact';
+import { CodeEditor } from '@/components/chat/code-editor';
 import {
   CopyIcon,
   LogsIcon,
@@ -7,14 +7,14 @@ import {
   PlayIcon,
   RedoIcon,
   UndoIcon,
-} from '@/components/icons';
+} from '@/components/chat/icons';
 import { toast } from 'sonner';
 import { generateUUID } from '@/lib/utils';
 import {
   Console,
   ConsoleOutput,
   ConsoleOutputContent,
-} from '@/components/console';
+} from '@/components/chat/console';
 
 const OUTPUT_HANDLERS = {
   matplotlib: `
@@ -82,8 +82,8 @@ export const codeArtifact = new Artifact<'code', Metadata>({
         content: streamPart.content as string,
         isVisible:
           draftArtifact.status === 'streaming' &&
-          draftArtifact.content.length > 300 &&
-          draftArtifact.content.length < 310
+            draftArtifact.content.length > 300 &&
+            draftArtifact.content.length < 310
             ? true
             : draftArtifact.isVisible,
         status: 'streaming',
