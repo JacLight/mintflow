@@ -70,7 +70,8 @@ const initialNodes: Node[] = [
         position: { x: 100, y: 50 },
         data: {
             label: 'Information Node',
-            content: 'This is a workflow designer for MintFlow. Drag components from the panel to create your workflow.'
+            content: 'This is a workflow designer for MintFlow. Drag components from the panel to create your workflow.',
+            icon: 'info'
         }
     },
     {
@@ -79,7 +80,8 @@ const initialNodes: Node[] = [
         position: { x: 400, y: 50 },
         data: {
             label: 'Dynamic Node',
-            schema: sampleSchema
+            schema: sampleSchema,
+            icon: 'box'
         }
     },
     {
@@ -88,7 +90,8 @@ const initialNodes: Node[] = [
         position: { x: 250, y: 200 },
         data: {
             label: 'App View Node',
-            componentType: 'ChatInterface'
+            componentType: 'ChatInterface',
+            icon: 'zap'
         }
     }
 ];

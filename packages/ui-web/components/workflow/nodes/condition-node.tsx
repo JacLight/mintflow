@@ -4,6 +4,7 @@ import { memo } from 'react';
 import { NodeProps, Position, Handle } from '@xyflow/react';
 import { GitBranch } from 'lucide-react';
 import { BaseNode, BaseNodeData } from './base-node';
+import { IconRender } from './base-node';
 
 // Condition node component with multiple outputs
 export const ConditionNode = memo((props: NodeProps) => {
@@ -22,10 +23,15 @@ export const ConditionNode = memo((props: NodeProps) => {
 
             {/* Node content */}
             <div className="flex flex-col gap-2">
-                <div className="text-sm font-medium">{(data as BaseNodeData).label}</div>
+                <div className="text-sm font-medium flex items-center">
+                    <span className="mr-2">
+                        <IconRender icon="GitBranch" />
+                    </span>
+                    {(data as BaseNodeData).label}
+                </div>
                 <div className="flex items-center justify-center rounded-md border bg-amber-500/10 p-2">
                     <GitBranch className="h-4 w-4 text-amber-500" />
-                    <span className="ml-2 text-xs">Condition</span>
+                    <span className="ml-2 text-xs">Type: Condition</span>
                 </div>
             </div>
 

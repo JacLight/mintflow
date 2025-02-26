@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import { NodeProps, Position } from '@xyflow/react';
 import { Info } from 'lucide-react';
-import { BaseNode, BaseNodeData } from './base-node';
+import { BaseNode, BaseNodeData, IconRender } from './base-node';
 
 // Extended data type for info nodes
 export type InfoNodeData = BaseNodeData & {
@@ -15,17 +15,23 @@ export const InfoNode = memo((props: NodeProps) => {
     const { data, ...rest } = props;
     const nodeData = data as InfoNodeData;
 
+    // Add icon to the node data
+    const enhancedNodeData: InfoNodeData = {
+        ...nodeData,
+        icon: 'Info' // Using string name of the icon
+    };
+
     return (
         <BaseNode
             {...rest}
-            data={nodeData}
+            data={enhancedNodeData}
             sourcePosition={Position.Bottom}
             targetPosition={Position.Top}
         >
             <div className="flex flex-col gap-2 rounded-md border bg-blue-500/10 p-3">
                 <div className="flex items-center">
                     <Info className="mr-2 h-4 w-4 text-blue-500" />
-                    <span className="text-xs font-medium">Information</span>
+                    <span className="text-xs font-medium">Type: Information</span>
                 </div>
                 {nodeData.content && (
                     <div className="text-xs text-muted-foreground">
