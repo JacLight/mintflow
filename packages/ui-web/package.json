@@ -1,5 +1,10 @@
 {
   "private": true,
+  "name": "@mintflow/ui-web",
+  "author": {
+    "name": "Jac Light",
+    "email": "imolewolede@gmail.com"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -25,6 +30,7 @@
     "@vercel/blob": "^0.27.1",
     "ai": "^4.1.41",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.8.0",
     "bcrypt-ts": "^5.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -70,5 +76,6 @@
   },
   "devDependencies": {
     "@types/react-dom": "^19.0.4"
-  }
+  },
+  "packageManager": "yarn@4.6.0"
 }
