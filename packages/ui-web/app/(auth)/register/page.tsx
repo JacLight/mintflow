@@ -1,4 +1,6 @@
 // app/auth/register/page.tsx
+'use client';
+
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -11,8 +13,34 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { registerUser } from '../actions';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { SocialLogins } from '../social-logins';
 
 export default function RegisterPage() {
+    const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
+
+    const handleRegister = async (formData: FormData) => {
+        try {
+            const result = await registerUser(formData);
+
+            if (result && result.success && result.redirectUrl) {
+                // Registration successful, redirect to the specified URL
+                router.push(result.redirectUrl);
+                return;
+            }
+
+            if (result && result.error) {
+                setError(result.error);
+            }
+        } catch (err: any) {
+            // Handle any unexpected errors
+            console.error('Registration error:', err);
+            setError('An error occurred during registration. Please try again.');
+        }
+    };
+
     return (
         <Card className="border-0 shadow-xl">
             <CardHeader className="space-y-1">
@@ -22,7 +50,12 @@ export default function RegisterPage() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form action={registerUser} className="space-y-4">
+                {error && (
+                    <div className="p-3 mb-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                        {error}
+                    </div>
+                )}
+                <form action={handleRegister} className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="name">Full name</Label>
                         <Input
@@ -66,6 +99,21 @@ export default function RegisterPage() {
                         Create account
                     </Button>
                 </form>
+
+                <div className="relative mt-6">
+                    <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">
+                            Or continue with
+                        </span>
+                    </div>
+                </div>
+
+                <div className="mt-6">
+                    <SocialLogins />
+                </div>
             </CardContent>
 
             <CardFooter>

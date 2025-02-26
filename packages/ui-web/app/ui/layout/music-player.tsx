@@ -1,6 +1,6 @@
 import React from 'react';
-import { getRandomNumber } from '@jaclight/dbsdk';
 import { Icon } from './icons';
+import { getRandomNumber } from '@/lib/utils';
 
 const MusicPlayer = () => {
     const favorites = [

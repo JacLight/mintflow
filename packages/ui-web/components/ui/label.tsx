@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 export interface LabelProps
   extends React.LabelHTMLAttributes<HTMLLabelElement> { }
 
-const Label = React.forwardRef<HTMLInputElement, LabelProps>(
+const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
   ({ className, htmlFor, ...props }, ref) => {
     return (
       <label
@@ -13,7 +13,7 @@ const Label = React.forwardRef<HTMLInputElement, LabelProps>(
           'block text-sm font-medium text-muted-foreground',
           className
         )}
-        for={htmlFor}
+        htmlFor={htmlFor}
         ref={ref}
         {...props}
       />

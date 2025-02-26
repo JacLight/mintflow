@@ -3,7 +3,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Github, Facebook } from 'lucide-react';
-import { loginWithGithub, loginWithGoogle, loginWithFacebook } from './actions';
+import { useRouter } from 'next/navigation';
+import { socialLoginUrls } from './social-login-urls';
 
 function GoogleIcon() {
     return (
@@ -29,28 +30,40 @@ function GoogleIcon() {
 }
 
 export function SocialLogins() {
+    const router = useRouter();
+
+    const handleSocialLogin = (provider: 'github' | 'google' | 'facebook') => {
+        router.push(socialLoginUrls[provider]);
+    };
+
     return (
         <div className="space-y-3">
-            <form action={loginWithGithub}>
-                <Button className="w-full h-11" variant="outline">
-                    <Github className="mr-2 h-5 w-5" />
-                    Continue with GitHub
-                </Button>
-            </form>
+            <Button
+                className="w-full h-11"
+                variant="outline"
+                onClick={() => handleSocialLogin('github')}
+            >
+                <Github className="mr-2 h-5 w-5" />
+                Continue with GitHub
+            </Button>
 
-            <form action={loginWithGoogle}>
-                <Button className="w-full h-11" variant="outline">
-                    <GoogleIcon />
-                    Continue with Google
-                </Button>
-            </form>
+            <Button
+                className="w-full h-11"
+                variant="outline"
+                onClick={() => handleSocialLogin('google')}
+            >
+                <GoogleIcon />
+                Continue with Google
+            </Button>
 
-            <form action={loginWithFacebook}>
-                <Button className="w-full h-11" variant="outline">
-                    <Facebook className="mr-2 h-5 w-5 text-blue-600" />
-                    Continue with Facebook
-                </Button>
-            </form>
+            <Button
+                className="w-full h-11"
+                variant="outline"
+                onClick={() => handleSocialLogin('facebook')}
+            >
+                <Facebook className="mr-2 h-5 w-5 text-blue-600" />
+                Continue with Facebook
+            </Button>
         </div>
     );
 }
