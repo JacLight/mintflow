@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { classNames } from '@jaclight/dbsdk';
 import { useState } from 'react';
 import { Icon } from '../icons';
+import { classNames } from '@/lib/utils';
 
 const navigationData = {
     mainNav: [
