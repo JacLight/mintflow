@@ -2,9 +2,7 @@
 
 import { memo } from 'react';
 import { NodeProps, Position, Handle } from '@xyflow/react';
-import { GitBranch } from 'lucide-react';
-import { BaseNode, BaseNodeData } from './base-node';
-import { IconRender } from './base-node';
+import { BaseNode, BaseNodeData, IconRender } from './base-node';
 
 // Condition node component with multiple outputs
 export const ConditionNode = memo((props: NodeProps) => {
@@ -30,7 +28,9 @@ export const ConditionNode = memo((props: NodeProps) => {
                     {(data as BaseNodeData).label}
                 </div>
                 <div className="flex items-center justify-center rounded-md border bg-amber-500/10 p-2">
-                    <GitBranch className="h-4 w-4 text-amber-500" />
+                    <span className="text-amber-500">
+                        <IconRender icon="GitBranch" />
+                    </span>
                     <span className="ml-2 text-xs">Type: Condition</span>
                 </div>
             </div>

@@ -15,7 +15,7 @@ import {
   MoreHorizontalIcon,
   ShareIcon,
   TrashIcon,
-} from '@/components/icons';
+} from '@/components/chat/icons';
 import {
   AlertDialog,
   AlertDialogAction,
