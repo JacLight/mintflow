@@ -5,11 +5,27 @@ import { Handle, Position, NodeProps, useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash } from 'lucide-react';
 import { ButtonDelete } from '@/components/ui/button-delete';
+import HandleRenderComponent from './handle-render-component';
+import { ConnectionState } from '../types';
 
 // Base node properties
 export type BaseNodeData = {
     label: string;
     icon?: React.ReactNode | string;
+    description?: string;
+    inputs?: Array<{
+        name: string;
+        type: string;
+        label: string;
+        required?: boolean;
+        description?: string;
+    }>;
+    outputs?: Array<{
+        name: string;
+        type: string;
+        label: string;
+        description?: string;
+    }>;
 };
 
 // Available node types for the add menu
@@ -45,7 +61,7 @@ export const BaseNode = memo(({
     targetPosition = Position.Top,
     children
 }: NodeProps & {
-    data: BaseNodeData;
+    data: BaseNodeData & { connectionState?: ConnectionState };
     sourcePosition?: Position;
     targetPosition?: Position;
     children?: React.ReactNode;
@@ -57,6 +73,13 @@ export const BaseNode = memo(({
     const addMenuRef = useRef<HTMLDivElement>(null);
     const reactFlowInstance = useReactFlow();
 
+
+    // Extract connection state from data prop
+    const connectionState: ConnectionState = data.connectionState || {
+        connectionStartNode: null,
+        connectionStartHandle: null,
+        connectionStartType: null
+    };
     // Close menus when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -313,6 +336,62 @@ export const BaseNode = memo(({
                 position={sourcePosition}
                 className="!h-3 !w-3 !bg-primary"
             />
+
+            {data.inputs && data.inputs.length > 0 && (
+                <div className="mt-2 pt-2 border-t">
+                    <div className="text-xs font-medium text-gray-500 mb-1">Inputs</div>
+                    {data.inputs.map((input, index) => (
+                        <div key={input.name} className="flex items-center justify-between py-1">
+                            <div className="flex items-center">
+                                <HandleRenderComponent
+                                    left={true}
+                                    tooltipTitle={input.type}
+                                    id={{
+                                        input_types: [input.type],
+                                        id: id,
+                                        fieldName: input.name
+                                    }}
+                                    title={input.label}
+                                    nodeId={id}
+                                    colorName={['primary']}
+                                    connectionState={connectionState}
+                                />
+                                <span className="text-xs ml-4">{input.label}</span>
+                                {input.required && <span className="text-red-500 ml-1">*</span>}
+                            </div>
+                            <span className="text-xs text-gray-400">{input.type}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Output handles */}
+            {data.outputs && data.outputs.length > 0 && (
+                <div className="mt-2 pt-2 border-t">
+                    <div className="text-xs font-medium text-gray-500 mb-1">Outputs</div>
+                    {data.outputs.map((output, index) => (
+                        <div key={output.name} className="flex items-center justify-between py-1">
+                            <span className="text-xs">{output.label}</span>
+                            <div className="flex items-center">
+                                <span className="text-xs text-gray-400 mr-4">{output.type}</span>
+                                <HandleRenderComponent
+                                    left={false}
+                                    tooltipTitle={output.type}
+                                    id={{
+                                        output_types: [output.type],
+                                        id: id,
+                                        fieldName: output.name
+                                    }}
+                                    title={output.label}
+                                    nodeId={id}
+                                    colorName={['secondary']}
+                                    connectionState={connectionState}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 });
