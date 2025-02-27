@@ -1,7 +1,7 @@
 'use client';
 
 import { DragEvent } from 'react';
-import { LucideIcon, CircleDot, Box, GitBranch, Zap } from 'lucide-react';
+import { LucideIcon, CircleDot, Box, GitBranch, Zap, FormInput } from 'lucide-react';
 
 // Component types that can be dragged onto the canvas
 type ComponentType = {
@@ -30,6 +30,12 @@ const componentTypes: ComponentType[] = [
         name: 'App View',
         description: 'Display custom component',
         icon: Zap
+    },
+    {
+        type: 'form',
+        name: 'Form',
+        description: 'Display custom component',
+        icon: FormInput
     }
 ];
 

@@ -14,20 +14,29 @@ import {
     Panel,
     applyNodeChanges,
     applyEdgeChanges,
-    addEdge
+    addEdge,
+    useOnSelectionChange
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { Save, Upload, Download } from 'lucide-react';
 
 import { ComponentPanel } from '../workflow/component-panel';
 import { InfoNode } from './nodes/info-node';
 import { DynamicNode } from './nodes/dynamic-node';
 import { AppViewNode } from './nodes/app-view-node';
+import { FormNode } from './nodes/app-form';
+import CustomEdge from './edges/base-edge';
 
 // Define custom node types
 const nodeTypes: NodeTypes = {
     info: InfoNode,
     dynamic: DynamicNode,
-    'app-view': AppViewNode
+    'app-view': AppViewNode,
+    'form': FormNode
+};
+
+const edgeTypes = {
+    custom: CustomEdge
 };
 
 // Sample schema for dynamic node
@@ -93,17 +102,103 @@ const initialNodes: Node[] = [
             componentType: 'ChatInterface',
             icon: 'Zap'
         }
-    }
+    },
 ];
 
 const initialEdges: Edge[] = [];
+
+// Interface for workflow data
+export interface WorkflowData {
+    nodes: Node[];
+    edges: Edge[];
+    name?: string;
+    description?: string;
+    lastSaved?: string;
+}
 
 // Component for the flow canvas with drag and drop functionality
 function FlowCanvas() {
     const [nodes, setNodes] = useState<Node[]>(initialNodes);
     const [edges, setEdges] = useState<Edge[]>(initialEdges);
+    const [selectedElements, setSelectedElements] = useState<{ nodes: Node[], edges: Edge[] }>({ nodes: [], edges: [] });
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const reactFlowInstance = useReactFlow();
+
+    // Track selected elements
+    useOnSelectionChange({
+        onChange: ({ nodes, edges }) => {
+            setSelectedElements({ nodes, edges });
+        },
+    });
+
+    // Save workflow data
+    const handleSaveWorkflow = useCallback(() => {
+        if (!reactFlowInstance) return;
+
+        const flowData: WorkflowData = {
+            nodes: reactFlowInstance.getNodes(),
+            edges: reactFlowInstance.getEdges(),
+            lastSaved: new Date().toISOString()
+        };
+
+        // For demo purposes, we'll save to localStorage
+        // In a real app, you would send this to your server API
+        localStorage.setItem('savedWorkflow', JSON.stringify(flowData));
+
+        console.log('Workflow saved:', flowData);
+        alert('Workflow saved successfully!');
+    }, [reactFlowInstance]);
+
+    // Load workflow data
+    const handleLoadWorkflow = useCallback(() => {
+        // For demo purposes, we'll load from localStorage
+        // In a real app, you would fetch this from your server API
+        const savedData = localStorage.getItem('savedWorkflow');
+
+        if (savedData) {
+            try {
+                const flowData: WorkflowData = JSON.parse(savedData);
+
+                if (flowData.nodes && flowData.edges) {
+                    setNodes(flowData.nodes);
+                    // Ensure all edges have the custom type
+                    const edgesWithCustomType = flowData.edges.map(edge => ({
+                        ...edge,
+                        type: 'custom'
+                    }));
+                    setEdges(edgesWithCustomType);
+                    console.log('Workflow loaded:', flowData);
+                    alert('Workflow loaded successfully!');
+                }
+            } catch (error) {
+                console.error('Error loading workflow:', error);
+                alert('Error loading workflow data');
+            }
+        } else {
+            alert('No saved workflow found');
+        }
+    }, [setNodes, setEdges]);
+
+    // Export workflow data as JSON file
+    const handleExportWorkflow = useCallback(() => {
+        if (!reactFlowInstance) return;
+
+        const flowData: WorkflowData = {
+            nodes: reactFlowInstance.getNodes(),
+            edges: reactFlowInstance.getEdges(),
+            lastSaved: new Date().toISOString()
+        };
+
+        const dataStr = JSON.stringify(flowData, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+        const exportFileDefaultName = `workflow-${new Date().toISOString().slice(0, 10)}.json`;
+
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    }, [reactFlowInstance]);
 
     // Handle when a node is dropped on the canvas
     const onDrop = useCallback(
@@ -138,7 +233,6 @@ function FlowCanvas() {
                         }
                     };
                     break;
-
                 case 'dynamic':
                     newNode = {
                         id: nodeId,
@@ -156,7 +250,6 @@ function FlowCanvas() {
                         }
                     };
                     break;
-
                 case 'app-view':
                     newNode = {
                         id: nodeId,
@@ -168,7 +261,6 @@ function FlowCanvas() {
                         }
                     };
                     break;
-
                 default:
                     newNode = {
                         id: nodeId,
@@ -206,9 +298,10 @@ function FlowCanvas() {
                     });
                 }}
                 onConnect={(connection) => {
-                    setEdges((eds) => addEdge(connection, eds));
+                    setEdges((eds) => addEdge({ ...connection, type: 'custom' }, eds));
                 }}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 onDrop={onDrop}
                 onDragOver={onDragOver}
                 fitView
@@ -218,6 +311,32 @@ function FlowCanvas() {
                 <MiniMap />
                 <Panel position="top-left" className="bg-background border rounded-md shadow-md">
                     <div className="p-2 text-sm font-medium">Workflow Designer</div>
+                </Panel>
+                <Panel position="top-right" className="bg-background border rounded-md shadow-md flex gap-2">
+                    <button
+                        onClick={handleSaveWorkflow}
+                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+                        title="Save workflow"
+                    >
+                        <Save className="h-4 w-4" />
+                        <span>Save</span>
+                    </button>
+                    <button
+                        onClick={handleLoadWorkflow}
+                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+                        title="Load workflow"
+                    >
+                        <Upload className="h-4 w-4" />
+                        <span>Load</span>
+                    </button>
+                    <button
+                        onClick={handleExportWorkflow}
+                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+                        title="Export workflow as JSON"
+                    >
+                        <Download className="h-4 w-4" />
+                        <span>Export</span>
+                    </button>
                 </Panel>
             </ReactFlow>
         </div>
