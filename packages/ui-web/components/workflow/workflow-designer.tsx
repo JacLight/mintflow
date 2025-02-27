@@ -21,23 +21,12 @@ import '@xyflow/react/dist/style.css';
 import { Save, Upload, Download } from 'lucide-react';
 
 import { ComponentPanel } from '../workflow/component-panel';
-import { InfoNode } from './nodes/info-node';
-import { DynamicNode } from './nodes/dynamic-node';
-import { AppViewNode } from './nodes/app-view-node';
-import { FormNode } from './nodes/app-form';
-import CustomEdge from './edges/base-edge';
+import { getNodeTypes, getEdgeTypes, getNodeDefaultData } from './node-registry';
 
-// Define custom node types
-const nodeTypes: NodeTypes = {
-    info: InfoNode,
-    dynamic: DynamicNode,
-    'app-view': AppViewNode,
-    'form': FormNode
-};
-
-const edgeTypes = {
-    custom: CustomEdge
-};
+// Get node and edge types from the registry
+// You can filter which nodes to include by passing an array of types
+const nodeTypes = getNodeTypes(['info', 'dynamic', 'app-view', 'form', 'improved', 'action', 'condition']);
+const edgeTypes = getEdgeTypes(['custom']);
 
 // Sample schema for dynamic node
 const sampleSchema = {
@@ -217,58 +206,16 @@ function FlowCanvas() {
                 y: event.clientY - reactFlowBounds.top
             });
 
-            // Create a new node with appropriate data based on type
-            let newNode: Node;
+            // Create a new node with data from the node registry
             const nodeId = `${type}-${Date.now()}`;
+            const nodeData = getNodeDefaultData(type, name);
 
-            switch (type) {
-                case 'info':
-                    newNode = {
-                        id: nodeId,
-                        type,
-                        position,
-                        data: {
-                            label: name,
-                            content: 'Add your information here'
-                        }
-                    };
-                    break;
-                case 'dynamic':
-                    newNode = {
-                        id: nodeId,
-                        type,
-                        position,
-                        data: {
-                            label: name,
-                            schema: {
-                                type: 'object',
-                                properties: {
-                                    // Default empty schema
-                                    name: { type: 'string' }
-                                }
-                            }
-                        }
-                    };
-                    break;
-                case 'app-view':
-                    newNode = {
-                        id: nodeId,
-                        type,
-                        position,
-                        data: {
-                            label: name,
-                            componentType: 'Default'
-                        }
-                    };
-                    break;
-                default:
-                    newNode = {
-                        id: nodeId,
-                        type,
-                        position,
-                        data: { label: name }
-                    };
-            }
+            const newNode: Node = {
+                id: nodeId,
+                type,
+                position,
+                data: nodeData
+            };
 
             // Add the new node to the flow
             setNodes((nds) => nds.concat(newNode));

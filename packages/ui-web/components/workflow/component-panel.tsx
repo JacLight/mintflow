@@ -1,7 +1,8 @@
 'use client';
 
 import { DragEvent } from 'react';
-import { LucideIcon, CircleDot, Box, GitBranch, Zap, FormInput } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
+import { getComponentTypes } from './node-registry';
 
 // Component types that can be dragged onto the canvas
 type ComponentType = {
@@ -11,33 +12,10 @@ type ComponentType = {
     icon: LucideIcon;
 };
 
-// Available component types
-const componentTypes: ComponentType[] = [
-    {
-        type: 'info',
-        name: 'Information',
-        description: 'Display information',
-        icon: CircleDot
-    },
-    {
-        type: 'dynamic',
-        name: 'Dynamic',
-        description: 'Form-based node with schema',
-        icon: Box
-    },
-    {
-        type: 'app-view',
-        name: 'App View',
-        description: 'Display custom component',
-        icon: Zap
-    },
-    {
-        type: 'form',
-        name: 'Form',
-        description: 'Display custom component',
-        icon: FormInput
-    }
-];
+// Get available component types from the registry
+// You can filter which components to show by passing an array of types
+// For example: const componentTypes = getComponentTypes(['info', 'dynamic', 'app-view']);
+const componentTypes = getComponentTypes();
 
 // Draggable component item
 function DraggableComponent({ type, name, description, icon: Icon }: ComponentType) {

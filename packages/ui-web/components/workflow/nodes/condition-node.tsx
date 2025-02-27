@@ -2,7 +2,8 @@
 
 import { memo } from 'react';
 import { NodeProps, Position, Handle } from '@xyflow/react';
-import { BaseNode, BaseNodeData, IconRender } from './base-node';
+import { BaseNode, BaseNodeData } from './base-node';
+import { IconRenderer } from '@/components/ui/icon-renderer';
 
 // Condition node component with multiple outputs
 export const ConditionNode = memo((props: NodeProps) => {
@@ -23,13 +24,13 @@ export const ConditionNode = memo((props: NodeProps) => {
             <div className="flex flex-col gap-2">
                 <div className="text-sm font-medium flex items-center">
                     <span className="mr-2">
-                        <IconRender icon="GitBranch" />
+                        <IconRenderer icon="Github" />
                     </span>
                     {(data as BaseNodeData).label}
                 </div>
                 <div className="flex items-center justify-center rounded-md border bg-amber-500/10 p-2">
                     <span className="text-amber-500">
-                        <IconRender icon="GitBranch" />
+                        <IconRenderer icon="Github" />
                     </span>
                     <span className="ml-2 text-xs">Type: Condition</span>
                 </div>
