@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "outDir": "./dist-test",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "target": "es2022",
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "esModuleInterop": true,
+    "strict": true,
+    "paths":{
+      "@mintflow/common": ["../../common/src/index.ts"]
+    }
+  },
+  "include": ["test/**/*.ts", "src/**/*.ts"]
+}

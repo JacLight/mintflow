@@ -1,0 +1,103 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "workspaceLayout": {
+    "appsDir": "packages",
+    "libsDir": "packages"
+  },
+  "projects": {
+    "server": {
+      "root": "packages/server"
+    },
+    "ui-web": {
+      "root": "packages/ui-web"
+    },
+    "node_runner": {
+      "root": "packages/node_runner"
+    },
+    "python_runner": {
+      "root": "packages/python_runner"
+    },
+    "common": {
+      "root": "packages/common"
+    },
+    "@mintflow/array": {
+      "root": "packages/plugins/array"
+    },
+    "@mintflow/delay": {
+      "root": "packages/plugins/delay"
+    },
+    "@mintflow/exec": {
+      "root": "packages/plugins/exec"
+    },
+    "@mintflow/fetch": {
+      "root": "packages/plugins/fetch"
+    },
+    "@mintflow/inject": {
+      "root": "packages/plugins/inject"
+    },
+    "@mintflow/langchain": {
+      "root": "packages/plugins/langchain"
+    },
+    "@mintflow/llm": {
+      "root": "packages/plugins/llm"
+    },
+    "@mintflow/mail": {
+      "root": "packages/plugins/mail"
+    },
+    "@mintflow/modify": {
+      "root": "packages/plugins/modify"
+    },
+    "@mintflow/mqtt": {
+      "root": "packages/plugins/mqtt"
+    },
+    "@mintflow/range": {
+      "root": "packages/plugins/range"
+    },
+    "@mintflow/start": {
+      "root": "packages/plugins/start"
+    },
+    "@mintflow/switch": {
+      "root": "packages/plugins/switch"
+    },
+    "@mintflow/timer": {
+      "root": "packages/plugins/timer"
+    },
+    "@mintflow/twilio": {
+      "root": "packages/plugins/twilio"
+    }
+  },
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "production": [
+      "default",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.mjs",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/src/test-setup.[jt]s"
+    ],
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/ci.yml"
+    ]
+  },
+  "nxCloudId": "67b4cfb69bfdb27c89dc33b4",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ]
+    }
+  }
+}

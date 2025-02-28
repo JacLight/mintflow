@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    // Ensure outDir is explicitly set and not "."
+    "outDir": "./dist-test",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "paths":{
+      "@mintflow/common": ["../common/src/index.ts"]
+    },
+  },
+  // If you want tests compiled by TS, include them; if not, omit them
+  "include": ["test/**/*.ts", "src/**/*.ts"]
+}

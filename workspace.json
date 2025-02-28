@@ -1,0 +1,16 @@
+{
+  "name": "@mintflow-wk/source",
+  "sourceRoot": "packages",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages",
+        "main": "packages/index.ts",
+        "tsConfig": "tsconfig.lib.json"
+      }
+    }
+  }
+}
