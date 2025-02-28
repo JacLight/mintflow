@@ -240,4 +240,6 @@ pnpm generate:template {{name of plugins}}. -- this will create the blank plugin
 
 6. please ignore plugins already implemented
 
-7. update the plugin_mapping.md documentation
+7. update the plugin_mapping.md documentation with the new plugihn
+
+8. sure we go ahead but I really dont like having too many plugins doing little things each, I'll apprecaite every oppopuniy to merge small plugs into one let me know when you find a condidate
