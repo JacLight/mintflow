@@ -9,6 +9,8 @@ out-tsc
 node_modules
 **/node_modules
 
+packages/plugins/__ref_only/**
+
 # IDEs and editors
 /.idea
 .project
