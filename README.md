@@ -245,3 +245,9 @@ pnpm generate:template {{name of plugins}}. -- this will create the blank plugin
 8. sure we go ahead but I really dont like having too many plugins doing little things each, I'll apprecaite every oppopuniy to merge small plugs into one let me know when you find a condidate
 
 9 kindly look into the array plug for test congiguration as the test is not working
+
+kindly look in the plugins folder __ref_only and plugins remove the thing inside__ref_only that we've have implmented someimee you need to look into the actual implmentation to effective do this becase naems of plug alone is not enoug and sometime plug were merged
+
+update the pending_plugins.md and Plugin_mapping.md
+
+then remove the reference from __ref_only
