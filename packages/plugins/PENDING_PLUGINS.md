@@ -10,6 +10,7 @@ This document lists pending plugins for MintFlow in order of importance and popu
 2. **Klaviyo** - Email marketing and customer data platform
 3. **ConvertKit** - Email marketing for creators
 4. **SendGrid** - Email delivery and marketing service
+5. **Apollo
 
 ### Productivity and Project Management
 
