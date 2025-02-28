@@ -20,6 +20,7 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | intercom | intercom | ✅ Completed | Provides integration with Intercom for customer messaging and support. |
 | monday | monday | ✅ Completed | Provides integration with Monday.com for workspace, board, and item management. |
 | pipedrive | pipedrive | ✅ Completed | Provides integration with Pipedrive CRM for managing persons, organizations, deals, leads, activities, and more. |
+| assemblyai | assemblyai | ✅ Completed | Provides advanced speech recognition and audio intelligence capabilities using the AssemblyAI API. |
 
 ### monday (from monday)
 
