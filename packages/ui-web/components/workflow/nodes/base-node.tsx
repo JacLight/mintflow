@@ -7,6 +7,7 @@ import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Tras
 import { ButtonDelete } from '@/components/ui/button-delete';
 import HandleRenderComponent from './handle-render-component';
 import { ConnectionState } from '../types';
+import GlowingHandle from './glowing-handle';
 
 // Base node properties
 export type BaseNodeData = {
@@ -331,10 +332,12 @@ export const BaseNode = memo(({
             </div>
 
             {/* Output handle (source) */}
-            <Handle
+            <GlowingHandle
                 type="source"
                 position={sourcePosition}
-                className="!h-3 !w-3 !bg-primary"
+                isConnectable={true}
+                id={id}
+            // className="!h-3 !w-3 !bg-primary"
             />
 
             {data.inputs && data.inputs.length > 0 && (

@@ -1,0 +1,28 @@
+{
+  "name": "@mintflow/google-sheets",
+  "version": "1.0.0",
+  "description": "Google Sheets plugin for MintFlow",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [
+    "mintflow",
+    "google-sheets",
+    "plugin"
+  ],
+  "author": "MintFlow Team",
+  "license": "MIT",
+  "dependencies": {
+    "googleapis": "^128.0.0"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "axios-mock-adapter": "^1.22.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.3.3"
+  }
+}

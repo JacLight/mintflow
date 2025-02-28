@@ -221,3 +221,23 @@ MintFlow is inspired by and builds upon the work of many great projects:
 pnpm nx generate @nx/js:library --name=my-new-plugin --directory=packages/plugins/my-new-plugin --importPath=@mintflow/plugins/my-new-plugin --projectNameAndRootFormat=as-provided --no-interactive
 
 Thank you to all our contributors and the open-source community!
+
+so we hvae mintflow plugins inside plugins folder the task
+
+1. for each __ref_only -- plugin create a mintflow plutins, we might need to change the name a little i.e when they say switch we might say decition, you can prompt me during the new plugin creation for name .
+
+to assist you in creating plugins as the root of the mono repo you can run
+
+pnpm generate:template {{name of plugins}}. -- this will create the blank plugins template in ./plugins/{plugingname}}
+
+2. afer this weill you looks at the implmentation of _ref_only then implment similar in the new plugin following our plugins achitecteture.
+
+3. YOu can look into existing plugsin to learn about our plugins achitechtion
+
+4. you need to know that the structure of ___ref_only plugins is not the same with mintflow plugins, inface nothnig can be directly copied without outright rewrting from scrapte. everthing you do must be rewritting or reimagines so that fit well into mintflow plugin ecoho system
+
+5. Please add a readme to the github plugins, features, useage and any other importatn stuffs
+
+6. please ignore plugins already implemented
+
+7. updte the plugin_mapping.md documentation
