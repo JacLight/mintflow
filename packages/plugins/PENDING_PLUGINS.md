@@ -6,7 +6,6 @@ This document lists pending plugins for MintFlow in order of importance and popu
 
 ### CRM and Marketing
 
-1. **ActiveCampaign** - Marketing automation and email marketing
 2. **Klaviyo** - Email marketing and customer data platform
 3. **ConvertKit** - Email marketing for creators
 4. **SendGrid** - Email delivery and marketing service
@@ -15,14 +14,11 @@ This document lists pending plugins for MintFlow in order of importance and popu
 ### Productivity and Project Management
 
 5. **ClickUp** - Project management and productivity
-6. **Linear** - Issue tracking and project management
-7. **Basecamp** - Project management and team communication
+6. **Basecamp** - Project management and team communication
 
 ### Website and CMS
 
-8. **Webflow** - Website building and design
-9. **WordPress** - Website and blog management
-10. **Wix** - Website building and hosting
+9. **Wix** - Website building and hosting
 
 ### Communication
 
