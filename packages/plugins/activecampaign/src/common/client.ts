@@ -1,8 +1,7 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import {
     AccountCustomFieldsResponse,
     ContactCustomFieldsResponse,
-    ContactList,
     CreateAccountRequest,
     CreateContactRequest,
     CreateWebhookRequest,
@@ -12,21 +11,19 @@ import {
     ListTagsResponse,
 } from './types.js';
 
-function emptyValueFilter(accessor: (key: string) => any): (key: string) => boolean {
-    return (key: string) => {
-        const val = accessor(key);
-        return val !== null && val !== undefined && (typeof val != 'string' || val.length > 0);
-    };
-}
-
 export function prepareQuery(request?: Record<string, any>): Record<string, string> {
     const params: Record<string, string> = {};
     if (!request) return params;
+
     Object.keys(request)
-        .filter(emptyValueFilter((k) => request[k]))
-        .forEach((k: string) => {
-            params[k] = (request as Record<string, any>)[k].toString();
+        .filter(key => {
+            const val = request[key];
+            return val !== null && val !== undefined && (typeof val !== 'string' || val.length > 0);
+        })
+        .forEach((key: string) => {
+            params[key] = request[key].toString();
         });
+
     return params;
 }
 
@@ -43,29 +40,12 @@ export class ActiveCampaignClient {
         });
     }
 
-    async makeRequest<T>(
-        method: string,
-        resourceUri: string,
-        query?: Record<string, string>,
-        body: any | undefined = undefined,
-    ): Promise<T> {
-        const config: AxiosRequestConfig = {
-            method,
-            url: resourceUri,
-            params: query,
-            data: body,
-        };
-
-        const res = await this.client.request<T>(config);
-        return res.data;
-    }
-
     async authenticate() {
         return await this.makeRequest('GET', '/users/me');
     }
 
     async subscribeWebhook(request: CreateWebhookRequest): Promise<CreateWebhookResponse> {
-        return await this.makeRequest<CreateWebhookResponse>('POST', '/webhooks', undefined, {
+        return await this.makeRequest('POST', '/webhooks', undefined, {
             webhook: request,
         });
     }
@@ -75,7 +55,7 @@ export class ActiveCampaignClient {
     }
 
     async listContactLists() {
-        return await this.makeRequest<{ lists: ContactList[] }>(
+        return await this.makeRequest<{ lists: { id: string; name: string }[] }>(
             'GET',
             '/lists',
             prepareQuery({ limit: 20 }),
@@ -145,5 +125,27 @@ export class ActiveCampaignClient {
 
     async listTags(): Promise<ListTagsResponse> {
         return await this.makeRequest<ListTagsResponse>('GET', '/tags');
+    }
+
+    private async makeRequest<T = any>(
+        method: string,
+        endpoint: string,
+        params?: Record<string, string>,
+        data?: any,
+    ): Promise<T> {
+        try {
+            const response = await this.client.request<T>({
+                method,
+                url: endpoint,
+                params,
+                data,
+            });
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                throw new Error(`ActiveCampaign API Error: ${error.response?.data?.message || error.message}`);
+            }
+            throw error;
+        }
     }
 }

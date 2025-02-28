@@ -250,7 +250,7 @@ this is pnpm base project
 
 10. When adding test kindly add them incrementally so you know it works before the next test. use npx jest in the plug folder to test
 
-11. the testing frame work is jest you can look into the array plugin for guidance. you not done until all test passing
+11. the testing framwork is jest, look in array plugin for guidance, you're not done untill all testing passing
 
 kindly look in the plugins folder __ref_only and plugins remove the thing inside__ref_only that we've have implmented someimee you need to look into the actual implmentation to effective do this becase naems of plug alone is not enoug and sometime plug were merged
 

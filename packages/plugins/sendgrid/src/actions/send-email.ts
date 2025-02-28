@@ -1,128 +1,167 @@
-import axios from 'axios';
-import { sendgridCommon } from '../common/index.js';
+import { createClient } from '../common/index.js';
+import { SendgridEmailAddress, SendgridMailData } from '../common/types.js';
 
-export const sendEmail = {
-    name: "send_email",
-    displayName: "Send Email",
-    description: "Send a text or HTML email",
+export const sendEmailAction = {
+    name: 'send_email',
+    description: 'Send a text or HTML email',
     inputSchema: {
-        type: "object",
+        type: 'object',
         properties: {
+            apiKey: {
+                type: 'string',
+                description: 'SendGrid API Key',
+            },
             to: {
-                type: "array",
-                description: "Emails of the recipients",
+                type: 'array',
+                description: 'Email addresses of the recipients',
                 items: {
-                    type: "string"
-                }
+                    type: 'string',
+                },
+            },
+            cc: {
+                type: 'array',
+                description: 'Email addresses for CC',
+                items: {
+                    type: 'string',
+                },
+            },
+            bcc: {
+                type: 'array',
+                description: 'Email addresses for BCC',
+                items: {
+                    type: 'string',
+                },
             },
             from: {
-                type: "string",
-                description: "Sender email, must be on your SendGrid"
+                type: 'string',
+                description: 'Sender email address',
             },
-            from_name: {
-                type: "string",
-                description: "Sender name"
+            fromName: {
+                type: 'string',
+                description: 'Sender name',
             },
-            reply_to: {
-                type: "string",
-                description: "Email to receive replies on (defaults to sender)"
+            replyTo: {
+                type: 'string',
+                description: 'Reply-to email address',
             },
             subject: {
-                type: "string",
-                description: "Email subject"
+                type: 'string',
+                description: 'Email subject',
             },
-            content_type: {
-                type: "string",
-                description: "Content type (text or html)",
-                enum: ["text", "html"]
+            contentType: {
+                type: 'string',
+                description: 'Content type (text or html)',
+                enum: ['text', 'html'],
             },
             content: {
-                type: "string",
-                description: "Email content (HTML is only allowed if you selected HTML as type)"
-            }
+                type: 'string',
+                description: 'Email content',
+            },
         },
-        required: ["to", "from", "subject", "content_type", "content"]
+        required: ['apiKey', 'to', 'from', 'subject', 'contentType', 'content'],
     },
     outputSchema: {
-        type: "object",
+        type: 'object',
         properties: {
             success: {
-                type: "boolean",
-                description: "Whether the email was sent successfully"
-            }
-        }
+                type: 'boolean',
+                description: 'Whether the email was sent successfully',
+            },
+            message: {
+                type: 'string',
+                description: 'Error message if the email failed to send',
+            },
+            errors: {
+                type: 'array',
+                description: 'List of errors if the email failed to send',
+                items: {
+                    type: 'object',
+                },
+            },
+        },
     },
     exampleInput: {
-        to: ["recipient@example.com"],
-        from: "sender@yourdomain.com",
-        from_name: "Your Name",
-        subject: "Hello from MintFlow",
-        content_type: "text",
-        content: "This is a test email from MintFlow SendGrid plugin."
+        apiKey: 'SG.your-api-key',
+        to: ['recipient@example.com'],
+        from: 'sender@example.com',
+        fromName: 'Sender Name',
+        subject: 'Hello from SendGrid',
+        contentType: 'html',
+        content: '<p>This is a test email from SendGrid</p>',
     },
     exampleOutput: {
-        success: true
+        success: true,
     },
-    execute: async (input: any, auth: any) => {
-        try {
-            const { to, from, from_name, reply_to, subject, content_type, content } = input.data || {};
+    execute: async (input: any) => {
+        const {
+            apiKey,
+            to,
+            cc,
+            bcc,
+            from,
+            fromName,
+            replyTo,
+            subject,
+            contentType,
+            content,
+        } = input;
 
-            // Validate required fields
-            if (!to || !Array.isArray(to) || to.length === 0) {
-                return { error: "Recipients (to) is required and must be an array" };
-            }
-            if (!from) {
-                return { error: "Sender email (from) is required" };
-            }
-            if (!subject) {
-                return { error: "Subject is required" };
-            }
-            if (!content_type || !["text", "html"].includes(content_type)) {
-                return { error: "Content type must be either 'text' or 'html'" };
-            }
-            if (!content) {
-                return { error: "Content is required" };
-            }
+        const client = createClient(apiKey);
 
-            // Prepare request body
-            const requestBody = {
-                personalizations: to.map((email) => ({
-                    to: [{ email: email.trim() }]
-                })),
-                from: {
-                    email: from,
-                    name: from_name
-                },
-                reply_to: {
-                    email: reply_to || from
-                },
-                subject: subject,
-                content: [
-                    {
-                        type: content_type === "text" ? "text/plain" : "text/html",
-                        value: content
-                    }
-                ]
-            };
+        // Prepare email addresses
+        const toAddresses: SendgridEmailAddress[] = to.map((email: string) => ({
+            email: email.trim(),
+        }));
 
-            // Send request to SendGrid API
-            await axios.post(
-                `${sendgridCommon.baseUrl}/mail/send`,
-                requestBody,
+        const ccAddresses: SendgridEmailAddress[] | undefined = cc
+            ? cc.map((email: string) => ({ email: email.trim() }))
+            : undefined;
+
+        const bccAddresses: SendgridEmailAddress[] | undefined = bcc
+            ? bcc.map((email: string) => ({ email: email.trim() }))
+            : undefined;
+
+        // Prepare mail data
+        const mailData: SendgridMailData = {
+            personalizations: [
                 {
-                    headers: {
-                        'Authorization': `Bearer ${auth.apiKey}`,
-                        'Content-Type': 'application/json'
-                    }
+                    to: toAddresses,
+                    cc: ccAddresses,
+                    bcc: bccAddresses,
+                },
+            ],
+            from: {
+                email: from,
+                name: fromName,
+            },
+            reply_to: replyTo
+                ? {
+                    email: replyTo,
                 }
-            );
+                : undefined,
+            subject,
+            content: [
+                {
+                    type: contentType === 'text' ? 'text/plain' : 'text/html',
+                    value: content,
+                },
+            ],
+        };
 
-            return { success: true };
-        } catch (error: any) {
+        try {
+            const result = await client.sendMail(mailData);
+            return result;
+        } catch (error) {
+            if (error instanceof Error) {
+                return {
+                    success: false,
+                    message: `Failed to send email: ${error.message}`,
+                };
+            }
             return {
-                error: `Error sending email: ${error.message || 'Unknown error'}`,
-                details: error.response?.data || {}
+                success: false,
+                message: 'Failed to send email: Unknown error',
             };
         }
-    }
+    },
 };
