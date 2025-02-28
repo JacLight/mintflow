@@ -1,30 +1,34 @@
-import { sendEmail } from './actions/send-email.js';
-import { sendDynamicTemplate } from './actions/send-dynamic-template.js';
-import { customApiCall } from './actions/custom-api-call.js';
-
-export const sendgridAuth = {
-    apiKey: {
-        type: "string",
-        displayName: "API Key",
-        required: true,
-        description: "API key acquired from your SendGrid settings"
-    }
-};
+import * as actions from './actions/index.js';
 
 const sendgridPlugin = {
     name: "sendgrid",
-    displayName: "SendGrid",
+    icon: "https://sendgrid.com/favicon.ico",
     description: "Email delivery service for sending transactional and marketing emails",
-    icon: "https://cdn.activepieces.com/pieces/sendgrid.png",
     id: "sendgrid",
     runner: "node",
-    auth: sendgridAuth,
+    inputSchema: {
+        type: "object",
+        properties: {
+            apiKey: {
+                type: "string",
+                description: "SendGrid API Key",
+            },
+        },
+        required: ["apiKey"],
+    },
+    outputSchema: {
+        type: "object",
+    },
+    exampleInput: {
+        apiKey: "SG.your-api-key",
+    },
+    exampleOutput: {},
+    documentation: "https://docs.sendgrid.com/api-reference/how-to-use-the-sendgrid-v3-api",
+    method: "exec",
     actions: [
-        sendEmail,
-        sendDynamicTemplate,
-        customApiCall
-    ],
-    triggers: []
+        actions.sendEmailAction,
+        actions.sendDynamicTemplateAction,
+    ]
 };
 
 export default sendgridPlugin;

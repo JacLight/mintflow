@@ -1,85 +1,98 @@
-import { makeClient, ActiveCampaignAuth, CreateAccountRequest } from '../../common/index.js';
+import { ActiveCampaignClient } from '../../common/client.js';
+import { CreateAccountRequest } from '../../common/types.js';
 
-export const updateAccount = {
-    name: "update_account",
-    description: "Updates an existing account in ActiveCampaign",
+export const updateAccountAction = {
+    name: 'update_account',
+    description: 'Updates an existing account in ActiveCampaign',
     inputSchema: {
-        type: "object",
+        type: 'object',
         properties: {
+            apiUrl: {
+                type: 'string',
+                description: 'ActiveCampaign API URL',
+            },
+            apiKey: {
+                type: 'string',
+                description: 'ActiveCampaign API Key',
+            },
             accountId: {
-                type: "string",
-                description: "ID of the account to update"
+                type: 'string',
+                description: 'ID of the account to update',
             },
             name: {
-                type: "string",
-                description: "Name of the account"
+                type: 'string',
+                description: 'Name of the account',
             },
             accountUrl: {
-                type: "string",
-                description: "URL of the account's website"
+                type: 'string',
+                description: 'URL of the account',
             },
             customFields: {
-                type: "object",
-                description: "Custom fields for the account (field ID as key, field value as value)"
-            }
+                type: 'object',
+                description: 'Custom fields for the account',
+                additionalProperties: true,
+            },
         },
-        required: ["accountId"]
+        required: ['apiUrl', 'apiKey', 'accountId'],
     },
     outputSchema: {
-        type: "object",
+        type: 'object',
         properties: {
             account: {
-                type: "object",
-                description: "The updated account"
-            }
-        }
+                type: 'object',
+                description: 'The updated account',
+            },
+        },
     },
     exampleInput: {
-        accountId: "123",
-        name: "Acme Corporation Updated",
-        accountUrl: "https://acme-updated.example.com",
+        apiUrl: 'https://your-account.api-us1.com',
+        apiKey: 'your-api-key',
+        accountId: '123',
+        name: 'Acme Corporation',
+        accountUrl: 'https://acme.com',
         customFields: {
-            "1": "Updated value for custom field 1"
-        }
+            // Custom field ID: value
+            '1': 'Value for custom field 1',
+        },
     },
     exampleOutput: {
         account: {
-            id: "123",
-            name: "Acme Corporation Updated",
-            accountUrl: "https://acme-updated.example.com"
-        }
+            id: '123',
+            name: 'Acme Corporation',
+            // ... other account properties
+        },
     },
-    execute: async (input: any, auth: ActiveCampaignAuth) => {
-        try {
-            const { accountId, name, accountUrl, customFields = {} } = input.data || {};
+    execute: async (input: any) => {
+        const { apiUrl, apiKey, accountId, name, accountUrl, customFields } = input;
 
-            if (!accountId) {
-                return { error: "Account ID is required" };
-            }
+        const client = new ActiveCampaignClient(apiUrl, apiKey);
 
-            const updateAccountParams: Partial<CreateAccountRequest> = {
-                fields: []
-            };
+        const updateAccountParams: Partial<CreateAccountRequest> = {
+            fields: [],
+        };
 
-            // Only include fields that are provided
-            if (name !== undefined) updateAccountParams.name = name;
-            if (accountUrl !== undefined) updateAccountParams.accountUrl = accountUrl;
+        // Only add fields that are provided
+        if (name !== undefined) updateAccountParams.name = name;
+        if (accountUrl !== undefined) updateAccountParams.accountUrl = accountUrl;
 
-            // Add custom fields
+        // Add custom fields if provided
+        if (customFields && typeof customFields === 'object') {
             Object.entries(customFields).forEach(([key, value]) => {
                 updateAccountParams.fields!.push({
-                    customFieldId: Number(key),
+                    customFieldId: parseInt(key, 10),
                     fieldValue: value
                 });
             });
-
-            const client = makeClient(auth);
-            const result = await client.updateAccount(Number(accountId), updateAccountParams);
-            return result;
-        } catch (error: any) {
-            return {
-                error: `Error updating account: ${error.message || 'Unknown error'}`
-            };
         }
-    }
+
+        try {
+            const response = await client.updateAccount(parseInt(accountId, 10), updateAccountParams);
+            return response;
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(`Failed to update account: ${error.message}`);
+            }
+            throw new Error('Failed to update account: Unknown error');
+        }
+    },
 };

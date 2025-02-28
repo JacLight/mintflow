@@ -4,26 +4,15 @@ This document lists pending plugins for MintFlow in order of importance and popu
 
 ## High Priority
 
-### CRM and Marketing
-
-1. **Klaviyo** - Email marketing and customer data platform
-2. **ConvertKit** - Email marketing for creators
-
-### Productivity and Project Management
-
-5. **ClickUp** - Project management and productivity
 6. **Basecamp** - Project management and team communication
 
 ### Website and CMS
 
-7. **Webflow** - Website building and design
-8. **WordPress** - Website and blog management
 9. **Wix** - Website building and hosting
 
 ### Communication
 
-10. **Telegram Bot** - Bot API for the Telegram messaging platform
-11. **Mattermost** - Open-source messaging platform
+12. **Mattermost** - Open-source messaging platform
 
 ## Medium Priority
 
@@ -34,14 +23,14 @@ This document lists pending plugins for MintFlow in order of importance and popu
 
 ### Form and Survey Tools
 
-15. **JotForm** - Online form builder
-16. **SurveyMonkey** - Survey and questionnaire platform
-17. **Tally** - Simple form creation
+16. **JotForm** - Online form builder
+17. **SurveyMonkey** - Survey and questionnaire platform
+18. **Tally** - Simple form creation
 
 ### AI and ML Services
 
-18. **Perplexity AI** - AI-powered search engine
-19. **Groq** - High-performance AI inference
+22. **Perplexity AI** - AI-powered search engine
+23. **Groq** - High-performance AI inference
 
 ### Google Workspace
 
@@ -85,7 +74,7 @@ This document lists pending plugins for MintFlow in order of importance and popu
 
 ### Database and Storage
 
-40. **Snowflake** - Cloud data platform
+47. **Snowflake** - Cloud data platform
 
 ## Specialized Priority
 
