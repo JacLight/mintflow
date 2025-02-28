@@ -24,6 +24,13 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | google-drive | google-drive | ✅ Completed | Provides integration with Google Drive for file management. |
 | google-sheets | google-sheets | ✅ Completed | Provides integration with Google Sheets for spreadsheet management. |
 | http | fetch | ✅ Completed | Renamed to 'fetch'. Provides functionality to make HTTP requests to external APIs. |
+| mysql | mysql | ✅ Completed | Provides integration with MySQL databases for executing queries and managing data. |
+| postgres | postgres | ✅ Completed | Provides integration with PostgreSQL databases for executing queries and managing data. |
+| qdrant | qdrant | ✅ Completed | Provides integration with Qdrant vector database for similarity search and vector operations. |
+| queue | queue | ✅ Completed | Provides a First-In-First-Out (FIFO) queue system for managing data flow and processing order in workflows. |
+| redis | redis | ✅ Completed | Provides integration with Redis databases for caching, pub/sub messaging, and data storage. |
+| pinecone | pinecone | ✅ Completed | Provides integration with Pinecone vector database for similarity search and vector operations. |
+| supabase | supabase | ✅ Completed | Provides integration with Supabase for database operations and storage management. |
 | notion | notion | ✅ Completed | Provides integration with Notion for database and page management. |
 | slack | slack | ✅ Completed | Provides integration with Slack for sending messages and managing channels. |
 | twilio | twilio | ✅ Completed | Provides integration with Twilio for SMS and voice messaging. |
@@ -65,6 +72,7 @@ These plugins are unique to MintFlow and don't have a direct reference plugin co
 | start | Initiates workflow execution. |
 | switch | Provides conditional branching in workflows. |
 | timer | Schedules workflow execution at specific times or intervals. |
+| queue | Provides a robust queue system powered by Bull and Redis for managing data flow, processing order, and job scheduling in workflows. |
 
 ## Implementation Details
 
@@ -253,7 +261,127 @@ The json plugin provides utilities for converting between JSON and text formats.
 - `convert_text_to_json`: Converts a text string containing JSON to a JSON object
 - `convert_json_to_text`: Converts a JSON object to a text string with optional pretty printing
 
->>>>>>>
+### mysql (from mysql)
+
+The mysql plugin provides integration with MySQL databases for executing queries and managing data.
+
+**Actions:**
+
+- `executeQuery`: Executes a custom SQL query on the MySQL database
+- `getTables`: Gets a list of all tables in the database
+- `selectRows`: Selects rows from a table with optional filtering, sorting, and pagination
+- `insertRow`: Inserts a new row into a table
+- `updateRows`: Updates rows in a table that match specified conditions
+- `deleteRows`: Deletes rows from a table that match specified conditions
+
+### postgres (from postgres)
+
+The postgres plugin provides integration with PostgreSQL databases for executing queries and managing data.
+
+**Actions:**
+
+- `executeQuery`: Executes a custom SQL query on the PostgreSQL database
+- `getTables`: Gets a list of all tables in a database schema
+- `selectRows`: Selects rows from a table with optional filtering, sorting, and pagination
+- `insertRow`: Inserts a new row into a table with support for returning generated values
+- `updateRows`: Updates rows in a table that match specified conditions
+- `deleteRows`: Deletes rows from a table that match specified conditions
+
+### redis (from redis)
+
+The redis plugin provides integration with Redis databases for caching, pub/sub messaging, and data storage.
+
+**Actions:**
+
+- `set`: Sets a key-value pair in Redis with optional expiration
+- `get`: Gets the value of a key from Redis
+- `delete`: Deletes a key from Redis
+- `exists`: Checks if a key exists in Redis
+- `expire`: Sets an expiration time for a key
+- `ttl`: Gets the remaining time to live of a key
+- `incr`: Increments the integer value of a key by one
+- `incrBy`: Increments the integer value of a key by the given amount
+- `decr`: Decrements the integer value of a key by one
+- `decrBy`: Decrements the integer value of a key by the given amount
+- `hSet`: Sets a field in a hash stored at key to value
+- `hGet`: Gets the value of a field in a hash
+- `hGetAll`: Gets all fields and values in a hash
+- `hDel`: Deletes a field from a hash
+- `publish`: Publishes a message to a channel
+- `lPush`: Prepends one or multiple values to a list
+- `rPush`: Appends one or multiple values to a list
+- `lPop`: Removes and gets the first element in a list
+- `rPop`: Removes and gets the last element in a list
+- `lRange`: Gets a range of elements from a list
+- `executeCommand`: Executes a custom Redis command
+
+### pinecone (from pinecone)
+
+The pinecone plugin provides integration with Pinecone vector database for similarity search and vector operations.
+
+**Actions:**
+
+- `listIndexes`: Lists all indexes in your Pinecone project
+- `describeIndex`: Gets details about a specific index
+- `createIndex`: Creates a new vector index
+- `deleteIndex`: Deletes a vector index
+- `upsertVectors`: Inserts or updates vectors in an index
+- `queryVectors`: Queries vectors in an index for similarity search
+- `deleteVectors`: Deletes vectors from an index
+- `fetchVectors`: Fetches vectors by ID from an index
+- `updateVector`: Updates a vector in an index
+- `describeIndexStats`: Gets statistics about an index
+
+### qdrant (from qdrant)
+
+The qdrant plugin provides integration with Qdrant vector database for similarity search and vector operations.
+
+**Actions:**
+
+- `listCollections`: Lists all collections in your Qdrant instance
+- `getCollectionInfo`: Gets detailed information about a specific collection
+- `createCollection`: Creates a new vector collection
+- `deleteCollection`: Deletes a vector collection
+- `addPoints`: Adds vector points to a collection
+- `searchPoints`: Searches for points closest to a given vector
+- `getPoints`: Retrieves points by their IDs
+- `deletePoints`: Deletes points from a collection
+- `getCollectionStats`: Gets statistics about a collection
+
+### queue (from queue)
+
+The queue plugin provides a robust queue system powered by Bull and Redis for managing data flow, processing order, and job scheduling in workflows.
+
+**Actions:**
+
+- `addJob`: Adds a job to a queue with optional scheduling and processing options
+- `getJob`: Gets information about a specific job by ID
+- `getJobs`: Gets jobs from a queue with filtering options
+- `removeJob`: Removes a job from a queue
+- `clearQueue`: Removes all jobs from a queue
+- `pauseQueue`: Pauses a queue (stops processing new jobs)
+- `resumeQueue`: Resumes a paused queue
+- `getQueueInfo`: Gets information about a queue including job counts
+- `registerProcessor`: Registers a processor function for a queue to process jobs
+- `subscribeToEvents`: Subscribes to queue events and executes a callback function when they occur
+- `createBatchJobs`: Adds multiple jobs to a queue in a single operation
+
+### supabase (from supabase)
+
+The supabase plugin provides integration with Supabase for database operations and storage management.
+
+**Actions:**
+
+- `uploadFile`: Uploads a file to Supabase Storage
+- `downloadFile`: Downloads a file from Supabase Storage
+- `listFiles`: Lists files in a Supabase Storage bucket
+- `deleteFile`: Deletes a file from Supabase Storage
+- `executeQuery`: Executes a query on a Supabase database table
+- `insertRecord`: Inserts a new record into a Supabase table
+- `updateRecord`: Updates records in a Supabase table
+- `deleteRecord`: Deletes records from a Supabase table
+- `createBucket`: Creates a new storage bucket in Supabase
+
 ### notion (from notion)
 
 The notion plugin provides integration with Notion for database and page management.
@@ -314,7 +442,6 @@ The sqs plugin provides integration with Amazon SQS for sending messages to queu
 - `list_queues`: Lists available SQS queues in your AWS account
 - `create_queue`: Creates a new SQS queue with customizable settings
 
->>>>>>>
 ### slack (from slack)
 
 The slack plugin provides integration with Slack for sending messages and managing channels.
@@ -348,7 +475,6 @@ The webhook plugin provides functionality to receive and respond to HTTP webhook
 - `returnResponse`: Returns a customized HTTP response with control over status codes, headers, and body content
 - `catchHook`: Receives incoming HTTP requests with support for various authentication methods including None, Basic Auth, and Header Auth
 
->>>>>>>
 ### array (MintFlow-specific)
 
 The array plugin provides array manipulation functions for working with collections of data.
@@ -484,7 +610,6 @@ The media-processor plugin provides comprehensive media processing capabilities 
 
 - `extract_metadata`: Extracts metadata from images including EXIF (camera, exposure, GPS), IPTC (title, keywords, copyright), XMP (creator, dates), and ICC profile data
 
->>>>>>>
 ### switch (MintFlow-specific)
 
 The switch plugin provides conditional branching in workflows.
