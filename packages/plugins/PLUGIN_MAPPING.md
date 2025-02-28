@@ -11,10 +11,7 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | airtable | airtable | ✅ Completed | Provides integration with Airtable for reading, creating, and updating records. |
 | approval | authorize | ✅ Completed | Renamed to better reflect its purpose in the MintFlow ecosystem. Provides functionality to create authorization links and pause workflow execution until authorization is received. |
 | asana | asana | ✅ Completed | Provides integration with Asana for task management. |
-<<<<<<< HEAD
-=======
 | assemblyai | assemblyai | ✅ Completed | Provides advanced speech recognition and audio intelligence capabilities using AssemblyAI. |
->>>>>>> 38d44f9bf646b7a8e1138fb7b9fe039f08a04cf7
 | calendly | calendly | ✅ Completed | Provides integration with Calendly for scheduling and appointment management. |
 | csv | csv | ✅ Completed | Provides tools to convert between CSV and JSON formats with support for headers and different delimiters. |
 | crypto | crypto | ✅ Completed | Provides cryptographic utilities for hashing text, generating HMAC signatures, and creating random passwords. |
@@ -26,12 +23,10 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | github | github | ✅ Completed | Provides integration with GitHub for repository management and issue tracking. |
 | google-drive | google-drive | ✅ Completed | Provides integration with Google Drive for file management. |
 | google-sheets | google-sheets | ✅ Completed | Provides integration with Google Sheets for spreadsheet management. |
-<<<<<<< HEAD
 | http | fetch | ✅ Completed | Renamed to 'fetch'. Provides functionality to make HTTP requests to external APIs. |
 | notion | notion | ✅ Completed | Provides integration with Notion for database and page management. |
 | slack | slack | ✅ Completed | Provides integration with Slack for sending messages and managing channels. |
 | twilio | twilio | ✅ Completed | Provides integration with Twilio for SMS and voice messaging. |
-=======
 | google-calendar, google-contacts, google-docs, google-forms, google-tasks | google-workspace | ✅ Completed | Consolidated multiple Google services into a single plugin. Provides integration with Google Calendar for event management and Google Contacts for contact management. |
 | google-search-console | google-search | ✅ Completed | Provides integration with Google Search Console for website search performance analysis and management. |
 | google-my-business | google-business | ✅ Completed | Provides integration with Google My Business (now Google Business Profile) for managing business listings, locations, and reviews. |
@@ -48,7 +43,6 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | slack | slack | ✅ Completed | Provides integration with Slack for sending messages and managing channels. |
 | twilio | twilio | ✅ Completed | Provides integration with Twilio for SMS and voice messaging. |
 | webhook | webhook | ✅ Completed | Provides functionality to receive and respond to HTTP webhooks with support for various authentication methods. |
->>>>>>> 38d44f9bf646b7a8e1138fb7b9fe039f08a04cf7
 
 ### MintFlow-Specific Plugins
 
@@ -60,14 +54,11 @@ These plugins are unique to MintFlow and don't have a direct reference plugin co
 | exec | Executes shell commands and scripts. |
 | inject | Injects data into the workflow context. |
 | langchain | Provides integration with LangChain for building LLM applications. |
-<<<<<<< HEAD
 | llm | Provides integration with various Large Language Models. |
 | mail | Provides email sending and receiving capabilities. |
-=======
 | ai | Provides integration with various AI models including text generation, chat, embeddings, and image analysis. Supports multiple providers including OpenAI, Anthropic, Google (Gemini), and Ollama with automatic fallback. |
 | mail | Provides email sending and receiving capabilities. |
 | media-processor | Comprehensive plugin for processing various types of media including QR codes, barcodes, images, OCR, and AI image analysis. |
->>>>>>> 38d44f9bf646b7a8e1138fb7b9fe039f08a04cf7
 | modify | Modifies data in the workflow context. |
 | mqtt | Provides MQTT messaging capabilities for IoT applications. |
 | range | Generates ranges of numbers or dates for iteration. |
@@ -203,8 +194,6 @@ The google-sheets plugin provides integration with Google Sheets for spreadsheet
 - `create_sheet`: Creates a new Google Sheet
 - `clear_range`: Clears a range of cells in a Google Sheet
 
-<<<<<<< HEAD
-=======
 ### google-workspace (from google-calendar, google-contacts, google-docs, google-forms, google-tasks)
 
 The google-workspace plugin provides integration with multiple Google Workspace services in a single plugin.
@@ -264,7 +253,7 @@ The json plugin provides utilities for converting between JSON and text formats.
 - `convert_text_to_json`: Converts a text string containing JSON to a JSON object
 - `convert_json_to_text`: Converts a JSON object to a text string with optional pretty printing
 
->>>>>>> 38d44f9bf646b7a8e1138fb7b9fe039f08a04cf7
+>>>>>>>
 ### notion (from notion)
 
 The notion plugin provides integration with Notion for database and page management.
@@ -277,8 +266,6 @@ The notion plugin provides integration with Notion for database and page managem
 - `get_page`: Gets information about a Notion page
 - `create_database`: Creates a new database in Notion
 
-<<<<<<< HEAD
-=======
 ### pdf (from pdf)
 
 The pdf plugin provides utilities for working with PDF documents.
@@ -327,7 +314,7 @@ The sqs plugin provides integration with Amazon SQS for sending messages to queu
 - `list_queues`: Lists available SQS queues in your AWS account
 - `create_queue`: Creates a new SQS queue with customizable settings
 
->>>>>>> 38d44f9bf646b7a8e1138fb7b9fe039f08a04cf7
+>>>>>>>
 ### slack (from slack)
 
 The slack plugin provides integration with Slack for sending messages and managing channels.
@@ -352,8 +339,6 @@ The twilio plugin provides integration with Twilio for SMS and voice messaging.
 - `list_messages`: Lists messages from a Twilio account
 - `verify_phone_number`: Verifies a phone number
 
-<<<<<<< HEAD
-=======
 ### webhook (from webhook)
 
 The webhook plugin provides functionality to receive and respond to HTTP webhooks in your MintFlow workflows.
@@ -363,7 +348,7 @@ The webhook plugin provides functionality to receive and respond to HTTP webhook
 - `returnResponse`: Returns a customized HTTP response with control over status codes, headers, and body content
 - `catchHook`: Receives incoming HTTP requests with support for various authentication methods including None, Basic Auth, and Header Auth
 
->>>>>>> 38d44f9bf646b7a8e1138fb7b9fe039f08a04cf7
+>>>>>>>
 ### array (MintFlow-specific)
 
 The array plugin provides array manipulation functions for working with collections of data.
@@ -394,8 +379,6 @@ The inject plugin provides functionality to inject data into the workflow contex
 - `inject_data`: Injects static data into the workflow
 - `inject_from_file`: Injects data from a file into the workflow
 
-<<<<<<< HEAD
-=======
 ### ai (MintFlow-specific)
 
 The ai plugin provides integration with various AI models for text generation, chat, embeddings, and image analysis. It supports multiple providers including OpenAI, Anthropic, Google (Gemini), and Ollama with automatic fallback.
@@ -501,7 +484,7 @@ The media-processor plugin provides comprehensive media processing capabilities 
 
 - `extract_metadata`: Extracts metadata from images including EXIF (camera, exposure, GPS), IPTC (title, keywords, copyright), XMP (creator, dates), and ICC profile data
 
->>>>>>> 38d44f9bf646b7a8e1138fb7b9fe039f08a04cf7
+>>>>>>>
 ### switch (MintFlow-specific)
 
 The switch plugin provides conditional branching in workflows.
