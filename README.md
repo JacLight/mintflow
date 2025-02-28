@@ -240,4 +240,4 @@ pnpm generate:template {{name of plugins}}. -- this will create the blank plugin
 
 6. please ignore plugins already implemented
 
-7. updte the plugin_mapping.md documentation
+7. update the plugin_mapping.md documentation
