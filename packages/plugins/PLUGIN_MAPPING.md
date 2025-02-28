@@ -21,6 +21,29 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | monday | monday | ✅ Completed | Provides integration with Monday.com for workspace, board, and item management. |
 | pipedrive | pipedrive | ✅ Completed | Provides integration with Pipedrive CRM for managing persons, organizations, deals, leads, activities, and more. |
 | assemblyai | assemblyai | ✅ Completed | Provides advanced speech recognition and audio intelligence capabilities using the AssemblyAI API. |
+| apollo | apollo | ✅ Completed | Provides integration with Apollo.io for finding contact information and enriching company data. |
+| sendgrid | sendgrid | ✅ Completed | Provides integration with SendGrid for sending transactional and marketing emails. |
+
+### sendgrid (from sendgrid)
+
+The sendgrid plugin provides integration with SendGrid, a cloud-based email delivery service that enables you to send transactional and marketing emails.
+
+**Actions:**
+
+- `send_email`: Sends a text or HTML email to one or more recipients with customizable sender information, subject, and content
+- `send_dynamic_template`: Sends an email using a SendGrid dynamic template with template data for personalization
+- `custom_api_call`: Makes a custom API call to the SendGrid API for advanced use cases
+
+### apollo (from apollo)
+
+The apollo plugin provides integration with Apollo.io, a sales intelligence and engagement platform for finding contact information and enriching company data.
+
+**Actions:**
+
+- `match_person`: Finds a person's information based on their email address, returning detailed information including name, job title, LinkedIn URL, phone numbers, and organization details
+- `enrich_company`: Retrieves detailed information about a company based on its domain, returning comprehensive company data including industry, size, revenue, location, technologies used, and more
+
+Both actions support caching to improve performance and reduce API usage. When `cacheResponse` is set to `true` (the default), the plugin will store the response in the project store for future use.
 
 ### monday (from monday)
 
@@ -159,6 +182,7 @@ The pipedrive plugin provides integration with Pipedrive CRM, allowing you to ma
 | pinecone | pinecone | ✅ Completed | Provides integration with Pinecone vector database for similarity search and vector operations. |
 | supabase | supabase | ✅ Completed | Provides integration with Supabase for database operations and storage management. |
 | instagram-business | instagram | ✅ Completed | Provides integration with Instagram Business API for uploading photos and reels. |
+| linkedin | linkedin | ✅ Completed | Provides integration with LinkedIn API for creating personal share updates and company page updates. |
 | notion | notion | ✅ Completed | Provides integration with Notion for database and page management. |
 | slack | slack | ✅ Completed | Provides integration with Slack for sending messages and managing channels. |
 | tiktok | tiktok | ✅ Completed | Provides integration with TikTok API for retrieving videos, user details, and uploading content. |
@@ -169,6 +193,7 @@ The pipedrive plugin provides integration with Pipedrive CRM, allowing you to ma
 | zoom | zoom | ✅ Completed | Provides integration with Zoom API for creating and managing meetings, handling registrations, and accessing user information. |
 | microsoft-teams | teams | ✅ Completed | Provides integration with Microsoft Teams API for creating channels, sending messages, and managing team resources. |
 | figma | figma | ✅ Completed | Provides integration with Figma API for accessing and manipulating Figma files, comments, components, and more. |
+| typeform | typeform | ✅ Completed | Provides integration with Typeform for form building and data collection. |
 
 ### MintFlow-Specific Plugins
 
@@ -189,6 +214,7 @@ These plugins are unique to MintFlow and don't have a direct reference plugin co
 | range | Generates ranges of numbers or dates for iteration. |
 | start | Initiates workflow execution. |
 | switch | Provides conditional branching in workflows. |
+| text-parser | Provides tools for text processing and manipulation including concatenation, find and replace, splitting, Markdown/HTML conversion, HTML stripping, slugify, and default values. |
 | timer | Schedules workflow execution at specific times or intervals. |
 | queue | Provides a robust queue system powered by Bull and Redis for managing data flow, processing order, and job scheduling in workflows. |
 
