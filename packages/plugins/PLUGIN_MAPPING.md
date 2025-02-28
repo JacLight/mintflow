@@ -260,6 +260,36 @@ The pipedrive plugin provides integration with Pipedrive CRM, allowing you to ma
 | figma | figma | ✅ Completed | Provides integration with Figma API for accessing and manipulating Figma files, comments, components, and more. |
 | wordpress | wordpress | ✅ Completed | Provides integration with WordPress for creating, retrieving, and updating posts and pages, as well as receiving triggers when new content is published. |
 | whatsapp | whatsapp | ✅ Completed | Provides integration with WhatsApp Business API for sending text messages, media messages, and template messages. |
+| telegram-bot | telegram | ✅ Completed | Provides integration with Telegram Bot API for sending messages, media, creating invite links, and getting chat member information. |
+| confluence | confluence | ✅ Completed | Provides integration with Atlassian Confluence for creating, reading, and managing content in Confluence spaces. |
+
+### telegram (from telegram-bot)
+
+The telegram plugin provides integration with the Telegram Bot API, allowing you to send messages, media, create invite links, and get chat member information through your Telegram bot.
+
+**Message Actions:**
+
+- `send_message`: Sends a text message to a Telegram chat
+- `send_media`: Sends media (photo, video, sticker, animation) to a Telegram chat
+- `create_invite_link`: Creates an invite link for a Telegram chat
+- `get_chat_member`: Gets information about a member of a chat
+
+**Trigger:**
+
+- `new_message`: Triggers when a new message is received in a Telegram chat
+
+### confluence (from confluence)
+
+The confluence plugin provides integration with Atlassian Confluence, enabling you to create, read, and manage content in your Confluence spaces.
+
+**Actions:**
+
+- `get_page_content`: Retrieves the content of a Confluence page and optionally all its descendants
+- `create_page_from_template`: Creates a new page in Confluence using a template with variable substitution
+
+**Trigger:**
+
+- `new_page`: Triggers when a new page is created in a specified Confluence space
 
 ### MintFlow-Specific Plugins
 
