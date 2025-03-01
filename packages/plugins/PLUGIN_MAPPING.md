@@ -281,6 +281,11 @@ The pipedrive plugin provides integration with Pipedrive CRM, allowing you to ma
 | snapchat | snapchat | ✅ Completed | Provides integration with Snapchat Marketing API for creating and managing ads, campaigns, and creatives. |
 | zoom | zoom | ✅ Completed | Provides integration with Zoom API for creating and managing meetings, handling registrations, and accessing user information. |
 | microsoft-teams | teams | ✅ Completed | Provides integration with Microsoft Teams API for creating channels, sending messages, and managing team resources. |
+| microsoft-excel-365 | microsoft-office | ✅ Completed | Integrated into the Microsoft Office plugin. Provides integration with Excel for workbook management, worksheet operations, and data manipulation. |
+| microsoft-onedrive | microsoft-office | ✅ Completed | Integrated into the Microsoft Office plugin. Provides file storage and management capabilities for Office documents. |
+| microsoft-outlook-calendar | microsoft-office | ✅ Completed | Integrated into the Microsoft Office plugin. Provides calendar management capabilities. |
+| microsoft-sharepoint | microsoft-office | ✅ Completed | Integrated into the Microsoft Office plugin. Provides document management and collaboration capabilities. |
+| microsoft-dynamics-crm | microsoft-office | ✅ Completed | Integrated into the Microsoft Office plugin. Provides customer relationship management capabilities. |
 | figma | figma | ✅ Completed | Provides integration with Figma API for accessing and manipulating Figma files, comments, components, and more. |
 | wordpress | wordpress | ✅ Completed | Provides integration with WordPress for creating, retrieving, and updating posts and pages, as well as receiving triggers when new content is published. |
 | whatsapp | whatsapp | ✅ Completed | Provides integration with WhatsApp Business API for sending text messages, media messages, and template messages. |
@@ -848,6 +853,63 @@ The teams plugin provides integration with Microsoft Teams API for creating chan
 - `get_chat`: Gets details about a chat
 - `list_channel_messages`: Lists messages in a channel
 - `list_chat_messages`: Lists messages in a chat
+
+### microsoft-office (from microsoft-excel-365, microsoft-onedrive, microsoft-outlook-calendar, microsoft-sharepoint, microsoft-dynamics-crm)
+
+The microsoft-office plugin provides integration with Microsoft Office 365 services, allowing you to work with Excel, Word, PowerPoint, SharePoint, Outlook Calendar, and Dynamics 365 from your MintFlow workflows.
+
+**Excel Actions:**
+
+- `excel_list_workbooks`: Lists Excel workbooks from OneDrive
+- `excel_get_worksheets`: Gets worksheets from an Excel workbook
+- `excel_get_worksheet_data`: Gets data from an Excel worksheet
+- `excel_add_row`: Adds a row to an Excel table
+
+**Word Actions:**
+
+- `word_create_document`: Creates a new Word document
+- `word_read_document`: Reads the content of a Word document
+- `word_update_document`: Updates the content of a Word document
+
+**PowerPoint Actions:**
+
+- `powerpoint_create_presentation`: Creates a new PowerPoint presentation
+- `powerpoint_add_slide`: Adds a slide to a PowerPoint presentation
+- `powerpoint_export_presentation`: Exports a PowerPoint presentation to PDF or image format
+
+**SharePoint Actions:**
+
+- `sharepoint_list_sites`: Lists SharePoint sites
+- `sharepoint_get_site`: Gets details about a specific SharePoint site
+- `sharepoint_list_documents`: Lists documents in a SharePoint site
+- `sharepoint_upload_document`: Uploads a document to a SharePoint site
+- `sharepoint_download_document`: Downloads a document from a SharePoint site
+
+**Outlook Calendar Actions:**
+
+- `outlook_list_events`: Lists calendar events with optional date filtering
+- `outlook_get_event`: Gets details about a specific calendar event
+- `outlook_create_event`: Creates a new calendar event with support for attendees
+- `outlook_update_event`: Updates an existing calendar event
+- `outlook_delete_event`: Deletes a calendar event
+
+**Dynamics 365 Actions:**
+
+- `dynamics_list_contacts`: Lists contacts with optional filtering
+- `dynamics_get_contact`: Gets details about a specific contact
+- `dynamics_create_contact`: Creates a new contact
+- `dynamics_update_contact`: Updates an existing contact
+- `dynamics_delete_contact`: Deletes a contact
+- `dynamics_list_accounts`: Lists accounts with optional filtering
+- `dynamics_get_account`: Gets details about a specific account
+- `dynamics_create_account`: Creates a new account
+- `dynamics_update_account`: Updates an existing account
+- `dynamics_delete_account`: Deletes an account
+- `dynamics_list_opportunities`: Lists opportunities with optional filtering
+- `dynamics_get_opportunity`: Gets details about a specific opportunity
+- `dynamics_create_opportunity`: Creates a new opportunity
+- `dynamics_update_opportunity`: Updates an existing opportunity
+- `dynamics_delete_opportunity`: Deletes an opportunity
 
 ### figma (from figma)
 
