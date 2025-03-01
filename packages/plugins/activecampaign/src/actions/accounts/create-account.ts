@@ -1,78 +1,91 @@
-import { makeClient, ActiveCampaignAuth, CreateAccountRequest } from '../../common/index.js';
+import { ActiveCampaignClient } from '../../common/client.js';
+import { CreateAccountRequest } from '../../common/types.js';
 
-export const createAccount = {
-    name: "create_account",
-    description: "Creates a new account in ActiveCampaign",
+export const createAccountAction = {
+    name: 'create_account',
+    description: 'Creates a new account in ActiveCampaign',
     inputSchema: {
-        type: "object",
+        type: 'object',
         properties: {
+            apiUrl: {
+                type: 'string',
+                description: 'ActiveCampaign API URL',
+            },
+            apiKey: {
+                type: 'string',
+                description: 'ActiveCampaign API Key',
+            },
             name: {
-                type: "string",
-                description: "Name of the account"
+                type: 'string',
+                description: 'Name of the account',
             },
             accountUrl: {
-                type: "string",
-                description: "URL of the account's website"
+                type: 'string',
+                description: 'URL of the account',
             },
             customFields: {
-                type: "object",
-                description: "Custom fields for the account (field ID as key, field value as value)"
-            }
+                type: 'object',
+                description: 'Custom fields for the account',
+                additionalProperties: true,
+            },
         },
-        required: ["name"]
+        required: ['apiUrl', 'apiKey', 'name'],
     },
     outputSchema: {
-        type: "object",
+        type: 'object',
         properties: {
             account: {
-                type: "object",
-                description: "The created account"
-            }
-        }
+                type: 'object',
+                description: 'The created account',
+            },
+        },
     },
     exampleInput: {
-        name: "Acme Corporation",
-        accountUrl: "https://acme.example.com",
+        apiUrl: 'https://your-account.api-us1.com',
+        apiKey: 'your-api-key',
+        name: 'Acme Corporation',
+        accountUrl: 'https://acme.com',
         customFields: {
-            "1": "Value for custom field 1"
-        }
+            // Custom field ID: value
+            '1': 'Value for custom field 1',
+        },
     },
     exampleOutput: {
         account: {
-            id: "123",
-            name: "Acme Corporation",
-            accountUrl: "https://acme.example.com"
-        }
+            id: '123',
+            name: 'Acme Corporation',
+            // ... other account properties
+        },
     },
-    execute: async (input: any, auth: ActiveCampaignAuth) => {
-        try {
-            const { name, accountUrl, customFields = {} } = input.data || {};
+    execute: async (input: any) => {
+        const { apiUrl, apiKey, name, accountUrl, customFields } = input;
 
-            if (!name) {
-                return { error: "Account name is required" };
-            }
+        const client = new ActiveCampaignClient(apiUrl, apiKey);
 
-            const createAccountParams: CreateAccountRequest = {
-                name,
-                accountUrl,
-                fields: []
-            };
+        const createAccountParams: CreateAccountRequest = {
+            name,
+            accountUrl,
+            fields: [],
+        };
 
-            // Add custom fields
+        // Add custom fields if provided
+        if (customFields && typeof customFields === 'object') {
             Object.entries(customFields).forEach(([key, value]) => {
                 createAccountParams.fields!.push({
-                    customFieldId: Number(key),
+                    customFieldId: parseInt(key, 10),
                     fieldValue: value
                 });
             });
-
-            const client = makeClient(auth);
-            const result = await client.createAccount(createAccountParams);
-            return result;
-        } catch (error: any) {
-            return {
-                error: `Error creating account: ${error.message || 'Unknown error'}`
-            };
         }
-    }
+
+        try {
+            const response = await client.createAccount(createAccountParams);
+            return response;
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(`Failed to create account: ${error.message}`);
+            }
+            throw new Error('Failed to create account: Unknown error');
+        }
+    },
 };
