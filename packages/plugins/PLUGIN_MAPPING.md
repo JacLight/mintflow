@@ -196,6 +196,7 @@ The pipedrive plugin provides integration with Pipedrive CRM, allowing you to ma
 | typeform | typeform | ✅ Completed | Provides integration with Typeform for form building and data collection. |
 | woocommerce | woocommerce | ✅ Completed | Provides integration with WooCommerce for e-commerce platform management including products, orders, customers, and coupons. |
 | soap | soap | ✅ Completed | Provides integration with SOAP web services, allowing you to call SOAP methods, parse WSDL files, generate SOAP templates, and create REST-like interfaces for SOAP services. |
+| xml | xml | ✅ Completed | Provides utilities for working with XML data, including conversion between XML and JSON, validation, and querying. |
 
 ### MintFlow-Specific Plugins
 
