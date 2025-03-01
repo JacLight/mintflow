@@ -28,6 +28,20 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | assemblyai | assemblyai | ✅ Completed | Provides advanced speech recognition and audio intelligence capabilities using the AssemblyAI API. |
 | apollo | apollo | ✅ Completed | Provides integration with Apollo.io for finding contact information and enriching company data. |
 | sendgrid | sendgrid | ✅ Completed | Provides integration with SendGrid for sending transactional and marketing emails. |
+| klaviyo | klaviyo | ✅ Completed | Provides integration with Klaviyo for email marketing and customer data platform, including tracking events, identifying profiles, managing lists, and accessing campaign data. |
+
+### klaviyo (from klaviyo)
+
+The klaviyo plugin provides integration with Klaviyo, a powerful email marketing and customer data platform.
+
+**Actions:**
+
+- `track_event`: Tracks an event in Klaviyo, associating it with a customer profile
+- `identify_profile`: Creates or updates a profile in Klaviyo
+- `get_lists`: Retrieves all lists from your Klaviyo account
+- `add_profiles_to_list`: Adds one or more profiles to a Klaviyo list
+- `remove_profile_from_list`: Removes a profile from a Klaviyo list
+- `get_campaigns`: Retrieves all campaigns from your Klaviyo account
 
 ### sendgrid (from sendgrid)
 
@@ -286,6 +300,7 @@ The pipedrive plugin provides integration with Pipedrive CRM, allowing you to ma
 | whatsapp | whatsapp | ✅ Completed | Provides integration with WhatsApp Business API for sending text messages, media messages, and template messages. |
 | telegram-bot | telegram | ✅ Completed | Provides integration with Telegram Bot API for sending messages, media, creating invite links, and getting chat member information. |
 | confluence | confluence | ✅ Completed | Provides integration with Atlassian Confluence for creating, reading, and managing content in Confluence spaces. |
+| mattermost | mattermost | ✅ Completed | Provides integration with Mattermost for sending messages and making custom API calls to the Mattermost API. |
 
 ### telegram (from telegram-bot)
 
@@ -314,6 +329,188 @@ The confluence plugin provides integration with Atlassian Confluence, enabling y
 **Trigger:**
 
 - `new_page`: Triggers when a new page is created in a specified Confluence space
+
+### mattermost (from mattermost)
+
+The mattermost plugin provides integration with Mattermost, an open-source, self-hosted messaging platform for team communication.
+
+**Actions:**
+
+- `send_message`: Sends a text message to a Mattermost channel
+- `custom_api_call`: Makes a custom API call to the Mattermost API for advanced use cases
+
+### square (from square)
+
+The square plugin provides integration with Square's payment processing and point of sale platform, allowing you to automate workflows based on Square events.
+
+**Triggers:**
+
+- `new_order`: Triggered when a new order is created in Square
+- `order_updated`: Triggered when an existing order is updated in Square
+- `new_customer`: Triggered when a new customer is created in Square
+- `customer_updated`: Triggered when an existing customer is updated in Square
+- `new_payment`: Triggered when a new payment is created in Square
+- `new_invoice`: Triggered when a new invoice is created in Square
+- `new_appointment`: Triggered when a new appointment is created in Square
+
+### razorpay (from razorpay)
+
+The razorpay plugin provides integration with Razorpay's payment gateway, allowing you to create payment links and interact with the Razorpay API.
+
+**Actions:**
+
+- `create_payment_link`: Creates a payment link that can be shared with customers
+- `custom_api_call`: Makes a custom API call to the Razorpay API for advanced use cases
+
+### jotform (from jotform)
+
+The jotform plugin provides integration with JotForm's online form and survey platform, allowing you to automate workflows based on form submissions and interact with the JotForm API.
+
+**Triggers:**
+
+- `new_submission`: Triggers when a new form submission is received
+
+**Actions:**
+
+- `custom_api_call`: Makes a custom API call to the JotForm API for advanced use cases
+
+### surveymonkey (from surveymonkey)
+
+The surveymonkey plugin provides integration with SurveyMonkey's survey and questionnaire platform, allowing you to automate workflows based on survey responses and interact with the SurveyMonkey API.
+
+**Triggers:**
+
+- `new_response`: Triggers when a new survey response is submitted
+
+**Actions:**
+
+- `custom_api_call`: Makes a custom API call to the SurveyMonkey API for advanced use cases
+
+### tally (from tally)
+
+The tally plugin provides integration with Tally's form creation platform, allowing you to automate workflows based on form submissions.
+
+**Triggers:**
+
+- `new_submission`: Triggers when a new form submission is received
+
+### perplexity-ai (from perplexity-ai)
+
+The perplexity-ai plugin provides integration with Perplexity's AI-powered search engine, allowing you to generate text completions and answers to questions with citations.
+
+**Actions:**
+
+- `ask_ai`: Enables users to generate prompt completion based on a specified model
+
+### groq (from groq)
+
+The groq plugin provides integration with Groq's high-performance AI inference platform, allowing you to generate text completions and process audio with Groq's fast language models.
+
+**Actions:**
+
+- `ask_ai`: Generate text completions and answers to questions using Groq's language models
+- `transcribe_audio`: Transcribe audio into text in the input language
+- `translate_audio`: Translate audio into English text
+- `custom_api_call`: Make a custom API call to the Groq API
+
+### quickbooks (from quickbooks)
+
+The quickbooks plugin provides integration with Intuit's QuickBooks Online accounting software, allowing you to automate accounting tasks, retrieve financial data, and create invoices and other financial documents.
+
+**Actions:**
+
+- `get_customer`: Retrieve a customer from QuickBooks by ID
+- `create_invoice`: Create a new invoice in QuickBooks
+- `get_profit_loss_report`: Generate a profit and loss report from QuickBooks
+- `custom_api_call`: Make a custom API call to the QuickBooks API
+
+**Triggers:**
+
+- `new_invoice`: Triggers when a new invoice is created in QuickBooks
+
+### xero (from xero)
+
+The xero plugin provides integration with Xero's cloud-based accounting software, allowing you to automate accounting tasks, retrieve financial data, and create invoices and other financial documents.
+
+**Actions:**
+
+- `get_contact`: Retrieve a contact from Xero by ID
+- `create_invoice`: Create a new invoice in Xero
+- `get_profit_loss_report`: Generate a profit and loss report from Xero
+- `custom_api_call`: Make a custom API call to the Xero API
+
+**Triggers:**
+
+- `new_invoice`: Triggers when a new invoice is created in Xero
+
+### invoiceninja (from invoiceninja)
+
+The invoiceninja plugin provides integration with InvoiceNinja's open-source invoicing, billing, and accounting platform, allowing you to automate client management, invoice creation, and payment tracking.
+
+**Actions:**
+
+- `get_client`: Retrieve a client from InvoiceNinja by ID
+- `create_invoice`: Create a new invoice in InvoiceNinja
+- `get_payment`: Retrieve a payment from InvoiceNinja by ID
+- `custom_api_call`: Make a custom API call to the InvoiceNinja API
+
+**Triggers:**
+
+- `new_invoice`: Triggers when a new invoice is created in InvoiceNinja
+- `new_payment`: Triggers when a new payment is created in InvoiceNinja
+
+### freshbooks (from freshbooks)
+
+The freshbooks plugin provides integration with Freshbooks' cloud-based accounting software, allowing you to automate client management, invoice creation, expense tracking, and time tracking.
+
+**Actions:**
+
+- `get_client`: Retrieve a client from Freshbooks by ID
+- `create_invoice`: Create a new invoice in Freshbooks
+- `get_expense`: Retrieve an expense from Freshbooks by ID
+- `get_time_entry`: Retrieve a time entry from Freshbooks by ID
+- `custom_api_call`: Make a custom API call to the Freshbooks API
+
+**Triggers:**
+
+- `new_invoice`: Triggers when a new invoice is created in Freshbooks
+- `new_expense`: Triggers when a new expense is created in Freshbooks
+
+### freshdesk (from freshdesk)
+
+The freshdesk plugin provides integration with Freshdesk's customer support and helpdesk platform, allowing you to automate ticket management, contact management, and more.
+
+**Actions:**
+
+- `get_ticket`: Retrieve a ticket from Freshdesk by ID
+- `create_ticket`: Create a new ticket in Freshdesk
+- `get_contact`: Retrieve a contact from Freshdesk by ID
+- `custom_api_call`: Make a custom API call to the Freshdesk API
+
+**Triggers:**
+
+- `new_ticket`: Triggers when a new ticket is created in Freshdesk
+- `updated_ticket`: Triggers when a ticket is updated in Freshdesk
+
+### mastodon (from mastodon)
+
+The mastodon plugin provides integration with Mastodon, an open-source decentralized social network, allowing you to automate posting, account management, and more.
+
+**Actions:**
+
+- `post_status`: Post a status to Mastodon with optional media attachments
+- `get_account`: Retrieve a Mastodon account by ID
+- `custom_api_call`: Make a custom API call to the Mastodon API
+
+### reddit (from reddit)
+
+The reddit plugin provides integration with Reddit, a social news and discussion platform, allowing you to automate interactions with Reddit's API.
+
+**Actions:**
+
+- `get_subreddit`: Get information about a subreddit
+- `submit_post`: Submit a new post to a subreddit
+- `custom_api_call`: Make a custom API call to the Reddit API
 
 ### MintFlow-Specific Plugins
 
@@ -671,216 +868,4 @@ The qrcode plugin provides functionality to generate QR codes from text or URLs.
 
 ### s3-storage (from amazon-s3)
 
-The s3-storage plugin provides integration with Amazon S3 and S3-compatible storage services for file management.
-
-**Actions:**
-
-- `upload_file`: Uploads a file to an S3 bucket with customizable settings
-- `read_file`: Retrieves a file from an S3 bucket
-- `list_files`: Lists files in an S3 bucket with optional filtering
-
-### sns (from amazon-sns)
-
-The sns plugin provides integration with Amazon SNS for sending messages to topics and managing SNS resources.
-
-**Actions:**
-
-- `send_message`: Sends a message to an Amazon SNS topic
-- `list_topics`: Lists available SNS topics in your AWS account
-- `create_topic`: Creates a new SNS topic
-
-### sqs (from amazon-sqs)
-
-The sqs plugin provides integration with Amazon SQS for sending messages to queues and managing SQS resources.
-
-**Actions:**
-
-- `send_message`: Sends a message to an Amazon SQS queue
-- `list_queues`: Lists available SQS queues in your AWS account
-- `create_queue`: Creates a new SQS queue with customizable settings
-
-### slack (from slack)
-
-The slack plugin provides integration with Slack for sending messages and managing channels.
-
-**Actions:**
-
-- `send_message`: Sends a message to a Slack channel
-- `send_direct_message`: Sends a direct message to a Slack user
-- `create_channel`: Creates a new channel in Slack
-- `list_channels`: Lists channels from a Slack workspace
-- `upload_file`: Uploads a file to a Slack channel
-
-### tiktok (from tiktok)
-
-The tiktok plugin provides integration with TikTok API for retrieving videos, user details, and uploading content.
-
-**Actions:**
-
-- `get_user_videos`: Retrieves videos from a TikTok user's account
-- `get_video_details`: Gets detailed information about a specific TikTok video
-- `get_user_details`: Gets profile information about a TikTok user
-- `upload_video`: Uploads a video to TikTok
-
-### twilio (from twilio)
-
-The twilio plugin provides integration with Twilio for SMS and voice messaging.
-
-**Actions:**
-
-- `send_sms`: Sends an SMS message
-- `make_call`: Makes a voice call
-- `get_message`: Gets information about a message
-- `list_messages`: Lists messages from a Twilio account
-- `verify_phone_number`: Verifies a phone number
-
-### youtube (from youtube)
-
-The youtube plugin provides integration with YouTube API for searching videos, retrieving channel information, and managing subscriptions.
-
-**Actions:**
-
-- `search_videos`: Searches for videos on YouTube
-- `get_channel_videos`: Gets videos from a specific YouTube channel
-- `get_video_details`: Gets detailed information about a specific YouTube video
-- `get_channel_details`: Gets information about a YouTube channel by ID or username
-- `subscribe_to_channel`: Subscribes to a YouTube channel
-- `check_subscription`: Checks if the authenticated user is subscribed to a channel
-
-### pinterest (from pinterest)
-
-The pinterest plugin provides integration with Pinterest API for creating pins, managing boards, and searching content.
-
-**Actions:**
-
-- `create_pin`: Creates a pin on a Pinterest board
-- `create_board`: Creates a new board on Pinterest
-- `get_board_pins`: Gets pins from a specific Pinterest board
-- `get_user_boards`: Gets boards from a user's Pinterest account
-- `get_user_profile`: Gets profile information about a Pinterest user
-- `search_pins`: Searches for pins on Pinterest
-
-### snapchat (from snapchat)
-
-The snapchat plugin provides integration with Snapchat Marketing API for creating and managing ads, campaigns, and creatives.
-
-**Actions:**
-
-- `create_ad`: Creates an ad on Snapchat
-- `create_campaign`: Creates an advertising campaign on Snapchat
-- `create_creative`: Creates an ad creative on Snapchat
-- `get_ads`: Gets ads from a Snapchat ad account
-- `get_campaigns`: Gets campaigns from a Snapchat ad account
-- `get_ad_accounts`: Gets ad accounts from Snapchat
-
-### stripe (MintFlow-specific)
-
-The stripe plugin provides integration with Stripe API for payment processing, subscription management, and product/price management.
-
-**Actions:**
-
-- `create_customer`: Creates a customer in Stripe
-- `create_payment_intent`: Creates a payment intent for one-time payments
-- `create_subscription`: Creates a subscription for recurring payments
-- `create_product`: Creates a product in Stripe
-- `create_price`: Creates a price for a product in Stripe
-- `get_customer`: Gets customer details from Stripe
-- `get_payment_intent`: Gets payment intent details from Stripe
-- `get_subscription`: Gets subscription details from Stripe
-- `get_product`: Gets product details from Stripe
-- `get_price`: Gets price details from Stripe
-- `list_customers`: Lists customers from Stripe
-- `list_payment_intents`: Lists payment intents from Stripe
-- `list_subscriptions`: Lists subscriptions from Stripe
-- `list_products`: Lists products from Stripe
-- `list_prices`: Lists prices from Stripe
-
-### paypal (MintFlow-specific)
-
-The paypal plugin provides integration with PayPal API for processing payments, handling refunds, and managing recurring billing.
-
-**Actions:**
-
-- `create_payment`: Creates a payment in PayPal
-- `execute_payment`: Executes a payment after payer approval
-- `get_payment`: Gets payment details from PayPal
-- `refund_sale`: Refunds a sale in PayPal
-- `create_billing_plan`: Creates a billing plan for subscriptions
-- `activate_billing_plan`: Activates a billing plan
-- `get_billing_plan`: Gets billing plan details from PayPal
-- `create_billing_agreement`: Creates a billing agreement for subscriptions
-- `execute_billing_agreement`: Executes a billing agreement after payer approval
-- `get_billing_agreement`: Gets billing agreement details from PayPal
-- `cancel_billing_agreement`: Cancels a billing agreement
-- `list_payments`: Lists payments from PayPal
-- `list_billing_plans`: Lists billing plans from PayPal
-
-### zoom (from zoom)
-
-The zoom plugin provides integration with Zoom API for creating and managing meetings, handling registrations, and accessing user information.
-
-**Actions:**
-
-- `create_meeting`: Creates a new meeting in Zoom
-- `get_meeting`: Gets details about a specific meeting
-- `update_meeting`: Updates an existing meeting
-- `delete_meeting`: Deletes a meeting
-- `list_meetings`: Lists meetings for a user
-- `create_meeting_registrant`: Registers a participant for a meeting
-- `list_meeting_registrants`: Lists registrants for a meeting
-- `get_user`: Gets information about a Zoom user
-- `list_users`: Lists users in a Zoom account
-
-### teams (from microsoft-teams)
-
-The teams plugin provides integration with Microsoft Teams API for creating channels, sending messages, and managing team resources.
-
-**Actions:**
-
-- `create_channel`: Creates a new channel in a team
-- `send_channel_message`: Sends a message to a channel
-- `send_chat_message`: Sends a message to a chat
-- `list_teams`: Lists teams the user is a member of
-- `list_channels`: Lists channels in a team
-- `list_chats`: Lists chats the user is a member of
-- `get_team`: Gets details about a team
-- `get_channel`: Gets details about a channel
-- `get_chat`: Gets details about a chat
-- `list_channel_messages`: Lists messages in a channel
-- `list_chat_messages`: Lists messages in a chat
-
-### figma (from figma)
-
-The figma plugin provides integration with Figma API for accessing and manipulating Figma files, comments, components, and more.
-
-**Actions:**
-
--
-
-### whatsapp (from whatsapp)
-
-The whatsapp plugin provides integration with WhatsApp Business API for sending messages, media, and templates through WhatsApp.
-
-**Message Actions:**
-
-- `send_message`: Sends a text message to a WhatsApp user
-- `send_media`: Sends a media message (image, audio, document, sticker, or video) to a WhatsApp user
-- `send_template`: Sends a template message to a WhatsApp user using pre-approved templates
-
-### wordpress (from wordpress)
-
-The wordpress plugin provides integration with WordPress, the world's most popular content management system, for creating, retrieving, and updating posts and pages.
-
-**Post Actions:**
-
-- `create_post`: Creates a new post on WordPress with support for custom fields, featured media, and more
-- `get_post`: Retrieves a post from WordPress by ID
-- `update_post`: Updates an existing post on WordPress
-
-**Page Actions:**
-
-- `create_page`: Creates a new page on WordPress with support for hierarchical structure
-
-**Triggers:**
-
-- `new_post`: Triggers when a new post is published on WordPress
+The s3-storage plugin provides integration with Amazon S3 and S
