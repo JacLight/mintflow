@@ -271,6 +271,30 @@
     },
     "@mintflow/soap": {
       "root": "packages/plugins/soap"
+    },
+    "@mintflow/clickup": {
+      "root": "packages/plugins/clickup"
+    },
+    "@mintflow/confluence": {
+      "root": "packages/plugins/confluence"
+    },
+    "@mintflow/convertkit": {
+      "root": "packages/plugins/convertkit"
+    },
+    "@mintflow/klaviyo": {
+      "root": "packages/plugins/klaviyo"
+    },
+    "@mintflow/telegram": {
+      "root": "packages/plugins/telegram"
+    },
+    "@mintflow/webflow": {
+      "root": "packages/plugins/webflow"
+    },
+    "@mintflow/whatsapp": {
+      "root": "packages/plugins/whatsapp"
+    },
+    "@mintflow/wordpress": {
+      "root": "packages/plugins/wordpress"
     }
   },
   "namedInputs": {
