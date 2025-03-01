@@ -4,7 +4,7 @@ import * as actions from "./actions/index.js";
 const googleWorkspacePlugin: PluginDescriptor = {
     name: "Google Workspace",
     icon: "TbBrandGoogle",
-    description: "Integration with Google Workspace services including Calendar, Contacts, Docs, and more",
+    description: "Integration with Google Workspace services including Calendar, Contacts, Docs, Forms, Tasks, and more",
     id: "google-workspace",
     runner: "node",
     type: 'node',
@@ -16,9 +16,20 @@ const googleWorkspacePlugin: PluginDescriptor = {
         actions.updateEvent,
         actions.deleteEvent,
         actions.addAttendees,
-        
+
         // Contacts actions
-        actions.createContact
+        actions.createContact,
+
+        // Docs actions
+        actions.createDocument,
+        actions.appendText,
+        actions.readDocument,
+
+        // Forms actions
+        actions.getFormResponses,
+
+        // Tasks actions
+        actions.createTask
     ]
 };
 

@@ -12,15 +12,12 @@ export * from './contacts/create-contact.js';
 // export * from './contacts/update-contact.js';
 
 // Docs actions
-// Uncomment when implemented
-// export * from './docs/create-document.js';
-// export * from './docs/append-text.js';
-// export * from './docs/read-document.js';
+export * from './docs/create-document.js';
+export * from './docs/append-text.js';
+export * from './docs/read-document.js';
 
 // Forms actions
-// Uncomment when implemented
-// export * from './forms/get-form-responses.js';
+export * from './forms/get-form-responses.js';
 
 // Tasks actions
-// Uncomment when implemented
-// export * from './tasks/create-task.js';
+export * from './tasks/create-task.js';
