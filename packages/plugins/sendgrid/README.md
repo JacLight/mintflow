@@ -1,93 +1,69 @@
 # SendGrid Plugin for MintFlow
 
-This plugin provides integration with SendGrid, a cloud-based email delivery service that enables you to send transactional and marketing emails.
+This plugin provides integration with SendGrid, an email delivery service for sending transactional and marketing emails.
+
+## Features
+
+- Send plain text or HTML emails
+- Send emails using dynamic templates
+- Support for CC and BCC recipients
+- Custom sender names and reply-to addresses
 
 ## Authentication
 
-This plugin requires a SendGrid API key for authentication. You can obtain an API key from your SendGrid account settings.
+This plugin requires a SendGrid API Key for authentication. You can create an API key in your SendGrid account under Settings > API Keys.
 
-## Actions
+## Usage
 
 ### Send Email
 
-Sends a text or HTML email to one or more recipients.
+Send a plain text or HTML email to one or more recipients.
 
-**Input Parameters:**
-
-- `to` (array, required): Array of recipient email addresses
-- `from` (string, required): Sender email address (must be verified in your SendGrid account)
-- `from_name` (string, optional): Sender name
-- `reply_to` (string, optional): Email address for replies (defaults to sender email)
-- `subject` (string, required): Email subject
-- `content_type` (string, required): Content type, either "text" or "html"
-- `content` (string, required): Email content (HTML is only allowed if content_type is "html")
-
-**Example:**
-
-```json
-{
-  "to": ["recipient@example.com"],
-  "from": "sender@yourdomain.com",
-  "from_name": "Your Name",
-  "subject": "Hello from MintFlow",
-  "content_type": "text",
-  "content": "This is a test email from MintFlow SendGrid plugin."
-}
+```javascript
+const result = await mintflow.plugins.sendgrid.send_email({
+  apiKey: "SG.your-api-key",
+  to: ["recipient@example.com", "another@example.com"],
+  cc: ["cc-recipient@example.com"],
+  bcc: ["bcc-recipient@example.com"],
+  from: "sender@example.com",
+  fromName: "Sender Name",
+  replyTo: "reply@example.com",
+  subject: "Hello from SendGrid",
+  contentType: "html",
+  content: "<p>This is a test email from SendGrid</p>"
+});
 ```
 
-### Send Dynamic Template
+### Send Email with Dynamic Template
 
-Sends an email using a SendGrid dynamic template.
+Send an email using a SendGrid dynamic template with personalized data.
 
-**Input Parameters:**
-
-- `to` (array, required): Array of recipient email addresses
-- `from` (string, required): Sender email address (must be verified in your SendGrid account)
-- `from_name` (string, optional): Sender name
-- `reply_to` (string, optional): Email address for replies (defaults to sender email)
-- `template_id` (string, required): SendGrid dynamic template ID
-- `template_data` (object, required): Dynamic template data
-
-**Example:**
-
-```json
-{
-  "to": ["recipient@example.com"],
-  "from": "sender@yourdomain.com",
-  "from_name": "Your Name",
-  "template_id": "d-f3ecde774b7143e6b3f3ec514608253d",
-  "template_data": {
-    "name": "John Doe",
-    "company": "Acme Inc.",
-    "verification_link": "https://example.com/verify"
+```javascript
+const result = await mintflow.plugins.sendgrid.send_dynamic_template({
+  apiKey: "SG.your-api-key",
+  to: ["recipient@example.com"],
+  from: "sender@example.com",
+  fromName: "Sender Name",
+  templateId: "d-f3ecfbd9a7dd46a39f70d0a42a9a649a",
+  templateData: {
+    name: "John Doe",
+    company: "Acme Inc.",
+    verificationLink: "https://example.com/verify"
   }
-}
+});
 ```
 
-### Custom API Call
+## API Documentation
 
-Makes a custom API call to the SendGrid API.
+For more information about the SendGrid API, please refer to the [official documentation](https://docs.sendgrid.com/api-reference/how-to-use-the-sendgrid-v3-api).
 
-**Input Parameters:**
+## Creating Dynamic Templates
 
-- `method` (string, required): HTTP method (GET, POST, PUT, DELETE, PATCH)
-- `path` (string, required): API path (without the base URL)
-- `body` (object, optional): Request body for POST, PUT, and PATCH requests
-- `queryParams` (object, optional): Query parameters
+To create and manage dynamic templates in SendGrid:
 
-**Example:**
-
-```json
-{
-  "method": "GET",
-  "path": "/marketing/contacts",
-  "queryParams": {
-    "page_size": 100
-  }
-}
-```
-
-## Resources
-
-- [SendGrid API Documentation](https://docs.sendgrid.com/api-reference)
-- [SendGrid Developer Documentation](https://docs.sendgrid.com/for-developers)
+1. Log in to your SendGrid account
+2. Navigate to Email API > Dynamic Templates
+3. Click "Create a Dynamic Template"
+4. Design your template using the design editor or code editor
+5. Use Handlebars syntax for dynamic content (e.g., `{{name}}`)
+6. Save your template and note the template ID for use with this plugin

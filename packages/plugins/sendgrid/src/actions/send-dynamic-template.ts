@@ -1,118 +1,160 @@
-import axios from 'axios';
-import { sendgridCommon } from '../common/index.js';
+import { createClient } from '../common/index.js';
+import { SendgridEmailAddress, SendgridMailData } from '../common/types.js';
 
-export const sendDynamicTemplate = {
-    name: "send_dynamic_template",
-    displayName: "Send Dynamic Template",
-    description: "Send an email using a dynamic template",
+export const sendDynamicTemplateAction = {
+    name: 'send_dynamic_template',
+    description: 'Send an email using a dynamic template',
     inputSchema: {
-        type: "object",
+        type: 'object',
         properties: {
+            apiKey: {
+                type: 'string',
+                description: 'SendGrid API Key',
+            },
             to: {
-                type: "array",
-                description: "Emails of the recipients",
+                type: 'array',
+                description: 'Email addresses of the recipients',
                 items: {
-                    type: "string"
-                }
+                    type: 'string',
+                },
+            },
+            cc: {
+                type: 'array',
+                description: 'Email addresses for CC',
+                items: {
+                    type: 'string',
+                },
+            },
+            bcc: {
+                type: 'array',
+                description: 'Email addresses for BCC',
+                items: {
+                    type: 'string',
+                },
             },
             from: {
-                type: "string",
-                description: "Sender email, must be on your SendGrid"
+                type: 'string',
+                description: 'Sender email address',
             },
-            from_name: {
-                type: "string",
-                description: "Sender name"
+            fromName: {
+                type: 'string',
+                description: 'Sender name',
             },
-            reply_to: {
-                type: "string",
-                description: "Email to receive replies on (defaults to sender)"
+            replyTo: {
+                type: 'string',
+                description: 'Reply-to email address',
             },
-            template_id: {
-                type: "string",
-                description: "Dynamic template ID"
+            templateId: {
+                type: 'string',
+                description: 'SendGrid dynamic template ID',
             },
-            template_data: {
-                type: "object",
-                description: "Dynamic template data"
-            }
+            templateData: {
+                type: 'object',
+                description: 'Dynamic template data',
+                additionalProperties: true,
+            },
         },
-        required: ["to", "from", "template_id", "template_data"]
+        required: ['apiKey', 'to', 'from', 'templateId', 'templateData'],
     },
     outputSchema: {
-        type: "object",
+        type: 'object',
         properties: {
             success: {
-                type: "boolean",
-                description: "Whether the email was sent successfully"
-            }
-        }
+                type: 'boolean',
+                description: 'Whether the email was sent successfully',
+            },
+            message: {
+                type: 'string',
+                description: 'Error message if the email failed to send',
+            },
+            errors: {
+                type: 'array',
+                description: 'List of errors if the email failed to send',
+                items: {
+                    type: 'object',
+                },
+            },
+        },
     },
     exampleInput: {
-        to: ["recipient@example.com"],
-        from: "sender@yourdomain.com",
-        from_name: "Your Name",
-        template_id: "d-f3ecde774b7143e6b3f3ec514608253d",
-        template_data: {
-            name: "John Doe",
-            company: "Acme Inc.",
-            verification_link: "https://example.com/verify"
-        }
+        apiKey: 'SG.your-api-key',
+        to: ['recipient@example.com'],
+        from: 'sender@example.com',
+        fromName: 'Sender Name',
+        templateId: 'd-f3ecfbd9a7dd46a39f70d0a42a9a649a',
+        templateData: {
+            name: 'John Doe',
+            company: 'Acme Inc.',
+            verificationLink: 'https://example.com/verify',
+        },
     },
     exampleOutput: {
-        success: true
+        success: true,
     },
-    execute: async (input: any, auth: any) => {
-        try {
-            const { to, from, from_name, reply_to, template_id, template_data } = input.data || {};
+    execute: async (input: any) => {
+        const {
+            apiKey,
+            to,
+            cc,
+            bcc,
+            from,
+            fromName,
+            replyTo,
+            templateId,
+            templateData,
+        } = input;
 
-            // Validate required fields
-            if (!to || !Array.isArray(to) || to.length === 0) {
-                return { error: "Recipients (to) is required and must be an array" };
-            }
-            if (!from) {
-                return { error: "Sender email (from) is required" };
-            }
-            if (!template_id) {
-                return { error: "Template ID is required" };
-            }
-            if (!template_data || typeof template_data !== 'object') {
-                return { error: "Template data is required and must be an object" };
-            }
+        const client = createClient(apiKey);
 
-            // Prepare request body
-            const requestBody = {
-                personalizations: to.map((email) => ({
-                    to: [{ email: email.trim() }],
-                    dynamic_template_data: template_data
-                })),
-                from: {
-                    email: from,
-                    name: from_name
-                },
-                reply_to: {
-                    email: reply_to || from
-                },
-                template_id
-            };
+        // Prepare email addresses
+        const toAddresses: SendgridEmailAddress[] = to.map((email: string) => ({
+            email: email.trim(),
+        }));
 
-            // Send request to SendGrid API
-            await axios.post(
-                `${sendgridCommon.baseUrl}/mail/send`,
-                requestBody,
+        const ccAddresses: SendgridEmailAddress[] | undefined = cc
+            ? cc.map((email: string) => ({ email: email.trim() }))
+            : undefined;
+
+        const bccAddresses: SendgridEmailAddress[] | undefined = bcc
+            ? bcc.map((email: string) => ({ email: email.trim() }))
+            : undefined;
+
+        // Prepare mail data
+        const mailData: SendgridMailData = {
+            personalizations: [
                 {
-                    headers: {
-                        'Authorization': `Bearer ${auth.apiKey}`,
-                        'Content-Type': 'application/json'
-                    }
+                    to: toAddresses,
+                    cc: ccAddresses,
+                    bcc: bccAddresses,
+                    dynamic_template_data: templateData,
+                },
+            ],
+            from: {
+                email: from,
+                name: fromName,
+            },
+            reply_to: replyTo
+                ? {
+                    email: replyTo,
                 }
-            );
+                : undefined,
+            template_id: templateId,
+        };
 
-            return { success: true };
-        } catch (error: any) {
+        try {
+            const result = await client.sendMail(mailData);
+            return result;
+        } catch (error) {
+            if (error instanceof Error) {
+                return {
+                    success: false,
+                    message: `Failed to send template email: ${error.message}`,
+                };
+            }
             return {
-                error: `Error sending template email: ${error.message || 'Unknown error'}`,
-                details: error.response?.data || {}
+                success: false,
+                message: 'Failed to send template email: Unknown error',
             };
         }
-    }
+    },
 };

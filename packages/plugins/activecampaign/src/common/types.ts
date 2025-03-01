@@ -1,14 +1,27 @@
-import { CUSTOM_FIELD_TYPE } from './constants.js';
+export enum CustomFieldType {
+    TEXT = 'text',
+    DROPDOWN = 'dropdown',
+    TEXTAREA = 'textarea',
+    NUMBER = 'number',
+    MONEY = 'currency',
+    DATE = 'date',
+    DATETIME = 'datetime',
+    LIST_BOX = 'listbox',
+    MULTISELECT = 'multiselect',
+    RADIO = 'radio',
+    CHECKBOX = 'checkbox',
+    HIDDEN = 'hidden',
+}
 
-export type CreateWebhookRequest = {
+export interface CreateWebhookRequest {
     name: string;
     url: string;
     events: string[];
     sources: string[];
     listid?: string;
-};
+}
 
-export type CreateWebhookResponse = {
+export interface CreateWebhookResponse {
     webhook: {
         name: string;
         url: string;
@@ -19,23 +32,23 @@ export type CreateWebhookResponse = {
         state: string;
         id: string;
     };
-};
+}
 
-export type ContactList = {
+export interface ContactList {
     id: string;
     name: string;
-};
+}
 
-export type CreateAccountRequest = {
+export interface CreateAccountRequest {
     name: string;
     accountUrl?: string;
     fields?: {
         customFieldId: number;
         fieldValue: any;
     }[];
-};
+}
 
-export type CreateContactRequest = {
+export interface CreateContactRequest {
     email: string;
     firstName?: string;
     lastName?: string;
@@ -44,42 +57,42 @@ export type CreateContactRequest = {
         field: string;
         value: any;
     }[];
-};
+}
 
-export type ListAccountsResponse = {
+export interface ListAccountsResponse {
     accounts: {
         name: string;
         id: string;
     }[];
-};
+}
 
-export type ListContactsResponse = {
+export interface ListContactsResponse {
     contacts: {
         email: string;
         firstName: string;
         lastName: string;
         id: string;
     }[];
-};
+}
 
-export type ListTagsResponse = {
+export interface ListTagsResponse {
     tags: {
         tagType: string;
         tag: string;
         id: string;
     }[];
-};
+}
 
-export type AccountCustomFieldsResponse = {
+export interface AccountCustomFieldsResponse {
     id: string;
     fieldLabel: string;
-    fieldType: CUSTOM_FIELD_TYPE;
+    fieldType: CustomFieldType;
     fieldOptions?: string[];
     fieldDefaultCurrency?: string;
     fieldDefault?: number | string | string[];
-};
+}
 
-export type ContactCustomFieldsResponse = {
+export interface ContactCustomFieldsResponse {
     fieldOptions: { field: string; value: string; label: string; id: string }[];
-    fields: { id: string; title: string; type: CUSTOM_FIELD_TYPE; options: string[] }[];
-};
+    fields: { id: string; title: string; type: CustomFieldType; options: string[] }[];
+}
