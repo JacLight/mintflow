@@ -10,6 +10,7 @@ node_modules
 **/node_modules
 
 packages/plugins/__ref_only/**
+langflow
 
 # IDEs and editors
 /.idea
