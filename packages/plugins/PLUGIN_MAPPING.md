@@ -68,6 +68,83 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | mattermost | mattermost | ✅ Completed | Provides integration with Mattermost for sending messages and making custom API calls to the Mattermost API. |
 | cal-com | calcom | ✅ Completed | Provides integration with Cal.com for scheduling infrastructure, including booking management and event types. |
 | snowflake | snowflake | ✅ Completed | Provides integration with Snowflake cloud data platform for executing SQL queries and managing data warehouses. |
+| stability-ai | stability-ai | ✅ Completed | Provides integration with Stability AI's image generation API for creating images from text prompts using various Stable Diffusion models. |
+| photoroom | photoroom | ✅ Completed | Provides integration with PhotoRoom's API for background removal and image editing. |
+| krisp-call | krisp-call | ✅ Completed | Provides integration with KrispCall's cloud telephony system for contact management and SMS/MMS messaging. |
+| stable-diffusion-webui | stable-diffusion | ✅ Completed | Provides integration with Stable Diffusion Web UI for AI image generation from text prompts. |
+| milvus | milvus | ✅ Completed | Provides integration with Milvus vector database for similarity search and vector operations. |
+| basecamp | basecamp | ✅ Completed | Provides integration with Basecamp for project management and team communication. |
+
+### basecamp (from basecamp)
+
+The basecamp plugin provides integration with Basecamp, a project management and team communication platform.
+
+**Actions:**
+
+- `list-projects`: List all projects in your Basecamp account
+- `get-project`: Get details about a specific project
+- `create-project`: Create a new project in Basecamp
+- `update-project`: Update an existing project in Basecamp
+- `list-todo-lists`: List all to-do lists in a project
+- `create-todo-list`: Create a new to-do list in a project
+- `list-todo-items`: List all to-do items in a to-do list
+- `create-todo-item`: Create a new to-do item in a to-do list
+- `update-todo-item`: Update an existing to-do item in a to-do list
+- `create-message`: Create a new message in a project's message board
+- `list-people`: List all people in your Basecamp account
+- `create-schedule-entry`: Create a new schedule entry in a project's schedule
+
+**Triggers:**
+
+- `new-todo-item`: Triggered when a new to-do item is created in a Basecamp to-do list
+- `new-message`: Triggered when a new message is created in a Basecamp message board
+- `new-schedule-entry`: Triggered when a new schedule entry is created in a Basecamp schedule
+
+### milvus (from milvus)
+
+The milvus plugin provides integration with Milvus, an open-source vector database built to power embedding similarity search and AI applications.
+
+**Actions:**
+
+- `list-collections`: List all collections in your Milvus instance
+- `get-collection-info`: Get detailed information about a specific collection
+- `create-collection`: Create a new collection in Milvus with customizable fields and settings
+- `delete-collection`: Delete a collection from Milvus
+- `insert-vectors`: Insert vectors into a Milvus collection
+- `search-vectors`: Search for similar vectors in a Milvus collection
+- `get-vectors`: Retrieve vectors by ID from a Milvus collection
+- `delete-vectors`: Delete vectors from a Milvus collection
+- `get-collection-stats`: Get statistics about a Milvus collection
+- `create-partition`: Create a new partition in a Milvus collection
+- `drop-partition`: Drop a partition from a Milvus collection
+- `list-partitions`: List all partitions in a Milvus collection
+
+### stable-diffusion (from stable-diffusion-webui)
+
+The stable-diffusion plugin provides integration with Stable Diffusion Web UI, an AI image generation model that can create images from text prompts.
+
+**Actions:**
+
+- `text-to-image`: Generate an image from a text prompt using Stable Diffusion models with support for different models and advanced parameter customization
+
+### krisp-call (from krisp-call)
+
+The krisp-call plugin provides integration with KrispCall's cloud telephony system, offering advanced features for high-growth startups and modern enterprises.
+
+**Actions:**
+
+- `add-contact`: Add a new contact to KrispCall
+- `delete-contacts`: Delete contacts from KrispCall
+- `send-sms`: Send an SMS message through KrispCall
+- `send-mms`: Send an MMS message with media through KrispCall
+
+**Triggers:**
+
+- `new-voicemail`: Triggered when a new voicemail is received
+- `new-sms-mms`: Triggered when a new SMS or MMS is received
+- `new-contact`: Triggered when a new contact is added
+- `new-call-log`: Triggered when a new call log is recorded
+- `outbound-sms-mms`: Triggered when a new SMS or MMS is sent
 
 ### calcom (from cal-com)
 
@@ -136,6 +213,23 @@ The snowflake plugin provides integration with Snowflake, a cloud data platform,
 - `list_tables`: Get a list of all tables in a specific schema
 - `describe_table`: Get detailed information about a table's structure
 - `custom_api_call`: Make a custom API call to the Snowflake REST API
+
+### stability-ai (from stability-ai)
+
+The stability-ai plugin provides integration with Stability AI's image generation API, allowing you to generate images from text prompts using various Stable Diffusion models.
+
+**Actions:**
+
+- `text-to-image`: Generate an image from a text prompt with customizable parameters including model selection, image dimensions, style presets, and more
+- `custom-api-call`: Make a custom API call to the Stability AI API for advanced use cases
+
+### photoroom (from photoroom)
+
+The photoroom plugin provides integration with PhotoRoom's API for background removal and image editing.
+
+**Actions:**
+
+- `remove-background`: Remove the background from an image and get back the processed image in base64 format
 
 ### square (from square)
 
@@ -544,112 +638,4 @@ The postgres plugin provides integration with PostgreSQL databases for executing
 
 - `executeQuery`: Executes a custom SQL query on the PostgreSQL database
 - `getTables`: Gets a list of all tables in a database schema
-- `selectRows`: Selects rows from a table with optional filtering, sorting, and pagination
-- `insertRow`: Inserts a new row into a table with support for returning generated values
-- `updateRows`: Updates rows in a table that match specified conditions
-- `deleteRows`: Deletes rows from a table that match specified conditions
-
-### redis (from redis)
-
-The redis plugin provides integration with Redis databases for caching, pub/sub messaging, and data storage.
-
-**Actions:**
-
-- `set`: Sets a key-value pair in Redis with optional expiration
-- `get`: Gets the value of a key from Redis
-- `delete`: Deletes a key from Redis
-- `exists`: Checks if a key exists in Redis
-- `expire`: Sets an expiration time for a key
-- `ttl`: Gets the remaining time to live of a key
-- `incr`: Increments the integer value of a key by one
-- `incrBy`: Increments the integer value of a key by the given amount
-- `decr`: Decrements the integer value of a key by one
-- `decrBy`: Decrements the integer value of a key by the given amount
-- `hSet`: Sets a field in a hash stored at key to value
-- `hGet`: Gets the value of a field in a hash
-- `hGetAll`: Gets all fields and values in a hash
-- `hDel`: Deletes a field from a hash
-- `publish`: Publishes a message to a channel
-- `lPush`: Prepends one or multiple values to a list
-- `rPush`: Appends one or multiple values to a list
-- `lPop`: Removes and gets the first element in a list
-- `rPop`: Removes and gets the last element in a list
-- `lRange`: Gets a range of elements from a list
-- `executeCommand`: Executes a custom Redis command
-
-### pinecone (from pinecone)
-
-The pinecone plugin provides integration with Pinecone vector database for similarity search and vector operations.
-
-**Actions:**
-
-- `listIndexes`: Lists all indexes in your Pinecone project
-- `describeIndex`: Gets details about a specific index
-- `createIndex`: Creates a new vector index
-- `deleteIndex`: Deletes a vector index
-- `upsertVectors`: Inserts or updates vectors in an index
-- `queryVectors`: Queries vectors in an index for similarity search
-- `deleteVectors`: Deletes vectors from an index
-- `fetchVectors`: Fetches vectors by ID from an index
-- `updateVector`: Updates a vector in an index
-- `describeIndexStats`: Gets statistics about an index
-
-### qdrant (from qdrant)
-
-The qdrant plugin provides integration with Qdrant vector database for similarity search and vector operations.
-
-**Actions:**
-
-- `listCollections`: Lists all collections in your Qdrant instance
-- `getCollectionInfo`: Gets detailed information about a specific collection
-- `createCollection`: Creates a new vector collection
-- `deleteCollection`: Deletes a vector collection
-- `addPoints`: Adds vector points to a collection
-- `searchPoints`: Searches for points closest to a given vector
-- `getPoints`: Retrieves points by their IDs
-- `deletePoints`: Deletes points from a collection
-- `getCollectionStats`: Gets statistics about a collection
-
-### queue (from queue)
-
-The queue plugin provides a robust queue system powered by Bull and Redis for managing data flow, processing order, and job scheduling in workflows.
-
-**Actions:**
-
-- `addJob`: Adds a job to a queue with optional scheduling and processing options
-- `getJob`: Gets information about a specific job by ID
-- `getJobs`: Gets jobs from a queue with filtering options
-- `removeJob`: Removes a job from a queue
-- `clearQueue`: Removes all jobs from a queue
-- `pauseQueue`: Pauses a queue (stops processing new jobs)
-- `resumeQueue`: Resumes a paused queue
-- `getQueueInfo`: Gets information about a queue including job counts
-- `registerProcessor`: Registers a processor function for a queue to process jobs
-- `subscribeToEvents`: Subscribes to queue events and executes a callback function when they occur
-- `createBatchJobs`: Adds multiple jobs to a queue in a single operation
-
-### supabase (from supabase)
-
-The supabase plugin provides integration with Supabase for database operations and storage management.
-
-**Actions:**
-
-- `uploadFile`: Uploads a file to Supabase Storage
-- `downloadFile`: Downloads a file from Supabase Storage
-- `listFiles`: Lists files in a Supabase Storage bucket
-- `deleteFile`: Deletes a file from Supabase Storage
-- `executeQuery`: Executes a query on a Supabase database table
-- `insertRecord`: Inserts a new record into a Supabase table
-- `updateRecord`: Updates records in a Supabase table
-- `deleteRecord`: Deletes records from a Supabase table
-- `createBucket`: Creates a new storage bucket in Supabase
-
-### notion (from notion)
-
-The notion plugin provides integration with Notion for database and page management.
-
-**Actions:**
-
-- `query_database`: Queries a Notion database
-- `create_page`: Creates a new page in Notion
-- `update_page`: Updates a page in
+- `
