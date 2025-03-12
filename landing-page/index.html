@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mintflow - AI Workflow Platform | Coming Soon</title>
+    <title>MintFlow | AI-First Workflow Automation Platform</title>
     <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzExMTgyNyIvPjxwYXRoIGQ9Ik04LDggTDgsMjQiIHN0cm9rZT0iIzRGNDZFNSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNOCwxNiBMMTYsOCBMMjQsMTYgTDE2LDI0IiBzdHJva2U9IiM0RjQ2RTUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTE2LDggTDI0LDggTDI0LDI0IiBzdHJva2U9IiMxMEI5ODEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik04LDggTDI0LDgiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNOCw4IEw4LDI0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI0LDggTDI0LDI0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" type="image/svg+xml">
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -13,11 +13,13 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#4F46E5',
-                        secondary: '#10B981',
-                        accent: '#EC4899',
-                        dark: '#111827',
-                        light: '#F9FAFB'
+                        primary: '#000000',
+                        secondary: '#333333',
+                        accent: '#666666',
+                        dark: '#111111',
+                        light: '#F9FAFB',
+                        mint: '#10B981',
+                        blue: '#3B82F6'
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif']
@@ -32,8 +34,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Custom styles for elements that can't be easily done with Tailwind -->
+    <!-- Custom styles -->
     <style>
+        body {
+            background-color: #ffffff;
+            color: #111827;
+        }
+        
         .noise {
             position: fixed;
             top: 0;
@@ -41,321 +48,1010 @@
             width: 100%;
             height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.05;
+            opacity: 0.03;
             z-index: -1;
             pointer-events: none;
         }
         
-        .gradient-text {
-            background: linear-gradient(90deg, #4F46E5, #10B981);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .gradient-bg {
+            background: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
         }
         
-        .gradient-text-2 {
-            background: linear-gradient(90deg, #EC4899, #8B5CF6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
         
-        .workflow-node {
-            animation: float 3s ease-in-out infinite;
+        .feature-icon {
+            color: #10B981;
         }
         
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #8B5CF6;
+            color: #fff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background-color: #1E293B;
+            color: #E2E8F0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+        
+        .typing-animation::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
         
         .workflow-line {
-            stroke-dasharray: 10;
-            animation: dash 20s linear infinite;
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #10B981, #3B82F6);
+            z-index: -1;
+            transition: width 0.5s ease;
         }
         
-        @keyframes dash {
-            to { stroke-dashoffset: 1000; }
+        .mint-text {
+            color: #10B981;
+        }
+        
+        .blue-text {
+            color: #3B82F6;
+        }
+        
+        .workflow-node {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .workflow-container {
+            background-color: #111827;
+            border-radius: 0.75rem;
+            overflow: hidden;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body class="bg-white text-dark font-sans">
     <div class="noise"></div>
     
     <!-- Header -->
-    <header class="fixed w-full z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
-                <span class="text-2xl font-bold text-white">mint<span class="text-primary">flow</span></span>
+                <span class="text-2xl font-bold text-black">Mint<span class="text-gray-400">Flow</span></span>
             </div>
             <nav class="hidden md:block">
-                <ul class="flex space-x-8">
-                    <li><a href="#features" class="text-gray-300 hover:text-white transition">Features</a></li>
-                    <li><a href="#about" class="text-gray-300 hover:text-white transition">About</a></li>
-                    <li><a href="#documentation" class="text-gray-300 hover:text-white transition">Docs</a></li>
-                    <li><a href="#waitlist" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition">Join Waitlist</a></li>
+                <ul class="flex space-x-6">
+                    <li><a href="#explore" class="text-gray-700 hover:text-black transition">Explore</a></li>
+                    <li><a href="#directory" class="text-gray-700 hover:text-black transition">Directory</a></li>
+                    <li><a href="#academy" class="text-gray-700 hover:text-black transition">Academy</a></li>
+                    <li><a href="#conferences" class="text-gray-700 hover:text-black transition">Conferences</a></li>
+                    <li><a href="#market" class="text-gray-700 hover:text-black transition">Market</a></li>
                 </ul>
             </nav>
-            <button class="md:hidden text-white" aria-label="Open mobile menu">
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="Search for inspiration" class="pl-8 pr-4 py-1 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 w-48">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="#login" class="text-sm text-gray-700 hover:text-black transition">Log in</a>
+                    <a href="#signup" class="text-sm text-gray-700 hover:text-black transition">Sign Up</a>
+                    <a href="#pro" class="bg-black text-white text-sm px-3 py-1 rounded-full hover:bg-gray-800 transition">Go Pro</a>
+                    <a href="#submit" class="bg-gray-100 text-black text-sm px-3 py-1 rounded-full hover:bg-gray-200 transition">Submit Website</a>
+                </div>
+            </div>
+            <button class="md:hidden text-black" aria-label="Open mobile menu">
                 <i class="fas fa-bars text-xl"></i>
             </button>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-primary/20 to-transparent opacity-30"></div>
+    <section class="pt-28 pb-16 relative overflow-hidden">
         <div class="container mx-auto px-4 relative z-10">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <div class="inline-block px-3 py-1 bg-primary/20 rounded-full text-primary text-sm font-medium mb-6">
-                        <span class="flex items-center">
-                            <span class="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
-                            Coming Soon
-                        </span>
+            <div class="text-center mb-4">
+                <span class="inline-block bg-green-100 text-green-600 text-sm px-3 py-1 rounded-full mb-4">AI-First Workflow Automation</span>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    Build Powerful Workflows<br>with <span class="mint-text">AI</span> and <span class="blue-text">NoCode</span>
+                </h1>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto mb-8">
+                    MintFlow combines visual workflow building with conversational AI interfaces to automate your business processes. No coding required.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+                    <a href="#get-started" class="bg-mint hover:bg-green-600 text-white font-medium px-6 py-3 rounded-full transition">
+                        Get Started Free
+                    </a>
+                    <a href="#watch-demo" class="bg-white border border-gray-300 text-gray-700 font-medium px-6 py-3 rounded-full flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+                        <i class="fas fa-play-circle"></i>
+                        Watch Demo
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Workflow Builder Visualization -->
+            <div class="max-w-5xl mx-auto mb-10 relative">
+                <div class="workflow-container aspect-video p-8 relative">
+                    <!-- No-Code Builder Label -->
+                    <div class="absolute top-4 left-4 bg-yellow-400 text-black text-xs px-3 py-1 rounded-full flex items-center gap-2">
+                        <i class="fas fa-bolt"></i>
+                        <span>No-Code Builder</span>
                     </div>
-                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                        The Ultimate <span class="gradient-text">AI Workflow</span> Platform
-                    </h1>
-                    <p class="text-xl text-gray-300 mb-8">
-                        Combining <span class="gradient-text-2 font-semibold">Workflow Builder</span> + <span class="gradient-text-2 font-semibold">Chat Interface</span> + <span class="gradient-text-2 font-semibold">Programmable Agents</span> in one powerful platform.
-                    </p>
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <a href="#waitlist" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-md text-center font-medium transition">
-                            Join Waitlist
-                        </a>
-                        <a href="#features" class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-md text-center font-medium transition">
-                            Explore Features
-                        </a>
+                    
+                    <!-- Gmail Trigger Node -->
+                    <div class="workflow-node absolute top-1/4 left-1/4 w-40 h-20">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-envelope text-green-600"></i>
+                            </div>
+                            <span class="text-sm font-medium">Gmail Trigger</span>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Classifier Node -->
+                    <div class="workflow-node absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-20">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-robot text-purple-600"></i>
+                            </div>
+                            <span class="text-sm font-medium">AI Classifier</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slack Notification Node -->
+                    <div class="workflow-node absolute bottom-1/4 right-1/4 w-40 h-20">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fab fa-slack text-blue-600"></i>
+                            </div>
+                            <span class="text-sm font-medium">Slack Notification</span>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Assistant Chat -->
+                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2 w-64 bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="bg-mint text-white p-2 text-sm font-medium">
+                            MintFlow Assistant
+                        </div>
+                        <div class="p-3 bg-gray-50 text-xs">
+                            <div class="mb-2 text-gray-500">You</div>
+                            <div class="bg-white p-2 rounded-lg mb-3 shadow-sm">
+                                Create a workflow that monitors Gmail and sends Slack notifications
+                            </div>
+                            <div class="mb-2 text-gray-500">MintFlow</div>
+                            <div class="bg-mint/10 p-2 rounded-lg text-gray-700">
+                                Creating workflow with Gmail trigger and Slack action...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI-Powered Label -->
+                    <div class="absolute bottom-4 right-4 bg-purple-600 text-white text-xs px-3 py-1 rounded-full flex items-center gap-2">
+                        <i class="fas fa-brain"></i>
+                        <span>AI-Powered</span>
                     </div>
                 </div>
-                <div class="md:w-1/2 relative">
-                    <!-- Workflow Visualization -->
-                    <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 shadow-xl">
-                        <svg viewBox="0 0 500 300" class="w-full h-auto">
-                            <!-- Connection Lines -->
-                            <path d="M120,100 C160,100 160,50 200,50" class="workflow-line" stroke="#4F46E5" stroke-width="2" fill="none"/>
-                            <path d="M280,50 C320,50 320,100 360,100" class="workflow-line" stroke="#4F46E5" stroke-width="2" fill="none"/>
-                            <path d="M120,100 C160,100 160,150 200,150" class="workflow-line" stroke="#10B981" stroke-width="2" fill="none"/>
-                            <path d="M280,150 C320,150 320,200 360,200" class="workflow-line" stroke="#10B981" stroke-width="2" fill="none"/>
-                            <path d="M120,100 C160,100 160,250 200,250" class="workflow-line" stroke="#EC4899" stroke-width="2" fill="none"/>
-                            <path d="M280,250 C320,250 320,300 360,300" class="workflow-line" stroke="#EC4899" stroke-width="2" fill="none"/>
-                            
-                            <!-- Nodes -->
-                            <circle cx="120" cy="100" r="30" fill="#1F2937" class="workflow-node" stroke="#4F46E5" stroke-width="2"/>
-                            <text x="120" y="100" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="12">Input</text>
-                            
-                            <circle cx="200" cy="50" r="25" fill="#1F2937" class="workflow-node" stroke="#4F46E5" stroke-width="2"/>
-                            <text x="200" y="50" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Process</text>
-                            
-                            <circle cx="200" cy="150" r="25" fill="#1F2937" class="workflow-node" stroke="#10B981" stroke-width="2"/>
-                            <text x="200" y="150" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Chat</text>
-                            
-                            <circle cx="200" cy="250" r="25" fill="#1F2937" class="workflow-node" stroke="#EC4899" stroke-width="2"/>
-                            <text x="200" y="250" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Agent</text>
-                            
-                            <circle cx="280" cy="50" r="25" fill="#1F2937" class="workflow-node" stroke="#4F46E5" stroke-width="2"/>
-                            <text x="280" y="50" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Filter</text>
-                            
-                            <circle cx="280" cy="150" r="25" fill="#1F2937" class="workflow-node" stroke="#10B981" stroke-width="2"/>
-                            <text x="280" y="150" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">LLM</text>
-                            
-                            <circle cx="280" cy="250" r="25" fill="#1F2937" class="workflow-node" stroke="#EC4899" stroke-width="2"/>
-                            <text x="280" y="250" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Execute</text>
-                            
-                            <rect x="360" y="80" width="40" height="40" rx="5" fill="#1F2937" class="workflow-node" stroke="#4F46E5" stroke-width="2"/>
-                            <text x="380" y="100" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Output</text>
-                            
-                            <rect x="360" y="180" width="40" height="40" rx="5" fill="#1F2937" class="workflow-node" stroke="#10B981" stroke-width="2"/>
-                            <text x="380" y="200" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Response</text>
-                            
-                            <rect x="360" y="280" width="40" height="40" rx="5" fill="#1F2937" class="workflow-node" stroke="#EC4899" stroke-width="2"/>
-                            <text x="380" y="300" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Action</text>
-                        </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nominees Section -->
+    <section id="nominees" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-4">
+                <span class="text-sm text-gray-500">Latest</span>
+            </div>
+            <div class="text-center mb-12">
+                <h2 class="text-6xl md:text-7xl font-bold mb-4">
+                    NOMINEES<span class="text-yellow-400 ml-2">🏆</span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Vote for the latest workflow templates on MintFlow
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Nominee 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Customer+Support+Workflow" alt="Customer Support Workflow" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Customer Support</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Acme Solutions</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Nominee 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/1e293b/ffffff?text=AB/GD" alt="AB/GD" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Lead Generation</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">abgd</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nominee 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Otter+Agency" alt="Otter Agency" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Social Media</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Otter Agency</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Check out all submitted workflows</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-nominees" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Nominees
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Sites Section -->
+    <section id="recent-sites" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="mb-8">
+                <span class="text-sm text-gray-500">Winners</span>
+                <h2 class="text-3xl font-bold mt-2">
+                    Recent Workflows<br>
+                    of the Day.
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Site 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-purple-900 via-purple-800 to-orange-700 rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/6d28d9/ffffff?text=In+Cognita" alt="In Cognita" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Seize the<br>— unexpected</h3>
+                            <div class="flex items-center mt-4">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Aristide Benoist" class="w-6 h-6 rounded-full mr-2">
+                                <span class="text-white text-sm">Aristide Benoist</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Site 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-black rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/000000/ffffff?text=Astral+Frontier" alt="Astral Frontier" class="w-full h-auto">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">New Frontier<br>Awaits You</h3>
+                            <div class="flex items-center mt-4">
+                                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="measham" class="w-6 h-6 rounded-full mr-2">
+                                <span class="text-white text-sm">measham</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Site 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-purple-100 rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/f3e8ff/6d28d9?text=Creative+Developer" alt="Creative Developer" class="w-full h-auto">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-purple-700 text-2xl font-bold mb-2">Creative<br>Developer</h3>
+                            <div class="flex items-center mt-4">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Cyd Stumpel" class="w-6 h-6 rounded-full mr-2">
+                                <span class="text-purple-700 text-sm">Cyd Stumpel</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Check out all submitted workflows</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-winners" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Winners
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plugins Section -->
+    <section id="plugins" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-6xl md:text-7xl font-bold mb-4 flex items-center justify-center">
+                    PLUGINS<span class="text-yellow-400 ml-2">🔌</span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Explore our extensive library of integration plugins.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Plugin 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full">
+                            New Plugin
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Gmail+Plugin" alt="Gmail Plugin" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Gmail</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Email Integration</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Connect your Gmail account to create workflows triggered by new emails, send automated responses, and process email content with AI.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Email</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Google</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Communication</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plugin 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
+                            Popular
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Slack+Plugin" alt="Slack Plugin" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Slack</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Team Communication</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Integrate with Slack to send notifications, create channels, monitor messages, and build interactive bots for your team workspace.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Messaging</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Collaboration</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Notification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plugin 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                            AI-Powered
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=OpenAI+Plugin" alt="OpenAI Plugin" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">OpenAI</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">AI Integration</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Leverage OpenAI's powerful models for text generation, summarization, classification, and other natural language processing tasks in your workflows.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">AI</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">NLP</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">GPT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Explore our full library of 100+ integration plugins</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-plugins" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View All Plugins
+                </a>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-20 bg-gray-800/30">
+    <section id="features" class="py-16">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Powerful Features</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    Mintflow combines the best of workflow automation, chat interfaces, and AI agents to create a seamless experience.
-                </p>
+            <div class="mb-8">
+                <span class="text-sm text-gray-500">Features</span>
+                <h2 class="text-3xl font-bold mt-2">
+                    Key Features<br>
+                    of the Platform.
+                </h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:border-primary transition duration-300">
-                    <div class="w-14 h-14 bg-primary/20 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fas fa-project-diagram text-primary text-2xl"></i>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Feature 1: Visual Builder -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-green-600 via-green-500 to-teal-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Visual
+                        </div>
+                        <img src="https://placehold.co/600x400/10b981/ffffff?text=Visual+Builder" alt="Visual Builder" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Visual Workflow<br>Builder</h3>
+                            <p class="text-white/80 text-sm mb-4">Drag-and-drop interface for creating complex automation workflows without coding.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-green-600 text-xs font-bold mr-2">VB</div>
+                                <span class="text-white text-sm">MintFlow Team</span>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-4">Workflow Builder</h3>
-                    <p class="text-gray-300">
-                        Create powerful automation workflows with our intuitive drag-and-drop interface. Connect APIs, databases, and AI models with ease.
-                    </p>
                 </div>
                 
-                <!-- Feature 2 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:border-secondary transition duration-300">
-                    <div class="w-14 h-14 bg-secondary/20 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fas fa-comments text-secondary text-2xl"></i>
+                <!-- Feature 2: AI Chat Interface -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-purple-900 via-purple-700 to-indigo-600 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Assistant
+                        </div>
+                        <img src="https://placehold.co/600x400/8b5cf6/ffffff?text=AI+Chat+Interface" alt="AI Chat Interface" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">AI Chat<br>Interface</h3>
+                            <p class="text-white/80 text-sm mb-4">Create workflows through natural language conversations with our AI assistant.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-purple-600 text-xs font-bold mr-2">AI</div>
+                                <span class="text-white text-sm">MintFlow AI Team</span>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-4">Chat Interface</h3>
-                    <p class="text-gray-300">
-                        Interact with your workflows through a natural language chat interface, similar to Open WebUI. Ask questions and get instant responses.
-                    </p>
                 </div>
                 
-                <!-- Feature 3 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:border-accent transition duration-300">
-                    <div class="w-14 h-14 bg-accent/20 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fas fa-robot text-accent text-2xl"></i>
+                <!-- Feature 3: Team Collaboration -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-blue-900 via-blue-700 to-sky-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Teams
+                        </div>
+                        <img src="https://placehold.co/600x400/3b82f6/ffffff?text=Team+Collaboration" alt="Team Collaboration" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Team<br>Collaboration</h3>
+                            <p class="text-white/80 text-sm mb-4">Share workflows, collaborate with team members, and manage permissions.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-blue-600 text-xs font-bold mr-2">TC</div>
+                                <span class="text-white text-sm">MintFlow Enterprise</span>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-4">Programmable Agents</h3>
-                    <p class="text-gray-300">
-                        Deploy AI agents that can execute tasks, make decisions, and interact with your workflows programmatically.
-                    </p>
                 </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Feature 4: Data Processing -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-amber-700 via-amber-600 to-yellow-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Data
+                        </div>
+                        <img src="https://placehold.co/600x400/f59e0b/ffffff?text=Data+Processing" alt="Data Processing" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Advanced Data<br>Processing</h3>
+                            <p class="text-white/80 text-sm mb-4">Transform, filter, and analyze data from multiple sources in your workflows.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-amber-600 text-xs font-bold mr-2">DP</div>
+                                <span class="text-white text-sm">MintFlow Data Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 5: API Integrations -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-rose-900 via-rose-700 to-pink-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Connect
+                        </div>
+                        <img src="https://placehold.co/600x400/e11d48/ffffff?text=API+Integrations" alt="API Integrations" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">100+ API<br>Integrations</h3>
+                            <p class="text-white/80 text-sm mb-4">Connect with hundreds of popular services and APIs without writing code.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-rose-600 text-xs font-bold mr-2">AP</div>
+                                <span class="text-white text-sm">MintFlow Integrations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 6: Workflow Templates -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-emerald-900 via-emerald-700 to-green-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Templates
+                        </div>
+                        <img src="https://placehold.co/600x400/059669/ffffff?text=Workflow+Templates" alt="Workflow Templates" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Ready-to-Use<br>Templates</h3>
+                            <p class="text-white/80 text-sm mb-4">Start with pre-built workflow templates for common business processes.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-emerald-600 text-xs font-bold mr-2">WT</div>
+                                <span class="text-white text-sm">MintFlow Community</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Check out all our powerful features</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-features" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View All Features
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- How It Works Section -->
-    <section class="py-20">
+    <!-- Creators Section -->
+    <section id="creators" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">How Mintflow Works</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    A seamless integration of workflow automation, chat interfaces, and AI agents.
+            <div class="text-center mb-4">
+                <span class="text-sm text-gray-500">Directory</span>
+            </div>
+            <div class="text-center mb-12">
+                <h2 class="text-6xl md:text-7xl font-bold mb-4">
+                    W.CREATORS<span class="text-yellow-400 ml-2">😀</span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Active creators in your country
                 </p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-                <div>
-                    <div class="relative">
-                        <div class="absolute -left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-accent"></div>
-                        
-                        <!-- Step 1 -->
-                        <div class="mb-12 relative">
-                            <div class="absolute -left-6 w-8 h-8 rounded-full bg-gray-800 border-2 border-primary flex items-center justify-center">
-                                <span class="text-primary font-bold">1</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Creator 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-black rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/111111/ffffff?text=Isadora+Digital" alt="Isadora Digital Agency" class="w-full h-auto">
+                        <div class="p-4 text-white">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-gray-400">International</span>
                             </div>
-                            <div class="pl-8">
-                                <h3 class="text-xl font-bold mb-2">Design Your Workflow</h3>
-                                <p class="text-gray-300">
-                                    Use our intuitive drag-and-drop interface to create powerful automation workflows. Connect to over 100+ integrations and APIs.
-                                </p>
+                            <h3 class="text-xl font-bold mb-1">Isadora Digital Agency</h3>
+                            <div class="flex items-center justify-between">
+                                <span class="bg-gray-800 text-white text-xs px-2 py-1 rounded-full">34</span>
                             </div>
-                        </div>
-                        
-                        <!-- Step 2 -->
-                        <div class="mb-12 relative">
-                            <div class="absolute -left-6 w-8 h-8 rounded-full bg-gray-800 border-2 border-secondary flex items-center justify-center">
-                                <span class="text-secondary font-bold">2</span>
-                            </div>
-                            <div class="pl-8">
-                                <h3 class="text-xl font-bold mb-2">Chat with Your Workflow</h3>
-                                <p class="text-gray-300">
-                                    Interact with your workflows through a natural language chat interface. Ask questions, give commands, and get instant responses.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <!-- Step 3 -->
-                        <div class="relative">
-                            <div class="absolute -left-6 w-8 h-8 rounded-full bg-gray-800 border-2 border-accent flex items-center justify-center">
-                                <span class="text-accent font-bold">3</span>
-                            </div>
-                            <div class="pl-8">
-                                <h3 class="text-xl font-bold mb-2">Deploy AI Agents</h3>
-                                <p class="text-gray-300">
-                                    Create and deploy AI agents that can execute tasks, make decisions, and interact with your workflows programmatically.
-                                </p>
+                            <div class="mt-4 pt-4 border-t border-gray-800 flex justify-between items-center">
+                                <span class="text-xs text-gray-400">isadoradigitalagency.com</span>
+                                <span class="text-xs text-gray-400">14 projects</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 shadow-xl">
-                    <div class="aspect-video bg-gray-900 rounded-lg overflow-hidden flex items-center justify-center">
-                        <div class="text-center p-8">
-                            <i class="fas fa-play-circle text-5xl text-primary mb-4"></i>
-                            <p class="text-gray-300">Demo video coming soon</p>
+                <!-- Creator 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-black rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/111111/ffffff?text=Baunfire" alt="Baunfire" class="w-full h-auto">
+                        <div class="p-4 text-white">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-gray-400">International</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-1">Baunfire</h3>
+                            <div class="flex items-center justify-between">
+                                <span class="bg-gray-800 text-white text-xs px-2 py-1 rounded-full">36</span>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-800 flex justify-between items-center">
+                                <span class="text-xs text-gray-400">baunfire.com</span>
+                                <span class="text-xs text-gray-400">20 projects</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Creator 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-black rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/111111/ffffff?text=BONHOMME" alt="BONHOMME" class="w-full h-auto">
+                        <div class="p-4 text-white">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-gray-400">International</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-1">BONHOMME</h3>
+                            <div class="flex items-center justify-between">
+                                <span class="bg-gray-800 text-white text-xs px-2 py-1 rounded-full">50</span>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-800 flex justify-between items-center">
+                                <span class="text-xs text-gray-400">bonhommeparis.com</span>
+                                <span class="text-xs text-gray-400">45 projects</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Creator Table -->
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-3 text-left text-sm font-medium text-gray-500">Name</th>
+                            <th class="py-3 text-left text-sm font-medium text-gray-500">Profile</th>
+                            <th class="py-3 text-left text-sm font-medium text-gray-500">Awards</th>
+                            <th class="py-3 text-left text-sm font-medium text-gray-500">Categories</th>
+                            <th class="py-3 text-right text-sm font-medium text-gray-500"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-xs mr-3">BL</div>
+                                    <span class="font-medium">Blackbox</span>
+                                </div>
+                            </td>
+                            <td class="py-4 text-sm text-gray-500">Agency</td>
+                            <td class="py-4 text-sm text-gray-500">22</td>
+                            <td class="py-4 text-sm text-gray-500">Web Design, Web Development, UX</td>
+                            <td class="py-4 text-right">
+                                <a href="#view" class="inline-block bg-gray-100 text-black text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">View</a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-xs mr-3">GC</div>
+                                    <span class="font-medium">Gabriel Contassot</span>
+                                </div>
+                            </td>
+                            <td class="py-4 text-sm text-gray-500">Freelance</td>
+                            <td class="py-4 text-sm text-gray-500">1</td>
+                            <td class="py-4 text-sm text-gray-500">Other</td>
+                            <td class="py-4 text-right">
+                                <a href="#view" class="inline-block bg-gray-100 text-black text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Connect with over 5,389 Agencies and Professionals</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-directory" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Directory
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Waitlist Section -->
-    <section id="waitlist" class="py-20 bg-gray-800/30">
+    <!-- Market Section -->
+    <section id="market" class="py-16">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto text-center">
-                <div class="inline-block px-3 py-1 bg-primary/20 rounded-full text-primary text-sm font-medium mb-6">
-                    <span class="flex items-center">
-                        <span class="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
-                        Coming Soon
-                    </span>
+            <div class="text-center mb-4">
+                <span class="text-sm text-gray-500">Market</span>
+            </div>
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-4">
+                    A curated marketplace<br>
+                    for digital & physical products
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Product 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Oliv+Template" alt="Oliv Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Oliv - Agency & Portfolio Framer Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Pawel Gola</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 59<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Be the First to Know</h2>
-                <p class="text-xl text-gray-300 mb-8">
-                    Join our waitlist to get early access to Mintflow and stay updated on our launch.
-                </p>
                 
-                <form id="waitlist-form" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 mb-6">
-                    <input 
-                        type="email" 
-                        placeholder="Enter your email" 
-                        class="flex-grow px-4 py-3 bg-gray-900 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    >
-                    <button 
-                        type="submit" 
-                        class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-md font-medium transition"
-                    >
-                        Join Waitlist
-                    </button>
-                </form>
-                <p class="text-gray-400 text-sm">
-                    We respect your privacy. No spam, just updates about our launch and early access opportunities.
-                </p>
+                <!-- Product 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Superior+Template" alt="Superior Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Superior — Startup & SaaS Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Dream Studio</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 149<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Batavia+Template" alt="Batavia Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Batavia - Minimalist E-commerce Framer Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Visiux Themes</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 79<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Tommaso+Quinn" alt="Tommaso Quinn" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Tommaso Quinn — Framer Portfolio Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by IRIS</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 49<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Browse specially curated products</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-market" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Market
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Sections -->
+    <section id="cta" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- CTA 1 -->
+                <div class="relative bg-black rounded-lg overflow-hidden">
+                    <div class="p-8 text-white">
+                        <span class="text-xs text-gray-400 mb-2 block">Share your work</span>
+                        <h3 class="text-2xl font-bold mb-6">Submit your website for visibility and recognition</h3>
+                        <a href="#submit-website" class="inline-block border border-white text-white text-sm px-4 py-2 rounded-full hover:bg-white hover:text-black transition">
+                            Submit Website
+                        </a>
+                        <div class="mt-16 text-xs text-gray-400">
+                            Got questions? Read our FAQs
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CTA 2 -->
+                <div class="relative bg-black rounded-lg overflow-hidden">
+                    <div class="p-8 text-white">
+                        <span class="text-xs text-gray-400 mb-2 block">Be a member</span>
+                        <h3 class="text-2xl font-bold mb-6">Get access to special pro features</h3>
+                        <a href="#be-pro" class="inline-block border border-white text-white text-sm px-4 py-2 rounded-full hover:bg-white hover:text-black transition">
+                            Be Pro
+                        </a>
+                        <div class="mt-16 text-xs text-gray-400">
+                            Got questions? Read our FAQs
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 border-t border-gray-800">
+    <footer class="py-16 border-t border-gray-100">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <span class="text-2xl font-bold text-white">mint<span class="text-primary">flow</span></span>
-                    <p class="text-gray-400 mt-2">The Ultimate AI Workflow Platform</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-github text-xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-twitter text-xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-linkedin text-xl"></i>
-                    </a>
+            <div class="flex items-center justify-between mb-12">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-black">W<span class="text-gray-400">.</span></span>
                 </div>
             </div>
-            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-                <p>&copy; 2025 Mintflow. All rights reserved.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
+                <div>
+                    <h4 class="text-sm font-medium mb-4">Websites</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Collections</a></li>
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Elements</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium mb-4">Academy</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Jobs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium mb-4">Directory</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Conferences</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium mb-4">FAQs</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">About Us</a></li>
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="bg-gray-100 rounded-lg p-4">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs font-medium">Next Conferences</span>
+                            <span class="ml-2 bg-white text-xs px-2 py-0.5 rounded-full">Berlin, Mumbai & Tokyo</span>
+                        </div>
+                        <div class="relative bg-black rounded-lg overflow-hidden">
+                            <img src="https://placehold.co/600x400/111111/ffffff?text=Conference" alt="Conference" class="w-full h-auto">
+                            <div class="absolute top-2 right-2 bg-black text-white text-xs px-2 py-0.5 rounded-full">X</div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-black/80 p-2">
+                                <div class="text-white text-xs">13:00</div>
+                                <div class="text-white text-xs font-medium">Innovative Web Design in Figma: A Step-by-Step Process</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-100">
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Cookies Policy</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Legal Terms</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Privacy Policy</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs text-gray-500">Connect:</span>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Instagram</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">LinkedIn</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Twitter</a>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-center">
+                <div class="bg-black text-white rounded-full py-1 px-4 flex items-center space-x-2 text-xs">
+                    <span class="font-medium">W.</span>
+                    <span class="text-gray-400">|</span>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Nominees</a>
+                    <span class="text-gray-400">|</span>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Courses</a>
+                    <span class="text-gray-400">|</span>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Collections</a>
+                    <span class="text-gray-400">|</span>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Directory</a>
+                    <span class="text-gray-400">|</span>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Market</a>
+                    <span class="text-gray-400">|</span>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Visit Solfa</a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
