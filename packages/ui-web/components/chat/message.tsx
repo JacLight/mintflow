@@ -18,7 +18,7 @@ import { MessageActions } from './message-actions';
 import { PreviewAttachment } from './preview-attachment';
 import { Weather } from './weather';
 import equal from 'fast-deep-equal';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { MessageEditor } from './message-editor';
@@ -57,7 +57,7 @@ const PurePreviewMessage = ({
         data-role={message.role}
       >
         <div
-          className={cn(
+          className={classNames(
             'flex gap-4 w-full group-data-[role=user]/message:ml-auto group-data-[role=user]/message:max-w-2xl',
             {
               'w-full': mode === 'edit',
@@ -112,7 +112,7 @@ const PurePreviewMessage = ({
                 )}
 
                 <div
-                  className={cn('flex flex-col gap-4', {
+                  className={classNames('flex flex-col gap-4', {
                     'bg-primary text-primary-foreground px-3 py-2 rounded-xl':
                       message.role === 'user',
                   })}
@@ -174,7 +174,7 @@ const PurePreviewMessage = ({
                   return (
                     <div
                       key={toolCallId}
-                      className={cn({
+                      className={classNames({
                         skeleton: ['getWeather'].includes(toolName),
                       })}
                     >
@@ -248,7 +248,7 @@ export const ThinkingMessage = () => {
       data-role={role}
     >
       <div
-        className={cn(
+        className={classNames(
           'flex gap-4 group-data-[role=user]/message:px-3 w-full group-data-[role=user]/message:w-fit group-data-[role=user]/message:ml-auto group-data-[role=user]/message:max-w-2xl group-data-[role=user]/message:py-2 rounded-xl',
           {
             'group-data-[role=user]/message:bg-muted': true,

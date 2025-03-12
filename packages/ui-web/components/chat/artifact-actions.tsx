@@ -3,7 +3,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { artifactDefinitions, UIArtifact } from './artifact';
 import { Dispatch, memo, SetStateAction, useState } from 'react';
 import { ArtifactActionContext } from './create-artifact';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 import { toast } from 'sonner';
 
 interface ArtifactActionsProps {
@@ -52,7 +52,7 @@ function PureArtifactActions({
           <TooltipTrigger asChild>
             <Button
               variant="outline"
-              className={cn('h-fit dark:hover:bg-zinc-700', {
+              className={classNames('h-fit dark:hover:bg-zinc-700', {
                 'p-2': !action.label,
                 'py-1.5 px-2': action.label,
               })}

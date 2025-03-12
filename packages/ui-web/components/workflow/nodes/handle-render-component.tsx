@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Connection, Handle, Position, useReactFlow } from '@xyflow/react';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 import { isValidConnection, scapedJSONStringfy } from '@/lib/utils/reactflowUtils';
 import { ConnectionState } from '../types';
 
@@ -270,7 +270,7 @@ const HandleRenderComponent = memo(function HandleRenderComponent({
                 isValidConnection={(connection) =>
                     isValidConnection(connection as Connection, nodes, edges)
                 }
-                className={cn(
+                className={classNames(
                     `group/handle z-50 transition-all`,
                     handleDragging && isCompatibleWithDragging ? 'opacity-100' : '',
                     handleDragging && !isCompatibleWithDragging ? 'opacity-30' : ''

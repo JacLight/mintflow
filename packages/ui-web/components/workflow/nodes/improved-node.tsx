@@ -3,7 +3,7 @@ import { NodeProps, useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 import { Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash } from 'lucide-react';
 import { ButtonDelete } from '@/components/ui/button-delete';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 import HandleRenderComponent, { ConnectionState } from './handle-render-component';
 import { BaseNode } from './base-node';
 
@@ -127,7 +127,7 @@ export const ImprovedNode = memo(({
             data={data}
         >
             <div
-                className={cn(
+                className={classNames(
                     "rounded-md border bg-background p-3 shadow-md transition-all min-w-[180px]",
                     selected ? "ring-2 ring-primary" : ""
                 )}

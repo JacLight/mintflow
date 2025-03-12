@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mintflow - AI Workflow Platform | Coming Soon</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzExMTgyNyIvPjxwYXRoIGQ9Ik04LDggTDgsMjQiIHN0cm9rZT0iIzRGNDZFNSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNOCwxNiBMMTYsOCBMMjQsMTYgTDE2LDI0IiBzdHJva2U9IiM0RjQ2RTUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTE2LDggTDI0LDggTDI0LDI0IiBzdHJva2U9IiMxMEI5ODEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+" type="image/svg+xml">
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                        accent: '#EC4899',
+                        dark: '#111827',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom styles for elements that can't be easily done with Tailwind -->
+    <style>
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #4F46E5, #10B981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-text-2 {
+            background: linear-gradient(90deg, #EC4899, #8B5CF6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .workflow-node {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .workflow-line {
+            stroke-dasharray: 10;
+            animation: dash 20s linear infinite;
+        }
+        
+        @keyframes dash {
+            to { stroke-dashoffset: 1000; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <div class="noise"></div>
+    
+    <!-- Header -->
+    <header class="fixed w-full z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold text-white">mint<span class="text-primary">flow</span></span>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-8">
+                    <li><a href="#features" class="text-gray-300 hover:text-white transition">Features</a></li>
+                    <li><a href="#about" class="text-gray-300 hover:text-white transition">About</a></li>
+                    <li><a href="#documentation" class="text-gray-300 hover:text-white transition">Docs</a></li>
+                    <li><a href="#waitlist" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition">Join Waitlist</a></li>
+                </ul>
+            </nav>
+            <button class="md:hidden text-white" aria-label="Open mobile menu">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-primary/20 to-transparent opacity-30"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <div class="inline-block px-3 py-1 bg-primary/20 rounded-full text-primary text-sm font-medium mb-6">
+                        <span class="flex items-center">
+                            <span class="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
+                            Coming Soon
+                        </span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        The Ultimate <span class="gradient-text">AI Workflow</span> Platform
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Combining <span class="gradient-text-2 font-semibold">Workflow Builder</span> + <span class="gradient-text-2 font-semibold">Chat Interface</span> + <span class="gradient-text-2 font-semibold">Programmable Agents</span> in one powerful platform.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#waitlist" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-md text-center font-medium transition">
+                            Join Waitlist
+                        </a>
+                        <a href="#features" class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-md text-center font-medium transition">
+                            Explore Features
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <!-- Workflow Visualization -->
+                    <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 shadow-xl">
+                        <svg viewBox="0 0 500 300" class="w-full h-auto">
+                            <!-- Connection Lines -->
+                            <path d="M120,100 C160,100 160,50 200,50" class="workflow-line" stroke="#4F46E5" stroke-width="2" fill="none"/>
+                            <path d="M280,50 C320,50 320,100 360,100" class="workflow-line" stroke="#4F46E5" stroke-width="2" fill="none"/>
+                            <path d="M120,100 C160,100 160,150 200,150" class="workflow-line" stroke="#10B981" stroke-width="2" fill="none"/>
+                            <path d="M280,150 C320,150 320,200 360,200" class="workflow-line" stroke="#10B981" stroke-width="2" fill="none"/>
+                            <path d="M120,100 C160,100 160,250 200,250" class="workflow-line" stroke="#EC4899" stroke-width="2" fill="none"/>
+                            <path d="M280,250 C320,250 320,300 360,300" class="workflow-line" stroke="#EC4899" stroke-width="2" fill="none"/>
+                            
+                            <!-- Nodes -->
+                            <circle cx="120" cy="100" r="30" fill="#1F2937" class="workflow-node" stroke="#4F46E5" stroke-width="2"/>
+                            <text x="120" y="100" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="12">Input</text>
+                            
+                            <circle cx="200" cy="50" r="25" fill="#1F2937" class="workflow-node" stroke="#4F46E5" stroke-width="2"/>
+                            <text x="200" y="50" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Process</text>
+                            
+                            <circle cx="200" cy="150" r="25" fill="#1F2937" class="workflow-node" stroke="#10B981" stroke-width="2"/>
+                            <text x="200" y="150" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Chat</text>
+                            
+                            <circle cx="200" cy="250" r="25" fill="#1F2937" class="workflow-node" stroke="#EC4899" stroke-width="2"/>
+                            <text x="200" y="250" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Agent</text>
+                            
+                            <circle cx="280" cy="50" r="25" fill="#1F2937" class="workflow-node" stroke="#4F46E5" stroke-width="2"/>
+                            <text x="280" y="50" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Filter</text>
+                            
+                            <circle cx="280" cy="150" r="25" fill="#1F2937" class="workflow-node" stroke="#10B981" stroke-width="2"/>
+                            <text x="280" y="150" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">LLM</text>
+                            
+                            <circle cx="280" cy="250" r="25" fill="#1F2937" class="workflow-node" stroke="#EC4899" stroke-width="2"/>
+                            <text x="280" y="250" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Execute</text>
+                            
+                            <rect x="360" y="80" width="40" height="40" rx="5" fill="#1F2937" class="workflow-node" stroke="#4F46E5" stroke-width="2"/>
+                            <text x="380" y="100" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Output</text>
+                            
+                            <rect x="360" y="180" width="40" height="40" rx="5" fill="#1F2937" class="workflow-node" stroke="#10B981" stroke-width="2"/>
+                            <text x="380" y="200" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Response</text>
+                            
+                            <rect x="360" y="280" width="40" height="40" rx="5" fill="#1F2937" class="workflow-node" stroke="#EC4899" stroke-width="2"/>
+                            <text x="380" y="300" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">Action</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-800/30">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Powerful Features</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Mintflow combines the best of workflow automation, chat interfaces, and AI agents to create a seamless experience.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:border-primary transition duration-300">
+                    <div class="w-14 h-14 bg-primary/20 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-project-diagram text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Workflow Builder</h3>
+                    <p class="text-gray-300">
+                        Create powerful automation workflows with our intuitive drag-and-drop interface. Connect APIs, databases, and AI models with ease.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:border-secondary transition duration-300">
+                    <div class="w-14 h-14 bg-secondary/20 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-comments text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Chat Interface</h3>
+                    <p class="text-gray-300">
+                        Interact with your workflows through a natural language chat interface, similar to Open WebUI. Ask questions and get instant responses.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:border-accent transition duration-300">
+                    <div class="w-14 h-14 bg-accent/20 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Programmable Agents</h3>
+                    <p class="text-gray-300">
+                        Deploy AI agents that can execute tasks, make decisions, and interact with your workflows programmatically.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">How Mintflow Works</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    A seamless integration of workflow automation, chat interfaces, and AI agents.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                    <div class="relative">
+                        <div class="absolute -left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-accent"></div>
+                        
+                        <!-- Step 1 -->
+                        <div class="mb-12 relative">
+                            <div class="absolute -left-6 w-8 h-8 rounded-full bg-gray-800 border-2 border-primary flex items-center justify-center">
+                                <span class="text-primary font-bold">1</span>
+                            </div>
+                            <div class="pl-8">
+                                <h3 class="text-xl font-bold mb-2">Design Your Workflow</h3>
+                                <p class="text-gray-300">
+                                    Use our intuitive drag-and-drop interface to create powerful automation workflows. Connect to over 100+ integrations and APIs.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="mb-12 relative">
+                            <div class="absolute -left-6 w-8 h-8 rounded-full bg-gray-800 border-2 border-secondary flex items-center justify-center">
+                                <span class="text-secondary font-bold">2</span>
+                            </div>
+                            <div class="pl-8">
+                                <h3 class="text-xl font-bold mb-2">Chat with Your Workflow</h3>
+                                <p class="text-gray-300">
+                                    Interact with your workflows through a natural language chat interface. Ask questions, give commands, and get instant responses.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="relative">
+                            <div class="absolute -left-6 w-8 h-8 rounded-full bg-gray-800 border-2 border-accent flex items-center justify-center">
+                                <span class="text-accent font-bold">3</span>
+                            </div>
+                            <div class="pl-8">
+                                <h3 class="text-xl font-bold mb-2">Deploy AI Agents</h3>
+                                <p class="text-gray-300">
+                                    Create and deploy AI agents that can execute tasks, make decisions, and interact with your workflows programmatically.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 shadow-xl">
+                    <div class="aspect-video bg-gray-900 rounded-lg overflow-hidden flex items-center justify-center">
+                        <div class="text-center p-8">
+                            <i class="fas fa-play-circle text-5xl text-primary mb-4"></i>
+                            <p class="text-gray-300">Demo video coming soon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist Section -->
+    <section id="waitlist" class="py-20 bg-gray-800/30">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <div class="inline-block px-3 py-1 bg-primary/20 rounded-full text-primary text-sm font-medium mb-6">
+                    <span class="flex items-center">
+                        <span class="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
+                        Coming Soon
+                    </span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Be the First to Know</h2>
+                <p class="text-xl text-gray-300 mb-8">
+                    Join our waitlist to get early access to Mintflow and stay updated on our launch.
+                </p>
+                
+                <form id="waitlist-form" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 mb-6">
+                    <input 
+                        type="email" 
+                        placeholder="Enter your email" 
+                        class="flex-grow px-4 py-3 bg-gray-900 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    >
+                    <button 
+                        type="submit" 
+                        class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-md font-medium transition"
+                    >
+                        Join Waitlist
+                    </button>
+                </form>
+                <p class="text-gray-400 text-sm">
+                    We respect your privacy. No spam, just updates about our launch and early access opportunities.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <span class="text-2xl font-bold text-white">mint<span class="text-primary">flow</span></span>
+                    <p class="text-gray-400 mt-2">The Ultimate AI Workflow Platform</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+                <p>&copy; 2025 Mintflow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
