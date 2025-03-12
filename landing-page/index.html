@@ -1915,88 +1915,112 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-16 border-t border-gray-100">
+    <footer class="py-12 border-t border-gray-100">
         <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between mb-12">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold text-black">W<span class="text-gray-400">.</span></span>
+            <!-- Logo and main links -->
+            <div class="flex flex-col md:flex-row justify-between items-start mb-12">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-6">
+                        <span class="text-2xl font-bold text-black">Mint<span class="text-gray-400">Flow</span></span>
+                    </div>
+                    <p class="text-sm text-gray-500 max-w-xs mb-6">
+                        AI-first workflow automation platform for building intelligent agents through a conversational interface.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition">
+                            <i class="fab fa-twitter text-sm"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition">
+                            <i class="fab fa-linkedin-in text-sm"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition">
+                            <i class="fab fa-github text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <!-- Column 1 -->
+                    <div>
+                        <h4 class="text-sm font-medium mb-4">Product</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#features" class="text-sm text-gray-500 hover:text-black transition">Features</a></li>
+                            <li><a href="#templates" class="text-sm text-gray-500 hover:text-black transition">Templates</a></li>
+                            <li><a href="#plugins" class="text-sm text-gray-500 hover:text-black transition">Plugins</a></li>
+                            <li><a href="#pricing" class="text-sm text-gray-500 hover:text-black transition">Pricing</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Column 2 -->
+                    <div>
+                        <h4 class="text-sm font-medium mb-4">Resources</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Documentation</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">API Reference</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Guides</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Blog</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Column 3 -->
+                    <div>
+                        <h4 class="text-sm font-medium mb-4">Company</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">About</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Careers</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Contact</a></li>
+                            <li><a href="#partners" class="text-sm text-gray-500 hover:text-black transition">Partners</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Column 4 -->
+                    <div>
+                        <h4 class="text-sm font-medium mb-4">Legal</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Privacy</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Terms</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Security</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Cookies</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
-                <div>
-                    <h4 class="text-sm font-medium mb-4">Websites</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Collections</a></li>
-                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Elements</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-sm font-medium mb-4">Academy</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Jobs</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-sm font-medium mb-4">Directory</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Conferences</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-sm font-medium mb-4">FAQs</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">About Us</a></li>
-                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="bg-gray-100 rounded-lg p-4">
-                        <div class="flex items-center mb-2">
-                            <span class="text-xs font-medium">Next Conferences</span>
-                            <span class="ml-2 bg-white text-xs px-2 py-0.5 rounded-full">Berlin, Mumbai & Tokyo</span>
-                        </div>
-                        <div class="relative bg-black rounded-lg overflow-hidden">
-                            <img src="https://placehold.co/600x400/111111/ffffff?text=Conference" alt="Conference" class="w-full h-auto">
-                            <div class="absolute top-2 right-2 bg-black text-white text-xs px-2 py-0.5 rounded-full">X</div>
-                            <div class="absolute bottom-0 left-0 right-0 bg-black/80 p-2">
-                                <div class="text-white text-xs">13:00</div>
-                                <div class="text-white text-xs font-medium">Innovative Web Design in Figma: A Step-by-Step Process</div>
-                            </div>
+            <!-- Newsletter -->
+            <div class="py-8 border-t border-gray-100 mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <h4 class="text-sm font-medium mb-1">Stay updated</h4>
+                        <p class="text-sm text-gray-500">Subscribe to our newsletter for updates and early access.</p>
+                    </div>
+                    <div class="w-full md:w-auto">
+                        <div class="flex">
+                            <input type="email" placeholder="Enter your email" class="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-mint focus:border-mint w-full md:w-64">
+                            <button class="bg-mint hover:bg-green-600 text-white px-4 py-2 rounded-r-lg transition">
+                                Subscribe
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-100">
-                <div class="flex space-x-4 mb-4 md:mb-0">
-                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Cookies Policy</a>
-                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Legal Terms</a>
-                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Privacy Policy</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-xs text-gray-500">Connect:</span>
-                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Instagram</a>
-                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">LinkedIn</a>
-                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Twitter</a>
-                </div>
-            </div>
-            
-            <div class="mt-8 flex justify-center">
-                <div class="bg-black text-white rounded-full py-1 px-4 flex items-center space-x-2 text-xs">
-                    <span class="font-medium">W.</span>
-                    <span class="text-gray-400">|</span>
-                    <a href="#" class="text-gray-400 hover:text-white transition">Nominees</a>
-                    <span class="text-gray-400">|</span>
-                    <a href="#" class="text-gray-400 hover:text-white transition">Courses</a>
-                    <span class="text-gray-400">|</span>
-                    <a href="#" class="text-gray-400 hover:text-white transition">Collections</a>
-                    <span class="text-gray-400">|</span>
-                    <a href="#" class="text-gray-400 hover:text-white transition">Directory</a>
-                    <span class="text-gray-400">|</span>
-                    <a href="#" class="text-gray-400 hover:text-white transition">Market</a>
-                    <span class="text-gray-400">|</span>
-                    <a href="#" class="text-gray-400 hover:text-white transition">Visit Solfa</a>
+            <!-- Copyright -->
+            <div class="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-gray-100">
+                <p class="text-xs text-gray-500 mb-4 md:mb-0">
+                    © 2025 MintFlow, Inc. All rights reserved.
+                </p>
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Status</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Sitemap</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Accessibility</a>
+                    <div class="flex items-center">
+                        <span class="text-xs text-gray-500 mr-2">Language:</span>
+                        <select class="text-xs bg-transparent border-none focus:outline-none text-gray-500 cursor-pointer">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
