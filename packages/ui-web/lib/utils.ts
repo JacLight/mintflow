@@ -11,9 +11,7 @@ import { twMerge } from 'tailwind-merge';
 
 import type { Message as DBMessage, Document } from '@/lib/db/schema';
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+
 interface ApplicationError extends Error {
   info: string;
   status: number;
@@ -454,7 +452,7 @@ export function combineObjectArray(arr1: AnyObject[], arr2: AnyObject[], uniqueK
 }
 
 export function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ')
+  return twMerge(classes.filter(Boolean).join(' '))
 }
 
 export function stringifyCSSObject(cssObject: any, indent = '') {

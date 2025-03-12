@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 
 import {
   CheckCircleFillIcon,
@@ -26,19 +26,19 @@ const visibilities: Array<{
   description: string;
   icon: ReactNode;
 }> = [
-  {
-    id: 'private',
-    label: 'Private',
-    description: 'Only you can access this chat',
-    icon: <LockIcon />,
-  },
-  {
-    id: 'public',
-    label: 'Public',
-    description: 'Anyone with the link can access this chat',
-    icon: <GlobeIcon />,
-  },
-];
+    {
+      id: 'private',
+      label: 'Private',
+      description: 'Only you can access this chat',
+      icon: <LockIcon />,
+    },
+    {
+      id: 'public',
+      label: 'Public',
+      description: 'Anyone with the link can access this chat',
+      icon: <GlobeIcon />,
+    },
+  ];
 
 export function VisibilitySelector({
   chatId,
@@ -64,7 +64,7 @@ export function VisibilitySelector({
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
         asChild
-        className={cn(
+        className={classNames(
           'w-fit data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
           className,
         )}
