@@ -1,160 +1,155 @@
-// Mintflow Landing Page JavaScript
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu functionality
-    initMobileMenu();
+    // Smooth scrolling for navigation links
+    const navLinks = document.querySelectorAll('a[href^="#"]');
     
-    // Smooth scrolling for anchor links
-    initSmoothScroll();
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Only apply to links that point to an ID on the page
+            if (this.getAttribute('href').startsWith('#') && this.getAttribute('href').length > 1) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // Offset for fixed header
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (mobileMenu.classList.contains('active')) {
+                        toggleMobileMenu();
+                    }
+                }
+            }
+        });
+    });
     
-    // Animation on scroll (simple implementation)
-    initScrollAnimations();
-});
-
-/**
- * Initialize mobile menu functionality
- */
-function initMobileMenu() {
-    const menuButton = document.querySelector('button.md\\:hidden');
+    // Mobile menu toggle
+    const menuButton = document.querySelector('button[aria-label="Open mobile menu"]');
     const mobileMenu = document.createElement('div');
-    
-    // Create mobile menu
-    mobileMenu.className = 'fixed inset-0 bg-gray-900/95 z-50 flex items-center justify-center transform transition-transform duration-300 translate-x-full';
-    mobileMenu.innerHTML = `
-        <div class="w-full max-w-sm p-8">
-            <div class="flex justify-end mb-8">
-                <button class="text-white" aria-label="Close mobile menu">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <ul class="flex flex-col space-y-6 text-center">
-                <li><a href="#features" class="text-xl text-gray-300 hover:text-white transition">Features</a></li>
-                <li><a href="#about" class="text-xl text-gray-300 hover:text-white transition">About</a></li>
-                <li><a href="#documentation" class="text-xl text-gray-300 hover:text-white transition">Docs</a></li>
-                <li><a href="#waitlist" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition inline-block mt-4">Join Waitlist</a></li>
-            </ul>
-        </div>
-    `;
+    mobileMenu.classList.add('mobile-menu', 'fixed', 'inset-0', 'bg-white', 'z-40', 'transform', 'translate-x-full', 'transition-transform', 'duration-300', 'ease-in-out', 'flex', 'flex-col', 'p-6', 'pt-24');
     document.body.appendChild(mobileMenu);
     
-    // Toggle mobile menu
-    menuButton.addEventListener('click', function() {
-        mobileMenu.classList.remove('translate-x-full');
-    });
+    // Clone navigation links for mobile menu
+    const navLinksContainer = document.querySelector('nav ul');
+    if (navLinksContainer) {
+        const navLinksClone = navLinksContainer.cloneNode(true);
+        navLinksClone.classList.remove('hidden', 'md:block', 'space-x-6');
+        navLinksClone.classList.add('flex', 'flex-col', 'space-y-4');
+        
+        const navLinksCloneItems = navLinksClone.querySelectorAll('li');
+        navLinksCloneItems.forEach(item => {
+            item.classList.add('text-lg', 'font-medium');
+        });
+        
+        mobileMenu.appendChild(navLinksClone);
+    }
     
-    // Close mobile menu
-    const closeButton = mobileMenu.querySelector('button');
-    closeButton.addEventListener('click', function() {
-        mobileMenu.classList.add('translate-x-full');
-    });
+    // Add close button to mobile menu
+    const closeButton = document.createElement('button');
+    closeButton.classList.add('absolute', 'top-6', 'right-6', 'text-black');
+    closeButton.innerHTML = '<i class="fas fa-times text-xl"></i>';
+    closeButton.setAttribute('aria-label', 'Close mobile menu');
+    mobileMenu.appendChild(closeButton);
     
-    // Close mobile menu when clicking on links
-    const mobileLinks = mobileMenu.querySelectorAll('a');
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', function() {
+    function toggleMobileMenu() {
+        if (mobileMenu.classList.contains('translate-x-full')) {
+            mobileMenu.classList.remove('translate-x-full');
+            mobileMenu.classList.add('translate-x-0');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        } else {
+            mobileMenu.classList.remove('translate-x-0');
             mobileMenu.classList.add('translate-x-full');
-        });
-    });
-}
-
-/**
- * Initialize smooth scrolling for anchor links
- */
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                // Offset for fixed header
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-/**
- * Initialize animations on scroll
- */
-function initScrollAnimations() {
-    // Simple implementation - could be enhanced with a library like AOS
-    const animatedElements = document.querySelectorAll('.bg-gray-800\\/50');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    }
     
-    // Create an observer
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('opacity-100', 'translate-y-0');
-                entry.target.classList.remove('opacity-0', 'translate-y-8');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
+    menuButton.addEventListener('click', toggleMobileMenu);
+    closeButton.addEventListener('click', toggleMobileMenu);
     
-    // Observe each element
-    animatedElements.forEach(element => {
-        element.classList.add('transition', 'duration-700', 'opacity-0', 'translate-y-8');
-        observer.observe(element);
+    // Workflow animation
+    const workflowNodes = document.querySelectorAll('.workflow-node');
+    
+    // Add animation to workflow nodes
+    workflowNodes.forEach(node => {
+        node.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+            this.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.2)';
+            this.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+        });
+        
+        node.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+            this.style.boxShadow = '';
+        });
     });
-}
-
-/**
- * Form submission handler for waitlist
- */
-document.addEventListener('DOMContentLoaded', function() {
-    const waitlistForm = document.querySelector('#waitlist-form');
-    if (waitlistForm) {
-        waitlistForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    
+    // Add workflow lines between nodes (visual connection)
+    const workflowContainer = document.querySelector('.workflow-container');
+    
+    if (workflowContainer && workflowNodes.length >= 2) {
+        // Create lines between nodes
+        for (let i = 0; i < workflowNodes.length - 1; i++) {
+            const startNode = workflowNodes[i];
+            const endNode = workflowNodes[i + 1];
             
-            const emailInput = this.querySelector('input[type="email"]');
-            const email = emailInput.value.trim();
+            const line = document.createElement('div');
+            line.classList.add('workflow-line');
+            workflowContainer.appendChild(line);
             
-            if (email && isValidEmail(email)) {
-                // In a real implementation, this would send the data to a server
-                // For now, just show a success message
-                const formContainer = this.parentElement;
+            // Position the line to connect the nodes
+            const updateLinePosition = () => {
+                const startRect = startNode.getBoundingClientRect();
+                const endRect = endNode.getBoundingClientRect();
+                const containerRect = workflowContainer.getBoundingClientRect();
                 
-                // Create success message
-                const successMessage = document.createElement('div');
-                successMessage.className = 'bg-green-500/20 text-green-400 px-4 py-3 rounded-md mt-4';
-                successMessage.innerHTML = `
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle mr-2"></i>
-                        <p>Thank you for joining our waitlist! We'll keep you updated on our launch.</p>
-                    </div>
-                `;
+                // Calculate center points relative to the container
+                const startX = startRect.left + startRect.width / 2 - containerRect.left;
+                const startY = startRect.top + startRect.height / 2 - containerRect.top;
+                const endX = endRect.left + endRect.width / 2 - containerRect.left;
+                const endY = endRect.top + endRect.height / 2 - containerRect.top;
                 
-                // Replace form with success message
-                this.classList.add('hidden');
-                formContainer.appendChild(successMessage);
+                // Calculate line length and angle
+                const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+                const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+                
+                // Position and rotate the line
+                line.style.width = `${length}px`;
+                line.style.left = `${startX}px`;
+                line.style.top = `${startY}px`;
+                line.style.transform = `rotate(${angle}deg)`;
+                line.style.transformOrigin = '0 0';
+            };
+            
+            // Initial positioning
+            updateLinePosition();
+            
+            // Update on window resize
+            window.addEventListener('resize', updateLinePosition);
+        }
+    }
+    
+    // Typing animation for the AI chat
+    const aiChatText = document.querySelector('.bg-mint\\/10');
+    
+    if (aiChatText) {
+        const originalText = aiChatText.textContent.trim();
+        aiChatText.textContent = '';
+        aiChatText.classList.add('typing-animation');
+        
+        let charIndex = 0;
+        const typingInterval = setInterval(() => {
+            if (charIndex < originalText.length) {
+                aiChatText.textContent += originalText.charAt(charIndex);
+                charIndex++;
             } else {
-                // Show error for invalid email
-                emailInput.classList.add('border-red-500', 'focus:ring-red-500');
-                
-                // Remove error styling after 3 seconds
+                clearInterval(typingInterval);
                 setTimeout(() => {
-                    emailInput.classList.remove('border-red-500', 'focus:ring-red-500');
-                }, 3000);
+                    aiChatText.classList.remove('typing-animation');
+                }, 1000);
             }
-        });
+        }, 50);
     }
 });
-
-/**
- * Validate email format
- */
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
