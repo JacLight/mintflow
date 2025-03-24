@@ -20,7 +20,7 @@ import {
 import { toast } from 'sonner';
 import { useLocalStorage, useWindowSize } from 'usehooks-ts';
 
-import { cn, sanitizeUIMessages } from '@/lib/utils';
+import { classNames, cn, sanitizeUIMessages } from '@/lib/utils';
 
 import { ArrowUpIcon, PaperclipIcon, StopIcon } from './icons';
 import { PreviewAttachment } from './preview-attachment';
@@ -234,7 +234,7 @@ function PureMultimodalInput({
         placeholder="Send a message..."
         value={input}
         onChange={handleInput}
-        className={cn(
+        className={classNames(
           'min-h-[24px] max-h-[calc(75dvh)] overflow-hidden resize-none rounded-2xl !text-base bg-muted pb-10 dark:border-zinc-700',
           className,
         )}

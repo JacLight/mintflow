@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 import { useArtifactSelector } from '@/hooks/use-artifact';
 
 export interface ConsoleOutputContent {
@@ -87,7 +87,7 @@ export function Console({ consoleOutputs, setConsoleOutputs }: ConsoleProps) {
       />
 
       <div
-        className={cn(
+        className={classNames(
           'fixed flex flex-col bottom-0 dark:bg-zinc-900 bg-zinc-50 w-full border-t z-40 overflow-y-scroll overflow-x-hidden dark:border-zinc-700 border-zinc-200',
           {
             'select-none': isResizing,
@@ -119,7 +119,7 @@ export function Console({ consoleOutputs, setConsoleOutputs }: ConsoleProps) {
               className="px-4 py-2 flex flex-row text-sm border-b dark:border-zinc-700 border-zinc-200 dark:bg-zinc-900 bg-zinc-50 font-mono"
             >
               <div
-                className={cn('w-12 shrink-0', {
+                className={classNames('w-12 shrink-0', {
                   'text-muted-foreground': [
                     'in_progress',
                     'loading_packages',

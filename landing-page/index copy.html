@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W. | Web Design Awards & Inspiration</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzExMTgyNyIvPjxwYXRoIGQ9Ik04LDggTDI0LDgiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNOCw4IEw4LDI0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI0LDggTDI0LDI0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" type="image/svg+xml">
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#000000',
+                        secondary: '#333333',
+                        accent: '#666666',
+                        dark: '#111111',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom styles for elements that can't be easily done with Tailwind -->
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .trophy-icon {
+            color: #FFD700;
+        }
+        
+        .site-of-day {
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .featured-image {
+            transition: all 0.3s ease;
+        }
+        
+        .featured-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .award-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #FFD700;
+            color: #000;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="noise"></div>
+    
+    <!-- Header -->
+    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold text-black">W<span class="text-gray-400">.</span></span>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#explore" class="text-gray-700 hover:text-black transition">Explore</a></li>
+                    <li><a href="#directory" class="text-gray-700 hover:text-black transition">Directory</a></li>
+                    <li><a href="#academy" class="text-gray-700 hover:text-black transition">Academy</a></li>
+                    <li><a href="#conferences" class="text-gray-700 hover:text-black transition">Conferences</a></li>
+                    <li><a href="#market" class="text-gray-700 hover:text-black transition">Market</a></li>
+                </ul>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="Search for inspiration" class="pl-8 pr-4 py-1 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 w-48">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="#login" class="text-sm text-gray-700 hover:text-black transition">Log in</a>
+                    <a href="#signup" class="text-sm text-gray-700 hover:text-black transition">Sign Up</a>
+                    <a href="#pro" class="bg-black text-white text-sm px-3 py-1 rounded-full hover:bg-gray-800 transition">Go Pro</a>
+                    <a href="#submit" class="bg-gray-100 text-black text-sm px-3 py-1 rounded-full hover:bg-gray-200 transition">Submit Website</a>
+                </div>
+            </div>
+            <button class="md:hidden text-black" aria-label="Open mobile menu">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Site of the Day Section -->
+    <section class="pt-28 pb-10 relative overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="site-of-day text-center mb-6">
+                <div class="flex justify-center items-center space-x-2 text-sm text-gray-500">
+                    <span>Site of the Day</span>
+                    <span>|</span>
+                    <span>Mar 11, 2025</span>
+                    <span>|</span>
+                    <span>Score 7.53 of 10</span>
+                </div>
+            </div>
+            
+            <div class="text-center mb-8">
+                <h1 class="text-6xl md:text-8xl font-bold mb-4">
+                    IN COGNITA
+                </h1>
+                <div class="flex justify-center items-center space-x-3 mb-2">
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Aristide Benoist" class="w-6 h-6 rounded-full mr-2">
+                        <span class="text-sm">Aristide Benoist</span>
+                        <span class="text-xs text-gray-500 ml-1">DEV</span>
+                    </div>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Pierre Patrault" class="w-6 h-6 rounded-full mr-2">
+                        <span class="text-sm">Pierre Patrault</span>
+                        <span class="text-xs text-gray-500 ml-1">DEV</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="max-w-5xl mx-auto mb-10">
+                <div class="relative overflow-hidden rounded-xl shadow-lg">
+                    <div class="aspect-video bg-gradient-to-br from-purple-900 via-purple-600 to-orange-500 rounded-xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="relative w-full h-full">
+                                <!-- Floating Spheres -->
+                                <div class="absolute top-1/4 left-1/4 w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-red-600 opacity-80 shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+                                <div class="absolute top-1/3 right-1/3 w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-red-600 opacity-80 shadow-lg"></div>
+                                <div class="absolute bottom-1/4 right-1/4 w-32 h-32 rounded-full bg-gradient-to-br from-orange-500 to-red-600 opacity-80 shadow-lg"></div>
+                                <div class="absolute top-2/3 left-1/3 w-20 h-20 rounded-full bg-gradient-to-br from-orange-500 to-red-600 opacity-80 shadow-lg"></div>
+                                
+                                <!-- Logo and Menu -->
+                                <div class="absolute top-6 left-6 text-white text-xl font-light">
+                                    in_<br>cognita
+                                </div>
+                                <div class="absolute top-6 right-6 text-white">
+                                    <span class="text-sm">MENU</span>
+                                    <span class="ml-3 w-6 h-6 rounded-full border border-white inline-flex items-center justify-center">
+                                        <i class="fas fa-info text-xs"></i>
+                                    </span>
+                                </div>
+                                
+                                <!-- Main Content -->
+                                <div class="absolute bottom-20 left-10">
+                                    <h2 class="text-white text-5xl font-bold mb-4">
+                                        Seize the<br>— unexpected
+                                    </h2>
+                                    <p class="text-white/80 text-sm max-w-xs">
+                                        in_cognita is here to help you and your team navigate the new challenges of our World.
+                                    </p>
+                                </div>
+                                
+                                <!-- Contact Button -->
+                                <div class="absolute bottom-10 right-10">
+                                    <button class="bg-white/20 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-full border border-white/30">
+                                        Contact us →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nominees Section -->
+    <section id="nominees" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-6xl md:text-7xl font-bold mb-4 flex items-center justify-center">
+                    NOMINEES<span class="text-yellow-400 ml-2">🏆</span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Vote for the latest websites on awwwards.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Nominee 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full">
+                            New Entry
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Innerwork+Studio" alt="Innerwork Studio" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Innerwork</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Gone Fishing Studio</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">A minimalist portfolio showcasing creative work with a focus on typography and whitespace. Built with React and Three.js for subtle 3D elements.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Portfolio</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Minimalist</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">React</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nominee 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
+                            Featured
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=AB/GD" alt="AB/GD" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">AB/GD</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">abgd</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">A bold, typography-driven design studio website with innovative scroll animations and interactive case studies. Developed with GSAP and custom WebGL effects.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Agency</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Animation</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">WebGL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nominee 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                            Editor's Pick
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Otter" alt="Otter" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Otter</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Otter Agency</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">An e-commerce platform with a focus on sustainability and ethical products. Features custom animations, accessibility-first design, and seamless checkout flow.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">E-commerce</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Accessibility</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">UX</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Check out all submitted websites</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-nominees" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Nominees
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section id="featured" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Featured Projects
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Exceptional websites that showcase innovation, creativity, and technical excellence.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Featured Project 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="aspect-video bg-gradient-to-r from-indigo-500 to-purple-500 relative overflow-hidden">
+                            <img src="https://placehold.co/800x450/4f46e5/ffffff?text=Nebula" alt="Nebula" class="w-full h-full object-cover mix-blend-overlay">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <h3 class="text-white text-3xl font-bold">Nebula</h3>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Cosmic Studio</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Digital Experience</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500 mr-1">Score:</span>
+                                    <span class="text-sm font-medium">9.8</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                An immersive digital experience that combines WebGL, 3D animations, and interactive storytelling to create a journey through a virtual universe. The project pushes the boundaries of web technology while maintaining performance and accessibility.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">WebGL</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">3D</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">Interactive</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">Animation</span>
+                            </div>
+                            <a href="#view-project" class="text-sm text-indigo-600 hover:text-indigo-800 transition">
+                                View Project →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Featured Project 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="aspect-video bg-gradient-to-r from-emerald-500 to-teal-500 relative overflow-hidden">
+                            <img src="https://placehold.co/800x450/10b981/ffffff?text=Verdant" alt="Verdant" class="w-full h-full object-cover mix-blend-overlay">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <h3 class="text-white text-3xl font-bold">Verdant</h3>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Green Collective</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">E-commerce</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500 mr-1">Score:</span>
+                                    <span class="text-sm font-medium">9.5</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                A sustainable e-commerce platform that combines beautiful design with ethical shopping. The site features carbon-neutral hosting, optimized performance, and a seamless shopping experience that encourages conscious consumerism.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">E-commerce</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">Sustainability</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">UX Design</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">Performance</span>
+                            </div>
+                            <a href="#view-project" class="text-sm text-emerald-600 hover:text-emerald-800 transition">
+                                View Project →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="#view-all-featured" class="inline-block bg-black text-white text-sm px-6 py-3 rounded-full hover:bg-gray-800 transition">
+                    View All Featured Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections Section -->
+    <section id="collections" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="mb-8">
+                <span class="text-sm text-gray-500">Collections</span>
+                <h2 class="text-3xl font-bold mt-2">
+                    Explore a wide<br>
+                    variety of collections.
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Collection 1 -->
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <div class="aspect-video bg-gradient-to-r from-red-500 to-orange-500 rounded-lg overflow-hidden mb-4">
+                        <img src="https://placehold.co/800x450/ff5e3a/ffffff?text=Navigation+Design" alt="Navigation Design" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-white font-medium">The Best of Navigation</h3>
+                            <div class="flex items-center mt-1">
+                                <span class="text-xs text-gray-400">curated by</span>
+                                <div class="flex -space-x-2 ml-2">
+                                    <div class="w-5 h-5 rounded-full bg-gray-300"></div>
+                                    <div class="w-5 h-5 rounded-full bg-gray-400"></div>
+                                    <div class="w-5 h-5 rounded-full bg-gray-500"></div>
+                                </div>
+                                <span class="text-xs text-gray-400 ml-2">+2,560</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Collection 2 -->
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <div class="aspect-video bg-black rounded-lg overflow-hidden mb-4">
+                        <img src="https://placehold.co/800x450/000000/ffffff?text=VIKKI+B+FOLIO-23" alt="Freelance Portfolios" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-white font-medium">Freelance Portfolios</h3>
+                            <div class="flex items-center mt-1">
+                                <span class="text-xs text-gray-400">curated by</span>
+                                <div class="flex -space-x-2 ml-2">
+                                    <div class="w-5 h-5 rounded-full bg-gray-300"></div>
+                                    <div class="w-5 h-5 rounded-full bg-gray-400"></div>
+                                    <div class="w-5 h-5 rounded-full bg-gray-500"></div>
+                                </div>
+                                <span class="text-xs text-gray-400 ml-2">+3,089</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Find inspiration for your projects</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-collections" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Collections
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-16 bg-gray-900 text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    What Creators Say
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Hear from the designers and developers who have been featured on our platform.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Johnson" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h3 class="text-lg font-medium">Sarah Johnson</h3>
+                            <p class="text-gray-400 text-sm">Lead Designer at Pixel Perfect</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "Being featured on W. completely transformed our studio's visibility. We received multiple client inquiries within days of being nominated, and the exposure has been invaluable for our growth."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="David Chen" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h3 class="text-lg font-medium">David Chen</h3>
+                            <p class="text-gray-400 text-sm">Freelance Developer</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "The community feedback I received through W. helped me refine my portfolio and improve my design approach. The platform connects you with like-minded professionals who push you to be better."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Maria Rodriguez" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h3 class="text-lg font-medium">Maria Rodriguez</h3>
+                            <p class="text-gray-400 text-sm">Creative Director at Studio Nova</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "W. has become our go-to platform for inspiration and keeping up with industry trends. Being nominated for our work was a highlight for our team and brought us recognition within the design community."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creators Section -->
+    <section id="creators" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-6xl md:text-7xl font-bold mb-4 flex items-center justify-center">
+                    W.CREATORS<span class="text-yellow-400 ml-2">😊</span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Active creators in your country
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Creator 1 -->
+                <div class="bg-gray-900 rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://placehold.co/600x400/1e293b/ffffff?text=Isadora+Digital" alt="Isadora Digital Agency" class="w-full h-auto">
+                        <div class="absolute bottom-0 right-0 bg-gray-900 text-white text-xs px-2 py-1">
+                            <i class="fas fa-circle text-xs text-white mr-1"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="text-xs text-gray-400">International</span>
+                            <h3 class="text-white text-xl font-bold mt-1">Isadora Digital Agency</h3>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-400">14 projects</span>
+                            <span class="bg-gray-800 text-white text-xs px-2 py-1 rounded-full">34</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Creator 2 -->
+                <div class="bg-gray-900 rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://placehold.co/600x400/1e293b/ffffff?text=Baunfire" alt="Baunfire" class="w-full h-auto">
+                        <div class="absolute bottom-0 right-0 bg-gray-900 text-white text-xs px-2 py-1">
+                            <i class="fas fa-circle text-xs text-white mr-1"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="text-xs text-gray-400">International</span>
+                            <h3 class="text-white text-xl font-bold mt-1">Baunfire</h3>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-400">20 projects</span>
+                            <span class="bg-gray-800 text-white text-xs px-2 py-1 rounded-full">36</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Creator 3 -->
+                <div class="bg-gray-900 rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://placehold.co/600x400/1e293b/ffffff?text=BONHOMME" alt="BONHOMME" class="w-full h-auto">
+                        <div class="absolute bottom-0 right-0 bg-gray-900 text-white text-xs px-2 py-1">
+                            <i class="fas fa-circle text-xs text-white mr-1"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <span class="text-xs text-gray-400">International</span>
+                            <h3 class="text-white text-xl font-bold mt-1">BONHOMME</h3>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-400">40 projects</span>
+                            <span class="bg-gray-800 text-white text-xs px-2 py-1 rounded-full">50</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Creator Table -->
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-4 text-left text-sm font-medium text-gray-500">Name</th>
+                            <th class="py-4 text-left text-sm font-medium text-gray-500">Profile</th>
+                            <th class="py-4 text-left text-sm font-medium text-gray-500">Awards</th>
+                            <th class="py-4 text-left text-sm font-medium text-gray-500">Categories</th>
+                            <th class="py-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs mr-3">BK</div>
+                                    <span>Blackout</span>
+                                </div>
+                            </td>
+                            <td class="py-4 text-gray-600">Agency</td>
+                            <td class="py-4 text-gray-600">22</td>
+                            <td class="py-4 text-gray-600">Web Design, Web Development, UX...</td>
+                            <td class="py-4 text-right">
+                                <a href="#" class="inline-block bg-gray-100 text-black text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">View</a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs mr-3">GC</div>
+                                    <span>Gabriel Contassot</span>
+                                </div>
+                            </td>
+                            <td class="py-4 text-gray-600">Freelance</td>
+                            <td class="py-4 text-gray-600">1</td>
+                            <td class="py-4 text-gray-600">Other</td>
+                            <td class="py-4 text-right">
+                                <a href="#" class="inline-block bg-gray-100 text-black text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">View</a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs mr-3">SD</div>
+                                    <span>State Department</span>
+                                </div>
+                            </td>
+                            <td class="py-4 text-gray-600">Studio</td>
+                            <td class="py-4 text-gray-600">0</td>
+                            <td class="py-4 text-gray-600">UX/UI</td>
+                            <td class="py-4 text-right">
+                                <a href="#" class="inline-block bg-gray-100 text-black text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">View</a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-4">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs mr-3">SP</div>
+                                    <span>Studio-paul</span>
+                                </div>
+                            </td>
+                            <td class="py-4 text-gray-600">Studio</td>
+                            <td class="py-4 text-gray-600">0</td>
+                            <td class="py-4 text-gray-600">-</td>
+                            <td class="py-4 text-right">
+                                <a href="#" class="inline-block bg-gray-100 text-black text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Connect with over 5,389 Agencies and Professionals</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-directory" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">View Directory</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        About W.
+                    </h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        Celebrating excellence in web design and development since 2010.
+                    </p>
+                </div>
+                
+                <div class="prose prose-lg max-w-none mb-12">
+                    <p>
+                        W. was founded with a simple mission: to showcase and celebrate the very best in web design and development. What started as a small community of passionate designers has grown into a global platform that influences trends, connects professionals, and inspires the next generation of digital creators.
+                    </p>
+                    <p>
+                        Our team of curators and judges includes industry veterans, award-winning designers, and technical experts who carefully evaluate each submission based on design, innovation, content, and technical execution. Being featured on W. has become a mark of excellence in the industry, and we're proud to have highlighted thousands of exceptional websites over the years.
+                    </p>
+                    <p>
+                        Beyond our awards and nominations, we're committed to fostering a community where designers and developers can learn, share, and grow together. Through our Academy, Conferences, and Directory, we provide resources and connections that help professionals at every stage of their career.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold mb-2">12+</div>
+                        <p class="text-gray-600">Years of Excellence</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold mb-2">15,000+</div>
+                        <p class="text-gray-600">Websites Featured</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold mb-2">120+</div>
+                        <p class="text-gray-600">Countries Represented</p>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <a href="#our-team" class="inline-block bg-gray-100 text-black text-sm px-6 py-3 rounded-full hover:bg-gray-200 transition">
+                        Meet Our Team
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Section -->
+    <section id="market" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="mb-8">
+                <span class="text-sm text-gray-500">Market</span>
+                <h2 class="text-3xl font-bold mt-2">
+                    A curated marketplace<br>
+                    for digital & physical products
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Product 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Oliv+Template" alt="Oliv Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="mb-2">
+                                <span class="text-xs text-gray-500">Digital Product</span>
+                                <h3 class="text-sm font-medium mt-1">Oliv - Agency & Portfolio Framer Template</h3>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by</span>
+                                    <span class="text-xs ml-1">Pawel Gola</span>
+                                </div>
+                                <div class="text-sm font-medium">
+                                    <span class="text-xs text-gray-500">from</span>
+                                    <span>59</span>
+                                    <span class="text-xs text-gray-500">.00</span>
+                                </div>
+                            </div>
+                            <a href="#view-product" class="flex items-center justify-between mt-4 text-xs text-gray-500">
+                                <span>View Product</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Superior+Template" alt="Superior Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="mb-2">
+                                <span class="text-xs text-gray-500">Digital Product</span>
+                                <h3 class="text-sm font-medium mt-1">Superior — Startup & SaaS Template</h3>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by</span>
+                                    <span class="text-xs ml-1">Dream Studio</span>
+                                </div>
+                                <div class="text-sm font-medium">
+                                    <span class="text-xs text-gray-500">from</span>
+                                    <span>149</span>
+                                    <span class="text-xs text-gray-500">.00</span>
+                                </div>
+                            </div>
+                            <a href="#view-product" class="flex items-center justify-between mt-4 text-xs text-gray-500">
+                                <span>View Product</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Batavia+Template" alt="Batavia Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="mb-2">
+                                <span class="text-xs text-gray-500">Digital Product</span>
+                                <h3 class="text-sm font-medium mt-1">Batavia - Minimalist E-commerce Framer Template</h3>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by</span>
+                                    <span class="text-xs ml-1">Visiux Themes</span>
+                                </div>
+                                <div class="text-sm font-medium">
+                                    <span class="text-xs text-gray-500">from</span>
+                                    <span>79</span>
+                                    <span class="text-xs text-gray-500">.00</span>
+                                </div>
+                            </div>
+                            <a href="#view-product" class="flex items-center justify-between mt-4 text-xs text-gray-500">
+                                <span>View Product</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Tommaso+Quinn" alt="Tommaso Quinn Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="mb-2">
+                                <span class="text-xs text-gray-500">Digital Product</span>
+                                <h3 class="text-sm font-medium mt-1">Tommaso Quinn — Framer Portfolio Template</h3>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by</span>
+                                    <span class="text-xs ml-1">IRIS</span>
+                                </div>
+                                <div class="text-sm font-medium">
+                                    <span class="text-xs text-gray-500">from</span>
+                                    <span>49</span>
+                                    <span class="text-xs text-gray-500">.00</span>
+                                </div>
+                            </div>
+                            <a href="#view-product" class="flex items-center justify-between mt-4 text-xs text-gray-500">
+                                <span>View Product</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Browse specially curated products</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-market" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Market
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section id="newsletter" class="py-16 bg-black text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-4">Stay Inspired</h2>
+                <p class="text-gray-400 mb-8">
+                    Subscribe to our newsletter for weekly design inspiration, featured websites, and exclusive resources.
+                </p>
+                <form class="flex flex-col md:flex-row gap-4 mb-6">
+                    <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-full bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-white">
+                    <button type="submit" class="px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200 transition">
+                        Subscribe
+                    </button>
+                </form>
+                <p class="text-xs text-gray-500">
+                    By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Sections -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- CTA 1 -->
+                <div class="relative bg-gray-900 rounded-xl overflow-hidden">
+                    <div class="p-10">
+                        <span class="text-sm text-gray-400">Share your work</span>
+                        <h3 class="text-3xl font-bold text-white mt-2 mb-6">Submit your website for visibility and recognition</h3>
+                        <a href="#submit-website" class="inline-block bg-white text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                            Submit Website
+                        </a>
+                    </div>
+                    <div class="absolute bottom-0 right-0 opacity-10">
+                        <img src="https://placehold.co/400x300/ffffff/ffffff?text=" alt="" class="w-64">
+                    </div>
+                </div>
+                
+                <!-- CTA 2 -->
+                <div class="relative bg-gray-900 rounded-xl overflow-hidden">
+                    <div class="p-10">
+                        <span class="text-sm text-gray-400">Be a member</span>
+                        <h3 class="text-3xl font-bold text-white mt-2 mb-6">Get access to special pro features</h3>
+                        <a href="#be-pro" class="inline-block bg-white text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                            Be Pro
+                        </a>
+                    </div>
+                    <div class="absolute bottom-0 right-0 opacity-10">
+                        <img src="https://placehold.co/400x300/ffffff/ffffff?text=" alt="" class="w-64">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between mb-12">
+                <div>
+                    <span class="text-2xl font-bold text-black">W<span class="text-gray-400">.</span></span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+                <div>
+                    <h4 class="text-sm font-medium mb-4">Websites</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Collections</a></li>
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Nominees</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-medium mb-4">Academy</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Jobs</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-medium mb-4">Directory</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Conferences</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-medium mb-4">FAQs</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">About Us</a></li>
+                        <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-medium mb-4">Next Conference</h4>
+                    <div class="bg-gray-100 rounded-lg p-3 text-xs">
+                        <div class="flex items-center mb-2">
+                            <img src="https://placehold.co/30x30/e2e8f0/1e293b?text=B" alt="Berlin" class="w-6 h-6 rounded-full mr-2">
+                            <span>Berlin, Munich & Tokyo</span>
+                        </div>
+                        <div class="relative rounded overflow-hidden">
+                            <img src="https://placehold.co/300x200/e2e8f0/1e293b?text=Conference" alt="Conference" class="w-full h-auto">
+                            <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <p class="text-xs">Immersive Web Design in Digital & Real</p>
+                                    <p class="text-xs mt-1">by Ollie Paterson</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200">
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Cookies Policy</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Legal Terms</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Privacy Policy</a>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-500 hover:text-black transition">
+                        <i class="fab fa-pinterest text-sm"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-black transition">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-black transition">
+                        <i class="fab fa-linkedin text-sm"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-black transition">
+                        <i class="fab fa-twitter text-sm"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-8 border-t border-gray-200 flex justify-center">
+                <div class="bg-gray-100 rounded-full px-4 py-2 flex items-center space-x-2">
+                    <span class="text-xs font-medium">W.</span>
+                    <span class="text-xs text-gray-500">Nominees</span>
+                    <span class="text-xs text-gray-500">Courses</span>
+                    <span class="text-xs text-gray-500">Collections</span>
+                    <span class="text-xs text-gray-500">Directory</span>
+                    <span class="text-xs text-gray-500">Market</span>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">
+                        <i class="fas fa-arrow-up"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>

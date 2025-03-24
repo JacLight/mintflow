@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "outDir": "./dist-test",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "paths":{
+      "@mintflow/common": ["../../common/src/index.ts"]
+    },
+    "types": ["jest", "node"]
+  },
+  "include": ["test/**/*.ts", "src/**/*.ts"]
+}

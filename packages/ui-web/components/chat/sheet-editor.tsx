@@ -4,9 +4,8 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 import { DataGrid, textEditor } from 'react-data-grid';
 import { parse, unparse } from 'papaparse';
 import { useTheme } from 'next-themes';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 
-import 'react-data-grid/lib/styles.css';
 
 type SheetEditorProps = {
   content: string;
@@ -62,10 +61,10 @@ const PureSpreadsheetEditor = ({
       name: String.fromCharCode(65 + i),
       renderEditCell: textEditor,
       width: 120,
-      cellClass: cn(`border-t dark:bg-zinc-950 dark:text-zinc-50`, {
+      cellClass: classNames(`border-t dark:bg-zinc-950 dark:text-zinc-50`, {
         'border-l': i !== 0,
       }),
-      headerCellClass: cn(`border-t dark:bg-zinc-900 dark:text-zinc-50`, {
+      headerCellClass: classNames(`border-t dark:bg-zinc-900 dark:text-zinc-50`, {
         'border-l': i !== 0,
       }),
     }));

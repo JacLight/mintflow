@@ -1,5 +1,5 @@
 import Icon from '@/app/ui/layout/icons';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 
 interface ImageEditorProps {
   title: string;
@@ -18,7 +18,7 @@ export function ImageEditor({
 }: ImageEditorProps) {
   return (
     <div
-      className={cn('flex flex-row items-center justify-center w-full', {
+      className={classNames('flex flex-row items-center justify-center w-full', {
         'h-[calc(100dvh-60px)]': !isInline,
         'h-[200px]': isInline,
       })}
@@ -35,7 +35,7 @@ export function ImageEditor({
       ) : (
         <picture>
           <img
-            className={cn('w-full h-fit max-w-[800px]', {
+            className={classNames('w-full h-fit max-w-[800px]', {
               'p-0 md:p-20': !isInline,
             })}
             src={`data:image/png;base64,${content}`}

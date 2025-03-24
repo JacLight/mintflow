@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MintFlow | AI-First Workflow Automation Platform</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzAwMDAwMCIvPjxwYXRoIGQ9Ik04LDggTDI0LDgiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNOCw4IEw4LDI0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI0LDggTDI0LDI0IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" type="image/svg+xml">
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#000000',
+                        secondary: '#333333',
+                        accent: '#666666',
+                        dark: '#111111',
+                        light: '#F9FAFB',
+                        mint: '#10B981',
+                        blue: '#3B82F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #111827;
+        }
+        
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            color: #10B981;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #8B5CF6;
+            color: #fff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background-color: #1E293B;
+            color: #E2E8F0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+        
+        .typing-animation::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .workflow-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #10B981, #3B82F6);
+            z-index: -1;
+            transition: width 0.5s ease;
+        }
+        
+        .mint-text {
+            color: #10B981;
+        }
+        
+        .blue-text {
+            color: #3B82F6;
+        }
+        
+        .workflow-node {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .workflow-container {
+            background-color: #111827;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-white text-dark font-sans">
+    <div class="noise"></div>
+    
+    <!-- Header -->
+    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold text-black">Mint<span class="text-gray-400">Flow</span></span>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#explore" class="text-gray-700 hover:text-black transition">Explore</a></li>
+                    <li><a href="#directory" class="text-gray-700 hover:text-black transition">Directory</a></li>
+                    <li><a href="#academy" class="text-gray-700 hover:text-black transition">Academy</a></li>
+                    <li><a href="#conferences" class="text-gray-700 hover:text-black transition">Conferences</a></li>
+                    <li><a href="#market" class="text-gray-700 hover:text-black transition">Market</a></li>
+                </ul>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="Search for inspiration" class="pl-8 pr-4 py-1 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 w-48">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="#login" class="text-sm text-gray-700 hover:text-black transition">Log in</a>
+                    <a href="#signup" class="text-sm text-gray-700 hover:text-black transition">Sign Up</a>
+                    <a href="#pro" class="bg-black text-white text-sm px-3 py-1 rounded-full hover:bg-gray-800 transition">Go Pro</a>
+                    <a href="#submit" class="bg-gray-100 text-black text-sm px-3 py-1 rounded-full hover:bg-gray-200 transition">Submit Website</a>
+                </div>
+            </div>
+            <button class="md:hidden text-black" aria-label="Open mobile menu">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-28 pb-16 relative overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-4">
+                <span class="inline-block bg-green-100 text-green-600 text-sm px-3 py-1 rounded-full mb-4">AI-First Workflow System - Coming Soon</span>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    Build Intelligent Agents<br>with <span class="mint-text">AI</span> and <span class="blue-text">Chat</span>
+                </h1>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto mb-8">
+                    MintFlow is an AI-first workflow system that lets you build and deploy intelligent agents through a conversational chat interface. Automate complex processes without coding.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                    <a href="#join-waitlist" class="bg-mint hover:bg-green-600 text-white font-medium px-6 py-3 rounded-full transition">
+                        Join Waitlist
+                    </a>
+                    <a href="#watch-demo" class="bg-white border border-gray-300 text-gray-700 font-medium px-6 py-3 rounded-full flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+                        <i class="fas fa-play-circle"></i>
+                        Watch Demo
+                    </a>
+                </div>
+                <p class="text-sm text-gray-500 mb-12">
+                    <i class="fas fa-clock mr-1"></i> Limited beta access coming soon. Be among the first to experience the future of AI workflow automation.
+                </p>
+            </div>
+            
+            <!-- Agent Builder Visualization -->
+            <div class="max-w-5xl mx-auto mb-10 relative">
+                <div class="workflow-container aspect-video p-8 relative">
+                    <!-- AI Agent Builder Label -->
+                    <div class="absolute top-4 left-4 bg-yellow-400 text-black text-xs px-3 py-1 rounded-full flex items-center gap-2">
+                        <i class="fas fa-robot"></i>
+                        <span>AI Agent Builder</span>
+                    </div>
+                    
+                    <!-- Coming Soon Badge -->
+                    <div class="absolute top-4 right-4 bg-purple-600 text-white text-xs px-3 py-1 rounded-full flex items-center gap-2">
+                        <i class="fas fa-flask"></i>
+                        <span>Coming Soon</span>
+                    </div>
+                    
+                    <!-- Email Processing Agent Node -->
+                    <div class="workflow-node absolute top-1/4 left-1/4 w-40 h-20">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-envelope text-green-600"></i>
+                            </div>
+                            <span class="text-sm font-medium">Email Processing Agent</span>
+                        </div>
+                    </div>
+                    
+                    <!-- LLM Reasoning Node -->
+                    <div class="workflow-node absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-20">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-brain text-purple-600"></i>
+                            </div>
+                            <span class="text-sm font-medium">LLM Reasoning</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Multi-Channel Response Node -->
+                    <div class="workflow-node absolute bottom-1/4 right-1/4 w-40 h-20">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-comment-dots text-blue-600"></i>
+                            </div>
+                            <span class="text-sm font-medium">Multi-Channel Response</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Interface -->
+                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2 w-64 bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="bg-mint text-white p-2 text-sm font-medium">
+                            MintFlow Chat
+                        </div>
+                        <div class="p-3 bg-gray-50 text-xs">
+                            <div class="mb-2 text-gray-500">You</div>
+                            <div class="bg-white p-2 rounded-lg mb-3 shadow-sm">
+                                Create an agent that processes customer emails and responds appropriately
+                            </div>
+                            <div class="mb-2 text-gray-500">MintFlow</div>
+                            <div class="bg-mint/10 p-2 rounded-lg text-gray-700">
+                                Building intelligent agent with email processing, reasoning, and response capabilities...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-sm text-gray-600 mt-4">
+                    Build intelligent agents through our conversational interface. Define triggers, reasoning capabilities, and actions without writing code.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Workflow Templates Section -->
+    <section id="templates" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-4">
+                <span class="inline-block bg-yellow-100 text-yellow-600 text-sm px-3 py-1 rounded-full">Preview</span>
+            </div>
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Featured Workflow Templates
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Vote for the workflow templates you'd like to see first in MintFlow's launch. Your feedback shapes our roadmap!
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Template 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="absolute top-3 right-3 bg-green-100 text-green-600 text-xs px-2 py-1 rounded-full">
+                            Most Requested
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Customer+Support" alt="Customer Support Automation" class="w-full h-auto">
+                        <div class="p-5">
+                            <h3 class="text-lg font-semibold mb-2">Customer Support Automation</h3>
+                            <p class="text-sm text-gray-600 mb-4">Automatically route, categorize, and respond to customer inquiries using AI classification and sentiment analysis.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <img src="https://placehold.co/30x30/10b981/ffffff?text=MF" class="w-5 h-5 rounded-full mr-2" alt="MintFlow">
+                                <span>By MintFlow Solutions Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Template 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-md">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Lead+Generation" alt="Lead Generation & Nurturing" class="w-full h-auto">
+                        <div class="p-5">
+                            <h3 class="text-lg font-semibold mb-2">Lead Generation & Nurturing</h3>
+                            <p class="text-sm text-gray-600 mb-4">Capture leads from multiple sources, score them with AI, and trigger personalized follow-up sequences.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <img src="https://placehold.co/30x30/3b82f6/ffffff?text=MF" class="w-5 h-5 rounded-full mr-2" alt="MintFlow">
+                                <span>By MintFlow Marketing Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Template 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="absolute top-3 right-3 bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">
+                            AI-Powered
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Social+Media" alt="Social Media Management" class="w-full h-auto">
+                        <div class="p-5">
+                            <h3 class="text-lg font-semibold mb-2">Social Media Management</h3>
+                            <p class="text-sm text-gray-600 mb-4">Schedule posts, monitor engagement, analyze sentiment, and generate AI-powered content suggestions.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <img src="https://placehold.co/30x30/8b5cf6/ffffff?text=MF" class="w-5 h-5 rounded-full mr-2" alt="MintFlow">
+                                <span>By MintFlow Content Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-sm text-gray-500 italic mb-6">
+                    These templates will be available in our beta release. Join the waitlist to get early access.
+                </p>
+                <a href="#view-templates" class="inline-block bg-gray-100 text-black text-sm px-6 py-3 rounded-full hover:bg-gray-200 transition">
+                    View All Templates
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Inspirations Section -->
+    <section id="inspirations" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="mb-8">
+                <span class="text-sm text-gray-500">Possibilities</span>
+                <h2 class="text-4xl font-bold mt-2">
+                    Workflow Inspirations
+                </h2>
+                <p class="text-gray-600 mt-2">See what's possible with MintFlow</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Inspiration 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-blue-900 via-blue-700 to-cyan-500 rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/0284c7/ffffff?text=Data+Processing" alt="Data Processing Pipeline" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <div class="bg-black/30 text-white text-xs px-2 py-1 rounded-full w-fit mb-3">Data Automation</div>
+                            <h3 class="text-white text-2xl font-bold mb-2">Data Processing Pipeline</h3>
+                            <p class="text-white/80 text-sm mb-4">Transform raw data into actionable insights with automated cleaning, analysis, and visualization workflows.</p>
+                            <div class="flex items-center mt-4">
+                                <img src="https://placehold.co/30x30/0ea5e9/ffffff?text=MF" class="w-6 h-6 rounded-full mr-2" alt="MintFlow">
+                                <span class="text-white text-sm">MintFlow Data Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Inspiration 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/1e293b/ffffff?text=Document+Automation" alt="Document Automation" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <div class="bg-black/30 text-white text-xs px-2 py-1 rounded-full w-fit mb-3">Enterprise</div>
+                            <h3 class="text-white text-2xl font-bold mb-2">Document Automation</h3>
+                            <p class="text-white/80 text-sm mb-4">Extract information from documents, process with AI, and route to appropriate systems or team members.</p>
+                            <div class="flex items-center mt-4">
+                                <img src="https://placehold.co/30x30/475569/ffffff?text=MF" class="w-6 h-6 rounded-full mr-2" alt="MintFlow">
+                                <span class="text-white text-sm">MintFlow Enterprise Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Inspiration 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-rose-900 via-rose-700 to-pink-500 rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/600x400/be123c/ffffff?text=Customer+Journey" alt="Customer Journey Orchestration" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <div class="bg-black/30 text-white text-xs px-2 py-1 rounded-full w-fit mb-3">CX Automation</div>
+                            <h3 class="text-white text-2xl font-bold mb-2">Customer Journey Orchestration</h3>
+                            <p class="text-white/80 text-sm mb-4">Create personalized customer experiences across multiple touchpoints with AI-powered decision making.</p>
+                            <div class="flex items-center mt-4">
+                                <img src="https://placehold.co/30x30/e11d48/ffffff?text=MF" class="w-6 h-6 rounded-full mr-2" alt="MintFlow">
+                                <span class="text-white text-sm">MintFlow CX Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-sm text-gray-500 italic mb-6">
+                    These workflows represent what you'll be able to build with MintFlow. Join the waitlist to be notified when these capabilities are available.
+                </p>
+                <a href="#view-inspirations" class="inline-block bg-gray-100 text-black text-sm px-6 py-3 rounded-full hover:bg-gray-200 transition">
+                    Explore More Inspirations
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plugins Section -->
+    <section id="plugins" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-6xl md:text-7xl font-bold mb-4 flex items-center justify-center">
+                    PLUGINS<span class="text-yellow-400 ml-2">🔌</span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Explore our extensive library of integration plugins.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Plugin 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full">
+                            New Plugin
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Gmail+Plugin" alt="Gmail Plugin" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Gmail</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Email Integration</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Connect your Gmail account to create workflows triggered by new emails, send automated responses, and process email content with AI.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Email</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Google</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Communication</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plugin 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
+                            Popular
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Slack+Plugin" alt="Slack Plugin" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">Slack</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">Team Communication</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Integrate with Slack to send notifications, create channels, monitor messages, and build interactive bots for your team workspace.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Messaging</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Collaboration</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">Notification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plugin 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                            AI-Powered
+                        </div>
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=OpenAI+Plugin" alt="OpenAI Plugin" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">OpenAI</span>
+                                    <span class="mx-2 text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500">AI Integration</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3">Leverage OpenAI's powerful models for text generation, summarization, classification, and other natural language processing tasks in your workflows.</p>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">AI</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">NLP</span>
+                                <span class="text-xs bg-gray-200 px-2 py-0.5 rounded-full">GPT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Explore our full library of 100+ integration plugins</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-plugins" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View All Plugins
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="mb-8">
+                <span class="text-sm text-gray-500">Features</span>
+                <h2 class="text-3xl font-bold mt-2">
+                    Key Features<br>
+                    of the Platform.
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Feature 1: Visual Builder -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-green-600 via-green-500 to-teal-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Visual
+                        </div>
+                        <img src="https://placehold.co/600x400/10b981/ffffff?text=Visual+Builder" alt="Visual Builder" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Visual Workflow<br>Builder</h3>
+                            <p class="text-white/80 text-sm mb-4">Drag-and-drop interface for creating complex automation workflows without coding.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-green-600 text-xs font-bold mr-2">VB</div>
+                                <span class="text-white text-sm">MintFlow Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 2: AI Chat Interface -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-purple-900 via-purple-700 to-indigo-600 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Assistant
+                        </div>
+                        <img src="https://placehold.co/600x400/8b5cf6/ffffff?text=AI+Chat+Interface" alt="AI Chat Interface" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">AI Chat<br>Interface</h3>
+                            <p class="text-white/80 text-sm mb-4">Create workflows through natural language conversations with our AI assistant.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-purple-600 text-xs font-bold mr-2">AI</div>
+                                <span class="text-white text-sm">MintFlow AI Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 3: Team Collaboration -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-blue-900 via-blue-700 to-sky-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Teams
+                        </div>
+                        <img src="https://placehold.co/600x400/3b82f6/ffffff?text=Team+Collaboration" alt="Team Collaboration" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Team<br>Collaboration</h3>
+                            <p class="text-white/80 text-sm mb-4">Share workflows, collaborate with team members, and manage permissions.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-blue-600 text-xs font-bold mr-2">TC</div>
+                                <span class="text-white text-sm">MintFlow Enterprise</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Feature 4: Data Processing -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-amber-700 via-amber-600 to-yellow-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Data
+                        </div>
+                        <img src="https://placehold.co/600x400/f59e0b/ffffff?text=Data+Processing" alt="Data Processing" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Advanced Data<br>Processing</h3>
+                            <p class="text-white/80 text-sm mb-4">Transform, filter, and analyze data from multiple sources in your workflows.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-amber-600 text-xs font-bold mr-2">DP</div>
+                                <span class="text-white text-sm">MintFlow Data Team</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 5: API Integrations -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-rose-900 via-rose-700 to-pink-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Connect
+                        </div>
+                        <img src="https://placehold.co/600x400/e11d48/ffffff?text=API+Integrations" alt="API Integrations" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">100+ API<br>Integrations</h3>
+                            <p class="text-white/80 text-sm mb-4">Connect with hundreds of popular services and APIs without writing code.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-rose-600 text-xs font-bold mr-2">AP</div>
+                                <span class="text-white text-sm">MintFlow Integrations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 6: Workflow Templates -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-gradient-to-br from-emerald-900 via-emerald-700 to-green-500 rounded-lg overflow-hidden">
+                        <div class="absolute top-4 left-4 text-xs text-white bg-black/30 px-2 py-1 rounded-full">
+                            MF Templates
+                        </div>
+                        <img src="https://placehold.co/600x400/059669/ffffff?text=Workflow+Templates" alt="Workflow Templates" class="w-full h-auto mix-blend-overlay">
+                        <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                            <h3 class="text-white text-2xl font-bold mb-2">Ready-to-Use<br>Templates</h3>
+                            <p class="text-white/80 text-sm mb-4">Start with pre-built workflow templates for common business processes.</p>
+                            <div class="flex items-center mt-4">
+                                <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-emerald-600 text-xs font-bold mr-2">WT</div>
+                                <span class="text-white text-sm">MintFlow Community</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Check out all our powerful features</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-features" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View All Features
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MintFlow Partners Section -->
+    <section id="partners" class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="mb-12">
+                <span class="text-sm text-gray-500">Partners</span>
+                <h2 class="text-4xl font-bold mt-2 mb-4">
+                    Learn from the<br>
+                    best partners.
+                </h2>
+                <p class="text-gray-600 max-w-2xl">
+                    Join our exclusive network of automation experts who will get first access to MintFlow's platform.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Partner 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                    <div class="h-48 bg-gray-100 relative">
+                        <img src="https://placehold.co/600x400/f3f4f6/1e293b?text=Agency+Partners" alt="Agency Partners" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold">Agency Partner Program</h3>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Q2 2025</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">For digital agencies and consultancies looking to offer workflow automation solutions to clients.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Early Access</span>
+                            <a href="#apply-agency" class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center">
+                                Apply now
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Partner 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                    <div class="h-48 bg-gray-100 relative">
+                        <img src="https://placehold.co/600x400/f3f4f6/1e293b?text=Developer+Partners" alt="Developer Partners" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold">Developer Partner Program</h3>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Limited</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">For developers and technical consultants who want to build custom integrations and solutions.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">API Access</span>
+                            <a href="#apply-developer" class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center">
+                                Apply now
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Partner 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                    <div class="h-48 bg-gray-100 relative">
+                        <img src="https://placehold.co/600x400/f3f4f6/1e293b?text=Enterprise+Partners" alt="Enterprise Partners" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold">Enterprise Partner Program</h3>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">Q3 2025</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">For large organizations looking to implement workflow automation at scale.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Custom Solutions</span>
+                            <a href="#schedule-enterprise" class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center">
+                                Learn more
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center">
+                <a href="#partner-programs" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700">
+                    <span>Browse all partner programs</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MintFlow Marketplace Section -->
+    <section id="marketplace" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="mb-12">
+                <span class="text-sm text-gray-500">Marketplace</span>
+                <h2 class="text-4xl font-bold mt-2 mb-4">
+                    MintFlow Marketplace<br>
+                    <span class="text-gray-400">Coming Q3 2025</span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl">
+                    A curated marketplace for workflow templates, custom integrations, and automation solutions.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Marketplace Item 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                    <div class="h-48 bg-gray-100 relative">
+                        <img src="https://placehold.co/600x400/f3f4f6/1e293b?text=Workflow+Templates" alt="Workflow Templates" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold">Workflow Templates</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Popular</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Sell your custom workflow templates to thousands of MintFlow users. Perfect for industry-specific solutions.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">80% Revenue Share</span>
+                            <a href="#template-creator" class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center">
+                                Apply now
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Marketplace Item 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                    <div class="h-48 bg-gray-100 relative">
+                        <img src="https://placehold.co/600x400/f3f4f6/1e293b?text=Custom+Integrations" alt="Custom Integrations" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold">Custom Integrations</h3>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">For Developers</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Develop and sell integrations with specialized tools and services. Expand MintFlow's ecosystem.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Developer Tools</span>
+                            <a href="#integration-partner" class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center">
+                                Learn more
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Marketplace Item 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                    <div class="h-48 bg-gray-100 relative">
+                        <img src="https://placehold.co/600x400/f3f4f6/1e293b?text=Consultant+Directory" alt="Consultant Directory" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold">Consultant Directory</h3>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">Experts</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Offer your expertise as a MintFlow certified consultant. Help businesses implement automation solutions.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Certification Program</span>
+                            <a href="#certification-program" class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center">
+                                Apply now
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA Banner -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 p-8">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="mb-6 md:mb-0 md:mr-8">
+                        <h3 class="text-2xl font-bold mb-2">Interested in the MintFlow Marketplace?</h3>
+                        <p class="text-gray-600">Join our waitlist to be notified when applications open for our marketplace programs.</p>
+                    </div>
+                    <a href="#marketplace-info" class="inline-flex items-center px-6 py-3 bg-black text-white font-medium rounded-full hover:bg-gray-800 transition-all duration-300">
+                        <span class="mr-2">Join the waitlist</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Section -->
+    <section id="market" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-4">
+                <span class="text-sm text-gray-500">Market</span>
+            </div>
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-4">
+                    A curated marketplace<br>
+                    for digital & physical products
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Product 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Oliv+Template" alt="Oliv Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Oliv - Agency & Portfolio Framer Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Pawel Gola</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 59<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Superior+Template" alt="Superior Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Superior — Startup & SaaS Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Dream Studio</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 149<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Batavia+Template" alt="Batavia Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Batavia - Minimalist E-commerce Framer Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Visiux Themes</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 79<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Tommaso+Quinn" alt="Tommaso Quinn" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Tommaso Quinn — Framer Portfolio Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by IRIS</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 49<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Browse specially curated products</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-market" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Market
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section id="success-stories" class="py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute -top-40 left-20 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 right-20 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute inset-0 bg-[url('https://assets.website-files.com/62d52b6d074c2e318f479724/62d7eea7a7b739164d2fcabd_noise-50.png')] opacity-10 mix-blend-overlay"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <!-- Asymmetrical header -->
+            <div class="flex flex-col md:flex-row items-start justify-between mb-16">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <div class="inline-flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                            <i class="fas fa-star text-purple-600 text-sm"></i>
+                        </div>
+                        <span class="text-purple-600 font-medium">Alpha Results</span>
+                    </div>
+                    <h2 class="text-5xl md:text-6xl font-bold leading-tight">
+                        Real Impact, <br class="hidden md:block" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">Real Results</span>
+                    </h2>
+                </div>
+                <div class="md:w-1/3">
+                    <p class="text-gray-600 text-lg">
+                        Our alpha users are already seeing dramatic improvements in efficiency, accuracy, and customer satisfaction.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Featured testimonial (large) -->
+            <div class="mb-16">
+                <div class="relative bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 p-0">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-blue-500"></div>
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-2/5 bg-gradient-to-br from-green-50 to-blue-50 p-8 md:p-12 flex items-center">
+                            <div>
+                                <div class="w-20 h-20 rounded-full overflow-hidden mb-6 border-4 border-white shadow-lg">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Chen" class="w-full h-full object-cover">
+                                </div>
+                                <h3 class="text-2xl font-bold mb-2">Sarah Chen</h3>
+                                <p class="text-gray-600 mb-4">Operations Director at GreenCart</p>
+                                <div class="inline-block bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">
+                                    E-commerce
+                                </div>
+                                
+                                <div class="mt-8 flex items-center">
+                                    <div class="flex">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                    <span class="ml-2 text-sm text-gray-500">Verified Alpha User</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:w-3/5 p-8 md:p-12 flex items-center">
+                            <div>
+                                <div class="mb-8">
+                                    <i class="fas fa-quote-left text-6xl text-gray-100"></i>
+                                </div>
+                                <blockquote class="text-2xl font-light text-gray-700 mb-8 leading-relaxed">
+                                    We reduced order processing time by <span class="font-bold text-green-600">78%</span> and eliminated manual errors by automating our fulfillment workflow with MintFlow. The ROI was immediate and substantial.
+                                </blockquote>
+                                
+                                <div class="grid grid-cols-3 gap-4 mb-8">
+                                    <div class="bg-gray-50 rounded-xl p-4 text-center">
+                                        <div class="text-3xl font-bold text-green-600 mb-1">78%</div>
+                                        <div class="text-xs text-gray-500">Faster Processing</div>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-xl p-4 text-center">
+                                        <div class="text-3xl font-bold text-blue-600 mb-1">100%</div>
+                                        <div class="text-xs text-gray-500">Error Reduction</div>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-xl p-4 text-center">
+                                        <div class="text-3xl font-bold text-purple-600 mb-1">3.2x</div>
+                                        <div class="text-xs text-gray-500">ROI in 30 Days</div>
+                                    </div>
+                                </div>
+                                
+                                <a href="#case-study" class="inline-flex items-center text-green-600 hover:text-green-700 font-medium">
+                                    <span class="mr-2">Read the full case study</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Secondary testimonials (side by side) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Testimonial 1 -->
+                <div class="relative bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                    <div class="flex items-start mb-6">
+                        <div class="flex-shrink-0 mr-6">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Marcus Johnson" class="w-16 h-16 rounded-full border-2 border-white shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-1">Marcus Johnson</h3>
+                            <p class="text-gray-600 text-sm mb-2">Customer Experience Lead at TechSupport Pro</p>
+                            <div class="inline-block bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">
+                                Support
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative mb-8">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 absolute -left-1 -top-2"></i>
+                        <blockquote class="text-gray-700 pl-6 pt-2 relative z-10">
+                            Our support team now handles <span class="font-bold text-blue-600">3x more tickets</span> with faster response times thanks to MintFlow's AI-powered triage and response system.
+                        </blockquote>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="flex">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                        <a href="#case-study" class="text-blue-600 hover:text-blue-700 text-sm font-medium inline-flex items-center">
+                            <span class="mr-1">View details</span>
+                            <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="relative bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                    <div class="flex items-start mb-6">
+                        <div class="flex-shrink-0 mr-6">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Aisha Patel" class="w-16 h-16 rounded-full border-2 border-white shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-1">Aisha Patel</h3>
+                            <p class="text-gray-600 text-sm mb-2">Digital Marketing Manager at GrowthBrand</p>
+                            <div class="inline-block bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full">
+                                Marketing
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative mb-8">
+                        <i class="fas fa-quote-left text-4xl text-purple-100 absolute -left-1 -top-2"></i>
+                        <blockquote class="text-gray-700 pl-6 pt-2 relative z-10">
+                            Creating multi-channel marketing campaigns used to take days. With MintFlow, we launch them in <span class="font-bold text-purple-600">hours</span> with better personalization and targeting.
+                        </blockquote>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="flex">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                        <a href="#case-study" class="text-purple-600 hover:text-purple-700 text-sm font-medium inline-flex items-center">
+                            <span class="mr-1">View details</span>
+                            <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Metrics bar -->
+            <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl mb-16">
+                <div class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-700">
+                    <div class="p-8 text-center">
+                        <div class="text-4xl font-bold text-white mb-2">94%</div>
+                        <p class="text-gray-400">Reduction in manual tasks</p>
+                    </div>
+                    <div class="p-8 text-center">
+                        <div class="text-4xl font-bold text-white mb-2">3.5x</div>
+                        <p class="text-gray-400">Increase in productivity</p>
+                    </div>
+                    <div class="p-8 text-center">
+                        <div class="text-4xl font-bold text-white mb-2">87%</div>
+                        <p class="text-gray-400">Faster time to market</p>
+                    </div>
+                    <div class="p-8 text-center">
+                        <div class="text-4xl font-bold text-white mb-2">100+</div>
+                        <p class="text-gray-400">Alpha users & counting</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="text-center">
+                <a href="#join-waitlist" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-full shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transform hover:-translate-y-1 transition-all duration-300">
+                    <span class="mr-2">Join the Waitlist to Achieve Similar Results</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <p class="text-sm text-gray-500 mt-4">
+                    Limited spots available for our beta program launching in Q2 2025
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="py-20 relative overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 opacity-95 z-0"></div>
+        <div class="absolute inset-0 bg-[url('https://assets.website-files.com/62d52b6d074c2e318f479724/62d7eea7a7b739164d2fcabd_noise-50.png')] opacity-30 mix-blend-overlay z-0"></div>
+        
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-mint via-blue-500 to-purple-600"></div>
+        <div class="absolute -top-20 -left-20 w-80 h-80 bg-mint/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 -right-20 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center mb-4">
+                    <span class="px-3 py-1 bg-white/10 backdrop-blur-md text-white text-sm rounded-full border border-white/20 shadow-lg">
+                        <span class="mr-2 inline-block w-2 h-2 bg-mint rounded-full animate-pulse"></span>
+                        Our Vision
+                    </span>
+                </div>
+                <h2 class="text-5xl md:text-6xl font-bold mb-6 text-white">
+                    The Future of <span class="bg-clip-text text-transparent bg-gradient-to-r from-mint via-blue-400 to-purple-500">Workflow Automation</span>
+                </h2>
+                <p class="text-white/70 text-xl max-w-2xl mx-auto">
+                    Our ambitious roadmap for revolutionizing how businesses automate their processes
+                </p>
+            </div>
+            
+            <!-- Timeline -->
+            <div class="relative max-w-6xl mx-auto">
+                <!-- Timeline line -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-mint via-blue-500 to-purple-600"></div>
+                
+                <!-- Q2 2025 -->
+                <div class="relative mb-24">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 mb-8 md:mb-0 text-right">
+                            <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 shadow-xl hover:shadow-mint/10 hover:border-mint/20 transition-all duration-500 transform hover:-translate-y-1">
+                                <div class="inline-block px-4 py-1 bg-mint/10 text-mint rounded-full text-sm font-medium mb-4">Q2 2025</div>
+                                <h3 class="text-3xl font-bold mb-4 text-white">Private Beta Launch</h3>
+                                <p class="text-white/70 mb-6">The first release of MintFlow with core functionality for early adopters and partners.</p>
+                                <ul class="space-y-3 mb-6">
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-mint/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-mint text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Visual Workflow Builder</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-mint/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-mint text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">50+ Core Integrations</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-mint/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-mint text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Basic AI Assistant</span>
+                                    </li>
+                                </ul>
+                                <a href="#join-waitlist" class="group inline-flex items-center text-mint hover:text-white font-medium transition-all duration-300">
+                                    <span class="mr-2">Join the waitlist</span>
+                                    <span class="w-6 h-6 rounded-full bg-mint/20 flex items-center justify-center group-hover:bg-mint transition-all duration-300">
+                                        <i class="fas fa-arrow-right text-xs"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-r from-mint to-blue-500 flex items-center justify-center border-4 border-slate-900 shadow-lg z-10">
+                            <span class="text-white font-bold">1</span>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12"></div>
+                    </div>
+                </div>
+                
+                <!-- Q3 2025 -->
+                <div class="relative mb-24">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center border-4 border-slate-900 shadow-lg z-10">
+                            <span class="text-white font-bold">2</span>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 mb-8 md:mb-0">
+                            <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/20 transition-all duration-500 transform hover:-translate-y-1">
+                                <div class="inline-block px-4 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm font-medium mb-4">Q3 2025</div>
+                                <h3 class="text-3xl font-bold mb-4 text-white">Public Beta</h3>
+                                <p class="text-white/70 mb-6">Expanded access with enhanced features and more integration options.</p>
+                                <ul class="space-y-3 mb-6">
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-blue-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Advanced AI Capabilities</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-blue-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">100+ Integrations</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-blue-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Team Collaboration Features</span>
+                                    </li>
+                                </ul>
+                                <a href="#join-waitlist" class="group inline-flex items-center text-blue-400 hover:text-white font-medium transition-all duration-300">
+                                    <span class="mr-2">Reserve your spot</span>
+                                    <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500 transition-all duration-300">
+                                        <i class="fas fa-arrow-right text-xs"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Q4 2025 -->
+                <div class="relative mb-24">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 mb-8 md:mb-0 text-right">
+                            <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 shadow-xl hover:shadow-purple-500/10 hover:border-purple-500/20 transition-all duration-500 transform hover:-translate-y-1">
+                                <div class="inline-block px-4 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm font-medium mb-4">Q4 2025</div>
+                                <h3 class="text-3xl font-bold mb-4 text-white">General Availability</h3>
+                                <p class="text-white/70 mb-6">Full product launch with enterprise-grade features and expanded platform capabilities.</p>
+                                <ul class="space-y-3 mb-6">
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-purple-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Enterprise Features</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-purple-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Advanced Analytics</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-purple-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Custom Integration Builder</span>
+                                    </li>
+                                </ul>
+                                <a href="#join-waitlist" class="group inline-flex items-center text-purple-400 hover:text-white font-medium transition-all duration-300">
+                                    <span class="mr-2">Get early pricing</span>
+                                    <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center group-hover:bg-purple-500 transition-all duration-300">
+                                        <i class="fas fa-arrow-right text-xs"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center border-4 border-slate-900 shadow-lg z-10">
+                            <span class="text-white font-bold">3</span>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12"></div>
+                    </div>
+                </div>
+                
+                <!-- 2026 -->
+                <div class="relative">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-r from-gray-500 to-gray-600 flex items-center justify-center border-4 border-slate-900 shadow-lg z-10">
+                            <span class="text-white font-bold">4</span>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 shadow-xl hover:shadow-gray-500/10 hover:border-gray-500/20 transition-all duration-500 transform hover:-translate-y-1">
+                                <div class="inline-block px-4 py-1 bg-gray-500/10 text-gray-400 rounded-full text-sm font-medium mb-4">2026</div>
+                                <h3 class="text-3xl font-bold mb-4 text-white">Future Vision</h3>
+                                <p class="text-white/70 mb-6">Expanding the platform with cutting-edge AI capabilities and global reach.</p>
+                                <ul class="space-y-3 mb-6">
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-gray-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-gray-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">AI Workflow Generation</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-gray-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-gray-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Predictive Automation</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-gray-500/20 flex items-center justify-center mt-0.5 mr-3">
+                                            <i class="fas fa-check text-gray-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-white/80">Global Expansion</span>
+                                    </li>
+                                </ul>
+                                <a href="#join-waitlist" class="group inline-flex items-center text-gray-400 hover:text-white font-medium transition-all duration-300">
+                                    <span class="mr-2">Help shape our future</span>
+                                    <span class="w-6 h-6 rounded-full bg-gray-500/20 flex items-center justify-center group-hover:bg-gray-500 transition-all duration-300">
+                                        <i class="fas fa-arrow-right text-xs"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-20 text-center">
+                <a href="#join-waitlist" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-mint to-blue-500 text-white font-medium rounded-full shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transform hover:-translate-y-1 transition-all duration-300">
+                    <span class="mr-2">Join Waitlist to Influence Our Roadmap</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Industry Solutions Section -->
+    <section id="industry-solutions" class="py-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-mint via-blue-500 to-purple-600 opacity-50"></div>
+        <div class="absolute -top-40 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-full h-1/2 bg-[url('https://assets.website-files.com/62d52b6d074c2e318f479724/62d7eea7a7b739164d2fcabd_noise-50.png')] opacity-10 mix-blend-overlay"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <!-- Header with asymmetrical design -->
+            <div class="flex flex-col md:flex-row items-start justify-between mb-16">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <div class="inline-flex items-center mb-4">
+                        <span class="w-12 h-1 bg-mint rounded-full mr-4"></span>
+                        <span class="text-mint font-medium">Industry Solutions</span>
+                    </div>
+                    <h2 class="text-5xl md:text-6xl font-bold leading-tight">
+                        Automation for <br class="hidden md:block" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-mint to-blue-600">Every Industry</span>
+                    </h2>
+                </div>
+                <div class="md:w-1/3">
+                    <p class="text-gray-600 text-lg">
+                        MintFlow adapts to your industry's unique challenges with specialized automation solutions that drive efficiency and growth.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Featured solution (large) -->
+            <div class="mb-16 relative">
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl overflow-hidden shadow-2xl">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-1/2 p-12 md:p-16">
+                            <div class="inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-white text-sm mb-8">
+                                <span class="w-2 h-2 bg-blue-300 rounded-full mr-2 animate-pulse"></span>
+                                <span>Most Popular</span>
+                            </div>
+                            
+                            <h3 class="text-4xl font-bold text-white mb-6">Marketing & Sales Automation</h3>
+                            <p class="text-blue-100 text-lg mb-8">
+                                Transform your customer acquisition with AI-powered lead generation, scoring, and nurturing workflows that seamlessly connect marketing and sales teams.
+                            </p>
+                            
+                            <div class="grid grid-cols-2 gap-6 mb-8">
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-check text-blue-300 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-white font-medium">Lead Generation</h4>
+                                        <p class="text-blue-200 text-sm">Multi-channel capture</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-check text-blue-300 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-white font-medium">Email Marketing</h4>
+                                        <p class="text-blue-200 text-sm">Personalized sequences</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-check text-blue-300 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-white font-medium">Sales Process</h4>
+                                        <p class="text-blue-200 text-sm">Automated handoffs</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-check text-blue-300 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-white font-medium">Customer Journey</h4>
+                                        <p class="text-blue-200 text-sm">Visual mapping tools</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="#marketing-sales" class="inline-flex items-center px-6 py-3 bg-white text-blue-700 font-medium rounded-full hover:bg-blue-50 transition-all duration-300 transform hover:-translate-y-1">
+                                <span class="mr-2">Learn more</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            
+                            <div class="absolute top-8 right-8 bg-blue-500 text-white text-sm px-3 py-1 rounded-full">
+                                Coming Q2 2025
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 bg-gradient-to-br from-blue-500/30 to-blue-900/30 backdrop-blur-sm p-8 flex items-center justify-center">
+                            <img src="https://placehold.co/600x400/0284c7/ffffff?text=Marketing+Automation" alt="Marketing Automation" class="rounded-xl shadow-lg max-w-full h-auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Secondary solutions (horizontal scroll on mobile, grid on desktop) -->
+            <div class="relative mb-16">
+                <div class="flex overflow-x-auto md:grid md:grid-cols-3 gap-6 pb-8 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
+                    <!-- Solution 1 -->
+                    <div class="min-w-[280px] md:min-w-0 bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+                        <div class="h-40 bg-purple-600 relative">
+                            <div class="absolute inset-0 bg-[url('https://placehold.co/600x400/7c3aed/ffffff?text=Support')] bg-cover bg-center opacity-80"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-purple-900 to-transparent"></div>
+                            <div class="absolute bottom-4 left-6">
+                                <h3 class="text-2xl font-bold text-white">Customer Support</h3>
+                            </div>
+                            <div class="absolute top-4 right-4 bg-purple-500 text-white text-xs px-3 py-1 rounded-full">
+                                Beta testing
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <p class="text-gray-600 mb-6">
+                                AI-powered ticket routing, response generation, and issue resolution tracking.
+                            </p>
+                            <ul class="space-y-3 mb-6">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">Ticket Triage & Routing</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">AI-assisted Responses</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">SLA Monitoring</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="#support" class="text-purple-600 hover:text-purple-700 font-medium text-sm inline-flex items-center">
+                                <span class="mr-2">Explore solution</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Solution 2 -->
+                    <div class="min-w-[280px] md:min-w-0 bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+                        <div class="h-40 bg-amber-600 relative">
+                            <div class="absolute inset-0 bg-[url('https://placehold.co/600x400/d97706/ffffff?text=Operations')] bg-cover bg-center opacity-80"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-amber-900 to-transparent"></div>
+                            <div class="absolute bottom-4 left-6">
+                                <h3 class="text-2xl font-bold text-white">Operations & HR</h3>
+                            </div>
+                            <div class="absolute top-4 right-4 bg-amber-500 text-white text-xs px-3 py-1 rounded-full">
+                                Q3 2025
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <p class="text-gray-600 mb-6">
+                                Streamline internal processes from employee onboarding to procurement.
+                            </p>
+                            <ul class="space-y-3 mb-6">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-amber-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">Employee Onboarding</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-amber-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">Time-off Processing</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-amber-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">Expense Management</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="#operations" class="text-amber-600 hover:text-amber-700 font-medium text-sm inline-flex items-center">
+                                <span class="mr-2">Explore solution</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Solution 3 -->
+                    <div class="min-w-[280px] md:min-w-0 bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+                        <div class="h-40 bg-green-600 relative">
+                            <div class="absolute inset-0 bg-[url('https://placehold.co/600x400/16a34a/ffffff?text=E-commerce')] bg-cover bg-center opacity-80"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-green-900 to-transparent"></div>
+                            <div class="absolute bottom-4 left-6">
+                                <h3 class="text-2xl font-bold text-white">E-commerce & Retail</h3>
+                            </div>
+                            <div class="absolute top-4 right-4 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
+                                Early access
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <p class="text-gray-600 mb-6">
+                                Automate inventory, order processing, and customer communications.
+                            </p>
+                            <ul class="space-y-3 mb-6">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">Order Processing</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">Inventory Updates</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span class="text-sm text-gray-700">Cart Recovery</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="#ecommerce" class="text-green-600 hover:text-green-700 font-medium text-sm inline-flex items-center">
+                                <span class="mr-2">Explore solution</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scroll indicators (mobile only) -->
+                <div class="flex justify-center mt-4 md:hidden">
+                    <div class="w-2 h-2 rounded-full bg-gray-300 mx-1"></div>
+                    <div class="w-2 h-2 rounded-full bg-gray-500 mx-1"></div>
+                    <div class="w-2 h-2 rounded-full bg-gray-300 mx-1"></div>
+                </div>
+            </div>
+            
+            <!-- Custom solution banner -->
+            <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-2/3 p-8 md:p-12">
+                        <h3 class="text-3xl font-bold text-white mb-4">Need a Custom Solution?</h3>
+                        <p class="text-gray-300 mb-6">
+                            Our enterprise team works with you to develop tailored automation solutions for your specific industry challenges.
+                        </p>
+                        <a href="#enterprise-consultation" class="inline-flex items-center px-6 py-3 bg-white text-gray-900 font-medium rounded-full hover:bg-gray-100 transition-all duration-300">
+                            <span class="mr-2">Schedule a Consultation</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="md:w-1/3 p-8 flex justify-center">
+                        <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center">
+                            <i class="fas fa-building text-white text-3xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Section -->
+    <section id="market" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-4">
+                <span class="text-sm text-gray-500">Market</span>
+            </div>
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-4">
+                    A curated marketplace<br>
+                    for digital & physical products
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Product 1 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Oliv+Template" alt="Oliv Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Oliv - Agency & Portfolio Framer Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Pawel Gola</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 59<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Superior+Template" alt="Superior Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Superior — Startup & SaaS Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Dream Studio</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 149<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Batavia+Template" alt="Batavia Template" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Batavia - Minimalist E-commerce Framer Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by Visiux Themes</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 79<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="card-hover transition duration-300">
+                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://placehold.co/600x400/e2e8f0/1e293b?text=Tommaso+Quinn" alt="Tommaso Quinn" class="w-full h-auto">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">Digital Product</span>
+                                </div>
+                            </div>
+                            <h3 class="text-sm font-medium mb-1">Tommaso Quinn — Framer Portfolio Template</h3>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center">
+                                    <span class="text-xs text-gray-500">by IRIS</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">from 49<sup>.00</sup></span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="#view-product" class="inline-flex items-center text-xs text-gray-500">
+                                    View Product
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
+                    <span>Browse specially curated products</span>
+                    <span class="ml-2">→</span>
+                </div>
+                <a href="#view-market" class="inline-block bg-gray-100 text-black text-sm px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                    View Market
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist Section -->
+    <section id="join-waitlist" class="py-16 bg-gradient-to-r from-mint/10 to-blue/10">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-8">
+                <h2 class="text-4xl font-bold mb-4">Join the MintFlow Waitlist</h2>
+                <p class="text-gray-600 mb-8">Be among the first to experience the future of AI workflow automation. Limited spots available for our beta program.</p>
+                
+                <form class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="fullname" class="block text-sm font-medium text-gray-700 mb-1 text-left">Full Name</label>
+                            <input type="text" id="fullname" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-mint focus:border-mint">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1 text-left">Email Address</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-mint focus:border-mint">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="company" class="block text-sm font-medium text-gray-700 mb-1 text-left">Company (Optional)</label>
+                        <input type="text" id="company" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-mint focus:border-mint">
+                    </div>
+                    <div class="mb-6">
+                        <label for="use-case" class="block text-sm font-medium text-gray-700 mb-1 text-left">How would you use MintFlow?</label>
+                        <textarea id="use-case" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-mint focus:border-mint"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-mint hover:bg-green-600 text-white font-medium px-6 py-3 rounded-full transition">
+                        Join Waitlist - Free
+                    </button>
+                    <p class="text-xs text-gray-500 mt-4">By joining the waitlist, you'll receive exclusive updates, early access opportunities, and special launch pricing.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Sections -->
+    <section id="cta" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- CTA 1 -->
+                <div class="relative bg-black rounded-lg overflow-hidden">
+                    <div class="p-8 text-white">
+                        <span class="text-xs text-gray-400 mb-2 block">For Developers</span>
+                        <h3 class="text-2xl font-bold mb-6">Build AI Agents with our Developer API</h3>
+                        <div class="bg-black/30 p-3 rounded-lg mb-6 font-mono text-xs">
+                            <span class="text-blue-400">const</span> <span class="text-green-400">agent</span> = <span class="text-blue-400">await</span> mintflow.<span class="text-purple-400">createAgent</span>({<br>
+                            &nbsp;&nbsp;name: <span class="text-yellow-400">"Email Assistant"</span>,<br>
+                            &nbsp;&nbsp;description: <span class="text-yellow-400">"Processes customer emails"</span><br>
+                            });
+                        </div>
+                        <a href="#developer-access" class="inline-block border border-white text-white text-sm px-4 py-2 rounded-full hover:bg-white hover:text-black transition">
+                            Request Developer Access
+                        </a>
+                        <div class="mt-16 text-xs text-gray-400">
+                            <i class="fas fa-clock mr-1"></i> Developer API coming soon
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CTA 2 -->
+                <div class="relative bg-black rounded-lg overflow-hidden">
+                    <div class="p-8 text-white">
+                        <span class="text-xs text-gray-400 mb-2 block">For Enterprises</span>
+                        <h3 class="text-2xl font-bold mb-6">Custom AI Workflow Solutions for Your Organization</h3>
+                        <ul class="mb-6 text-sm">
+                            <li class="mb-2 flex items-start">
+                                <i class="fas fa-check text-mint mt-1 mr-2"></i>
+                                <span>Dedicated deployment options</span>
+                            </li>
+                            <li class="mb-2 flex items-start">
+                                <i class="fas fa-check text-mint mt-1 mr-2"></i>
+                                <span>Custom integration development</span>
+                            </li>
+                            <li class="mb-2 flex items-start">
+                                <i class="fas fa-check text-mint mt-1 mr-2"></i>
+                                <span>Enterprise-grade security & compliance</span>
+                            </li>
+                        </ul>
+                        <a href="#enterprise-consultation" class="inline-block border border-white text-white text-sm px-4 py-2 rounded-full hover:bg-white hover:text-black transition">
+                            Schedule Consultation
+                        </a>
+                        <div class="mt-16 text-xs text-gray-400">
+                            <i class="fas fa-clock mr-1"></i> Limited early access available
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-100">
+        <div class="container mx-auto px-4">
+            <!-- Logo and main links -->
+            <div class="flex flex-col md:flex-row justify-between items-start mb-12">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-6">
+                        <span class="text-2xl font-bold text-black">Mint<span class="text-gray-400">Flow</span></span>
+                    </div>
+                    <p class="text-sm text-gray-500 max-w-xs mb-6">
+                        AI-first workflow automation platform for building intelligent agents through a conversational interface.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition">
+                            <i class="fab fa-twitter text-sm"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition">
+                            <i class="fab fa-linkedin-in text-sm"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition">
+                            <i class="fab fa-github text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <!-- Column 1 -->
+                    <div>
+                        <h4 class="text-sm font-medium mb-4">Product</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#features" class="text-sm text-gray-500 hover:text-black transition">Features</a></li>
+                            <li><a href="#templates" class="text-sm text-gray-500 hover:text-black transition">Templates</a></li>
+                            <li><a href="#plugins" class="text-sm text-gray-500 hover:text-black transition">Plugins</a></li>
+                            <li><a href="#pricing" class="text-sm text-gray-500 hover:text-black transition">Pricing</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Column 2 -->
+                    <div>
+                        <h4 class="text-sm font-medium mb-4">Resources</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Documentation</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">API Reference</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Guides</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Blog</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Column 3 -->
+                    <div>
+                        <h4 class="text-sm font-medium mb-4">Company</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">About</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Careers</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Contact</a></li>
+                            <li><a href="#partners" class="text-sm text-gray-500 hover:text-black transition">Partners</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Column 4 -->
+                    <div>
+                        <h4 class="text-sm font-medium mb-4">Legal</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Privacy</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Terms</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Security</a></li>
+                            <li><a href="#" class="text-sm text-gray-500 hover:text-black transition">Cookies</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter -->
+            <div class="py-8 border-t border-gray-100 mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <h4 class="text-sm font-medium mb-1">Stay updated</h4>
+                        <p class="text-sm text-gray-500">Subscribe to our newsletter for updates and early access.</p>
+                    </div>
+                    <div class="w-full md:w-auto">
+                        <div class="flex">
+                            <input type="email" placeholder="Enter your email" class="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-mint focus:border-mint w-full md:w-64">
+                            <button class="bg-mint hover:bg-green-600 text-white px-4 py-2 rounded-r-lg transition">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-gray-100">
+                <p class="text-xs text-gray-500 mb-4 md:mb-0">
+                    © 2025 MintFlow, Inc. All rights reserved.
+                </p>
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Status</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Sitemap</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-black transition">Accessibility</a>
+                    <div class="flex items-center">
+                        <span class="text-xs text-gray-500 mr-2">Language:</span>
+                        <select class="text-xs bg-transparent border-none focus:outline-none text-gray-500 cursor-pointer">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
