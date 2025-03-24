@@ -1093,8 +1093,6 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
-<<<<<<< HEAD
-=======
   packages/plugins/krisp-call:
     dependencies:
       axios:
@@ -1114,7 +1112,6 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
->>>>>>> dev2
   packages/plugins/langchain:
     dependencies:
       '@langchain/anthropic':
@@ -1378,16 +1375,6 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
-<<<<<<< HEAD
-  packages/plugins/microsoft-office:
-    dependencies:
-      '@microsoft/microsoft-graph-client':
-        specifier: ^3.0.7
-        version: 3.0.7
-      '@microsoft/microsoft-graph-types':
-        specifier: ^2.40.0
-        version: 2.40.0
-=======
   packages/plugins/medium:
     dependencies:
       axios:
@@ -1414,7 +1401,6 @@ importers:
         version: 5.7.3
 
   packages/plugins/milvus:
->>>>>>> dev2
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1604,8 +1590,6 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
-<<<<<<< HEAD
-=======
   packages/plugins/photoroom:
     dependencies:
       '@types/form-data':
@@ -1631,7 +1615,6 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
->>>>>>> dev2
   packages/plugins/pinecone:
     dependencies:
       '@pinecone-database/pinecone':
@@ -2213,8 +2196,6 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
-<<<<<<< HEAD
-=======
   packages/plugins/stability-ai:
     dependencies:
       '@types/node-fetch':
@@ -2252,7 +2233,6 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
->>>>>>> dev2
   packages/plugins/start:
     devDependencies:
       '@types/jest':
@@ -6767,12 +6747,9 @@ packages:
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
 
-<<<<<<< HEAD
-=======
   '@types/caseless@0.12.5':
     resolution: {integrity: sha512-hWtVTC2q7hc7xZ/RLbxapMvDMgUnDvKvMOpKal4DrMyfGBUfB1oKaZlIRr6mJL+If3bAP6sV/QneGzF6tJjZDg==}
 
->>>>>>> dev2
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
@@ -6974,12 +6951,9 @@ packages:
   '@types/readable-stream@4.0.18':
     resolution: {integrity: sha512-21jK/1j+Wg+7jVw1xnSwy/2Q1VgVjWuFssbYGTREPUBeZ+rqVFl2udq0IkxzPC0ZhOzVceUbyIACFZKLqKEBlA==}
 
-<<<<<<< HEAD
-=======
   '@types/request@2.48.12':
     resolution: {integrity: sha512-G3sY+NpsA9jnwm0ixhAFQSJ3Q9JkpLZpJbI3GMv0mIAT0y3mRabYeINzal5WOChIiaTEGQYlHOKgkaM9EisWHw==}
 
->>>>>>> dev2
   '@types/responselike@1.0.3':
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
 
@@ -7337,8 +7311,6 @@ packages:
   asap@2.0.6:
     resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
 
-<<<<<<< HEAD
-=======
   asn1.js-rfc2560@5.0.1:
     resolution: {integrity: sha512-1PrVg6kuBziDN3PGFmRk3QrjpKvP9h/Hv5yMrFZvC1kpzP6dQRzf5BpKstANqHBkaOUmTpakJWhicTATOA/SbA==}
     peerDependencies:
@@ -7350,7 +7322,6 @@ packages:
   asn1.js@5.4.1:
     resolution: {integrity: sha512-+I//4cYPccV8LdmBLiX8CYvf9Sp3vQsrqu2QNXRcrbiWvcx/UdlFiqUJJzxRQxgsZmvhXhn4cSKeSmoFjVdupA==}
 
->>>>>>> dev2
   asn1@0.2.6:
     resolution: {integrity: sha512-ix/FxPn0MDjeyJ7i/yoHGFt/EX6LyNbxSEhPPXODPL+KB0VPk86UYfL0lMdy+KCnv+fmvIzySwaK5COwqVbWTQ==}
 
@@ -17015,11 +16986,8 @@ snapshots:
       '@types/node': 20.17.19
       '@types/responselike': 1.0.3
 
-<<<<<<< HEAD
-=======
   '@types/caseless@0.12.5': {}
 
->>>>>>> dev2
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 20.17.19
@@ -17262,8 +17230,6 @@ snapshots:
       '@types/node': 20.17.19
       safe-buffer: 5.1.2
 
-<<<<<<< HEAD
-=======
   '@types/request@2.48.12':
     dependencies:
       '@types/caseless': 0.12.5
@@ -17271,7 +17237,6 @@ snapshots:
       '@types/tough-cookie': 4.0.5
       form-data: 2.5.3
 
->>>>>>> dev2
   '@types/responselike@1.0.3':
     dependencies:
       '@types/node': 20.17.19
@@ -17704,8 +17669,6 @@ snapshots:
 
   asap@2.0.6: {}
 
-<<<<<<< HEAD
-=======
   asn1.js-rfc2560@5.0.1(asn1.js@5.4.1):
     dependencies:
       asn1.js: 5.4.1
@@ -17722,7 +17685,6 @@ snapshots:
       minimalistic-assert: 1.0.1
       safer-buffer: 2.1.2
 
->>>>>>> dev2
   asn1@0.2.6:
     dependencies:
       safer-buffer: 2.1.2
