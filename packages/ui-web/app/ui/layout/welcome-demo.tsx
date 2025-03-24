@@ -10,14 +10,10 @@ import MusicPlayer from './music-player';
 import SearchUI from './search';
 import ThemeToggle from './ThemeToggle';
 import LayoutSwitcher from './elements/smart';
+import { InviteBox } from './invite-box';
 
 const LandingPage = () => {
-    const teamMembers = [
-        { name: 'Emma Smith', email: 'emma.smith@example.com' },
-        { name: 'Alex Chen', email: 'alex.chen@example.com' },
-        { name: 'Sarah Jones', email: 'sarah.jones@example.com' },
-        { name: 'David Kim', email: 'david.kim@example.com' }
-    ];
+
 
     return (
         // <div className="min-h-screen bg-gradient-to-br from-purple-50 to-purple-100">
@@ -38,18 +34,19 @@ const LandingPage = () => {
             <ViewManager id="search-box-1" title="Search UI">
                 <SearchUI />
             </ViewManager> */}
-            {/* 
+
             <ViewManager id="box-1" title="Box One">
-                <div>Content for box 1</div>
-            </ViewManager> */}
-
-            {/* <ViewManager id="music-box-1" title="Music Player" defaultSize={{ width: 400, height: 300 }} compact={true} defaultPosition={{ x: 100, y: 100 }}>
-                <MusicPlayer />
-            </ViewManager> */}
-
-            <ViewManager id="music-box-1" title="Music Player" defaultSize={{ width: 1000, height: 800 }} compact={true} defaultPosition={{ x: 100, y: 100 }}>
-                <LayoutSwitcher />
+                <InviteBox />
             </ViewManager>
+
+
+            <ViewManager id="music-box-1" title="Music Player" defaultSize={{ width: 400, height: 300 }} compact={true} defaultPosition={{ x: 100, y: 100 }}>
+                <MusicPlayer />
+            </ViewManager>
+
+            {/* <ViewManager id="music-box-1" title="Music Player" defaultSize={{ width: 1000, height: 800 }} compact={true} defaultPosition={{ x: 100, y: 100 }}>
+                <LayoutSwitcher />
+            </ViewManager> */}
 
             {/* 
 
@@ -60,7 +57,7 @@ const LandingPage = () => {
             <ViewManager id="box-2" title="Box 2">
                 <div>Content for box 2</div>
             </ViewManager> */}
-            {/* 
+
             <ViewManager
                 id="my-float-box"
                 title="My Floating Window"
@@ -69,7 +66,7 @@ const LandingPage = () => {
                 compact={true}
             >
                 <EditableComponent />
-            </ViewManager> */}
+            </ViewManager>
 
             {/* Header */}
             <header className="flex items-center justify-between px-6 py-3 bg-white/50 backdrop-blur-sm border-b border-gray-200">
@@ -110,7 +107,6 @@ const LandingPage = () => {
                         <BsGithub className="w-5 h-5" />
                     </button>
                     <ThemeToggle />
-
                 </div>
             </header>
 
@@ -137,35 +133,7 @@ const LandingPage = () => {
                     </div>
 
                     {/* Right Column */}
-                    <div className="space-y-8">
-                        {/* Team Section */}
-                        <div className="bg-white p-6 rounded-lg shadow-sm">
-                            <h2 className="text-lg font-semibold mb-4">Your team</h2>
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        type="email"
-                                        placeholder="Email address"
-                                        className="flex-1 p-2 border rounded-md"
-                                    />
-                                    <button className="bg-blue-600 text-white px-4 py-2 rounded-md">
-                                        Invite
-                                    </button>
-                                </div>
-                                <div className="space-y-3">
-                                    {teamMembers.map((member, index) => (
-                                        <div key={index} className="flex items-center gap-3">
-                                            <div className="w-8 h-8 bg-gray-200 rounded-full" />
-                                            <div>
-                                                <div className="text-sm font-medium">{member.name}</div>
-                                                <div className="text-sm text-gray-500">{member.email}</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </main>
         </div>

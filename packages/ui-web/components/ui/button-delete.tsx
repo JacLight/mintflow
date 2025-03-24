@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cn } from '@/lib/utils';
+import { classNames } from '@/lib/utils';
 import { Check, Trash } from 'lucide-react';
 
 interface ButtonDeleteProps {
@@ -31,7 +31,7 @@ export const ButtonDelete: React.FC<ButtonDeleteProps> = ({ onDelete, className 
 
   return (
     <button
-      className={cn(`p-1 hover:bg-gray-100 rounded-full ${deleteState === 'confirm' ? 'bg-red-100' : ''}`, className)}
+      className={classNames(`p-1 hover:bg-gray-100 rounded-full ${deleteState === 'confirm' ? 'bg-red-100' : ''}`, className)}
       aria-label="Delete"
       title={deleteState === 'normal' ? "Delete" : "Confirm delete"}
       onClick={handleDelete}

@@ -56,7 +56,7 @@
     "prosemirror-markdown": "^1.13.1",
     "prosemirror-schema-basic": "^1.2.3",
     "react": "19.0.0",
-    "react-data-grid": "^7.0.0-beta.48",
+    "react-data-grid": "7.0.0-beta.48",
     "react-dom": "19.0.0",
     "react-icons": "^5.4.0",
     "react-markdown": "^9.0.3",
