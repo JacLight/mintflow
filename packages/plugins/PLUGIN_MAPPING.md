@@ -29,241 +29,6 @@ This document tracks the mapping between reference plugins from `__ref_only` and
 | apollo | apollo | ✅ Completed | Provides integration with Apollo.io for finding contact information and enriching company data. |
 | sendgrid | sendgrid | ✅ Completed | Provides integration with SendGrid for sending transactional and marketing emails. |
 | klaviyo | klaviyo | ✅ Completed | Provides integration with Klaviyo for email marketing and customer data platform, including tracking events, identifying profiles, managing lists, and accessing campaign data. |
-
-### klaviyo (from klaviyo)
-
-The klaviyo plugin provides integration with Klaviyo, a powerful email marketing and customer data platform.
-
-**Actions:**
-
-- `track_event`: Tracks an event in Klaviyo, associating it with a customer profile
-- `identify_profile`: Creates or updates a profile in Klaviyo
-- `get_lists`: Retrieves all lists from your Klaviyo account
-- `add_profiles_to_list`: Adds one or more profiles to a Klaviyo list
-- `remove_profile_from_list`: Removes a profile from a Klaviyo list
-- `get_campaigns`: Retrieves all campaigns from your Klaviyo account
-
-### sendgrid (from sendgrid)
-
-The sendgrid plugin provides integration with SendGrid, a cloud-based email delivery service that enables you to send transactional and marketing emails.
-
-**Actions:**
-
-- `send_email`: Sends a text or HTML email to one or more recipients with customizable sender information, subject, and content
-- `send_dynamic_template`: Sends an email using a SendGrid dynamic template with template data for personalization
-- `custom_api_call`: Makes a custom API call to the SendGrid API for advanced use cases
-
-### apollo (from apollo)
-
-The apollo plugin provides integration with Apollo.io, a sales intelligence and engagement platform for finding contact information and enriching company data.
-
-**Actions:**
-
-- `match_person`: Finds a person's information based on their email address, returning detailed information including name, job title, LinkedIn URL, phone numbers, and organization details
-- `enrich_company`: Retrieves detailed information about a company based on its domain, returning comprehensive company data including industry, size, revenue, location, technologies used, and more
-
-Both actions support caching to improve performance and reduce API usage. When `cacheResponse` is set to `true` (the default), the plugin will store the response in the project store for future use.
-
-### activecampaign (from activecampaign)
-
-The activecampaign plugin provides integration with ActiveCampaign for contact and account management, tagging, and list subscriptions.
-
-**Contact Actions:**
-
-- `create_contact`: Creates a new contact in ActiveCampaign
-- `update_contact`: Updates an existing contact in ActiveCampaign
-- `add_tag_to_contact`: Adds a tag to a contact for better segmentation
-- `subscribe_unsubscribe_contact`: Subscribes or unsubscribes a contact from a list
-- `add_contact_to_account`: Associates a contact with an account
-
-**Account Actions:**
-
-- `create_account`: Creates a new account in ActiveCampaign
-- `update_account`: Updates an existing account in ActiveCampaign
-
-### convertkit (from convertkit)
-
-The convertkit plugin provides integration with ConvertKit, an email marketing platform designed for creators.
-
-**Subscriber Actions:**
-
-- `get_subscriber_by_id`: Gets a subscriber by ID
-- `get_subscriber_by_email`: Gets a subscriber by email address
-- `list_subscribers`: Lists all subscribers with filtering options
-- `update_subscriber`: Updates an existing subscriber
-- `unsubscribe_subscriber`: Unsubscribes a subscriber
-- `list_tags_by_subscriber_id`: Lists all tags for a subscriber by ID
-- `list_tags_by_email`: Lists all tags for a subscriber by email
-
-**Tag Actions:**
-
-- `list_tags`: Lists all tags
-- `create_tag`: Creates a new tag
-- `tag_subscriber`: Adds a tag to a subscriber
-- `remove_tag_from_subscriber_by_email`: Removes a tag from a subscriber by email
-- `remove_tag_from_subscriber_by_id`: Removes a tag from a subscriber by ID
-- `list_subscriptions_to_tag`: Lists all subscriptions to a tag
-
-**Form Actions:**
-
-- `list_forms`: Lists all forms
-- `add_subscriber_to_form`: Adds a subscriber to a form
-- `list_form_subscriptions`: Lists all subscriptions to a form
-
-**Sequence Actions:**
-
-- `list_sequences`: Lists all sequences
-- `add_subscriber_to_sequence`: Adds a subscriber to a sequence
-- `list_subscriptions_to_sequence`: Lists all subscriptions to a sequence
-
-**Custom Field Actions:**
-
-- `list_fields`: Lists all custom fields
-- `create_field`: Creates a new custom field
-- `update_field`: Updates an existing custom field
-- `delete_field`: Deletes a custom field
-
-**Webhook Actions:**
-
-- `create_webhook`: Creates a webhook for various events
-- `delete_webhook`: Deletes a webhook
-
-### sendgrid (from sendgrid)
-
-The sendgrid plugin provides integration with SendGrid, an email delivery service for sending transactional and marketing emails.
-
-**Email Actions:**
-
-- `send_email`: Sends a plain text or HTML email to one or more recipients
-- `send_dynamic_template`: Sends an email using a SendGrid dynamic template with personalized data
-
-### clickup (from clickup)
-
-The clickup plugin provides integration with ClickUp, an all-in-one productivity platform for tasks, docs, goals, and projects.
-
-**Task Actions:**
-
-- `create_task`: Creates a new task in a ClickUp list
-- `get_task`: Gets a task from ClickUp by ID
-- `update_task`: Updates an existing task in ClickUp
-- `delete_task`: Deletes a task from ClickUp
-
-### monday (from monday)
-
-The monday plugin provides integration with Monday.com for workspace, board, and item management.
-
-**Workspace Actions:**
-
-- `list_workspaces`: Lists all workspaces
-- `list_workspace_boards`: Lists all boards in a workspace
-
-**Board Actions:**
-
-- `list_board_groups`: Lists all groups in a board
-- `list_board_columns`: Lists all columns in a board
-- `list_board_items`: Lists all items in a board
-- `create_column`: Creates a new column in a board
-- `create_group`: Creates a new group in a board
-- `get_board_item_values`: Gets all items with their column values from a board
-
-**Item Actions:**
-
-- `create_item`: Creates a new item in a board
-- `update_item`: Updates an existing item in a board
-- `update_item_name`: Updates an item's name
-- `get_item_column_values`: Gets column values for a specific item
-- `create_update`: Creates an update (comment) for an item
-
-**User Actions:**
-
-- `list_users`: Lists all users in the Monday.com account
-
-**Webhook Actions:**
-
-- `create_webhook`: Creates a webhook for a board
-- `delete_webhook`: Deletes a webhook
-
-### pipedrive (from pipedrive)
-
-The pipedrive plugin provides integration with Pipedrive CRM, allowing you to manage persons, organizations, deals, leads, activities, and more.
-
-**Person Actions:**
-
-- `list_persons`: Lists all persons
-- `get_person`: Gets a specific person by ID
-- `create_person`: Creates a new person
-- `update_person`: Updates an existing person
-- `find_person`: Finds persons by search criteria
-
-**Organization Actions:**
-
-- `list_organizations`: Lists all organizations
-- `get_organization`: Gets a specific organization by ID
-- `create_organization`: Creates a new organization
-- `update_organization`: Updates an existing organization
-- `find_organization`: Finds organizations by search criteria
-
-**Deal Actions:**
-
-- `list_deals`: Lists all deals
-- `get_deal`: Gets a specific deal by ID
-- `create_deal`: Creates a new deal
-- `update_deal`: Updates an existing deal
-- `find_deal`: Finds deals by search criteria
-- `find_deals_associated_with_person`: Finds deals associated with a person
-
-**Lead Actions:**
-
-- `list_leads`: Lists all leads
-- `get_lead`: Gets a specific lead by ID
-- `create_lead`: Creates a new lead
-- `update_lead`: Updates an existing lead
-
-**Activity Actions:**
-
-- `list_activities`: Lists all activities
-- `get_activity`: Gets a specific activity by ID
-- `create_activity`: Creates a new activity
-- `update_activity`: Updates an existing activity
-- `find_activity`: Finds activities by search criteria
-
-**Product Actions:**
-
-- `list_products`: Lists all products
-- `get_product`: Gets a specific product by ID
-- `create_product`: Creates a new product
-- `find_product`: Finds products by search criteria
-- `add_product_to_deal`: Adds a product to a deal
-
-**Note Actions:**
-
-- `list_notes`: Lists all notes
-- `get_note`: Gets a specific note by ID
-- `create_note`: Creates a new note
-- `find_notes`: Finds notes by search criteria
-
-**User Actions:**
-
-- `list_users`: Lists all users
-- `get_user`: Gets a specific user by ID
-- `find_user`: Finds users by search criteria
-
-**Follower Actions:**
-
-- `add_follower`: Adds a follower to a deal, person, organization, or lead
-
-**Webhook Actions:**
-
-- `create_webhook`: Creates a webhook
-- `delete_webhook`: Deletes a webhook
-
-**Utility Actions:**
-
-- `list_pipelines`: Lists all pipelines
-- `list_stages`: Lists all stages
-- `list_filters`: Lists all filters of a specific type
-- `list_activity_types`: Lists all activity types
-- `list_lead_labels`: Lists all lead labels
 | calendly | calendly | ✅ Completed | Provides integration with Calendly for scheduling and appointment management. |
 | csv | csv | ✅ Completed | Provides tools to convert between CSV and JSON formats with support for headers and different delimiters. |
 | crypto | crypto | ✅ Completed | Provides cryptographic utilities for hashing text, generating HMAC signatures, and creating random passwords. |
@@ -306,6 +71,103 @@ The pipedrive plugin provides integration with Pipedrive CRM, allowing you to ma
 | telegram-bot | telegram | ✅ Completed | Provides integration with Telegram Bot API for sending messages, media, creating invite links, and getting chat member information. |
 | confluence | confluence | ✅ Completed | Provides integration with Atlassian Confluence for creating, reading, and managing content in Confluence spaces. |
 | mattermost | mattermost | ✅ Completed | Provides integration with Mattermost for sending messages and making custom API calls to the Mattermost API. |
+| cal-com | calcom | ✅ Completed | Provides integration with Cal.com for scheduling infrastructure, including booking management and event types. |
+| snowflake | snowflake | ✅ Completed | Provides integration with Snowflake cloud data platform for executing SQL queries and managing data warehouses. |
+| stability-ai | stability-ai | ✅ Completed | Provides integration with Stability AI's image generation API for creating images from text prompts using various Stable Diffusion models. |
+| photoroom | photoroom | ✅ Completed | Provides integration with PhotoRoom's API for background removal and image editing. |
+| krisp-call | krisp-call | ✅ Completed | Provides integration with KrispCall's cloud telephony system for contact management and SMS/MMS messaging. |
+| stable-diffusion-webui | stable-diffusion | ✅ Completed | Provides integration with Stable Diffusion Web UI for AI image generation from text prompts. |
+| milvus | milvus | ✅ Completed | Provides integration with Milvus vector database for similarity search and vector operations. |
+| basecamp | basecamp | ✅ Completed | Provides integration with Basecamp for project management and team communication. |
+
+### basecamp (from basecamp)
+
+The basecamp plugin provides integration with Basecamp, a project management and team communication platform.
+
+**Actions:**
+
+- `list-projects`: List all projects in your Basecamp account
+- `get-project`: Get details about a specific project
+- `create-project`: Create a new project in Basecamp
+- `update-project`: Update an existing project in Basecamp
+- `list-todo-lists`: List all to-do lists in a project
+- `create-todo-list`: Create a new to-do list in a project
+- `list-todo-items`: List all to-do items in a to-do list
+- `create-todo-item`: Create a new to-do item in a to-do list
+- `update-todo-item`: Update an existing to-do item in a to-do list
+- `create-message`: Create a new message in a project's message board
+- `list-people`: List all people in your Basecamp account
+- `create-schedule-entry`: Create a new schedule entry in a project's schedule
+
+**Triggers:**
+
+- `new-todo-item`: Triggered when a new to-do item is created in a Basecamp to-do list
+- `new-message`: Triggered when a new message is created in a Basecamp message board
+- `new-schedule-entry`: Triggered when a new schedule entry is created in a Basecamp schedule
+
+### milvus (from milvus)
+
+The milvus plugin provides integration with Milvus, an open-source vector database built to power embedding similarity search and AI applications.
+
+**Actions:**
+
+- `list-collections`: List all collections in your Milvus instance
+- `get-collection-info`: Get detailed information about a specific collection
+- `create-collection`: Create a new collection in Milvus with customizable fields and settings
+- `delete-collection`: Delete a collection from Milvus
+- `insert-vectors`: Insert vectors into a Milvus collection
+- `search-vectors`: Search for similar vectors in a Milvus collection
+- `get-vectors`: Retrieve vectors by ID from a Milvus collection
+- `delete-vectors`: Delete vectors from a Milvus collection
+- `get-collection-stats`: Get statistics about a Milvus collection
+- `create-partition`: Create a new partition in a Milvus collection
+- `drop-partition`: Drop a partition from a Milvus collection
+- `list-partitions`: List all partitions in a Milvus collection
+
+### stable-diffusion (from stable-diffusion-webui)
+
+The stable-diffusion plugin provides integration with Stable Diffusion Web UI, an AI image generation model that can create images from text prompts.
+
+**Actions:**
+
+- `text-to-image`: Generate an image from a text prompt using Stable Diffusion models with support for different models and advanced parameter customization
+
+### krisp-call (from krisp-call)
+
+The krisp-call plugin provides integration with KrispCall's cloud telephony system, offering advanced features for high-growth startups and modern enterprises.
+
+**Actions:**
+
+- `add-contact`: Add a new contact to KrispCall
+- `delete-contacts`: Delete contacts from KrispCall
+- `send-sms`: Send an SMS message through KrispCall
+- `send-mms`: Send an MMS message with media through KrispCall
+
+**Triggers:**
+
+- `new-voicemail`: Triggered when a new voicemail is received
+- `new-sms-mms`: Triggered when a new SMS or MMS is received
+- `new-contact`: Triggered when a new contact is added
+- `new-call-log`: Triggered when a new call log is recorded
+- `outbound-sms-mms`: Triggered when a new SMS or MMS is sent
+
+### calcom (from cal-com)
+
+The calcom plugin provides integration with Cal.com, an open-source scheduling infrastructure, allowing you to automate booking management and event type operations.
+
+**Actions:**
+
+- `get_event_type`: Retrieve details of a specific event type from Cal.com
+- `get_booking`: Retrieve details of a specific booking from Cal.com
+- `list_event_types`: Retrieve a list of all event types from Cal.com
+- `list_bookings`: Retrieve a list of bookings with optional filtering
+- `custom_api_call`: Make a custom API call to the Cal.com API
+
+**Triggers:**
+
+- `BOOKING_CREATED`: Triggers when a new booking is created in Cal.com
+- `BOOKING_RESCHEDULED`: Triggers when a booking is rescheduled in Cal.com
+- `BOOKING_CANCELLED`: Triggers when a booking is cancelled in Cal.com
 
 ### telegram (from telegram-bot)
 
@@ -343,6 +205,36 @@ The mattermost plugin provides integration with Mattermost, an open-source, self
 
 - `send_message`: Sends a text message to a Mattermost channel
 - `custom_api_call`: Makes a custom API call to the Mattermost API for advanced use cases
+
+### snowflake (from snowflake)
+
+The snowflake plugin provides integration with Snowflake, a cloud data platform, allowing you to execute SQL queries, list databases, schemas, and tables, and describe table structures.
+
+**Actions:**
+
+- `execute_query`: Execute a custom SQL query on your Snowflake instance
+- `list_databases`: Get a list of all databases in your Snowflake account
+- `list_schemas`: Get a list of all schemas in a specific database
+- `list_tables`: Get a list of all tables in a specific schema
+- `describe_table`: Get detailed information about a table's structure
+- `custom_api_call`: Make a custom API call to the Snowflake REST API
+
+### stability-ai (from stability-ai)
+
+The stability-ai plugin provides integration with Stability AI's image generation API, allowing you to generate images from text prompts using various Stable Diffusion models.
+
+**Actions:**
+
+- `text-to-image`: Generate an image from a text prompt with customizable parameters including model selection, image dimensions, style presets, and more
+- `custom-api-call`: Make a custom API call to the Stability AI API for advanced use cases
+
+### photoroom (from photoroom)
+
+The photoroom plugin provides integration with PhotoRoom's API for background removal and image editing.
+
+**Actions:**
+
+- `remove-background`: Remove the background from an image and get back the processed image in base64 format
 
 ### square (from square)
 
@@ -516,6 +408,16 @@ The reddit plugin provides integration with Reddit, a social news and discussion
 - `get_subreddit`: Get information about a subreddit
 - `submit_post`: Submit a new post to a subreddit
 - `custom_api_call`: Make a custom API call to the Reddit API
+
+### medium (from medium)
+
+The medium plugin provides integration with Medium, an online publishing platform, allowing you to automate content publishing and user management.
+
+**Actions:**
+
+- `get_user`: Get information about the authenticated Medium user
+- `create_post`: Create a new post on Medium with various formatting options
+- `custom_api_call`: Make a custom API call to the Medium API
 
 ### MintFlow-Specific Plugins
 
@@ -741,136 +643,4 @@ The postgres plugin provides integration with PostgreSQL databases for executing
 
 - `executeQuery`: Executes a custom SQL query on the PostgreSQL database
 - `getTables`: Gets a list of all tables in a database schema
-- `selectRows`: Selects rows from a table with optional filtering, sorting, and pagination
-- `insertRow`: Inserts a new row into a table with support for returning generated values
-- `updateRows`: Updates rows in a table that match specified conditions
-- `deleteRows`: Deletes rows from a table that match specified conditions
-
-### redis (from redis)
-
-The redis plugin provides integration with Redis databases for caching, pub/sub messaging, and data storage.
-
-**Actions:**
-
-- `set`: Sets a key-value pair in Redis with optional expiration
-- `get`: Gets the value of a key from Redis
-- `delete`: Deletes a key from Redis
-- `exists`: Checks if a key exists in Redis
-- `expire`: Sets an expiration time for a key
-- `ttl`: Gets the remaining time to live of a key
-- `incr`: Increments the integer value of a key by one
-- `incrBy`: Increments the integer value of a key by the given amount
-- `decr`: Decrements the integer value of a key by one
-- `decrBy`: Decrements the integer value of a key by the given amount
-- `hSet`: Sets a field in a hash stored at key to value
-- `hGet`: Gets the value of a field in a hash
-- `hGetAll`: Gets all fields and values in a hash
-- `hDel`: Deletes a field from a hash
-- `publish`: Publishes a message to a channel
-- `lPush`: Prepends one or multiple values to a list
-- `rPush`: Appends one or multiple values to a list
-- `lPop`: Removes and gets the first element in a list
-- `rPop`: Removes and gets the last element in a list
-- `lRange`: Gets a range of elements from a list
-- `executeCommand`: Executes a custom Redis command
-
-### pinecone (from pinecone)
-
-The pinecone plugin provides integration with Pinecone vector database for similarity search and vector operations.
-
-**Actions:**
-
-- `listIndexes`: Lists all indexes in your Pinecone project
-- `describeIndex`: Gets details about a specific index
-- `createIndex`: Creates a new vector index
-- `deleteIndex`: Deletes a vector index
-- `upsertVectors`: Inserts or updates vectors in an index
-- `queryVectors`: Queries vectors in an index for similarity search
-- `deleteVectors`: Deletes vectors from an index
-- `fetchVectors`: Fetches vectors by ID from an index
-- `updateVector`: Updates a vector in an index
-- `describeIndexStats`: Gets statistics about an index
-
-### qdrant (from qdrant)
-
-The qdrant plugin provides integration with Qdrant vector database for similarity search and vector operations.
-
-**Actions:**
-
-- `listCollections`: Lists all collections in your Qdrant instance
-- `getCollectionInfo`: Gets detailed information about a specific collection
-- `createCollection`: Creates a new vector collection
-- `deleteCollection`: Deletes a vector collection
-- `addPoints`: Adds vector points to a collection
-- `searchPoints`: Searches for points closest to a given vector
-- `getPoints`: Retrieves points by their IDs
-- `deletePoints`: Deletes points from a collection
-- `getCollectionStats`: Gets statistics about a collection
-
-### queue (from queue)
-
-The queue plugin provides a robust queue system powered by Bull and Redis for managing data flow, processing order, and job scheduling in workflows.
-
-**Actions:**
-
-- `addJob`: Adds a job to a queue with optional scheduling and processing options
-- `getJob`: Gets information about a specific job by ID
-- `getJobs`: Gets jobs from a queue with filtering options
-- `removeJob`: Removes a job from a queue
-- `clearQueue`: Removes all jobs from a queue
-- `pauseQueue`: Pauses a queue (stops processing new jobs)
-- `resumeQueue`: Resumes a paused queue
-- `getQueueInfo`: Gets information about a queue including job counts
-- `registerProcessor`: Registers a processor function for a queue to process jobs
-- `subscribeToEvents`: Subscribes to queue events and executes a callback function when they occur
-- `createBatchJobs`: Adds multiple jobs to a queue in a single operation
-
-### supabase (from supabase)
-
-The supabase plugin provides integration with Supabase for database operations and storage management.
-
-**Actions:**
-
-- `uploadFile`: Uploads a file to Supabase Storage
-- `downloadFile`: Downloads a file from Supabase Storage
-- `listFiles`: Lists files in a Supabase Storage bucket
-- `deleteFile`: Deletes a file from Supabase Storage
-- `executeQuery`: Executes a query on a Supabase database table
-- `insertRecord`: Inserts a new record into a Supabase table
-- `updateRecord`: Updates records in a Supabase table
-- `deleteRecord`: Deletes records from a Supabase table
-- `createBucket`: Creates a new storage bucket in Supabase
-
-### notion (from notion)
-
-The notion plugin provides integration with Notion for database and page management.
-
-**Actions:**
-
-- `query_database`: Queries a Notion database
-- `create_page`: Creates a new page in Notion
-- `update_page`: Updates a page in Notion
-- `get_page`: Gets information about a Notion page
-- `create_database`: Creates a new database in Notion
-
-### pdf (from pdf)
-
-The pdf plugin provides utilities for working with PDF documents.
-
-**Actions:**
-
-- `extract_text`: Extracts text from a PDF file
-- `text_to_pdf`: Converts text to a PDF document with customizable formatting
-- `image_to_pdf`: Converts PNG or JPEG images to PDF documents
-
-### qrcode (from qrcode)
-
-The qrcode plugin provides functionality to generate QR codes from text or URLs.
-
-**Actions:**
-
-- `text_to_qrcode`: Converts text or URLs to QR codes with customizable settings including output format, error correction level, margin, scale, width, and colors
-
-### s3-storage (from amazon-s3)
-
-The s3-storage plugin provides integration with Amazon S3 and S
+- `

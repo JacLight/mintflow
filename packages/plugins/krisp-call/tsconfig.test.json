@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "outDir": "./dist-test",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "paths":{
+      "@mintflow/common": ["../../common/src/index.ts"]
+    },
+  },
+  "include": ["test/**/*.ts", "src/**/*.ts"]
+}

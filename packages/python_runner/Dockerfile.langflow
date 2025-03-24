@@ -1,0 +1,33 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Redis client and requests
+RUN pip install redis requests
+
+# Install Langflow and its dependencies
+RUN pip install langflow langchain langchain-community langchain-openai
+
+# Install LangGraph
+RUN pip install langgraph
+
+# Install vector store libraries
+RUN pip install chromadb faiss-cpu pinecone-client qdrant-client weaviate-client redis pymilvus
+
+# Install document loaders and processors
+RUN pip install unstructured pdf2image pytesseract pillow bs4 trafilatura
+
+# Install LLM providers
+RUN pip install openai anthropic google-generativeai
+
+# Copy runner code
+COPY langflow_runner.py .
+
+# Run the runner
+CMD ["python", "langflow_runner.py"]

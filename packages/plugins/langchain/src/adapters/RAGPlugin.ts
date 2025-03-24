@@ -8,6 +8,26 @@ import {
 import { logger } from '@mintflow/common';
 import { RedisService } from '../services/RedisService.js';
 import { ConfigService } from '../services/ConfigService.js';
+import { ComponentRegistry } from '../registry/ComponentRegistry.js';
+import { 
+    ChromaFactory,
+    FAISSFactory,
+    PineconeFactory,
+    QdrantFactory,
+    WeaviateFactory,
+    RedisFactory,
+    MilvusFactory
+} from '../factories/vectorstores/index.js';
+
+// Register vector store factories
+const registry = ComponentRegistry.getInstance();
+registry.registerComponent("chroma", new ChromaFactory());
+registry.registerComponent("faiss", new FAISSFactory());
+registry.registerComponent("pinecone", new PineconeFactory());
+registry.registerComponent("qdrant", new QdrantFactory());
+registry.registerComponent("weaviate", new WeaviateFactory());
+registry.registerComponent("redis", new RedisFactory());
+registry.registerComponent("milvus", new MilvusFactory());
 
 /**
  * Document interface for storing in the vector database
@@ -52,6 +72,7 @@ export class RAGService {
     private static instance: RAGService;
     private redis = RedisService.getInstance();
     private config = ConfigService.getInstance().getConfig();
+    private registry = ComponentRegistry.getInstance();
 
     private constructor() { }
 
@@ -60,6 +81,70 @@ export class RAGService {
             RAGService.instance = new RAGService();
         }
         return RAGService.instance;
+    }
+
+    /**
+     * Creates a vector store using the component registry
+     */
+    async createVectorStore(
+        type: string,
+        namespace: string,
+        documents: Document[],
+        config: any
+    ): Promise<string> {
+        try {
+            const factory = this.registry.getComponentFactory(type);
+            const vectorStore = await factory.create({
+                ...config,
+                namespace
+            });
+            
+            // Add documents to the vector store if provided
+            if (documents.length > 0) {
+                // Convert our Document format to LangChain Document format
+                const langchainDocs = documents.map(doc => ({
+                    pageContent: doc.text,
+                    metadata: doc.metadata
+                }));
+                
+                // Add documents to the vector store
+                // This will depend on the specific vector store implementation
+                // For now, we'll use a generic approach
+                if (vectorStore.addDocuments) {
+                    await vectorStore.addDocuments(langchainDocs);
+                }
+            }
+            
+            return namespace;
+        } catch (error) {
+            logger.error(`Error creating ${type} vector store:`, error);
+            
+            // Attempt fallback to Redis
+            try {
+                logger.info('Falling back to Redis store');
+                return await this.createRedisStore(namespace, documents);
+            } catch (fallbackError) {
+                logger.error('Fallback failed:', fallbackError);
+                throw new Error(`Failed to create vector store: ${error instanceof Error ? error.message : String(error)}`);
+            }
+        }
+    }
+
+    /**
+     * Creates a Redis-based vector store (fallback)
+     */
+    async createRedisStore(
+        namespace: string,
+        documents: Document[]
+    ): Promise<string> {
+        try {
+            // Save documents to Redis
+            await this.saveDocuments(namespace, documents);
+            return namespace;
+        } catch (error) {
+            logger.error('Error creating Redis store:', error);
+            throw error;
+        }
     }
 
     /**
@@ -591,10 +676,28 @@ const ragPlugin = {
         options: { type: 'object' },
         query: { type: 'string' },
         queryEmbedding: { type: 'array', items: { type: 'number' } },
-        id: { type: 'string' }
+        id: { type: 'string' },
+        type: { type: 'string' },
+        documents: { type: 'array', items: { type: 'object' } }
     },
 
     actions: [
+        {
+            name: 'createVectorStore',
+            execute: async function (input: {
+                type: string;
+                namespace: string;
+                documents: Document[];
+                config: any;
+            }): Promise<string> {
+                return RAGService.getInstance().createVectorStore(
+                    input.type,
+                    input.namespace,
+                    input.documents,
+                    input.config
+                );
+            }
+        },
         {
             name: 'processDocument',
             execute: async function (input: {
