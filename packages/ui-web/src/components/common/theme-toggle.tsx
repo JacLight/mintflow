@@ -1,10 +1,11 @@
 'use client';
 
-import { useSiteStore } from '@/contexts/site-store';
 import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 import { IconRenderer } from '../ui/icon-renderer';
 import { localStorageUtils } from '@/lib-client/localstorage';
+import { useSiteStore } from '@/context/site-store';
+import Color from 'color';
 
 const defaultTheme = {
     colors: {
@@ -78,8 +79,8 @@ export default function ThemeToggle() {
 }
 
 
-const generateDarkModeColors = (colors) => {
-    const darkModeColors = {};
+const generateDarkModeColors = (colors: any) => {
+    const darkModeColors: any = {};
     colorKeys.forEach(key => {
         const color = Color(colors[key]);
         if (color.luminosity() > 0.5) {

@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Connection, Handle, Position, useReactFlow } from '@xyflow/react';
-import { classNames } from '@/src/lib/utils';
-import { isValidConnection, scapedJSONStringfy } from '@/src/lib/utils/reactflowUtils';
+import { classNames } from '@/lib/utils';
+import { isValidConnection, scapedJSONStringfy } from '@/lib/utils/reactflowUtils';
 import { ConnectionState } from '../types';
 
 // Base styles for the handle

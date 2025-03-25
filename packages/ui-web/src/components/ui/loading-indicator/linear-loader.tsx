@@ -1,6 +1,6 @@
 'use client';
 
-import { useSiteStore } from '@/contexts/site-store';
+import { useSiteStore } from '@/context/site-store';
 import React, { useEffect } from 'react';
 import { useShallow } from 'zustand/shallow';
 

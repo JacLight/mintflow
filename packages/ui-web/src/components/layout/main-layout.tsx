@@ -17,11 +17,11 @@ const buttonsList = [
 const MainLayout = ({ children }) => {
 
     return (
-        <div className={`w-full h-screen ${theme.background} transition-colors duration-200`}>
-            <div className='flex justify-between w-full'>
+        <div className={`w-full h-full ${theme.background} transition-colors duration-200`}>
+            <div className='flex justify-between w-full h-full'>
                 <SideNav />
                 {/* <SideNav /> */}
-                <div className=' w-full h-screen overflow-auto'>
+                <div className=' w-full h-full overflow-auto'>
                     <header className={` border-b border-b-white/60 dark:border-b-white/20 h-16 flex w-full bg-transparent items-center ${theme.border}}`}>
                         <div className="px-4 flex w-full items-center justify-between">
                             <div className="flex items-center justify-between gap-10">
@@ -52,9 +52,9 @@ const MainLayout = ({ children }) => {
                         </div>
                     </header>
                     <LinearLoader />
-                    <main className=" w-full p-10">
+                    <div className='w-full h-[calc(100%-69px)] overflow-auto'>
                         {children || 'Nothing Here'}
-                    </main>
+                    </div>
                 </div>
                 {/* <QuickView /> */}
                 <AIChat />

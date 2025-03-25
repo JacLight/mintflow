@@ -9,7 +9,7 @@ import type {
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import type { Message as DBMessage, Document } from '@/src/lib/db/schema';
+import type { Message as DBMessage, Document } from '@/lib/db/schema';
 
 
 interface ApplicationError extends Error {

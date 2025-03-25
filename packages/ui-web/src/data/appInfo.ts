@@ -2,7 +2,7 @@ import { FiBook, FiBox, FiGrid } from "react-icons/fi";
 
 export const content = {
     navigation: {
-        logo: 'Business Made',
+        logo: 'Mintflow',
         mainNav: [
             { label: 'Themes', href: '/themes' },
             { label: 'Primitives', href: '/primitives' },

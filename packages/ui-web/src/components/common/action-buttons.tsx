@@ -1,9 +1,9 @@
-import { iconButtonClass } from '@/appmint-form/utils/constants';
 import { classNames } from '@/lib/utils';
 import React from 'react';
 import { IconRenderer } from '../ui/icon-renderer';
 import Link from 'next/link';
-import { withTooltip } from '@/appmint-form/common/tooltip';
+import { withTooltip } from '../ui/tooltip';
+import { iconButtonClass } from '@/lib-client/constants';
 
 const buttonsList = [
   { name: 'call', label: 'Call', icon: 'Phone' },
