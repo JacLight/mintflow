@@ -77,6 +77,32 @@ services:
   #   volumes:
   #     - .:/usr/src/app
 
+  langflow-runner:
+    build:
+      context: ./packages/python_runner
+      dockerfile: Dockerfile.langflow
+    container_name: langflow-runner
+    restart: always
+    depends_on:
+      - keydb
+      - weaviate
+      - mongodb
+    environment:
+      REDIS_HOST: "keydb"
+      REDIS_PORT: "6379"
+      FLOWENGINE_URL: "http://app:3000/flowengine"
+      TENANTS: "default"
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+      GOOGLE_API_KEY: "${GOOGLE_API_KEY}"
+      PINECONE_API_KEY: "${PINECONE_API_KEY}"
+      WEAVIATE_URL: "http://weaviate:8080"
+      MONGO_URI: "mongodb://admin:admin@mongodb:27017"
+    volumes:
+      - langflow_data:/app/data
+    networks:
+      - my-network
+
 networks:
   my-network:
     driver: bridge
@@ -85,3 +111,4 @@ volumes:
   keydb_data:
   postgres_data:
   mongo_data:
+  langflow_data:
