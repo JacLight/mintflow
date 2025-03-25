@@ -1,524 +1,780 @@
-// plugins/PromptPlugin.ts
+import { ComponentRegistry } from '../registry/ComponentRegistry.js';
+import { PromptTemplateFactory } from '../factories/prompts/PromptTemplate.js';
+import { ChatPromptTemplateFactory } from '../factories/prompts/ChatPromptTemplate.js';
+import { FewShotPromptTemplateFactory } from '../factories/prompts/FewShotPromptTemplate.js';
+import { RAGPromptTemplateFactory } from '../factories/prompts/RAGPromptTemplate.js';
+import { AgentPromptTemplateFactory } from '../factories/prompts/AgentPromptTemplate.js';
+import { StructuredPromptTemplateFactory } from '../factories/prompts/StructuredPromptTemplate.js';
 
-import { RedisService } from '../services/RedisService.js';
-import { ConfigService } from '../services/ConfigService.js';
-import { logger } from '@mintflow/common';
+// Register prompt factories
+const registry = ComponentRegistry.getInstance();
+registry.registerComponent("prompt-template", new PromptTemplateFactory());
+registry.registerComponent("chat-prompt-template", new ChatPromptTemplateFactory());
+registry.registerComponent("few-shot-prompt-template", new FewShotPromptTemplateFactory());
+registry.registerComponent("rag-prompt-template", new RAGPromptTemplateFactory());
+registry.registerComponent("agent-prompt-template", new AgentPromptTemplateFactory());
+registry.registerComponent("structured-prompt-template", new StructuredPromptTemplateFactory());
 
 /**
- * Template interface for prompt management
+ * Template version
+ */
+export enum TemplateVersion {
+  V1 = "v1",
+  V2 = "v2"
+}
+
+/**
+ * Prompt template
  */
 export interface PromptTemplate {
-    id: string;
-    name: string;
-    description: string;
-    template: string;
-    variables: string[];
-    tags: string[];
-    version: string;
-    metadata: Record<string, any>;
-    createdAt: Date;
-    updatedAt: Date;
+  template: string;
+  inputVariables: string[];
+  partialVariables?: Record<string, any>;
+  templateFormat?: string;
+  validateTemplate?: boolean;
+  version?: TemplateVersion;
 }
 
-/**
- * Template version interface for tracking changes
- */
-export interface TemplateVersion {
-    version: string;
-    template: string;
-    variables: string[];
-    createdAt: Date;
-    createdBy?: string;
-    notes?: string;
-}
+// Import the PromptTemplateRegistry and ABTestingFramework
+import { PromptTemplateRegistry } from '../registry/PromptTemplateRegistry.js';
+import { ABTestingFramework } from '../testing/ABTestingFramework.js';
 
 /**
- * Prompt Management Service for templating and versioning
+ * Prompt Service for creating and managing prompts
  */
 export class PromptService {
-    private static instance: PromptService;
-    private redis = RedisService.getInstance();
-    private config = ConfigService.getInstance().getConfig();
+  private static instance: PromptService;
+  private componentRegistry = ComponentRegistry.getInstance();
+  private templateRegistry = PromptTemplateRegistry.getInstance();
+  private abTestingFramework = ABTestingFramework.getInstance();
 
-    private constructor() { }
+  private constructor() {}
 
-    static getInstance(): PromptService {
-        if (!PromptService.instance) {
-            PromptService.instance = new PromptService();
-        }
-        return PromptService.instance;
+  static getInstance(): PromptService {
+    if (!PromptService.instance) {
+      PromptService.instance = new PromptService();
     }
+    return PromptService.instance;
+  }
 
-    /**
-     * Creates a new prompt template
-     */
-    async createTemplate(
-        template: Omit<PromptTemplate, 'id' | 'variables' | 'createdAt' | 'updatedAt' | 'version'>
-    ): Promise<PromptTemplate> {
-        // Generate template ID from name
-        // Use a fixed ID for tests that mock Date.now()
-        const timestamp = Date.now();
-        const id = template.name
-            .toLowerCase()
-            .replace(/[^a-z0-9]/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-|-$/g, '') +
-            '-' + (timestamp === 123456789 ? '6umssh' : timestamp.toString(36));
-
-        // Extract variables from the template (format: {{variable}})
-        const variableRegex = /{{([^{}]+)}}/g;
-        const variables: string[] = [];
-        let match;
-
-        while ((match = variableRegex.exec(template.template)) !== null) {
-            variables.push(match[1].trim());
-        }
-
-        // Remove duplicates
-        const uniqueVariables = [...new Set(variables)];
-
-        const newTemplate: PromptTemplate = {
-            id,
-            name: template.name,
-            description: template.description,
-            template: template.template,
-            variables: uniqueVariables,
-            tags: template.tags || [],
-            version: '1.0.0',
-            metadata: template.metadata || {},
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-
-        // Save to Redis
-        await this.saveTemplate(newTemplate);
-
-        // Save as the first version
-        await this.saveTemplateVersion(id, {
-            version: '1.0.0',
-            template: template.template,
-            variables: uniqueVariables,
-            createdAt: new Date(),
-            notes: 'Initial version'
-        });
-
-        return newTemplate;
+  /**
+   * Creates a PromptTemplate
+   * 
+   * @param options Options for the PromptTemplate
+   * @returns A new PromptTemplate
+   */
+  async createPromptTemplate(options: {
+    template: string;
+    inputVariables?: string[];
+    partialVariables?: Record<string, any>;
+    validateTemplate?: boolean;
+    templateFormat?: string;
+  }): Promise<any> {
+    try {
+      // Get the PromptTemplate factory
+      const factory = this.componentRegistry.getComponentFactory("prompt-template");
+      
+      // Create the prompt template with the provided configuration
+      return factory.create(options);
+    } catch (error) {
+      console.error("Error creating PromptTemplate:", error);
+      throw new Error(`Failed to create prompt template: ${error instanceof Error ? error.message : String(error)}`);
     }
+  }
 
-    /**
-     * Saves a template to Redis
-     */
-    private async saveTemplate(template: PromptTemplate): Promise<void> {
-        const key = `prompt:template:${template.id}`;
-        await this.redis.client.set(key, JSON.stringify(template));
+  /**
+   * Creates a ChatPromptTemplate
+   * 
+   * @param options Options for the ChatPromptTemplate
+   * @returns A new ChatPromptTemplate
+   */
+  async createChatPromptTemplate(options: {
+    promptMessages: Array<{
+      role?: "system" | "user" | "assistant" | "function" | "tool";
+      content: string;
+      name?: string;
+      templateFormat?: string;
+      inputVariables?: string[];
+    }>;
+    inputVariables?: string[];
+    partialVariables?: Record<string, any>;
+    validateTemplate?: boolean;
+  }): Promise<any> {
+    try {
+      // Get the ChatPromptTemplate factory
+      const factory = this.componentRegistry.getComponentFactory("chat-prompt-template");
+      
+      // Create the chat prompt template with the provided configuration
+      return factory.create(options);
+    } catch (error) {
+      console.error("Error creating ChatPromptTemplate:", error);
+      throw new Error(`Failed to create chat prompt template: ${error instanceof Error ? error.message : String(error)}`);
     }
+  }
 
-    /**
-     * Gets a template by ID
-     */
-    async getTemplate(id: string): Promise<PromptTemplate | null> {
-        const key = `prompt:template:${id}`;
-        const data = await this.redis.client.get(key);
-
-        if (!data) return null;
-
-        try {
-            const parsed = JSON.parse(data);
-            // Convert date strings to Date objects if needed
-            if (parsed.createdAt && typeof parsed.createdAt === 'string') {
-                parsed.createdAt = new Date(parsed.createdAt);
-            }
-            if (parsed.updatedAt && typeof parsed.updatedAt === 'string') {
-                parsed.updatedAt = new Date(parsed.updatedAt);
-            }
-            return parsed as PromptTemplate;
-        } catch (error) {
-            logger.error(`Error parsing template ${id}:`, error);
-            return null;
-        }
+  /**
+   * Creates a FewShotPromptTemplate
+   * 
+   * @param options Options for the FewShotPromptTemplate
+   * @returns A new FewShotPromptTemplate
+   */
+  async createFewShotPromptTemplate(options: {
+    examples: Array<Record<string, any>>;
+    examplePrompt: any;
+    prefix?: string;
+    suffix?: string;
+    exampleSeparator?: string;
+    inputVariables?: string[];
+    partialVariables?: Record<string, any>;
+    templateFormat?: string;
+    validateTemplate?: boolean;
+  }): Promise<any> {
+    try {
+      // Get the FewShotPromptTemplate factory
+      const factory = this.componentRegistry.getComponentFactory("few-shot-prompt-template");
+      
+      // Create the few-shot prompt template with the provided configuration
+      return factory.create(options);
+    } catch (error) {
+      console.error("Error creating FewShotPromptTemplate:", error);
+      throw new Error(`Failed to create few-shot prompt template: ${error instanceof Error ? error.message : String(error)}`);
     }
+  }
 
-    /**
-     * Updates an existing template
-     */
-    async updateTemplate(
-        id: string,
-        updates: Partial<Omit<PromptTemplate, 'id' | 'createdAt' | 'updatedAt' | 'version'>>
-    ): Promise<PromptTemplate> {
-        const template = await this.getTemplate(id);
-        if (!template) {
-            throw new Error(`Template not found: ${id}`);
-        }
+  /**
+   * Creates a system message for a ChatPromptTemplate
+   * 
+   * @param template The template for the system message
+   * @param inputVariables The input variables for the template
+   * @returns A system message object
+   */
+  createSystemMessage(template: string, inputVariables?: string[]): {
+    role: "system";
+    content: string;
+    inputVariables: string[];
+  } {
+    return ChatPromptTemplateFactory.systemMessage(template, inputVariables);
+  }
 
-        // Extract new variables if template is being updated
-        let variables = template.variables;
+  /**
+   * Creates a user message for a ChatPromptTemplate
+   * 
+   * @param template The template for the user message
+   * @param inputVariables The input variables for the template
+   * @returns A user message object
+   */
+  createUserMessage(template: string, inputVariables?: string[]): {
+    role: "user";
+    content: string;
+    inputVariables: string[];
+  } {
+    return ChatPromptTemplateFactory.userMessage(template, inputVariables);
+  }
 
-        if (updates.template) {
-            const variableRegex = /{{([^{}]+)}}/g;
-            const extractedVars: string[] = [];
-            let match;
+  /**
+   * Creates an assistant message for a ChatPromptTemplate
+   * 
+   * @param template The template for the assistant message
+   * @param inputVariables The input variables for the template
+   * @returns An assistant message object
+   */
+  createAssistantMessage(template: string, inputVariables?: string[]): {
+    role: "assistant";
+    content: string;
+    inputVariables: string[];
+  } {
+    return ChatPromptTemplateFactory.assistantMessage(template, inputVariables);
+  }
 
-            while ((match = variableRegex.exec(updates.template)) !== null) {
-                extractedVars.push(match[1].trim());
-            }
-
-            // Remove duplicates
-            variables = [...new Set(extractedVars)];
-        }
-
-        // Create a new version if the template text changes
-        let version = template.version;
-        if (updates.template && updates.template !== template.template) {
-            version = this.incrementVersion(template.version);
-
-            // Save the version first to ensure it's in the second position in mock calls
-            await this.saveTemplateVersion(id, {
-                version,
-                template: updates.template,
-                variables,
-                createdAt: new Date(),
-                notes: updates.metadata?.versionNotes
-            });
-        }
-
-        const updatedTemplate: PromptTemplate = {
-            ...template,
-            ...updates,
-            variables,
-            version,
-            createdAt: template.createdAt, // Preserve original createdAt
-            updatedAt: new Date()
-        };
-
-        await this.saveTemplate(updatedTemplate);
-        return updatedTemplate;
+  /**
+   * Creates a RAGPromptTemplate
+   * 
+   * @param options Options for the RAGPromptTemplate
+   * @returns A new RAGPromptTemplate
+   */
+  async createRAGPromptTemplate(options: {
+    systemTemplate?: string;
+    questionTemplate: string;
+    contextTemplate?: string;
+    includeSourceDocuments?: boolean;
+    inputVariables?: string[];
+    partialVariables?: Record<string, any>;
+    validateTemplate?: boolean;
+  }): Promise<any> {
+    try {
+      // Get the RAGPromptTemplate factory
+      const factory = this.componentRegistry.getComponentFactory("rag-prompt-template");
+      
+      // Create the RAG prompt template with the provided configuration
+      return factory.create(options);
+    } catch (error) {
+      console.error("Error creating RAGPromptTemplate:", error);
+      throw new Error(`Failed to create RAG prompt template: ${error instanceof Error ? error.message : String(error)}`);
     }
+  }
 
-    /**
-     * Deletes a template
-     */
-    async deleteTemplate(id: string): Promise<boolean> {
-        const key = `prompt:template:${id}`;
-        const result = await this.redis.client.del(key);
-
-        // Also delete all versions
-        const versionKeys = await this.redis.client.keys(`prompt:version:${id}:*`);
-        if (versionKeys.length > 0) {
-            await this.redis.client.del(versionKeys);
-        }
-
-        return result > 0;
+  /**
+   * Creates an AgentPromptTemplate
+   * 
+   * @param options Options for the AgentPromptTemplate
+   * @returns A new AgentPromptTemplate
+   */
+  async createAgentPromptTemplate(options: {
+    prefix?: string;
+    suffix?: string;
+    formatInstructions?: string;
+    toolDescriptions?: string | Array<{name: string, description: string}>;
+    toolNames?: string[];
+    inputVariables?: string[];
+    partialVariables?: Record<string, any>;
+    validateTemplate?: boolean;
+  }): Promise<any> {
+    try {
+      // Get the AgentPromptTemplate factory
+      const factory = this.componentRegistry.getComponentFactory("agent-prompt-template");
+      
+      // Create the agent prompt template with the provided configuration
+      return factory.create(options);
+    } catch (error) {
+      console.error("Error creating AgentPromptTemplate:", error);
+      throw new Error(`Failed to create agent prompt template: ${error instanceof Error ? error.message : String(error)}`);
     }
+  }
 
-    /**
-     * Lists templates matching filters
-     */
-    async listTemplates(
-        filters: {
-            tag?: string;
-            query?: string;
-            limit?: number;
-            offset?: number;
-        } = {}
-    ): Promise<PromptTemplate[]> {
-        const { tag, query, limit = 100, offset = 0 } = filters;
-
-        // Get all template keys
-        const keys = await this.redis.client.keys('prompt:template:*');
-
-        // Get all templates
-        const templates: PromptTemplate[] = [];
-
-        for (const key of keys) {
-            const data = await this.redis.client.get(key);
-            if (data) {
-                try {
-                    const template = JSON.parse(data) as PromptTemplate;
-                    templates.push(template);
-                } catch (error) {
-                    logger.error(`Error parsing template ${key}:`, error);
-                }
-            }
-        }
-
-        // Apply filters
-        let filtered = templates;
-
-        if (tag) {
-            filtered = filtered.filter(t => t.tags.includes(tag));
-        }
-
-        if (query) {
-            const q = query.toLowerCase();
-            filtered = filtered.filter(t =>
-                t.name.toLowerCase().includes(q) ||
-                t.description.toLowerCase().includes(q) ||
-                t.template.toLowerCase().includes(q)
-            );
-        }
-
-        // Apply pagination
-        return filtered
-            .sort((a, b) => {
-                // Handle both Date objects and ISO strings
-                const dateA = a.updatedAt instanceof Date ? a.updatedAt : new Date(a.updatedAt);
-                const dateB = b.updatedAt instanceof Date ? b.updatedAt : new Date(b.updatedAt);
-                return dateB.getTime() - dateA.getTime();
-            })
-            .slice(offset, offset + limit);
+  /**
+   * Creates a StructuredPromptTemplate
+   * 
+   * @param options Options for the StructuredPromptTemplate
+   * @returns A new StructuredPromptTemplate
+   */
+  async createStructuredPromptTemplate(options: {
+    template: string;
+    schema: {
+      type: string;
+      properties: Record<string, any>;
+      required?: string[];
+    };
+    inputVariables?: string[];
+    partialVariables?: Record<string, any>;
+    validateTemplate?: boolean;
+    outputParser?: any;
+  }): Promise<any> {
+    try {
+      // Get the StructuredPromptTemplate factory
+      const factory = this.componentRegistry.getComponentFactory("structured-prompt-template");
+      
+      // Create the structured prompt template with the provided configuration
+      return factory.create(options);
+    } catch (error) {
+      console.error("Error creating StructuredPromptTemplate:", error);
+      throw new Error(`Failed to create structured prompt template: ${error instanceof Error ? error.message : String(error)}`);
     }
-
-    /**
-     * Saves a template version
-     */
-    private async saveTemplateVersion(
-        templateId: string,
-        version: TemplateVersion
-    ): Promise<void> {
-        const key = `prompt:version:${templateId}:${version.version}`;
-        await this.redis.client.set(key, JSON.stringify(version));
-    }
-
-    /**
-     * Gets a specific template version
-     */
-    async getTemplateVersion(
-        templateId: string,
-        version: string
-    ): Promise<TemplateVersion | null> {
-        const key = `prompt:version:${templateId}:${version}`;
-        const data = await this.redis.client.get(key);
-
-        if (!data) return null;
-
-        try {
-            const parsed = JSON.parse(data);
-            // Convert date strings to Date objects if needed
-            if (parsed.createdAt && typeof parsed.createdAt === 'string') {
-                parsed.createdAt = new Date(parsed.createdAt);
-            }
-            return parsed as TemplateVersion;
-        } catch (error) {
-            logger.error(`Error parsing template version ${templateId}:${version}:`, error);
-            return null;
-        }
-    }
-
-    /**
-     * Lists all versions of a template
-     */
-    async listTemplateVersions(templateId: string): Promise<TemplateVersion[]> {
-        // Get all version keys for this template
-        const keys = await this.redis.client.keys(`prompt:version:${templateId}:*`);
-
-        // Get all versions
-        const versions: TemplateVersion[] = [];
-
-        for (const key of keys) {
-            const data = await this.redis.client.get(key);
-            if (data) {
-                try {
-                    const version = JSON.parse(data) as TemplateVersion;
-                    versions.push(version);
-                } catch (error) {
-                    logger.error(`Error parsing template version ${key}:`, error);
-                }
-            }
-        }
-
-        // Sort by version (descending)
-        return versions.sort((a, b) => {
-            return this.compareVersions(b.version, a.version);
-        });
-    }
-
-    /**
-     * Increments a version number (semver-like)
-     */
-    private incrementVersion(version: string): string {
-        const parts = version.split('.');
-        if (parts.length !== 3) {
-            return '1.0.0'; // Default if invalid
-        }
-
-        // Increment the patch version
-        const patch = parseInt(parts[2], 10) + 1;
-        return `${parts[0]}.${parts[1]}.${patch}`;
-    }
-
-    /**
-     * Compares two version strings
-     */
-    private compareVersions(v1: string, v2: string): number {
-        const parts1 = v1.split('.').map(Number);
-        const parts2 = v2.split('.').map(Number);
-
-        for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
-            const p1 = parts1[i] || 0;
-            const p2 = parts2[i] || 0;
-
-            if (p1 !== p2) {
-                return p1 - p2;
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * Formats a template with variables
-     */
-    async formatTemplate(
-        templateIdOrObject: string | PromptTemplate,
-        variables: Record<string, any>
-    ): Promise<string> {
-        let template: PromptTemplate;
-
-        if (typeof templateIdOrObject === 'string') {
-            const found = await this.getTemplate(templateIdOrObject);
-            if (!found) {
-                throw new Error(`Template not found: ${templateIdOrObject}`);
-            }
-            template = found;
-        } else {
-            template = templateIdOrObject;
-        }
-
-        // Replace variables in the template
-        let formattedText = template.template;
-
-        // Check for missing variables
-        const missingVars = template.variables.filter(v => !(v in variables));
-        if (missingVars.length > 0) {
-            logger.warn(`Missing variables: ${missingVars.join(', ')} for template ${template.id}`);
-        }
-
-        // Replace each variable
-        for (const varName of template.variables) {
-            const value = variables[varName] !== undefined ? variables[varName] : `{{${varName}}}`;
-            formattedText = formattedText.replace(
-                new RegExp(`{{\\s*${varName}\\s*}}`, 'g'),
-                String(value)
-            );
-        }
-
-        return formattedText;
-    }
+  }
 }
 
-// Plugin definition for integration with your workflow engine
+// Plugin definition for integration with MintFlow
 const promptPlugin = {
-    id: "prompt",
-    name: "Prompt Template Plugin",
-    icon: "GiNotebook",
-    description: "Manages reusable prompt templates with versioning",
-    documentation: "https://docs.example.com/prompt",
-
-    inputSchema: {
-        template: {
+  id: "prompt",
+  name: "Prompt Plugin",
+  icon: "GiPaperClip",
+  description: "Prompt template capabilities for AI applications",
+  documentation: "https://js.langchain.com/docs/modules/model_io/prompts/",
+  
+  inputSchema: {
+    type: 'object',
+    properties: {
+      template: { type: 'string' },
+      inputVariables: { type: 'array' },
+      partialVariables: { type: 'object' },
+      values: { type: 'object' }
+    }
+  },
+  
+  actions: [
+    {
+      name: 'createPromptTemplate',
+      description: 'Create a PromptTemplate',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          template: { 
+            type: 'string',
+            description: 'The template string'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          },
+          partialVariables: { 
             type: 'object',
-            properties: {
-                name: { type: 'string' },
-                description: { type: 'string' },
-                template: { type: 'string' },
-                tags: { type: 'array', items: { type: 'string' } },
-                metadata: { type: 'object' }
-            },
-            required: ['name', 'template']
+            description: 'Partial variables for the template'
+          },
+          validateTemplate: { 
+            type: 'boolean',
+            description: 'Whether to validate the template'
+          },
+          templateFormat: { 
+            type: 'string',
+            description: 'The format of the template'
+          }
         },
-        id: { type: 'string' },
-        updates: { type: 'object' },
-        filters: { type: 'object' },
-        version: { type: 'string' },
-        variables: { type: 'object' },
-        templateIdOrObject: {
-            oneOf: [
-                { type: 'string' },
-                { type: 'object' }
-            ]
-        }
+        required: ['template']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'PromptTemplate'
+      },
+      execute: async function(input: {
+        template: string;
+        inputVariables?: string[];
+        partialVariables?: Record<string, any>;
+        validateTemplate?: boolean;
+        templateFormat?: string;
+      }): Promise<any> {
+        const service = PromptService.getInstance();
+        return service.createPromptTemplate(input);
+      }
     },
-
-    actions: [
-        {
-            name: 'createTemplate',
-            execute: async function (input: {
-                template: Omit<PromptTemplate, 'id' | 'variables' | 'createdAt' | 'updatedAt' | 'version'>;
-            }): Promise<PromptTemplate> {
-                return PromptService.getInstance().createTemplate(input.template);
-            }
+    {
+      name: 'createChatPromptTemplate',
+      description: 'Create a ChatPromptTemplate',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          promptMessages: { 
+            type: 'array',
+            description: 'The prompt messages'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          },
+          partialVariables: { 
+            type: 'object',
+            description: 'Partial variables for the template'
+          },
+          validateTemplate: { 
+            type: 'boolean',
+            description: 'Whether to validate the template'
+          }
         },
-        {
-            name: 'getTemplate',
-            execute: async function (input: {
-                id: string;
-            }): Promise<PromptTemplate | null> {
-                return PromptService.getInstance().getTemplate(input.id);
-            }
+        required: ['promptMessages']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'ChatPromptTemplate'
+      },
+      execute: async function(input: {
+        promptMessages: Array<{
+          role?: "system" | "user" | "assistant" | "function" | "tool";
+          content: string;
+          name?: string;
+          templateFormat?: string;
+          inputVariables?: string[];
+        }>;
+        inputVariables?: string[];
+        partialVariables?: Record<string, any>;
+        validateTemplate?: boolean;
+      }): Promise<any> {
+        const service = PromptService.getInstance();
+        return service.createChatPromptTemplate(input);
+      }
+    },
+    {
+      name: 'createFewShotPromptTemplate',
+      description: 'Create a FewShotPromptTemplate',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          examples: { 
+            type: 'array',
+            description: 'The examples for the few-shot prompt'
+          },
+          examplePrompt: { 
+            type: 'object',
+            description: 'The example prompt'
+          },
+          prefix: { 
+            type: 'string',
+            description: 'The prefix for the few-shot prompt'
+          },
+          suffix: { 
+            type: 'string',
+            description: 'The suffix for the few-shot prompt'
+          },
+          exampleSeparator: { 
+            type: 'string',
+            description: 'The separator between examples'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          },
+          partialVariables: { 
+            type: 'object',
+            description: 'Partial variables for the template'
+          },
+          validateTemplate: { 
+            type: 'boolean',
+            description: 'Whether to validate the template'
+          },
+          templateFormat: { 
+            type: 'string',
+            description: 'The format of the template'
+          }
         },
-        {
-            name: 'updateTemplate',
-            execute: async function (input: {
-                id: string;
-                updates: Partial<Omit<PromptTemplate, 'id' | 'createdAt' | 'updatedAt' | 'version'>>;
-            }): Promise<PromptTemplate> {
-                return PromptService.getInstance().updateTemplate(input.id, input.updates);
-            }
+        required: ['examples', 'examplePrompt']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'FewShotPromptTemplate'
+      },
+      execute: async function(input: {
+        examples: Array<Record<string, any>>;
+        examplePrompt: any;
+        prefix?: string;
+        suffix?: string;
+        exampleSeparator?: string;
+        inputVariables?: string[];
+        partialVariables?: Record<string, any>;
+        templateFormat?: string;
+        validateTemplate?: boolean;
+      }): Promise<any> {
+        const service = PromptService.getInstance();
+        return service.createFewShotPromptTemplate(input);
+      }
+    },
+    {
+      name: 'createSystemMessage',
+      description: 'Create a system message for a ChatPromptTemplate',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          template: { 
+            type: 'string',
+            description: 'The template string'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          }
         },
-        {
-            name: 'deleteTemplate',
-            execute: async function (input: {
-                id: string;
-            }): Promise<boolean> {
-                return PromptService.getInstance().deleteTemplate(input.id);
-            }
+        required: ['template']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'System message'
+      },
+      execute: function(input: {
+        template: string;
+        inputVariables?: string[];
+      }): any {
+        const service = PromptService.getInstance();
+        return service.createSystemMessage(input.template, input.inputVariables);
+      }
+    },
+    {
+      name: 'createUserMessage',
+      description: 'Create a user message for a ChatPromptTemplate',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          template: { 
+            type: 'string',
+            description: 'The template string'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          }
         },
-        {
-            name: 'listTemplates',
-            execute: async function (input: {
-                filters?: {
-                    tag?: string;
-                    query?: string;
-                    limit?: number;
-                    offset?: number;
-                };
-            }): Promise<PromptTemplate[]> {
-                return PromptService.getInstance().listTemplates(input.filters);
-            }
+        required: ['template']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'User message'
+      },
+      execute: function(input: {
+        template: string;
+        inputVariables?: string[];
+      }): any {
+        const service = PromptService.getInstance();
+        return service.createUserMessage(input.template, input.inputVariables);
+      }
+    },
+    {
+      name: 'createAssistantMessage',
+      description: 'Create an assistant message for a ChatPromptTemplate',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          template: { 
+            type: 'string',
+            description: 'The template string'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          }
         },
-        {
-            name: 'getTemplateVersion',
-            execute: async function (input: {
-                templateId: string;
-                version: string;
-            }): Promise<TemplateVersion | null> {
-                return PromptService.getInstance().getTemplateVersion(
-                    input.templateId,
-                    input.version
-                );
-            }
+        required: ['template']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'Assistant message'
+      },
+      execute: function(input: {
+        template: string;
+        inputVariables?: string[];
+      }): any {
+        const service = PromptService.getInstance();
+        return service.createAssistantMessage(input.template, input.inputVariables);
+      }
+    },
+    {
+      name: 'formatPrompt',
+      description: 'Format a prompt with values',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          prompt: { 
+            type: 'object',
+            description: 'The prompt to format'
+          },
+          values: { 
+            type: 'object',
+            description: 'The values to format the prompt with'
+          }
         },
-        {
-            name: 'listTemplateVersions',
-            execute: async function (input: {
-                templateId: string;
-            }): Promise<TemplateVersion[]> {
-                return PromptService.getInstance().listTemplateVersions(input.templateId);
-            }
-        },
-        {
-            name: 'formatTemplate',
-            execute: async function (input: {
-                templateIdOrObject: string | PromptTemplate;
-                variables: Record<string, any>;
-            }): Promise<string> {
-                return PromptService.getInstance().formatTemplate(
-                    input.templateIdOrObject,
-                    input.variables
-                );
-            }
+        required: ['prompt', 'values']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'Formatted prompt'
+      },
+      execute: async function(input: {
+        prompt: any;
+        values: Record<string, any>;
+      }): Promise<any> {
+        try {
+          // Check if the prompt has a formatPrompt method
+          if (typeof input.prompt.formatPrompt !== 'function') {
+            throw new Error("Invalid prompt: missing formatPrompt method");
+          }
+          
+          // Format the prompt
+          return input.prompt.formatPrompt(input.values);
+        } catch (error) {
+          console.error("Error formatting prompt:", error);
+          throw new Error(`Failed to format prompt: ${error instanceof Error ? error.message : String(error)}`);
         }
-    ]
+      }
+    },
+    {
+      name: 'format',
+      description: 'Format a prompt template with values',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          prompt: { 
+            type: 'object',
+            description: 'The prompt to format'
+          },
+          values: { 
+            type: 'object',
+            description: 'The values to format the prompt with'
+          }
+        },
+        required: ['prompt', 'values']
+      },
+      outputSchema: {
+        type: 'string',
+        description: 'Formatted prompt string'
+      },
+      execute: async function(input: {
+        prompt: any;
+        values: Record<string, any>;
+      }): Promise<string> {
+        try {
+          // Check if the prompt has a format method
+          if (typeof input.prompt.format !== 'function') {
+            throw new Error("Invalid prompt: missing format method");
+          }
+          
+          // Format the prompt
+          return input.prompt.format(input.values);
+        } catch (error) {
+          console.error("Error formatting prompt:", error);
+          throw new Error(`Failed to format prompt: ${error instanceof Error ? error.message : String(error)}`);
+        }
+      }
+    },
+    {
+      name: 'createRAGPromptTemplate',
+      description: 'Create a RAGPromptTemplate for retrieval-augmented generation',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          systemTemplate: { 
+            type: 'string',
+            description: 'The system template'
+          },
+          questionTemplate: { 
+            type: 'string',
+            description: 'The question template'
+          },
+          contextTemplate: { 
+            type: 'string',
+            description: 'The context template'
+          },
+          includeSourceDocuments: { 
+            type: 'boolean',
+            description: 'Whether to include source documents'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          },
+          partialVariables: { 
+            type: 'object',
+            description: 'Partial variables for the template'
+          },
+          validateTemplate: { 
+            type: 'boolean',
+            description: 'Whether to validate the template'
+          }
+        },
+        required: ['questionTemplate']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'RAGPromptTemplate'
+      },
+      execute: async function(input: {
+        systemTemplate?: string;
+        questionTemplate: string;
+        contextTemplate?: string;
+        includeSourceDocuments?: boolean;
+        inputVariables?: string[];
+        partialVariables?: Record<string, any>;
+        validateTemplate?: boolean;
+      }): Promise<any> {
+        const service = PromptService.getInstance();
+        return service.createRAGPromptTemplate(input);
+      }
+    },
+    {
+      name: 'createAgentPromptTemplate',
+      description: 'Create an AgentPromptTemplate for agent-based workflows',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          prefix: { 
+            type: 'string',
+            description: 'The prefix for the agent prompt'
+          },
+          suffix: { 
+            type: 'string',
+            description: 'The suffix for the agent prompt'
+          },
+          formatInstructions: { 
+            type: 'string',
+            description: 'The format instructions for the agent'
+          },
+          toolDescriptions: { 
+            type: ['string', 'array'],
+            description: 'The tool descriptions'
+          },
+          toolNames: { 
+            type: 'array',
+            description: 'The tool names'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          },
+          partialVariables: { 
+            type: 'object',
+            description: 'Partial variables for the template'
+          },
+          validateTemplate: { 
+            type: 'boolean',
+            description: 'Whether to validate the template'
+          }
+        }
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'AgentPromptTemplate'
+      },
+      execute: async function(input: {
+        prefix?: string;
+        suffix?: string;
+        formatInstructions?: string;
+        toolDescriptions?: string | Array<{name: string, description: string}>;
+        toolNames?: string[];
+        inputVariables?: string[];
+        partialVariables?: Record<string, any>;
+        validateTemplate?: boolean;
+      }): Promise<any> {
+        const service = PromptService.getInstance();
+        return service.createAgentPromptTemplate(input);
+      }
+    },
+    {
+      name: 'createStructuredPromptTemplate',
+      description: 'Create a StructuredPromptTemplate for structured outputs',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          template: { 
+            type: 'string',
+            description: 'The template string'
+          },
+          schema: { 
+            type: 'object',
+            description: 'The JSON schema for the output'
+          },
+          inputVariables: { 
+            type: 'array',
+            description: 'The input variables for the template'
+          },
+          partialVariables: { 
+            type: 'object',
+            description: 'Partial variables for the template'
+          },
+          validateTemplate: { 
+            type: 'boolean',
+            description: 'Whether to validate the template'
+          },
+          outputParser: { 
+            type: 'object',
+            description: 'The output parser'
+          }
+        },
+        required: ['template', 'schema']
+      },
+      outputSchema: {
+        type: 'object',
+        description: 'StructuredPromptTemplate'
+      },
+      execute: async function(input: {
+        template: string;
+        schema: {
+          type: string;
+          properties: Record<string, any>;
+          required?: string[];
+        };
+        inputVariables?: string[];
+        partialVariables?: Record<string, any>;
+        validateTemplate?: boolean;
+        outputParser?: any;
+      }): Promise<any> {
+        const service = PromptService.getInstance();
+        return service.createStructuredPromptTemplate(input);
+      }
+    }
+  ]
 };
 
 export default promptPlugin;
