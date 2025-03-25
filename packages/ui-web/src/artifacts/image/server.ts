@@ -1,5 +1,5 @@
-import { myProvider } from '@/src/lib/ai/models';
-import { createDocumentHandler } from '@/src/lib/artifacts/server';
+import { myProvider } from '@/lib/ai/models';
+import { createDocumentHandler } from '@/lib/artifacts/server';
 import { experimental_generateImage } from 'ai';
 
 export const imageDocumentHandler = createDocumentHandler<'image'>({

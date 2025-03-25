@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { Session } from 'next-auth';
 import { DataStreamWriter, streamObject, tool } from 'ai';
-import { getDocumentById, saveSuggestions } from '@/src/lib/db/queries';
-import { Suggestion } from '@/src/lib/db/schema';
-import { generateUUID } from '@/src/lib/utils';
+import { getDocumentById, saveSuggestions } from '@/lib/db/queries';
+import { Suggestion } from '@/lib/db/schema';
+import { generateUUID } from '@/lib/utils';
 import { myProvider } from '../models';
 
 interface RequestSuggestionsProps {
