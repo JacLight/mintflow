@@ -613,6 +613,7 @@ __metadata:
     "@vercel/blob": "npm:^0.27.1"
     "@xyflow/react": "npm:^12.4.4"
     ai: "npm:^4.1.41"
+    animate.css: "npm:^4.1.1"
     autoprefixer: "npm:^10.4.20"
     axios: "npm:^1.8.0"
     bcrypt-ts: "npm:^5.0.3"
@@ -1977,6 +1978,13 @@ __metadata:
     zod:
       optional: true
   checksum: 10c0/cd4827dea917c18e689884f265426de05c102932309c88de18683dfda97414979875867cf04d5ce44abe197b06d6ea2ee143af0aa1aee1602725366e03b2eba6
+  languageName: node
+  linkType: hard
+
+"animate.css@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "animate.css@npm:4.1.1"
+  checksum: 10c0/28fcf5a5f502e4c12186846d22aa1cd63b835955160a97116930c78bff8a89135aa5c57f94010252a29456ada7cfc8ed8791cac02521ec6402befaf883937159
   languageName: node
   linkType: hard
 

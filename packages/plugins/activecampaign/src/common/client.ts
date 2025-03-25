@@ -11,6 +11,15 @@ import {
     ListTagsResponse,
 } from './types.js';
 
+export interface ActiveCampaignAuth {
+    apiUrl: string;
+    apiKey: string;
+}
+
+export function makeClient(auth: ActiveCampaignAuth): ActiveCampaignClient {
+    return new ActiveCampaignClient(auth.apiUrl, auth.apiKey);
+}
+
 export function prepareQuery(request?: Record<string, any>): Record<string, string> {
     const params: Record<string, string> = {};
     if (!request) return params;

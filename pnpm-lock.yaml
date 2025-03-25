@@ -2674,7 +2674,7 @@ importers:
         version: 11.1.0
       weaviate-client:
         specifier: ^3.4.0
-        version: 3.4.0
+        version: 3.4.0(encoding@0.1.13)
       winston:
         specifier: ^3.17.0
         version: 3.17.0
@@ -2756,7 +2756,7 @@ importers:
         version: 1.1.14(zod@3.24.2)
       '@appmint/form':
         specifier: ^0.2.3
-        version: 0.2.3(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(use-sync-external-store@1.4.0(react@19.0.0))
+        version: 0.2.3(@types/react@19.0.10)(encoding@0.1.13)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(use-sync-external-store@1.4.0(react@19.0.0))
       '@codemirror/lang-python':
         specifier: ^6.1.7
         version: 6.1.7
@@ -2884,7 +2884,7 @@ importers:
         specifier: 19.0.0
         version: 19.0.0
       react-data-grid:
-        specifier: ^7.0.0-beta.48
+        specifier: 7.0.0-beta.48
         version: 7.0.0-beta.48(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-dom:
         specifier: 19.0.0
@@ -12017,7 +12017,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@appmint/form@0.2.3(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(use-sync-external-store@1.4.0(react@19.0.0))':
+  '@appmint/form@0.2.3(@types/react@19.0.10)(encoding@0.1.13)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(use-sync-external-store@1.4.0(react@19.0.0))':
     dependencies:
       '@headlessui/react': 2.2.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@heroicons/react': 2.2.0(react@19.0.0)
@@ -12032,7 +12032,7 @@ snapshots:
       object-path: 0.11.8
       react: 19.0.0
       react-best-gradient-color-picker: 3.0.14(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      react-json-view: 1.21.3(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react-json-view: 1.21.3(@types/react@19.0.10)(encoding@0.1.13)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       tailwind-merge: 3.0.2
       uuid: 10.0.0
       zod: 3.24.2
@@ -17980,15 +17980,15 @@ snapshots:
     dependencies:
       bser: 2.1.1
 
-  fbemitter@3.0.0:
+  fbemitter@3.0.0(encoding@0.1.13):
     dependencies:
-      fbjs: 3.0.5
+      fbjs: 3.0.5(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
 
   fbjs-css-vars@1.0.2: {}
 
-  fbjs@3.0.5:
+  fbjs@3.0.5(encoding@0.1.13):
     dependencies:
       cross-fetch: 3.2.0(encoding@0.1.13)
       fbjs-css-vars: 1.0.2
@@ -18063,10 +18063,10 @@ snapshots:
 
   flatted@3.3.3: {}
 
-  flux@4.0.4(react@19.0.0):
+  flux@4.0.4(encoding@0.1.13)(react@19.0.0):
     dependencies:
-      fbemitter: 3.0.0
-      fbjs: 3.0.5
+      fbemitter: 3.0.0(encoding@0.1.13)
+      fbjs: 3.0.5(encoding@0.1.13)
       react: 19.0.0
     transitivePeerDependencies:
       - encoding
@@ -18330,7 +18330,7 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  graphql-request@6.1.0(graphql@16.10.0):
+  graphql-request@6.1.0(encoding@0.1.13)(graphql@16.10.0):
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.10.0)
       cross-fetch: 3.2.0(encoding@0.1.13)
@@ -21194,9 +21194,9 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-json-view@1.21.3(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  react-json-view@1.21.3(@types/react@19.0.10)(encoding@0.1.13)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
-      flux: 4.0.4(react@19.0.0)
+      flux: 4.0.4(encoding@0.1.13)(react@19.0.0)
       react: 19.0.0
       react-base16-styling: 0.6.0
       react-dom: 19.0.0(react@19.0.0)
@@ -22686,11 +22686,11 @@ snapshots:
     dependencies:
       defaults: 1.0.4
 
-  weaviate-client@3.4.0:
+  weaviate-client@3.4.0(encoding@0.1.13):
     dependencies:
       abort-controller-x: 0.4.3
       graphql: 16.10.0
-      graphql-request: 6.1.0(graphql@16.10.0)
+      graphql-request: 6.1.0(encoding@0.1.13)(graphql@16.10.0)
       long: 5.3.1
       nice-grpc: 2.1.11
       nice-grpc-client-middleware-retry: 3.1.10
