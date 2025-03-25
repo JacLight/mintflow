@@ -16,11 +16,11 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/lib/*": ["lib/*"],
-      "@/app/*": ["app/*"],
-      "@/artifacts/*": ["artifacts/*"],
-      "@/*": ["/*"]
+      "@/components/*": ["src/components/*"],
+      "@/lib/*": ["src/lib/*"],
+      "@/app/*": ["src/app/*"],
+      "@/artifacts/*": ["src/artifacts/*"],
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {

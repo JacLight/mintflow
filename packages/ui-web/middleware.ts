@@ -1,4 +1,4 @@
-export { auth as middleware } from 'app/(auth)/auth';
+export { auth as middleware } from '@/app/(auth)/auth';
 
 // Don't invoke Middleware on some paths
 export const config = {

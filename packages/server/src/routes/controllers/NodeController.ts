@@ -1,13 +1,14 @@
 import { logger, PluginDescriptor } from "@mintflow/common";
 import { getPlugin, getPlugins } from "../../plugins-register.js";
 import { Request, Response } from "express";
-import { IFlowNodeState, INodeDefinition } from "../../engine/FlowInterfaces.js";
-import { FlowEngine } from "../../engine/FlowEngine.js";
+import { INodeDefinition } from "../../engine/FlowInterfaces.js";
 import { NodeExecutorService } from "../../engine/NodeExecutorService.js";
 
 export const getNodes = async (req: Request, res: Response): Promise<any> => {
     try {
         // Remove the actual code from each node before sending
+
+
         const pluginMap = getPlugins();
         logger.info('[nodeDefinitions] GET /nodes', pluginMap);
         const nodeDefinitions = Array.from(pluginMap.values());

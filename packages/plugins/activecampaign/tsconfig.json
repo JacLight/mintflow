@@ -6,6 +6,8 @@
     "outDir": "./dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": false,
+    "declaration": true,
+    "composite": true,
     "module": "NodeNext",        
     "moduleResolution": "NodeNext", 
     "target": "ESNext",
@@ -14,12 +16,13 @@
     "paths":{
       "@mintflow/common": ["../../common/src/index.ts"]
     },
+    "noEmit": false
   },  
   "references": [
     {
       "path": "../../../packages/common"
-    },
+    }
   ],
   "exclude": ["node_modules", "dist", "test"],
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts"]
 }

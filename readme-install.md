@@ -100,5 +100,6 @@ npx jest
 npx jest /Users/_projects/mintflow-wk/packages/plugins/array/test/filter.test.ts
 npm test -- -t "OutputParserPlugin"
 
+pnpm run --filter=@mintflow/common build
 
  cd packages/plugins/queue && npx jest --coverage
