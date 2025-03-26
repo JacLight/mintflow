@@ -30,7 +30,7 @@ export const DynamicNode = memo((props: NodeProps) => {
     };
 
     // Update form data in the node data
-    const updateFormData = useCallback((newFormData: Record<string, any>) => {
+    const updateFormData = useCallback((path: string, value: any, newFormData: Record<string, any>, files: any, error: any) => {
         setLocalFormData(newFormData);
 
         // Update the node data in the React Flow instance
@@ -88,7 +88,7 @@ export const DynamicNode = memo((props: NodeProps) => {
                                     datatype={'node-form'}
                                     id={`form-${nodeData.id || id || 'default'}`}
                                     theme='setting'
-                                    onChange={(newData) => updateFormData(newData)}
+                                    onChange={updateFormData}
                                 />
                             </div>
 
