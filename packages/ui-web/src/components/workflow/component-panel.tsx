@@ -1,14 +1,19 @@
-'use client';
-
 import { DragEvent, useState, useEffect } from 'react';
-import { LucideIcon } from 'lucide-react';
 import { IconRenderer } from '../ui/icon-renderer';
 import { classNames } from '@/lib/utils';
-import { getMintflowClient } from '@/lib/mintflow-client';
+import {
+    Node as NodeType,
+    getNodes,
+    groupNodesByGroup,
+    ComponentType as NodeComponentType,
+    ComponentGroup as NodeComponentGroup,
+    getNodesWithGroups
+} from '@/lib/node-service';
 
 // Component types that can be dragged onto the canvas
 type ComponentType = {
     type: string;
+    id?: string;
     name: string;
     description: string;
     icon: string | React.ReactNode;
@@ -22,11 +27,14 @@ type ComponentGroup = {
 };
 
 // Draggable component item
-function DraggableComponent({ type, name, description, icon }: ComponentType) {
+function DraggableComponent({ type, id, name, description, icon }: ComponentType) {
     // Handle drag start event
     const onDragStart = (event: DragEvent<HTMLDivElement>) => {
         event.dataTransfer.setData('application/reactflow/type', type);
         event.dataTransfer.setData('application/reactflow/name', name);
+        if (id) {
+            event.dataTransfer.setData('application/reactflow/id', id);
+        }
         event.dataTransfer.effectAllowed = 'move';
     };
 
@@ -90,107 +98,130 @@ function ComponentGroupSection({ name, components, searchTerm }: ComponentGroup 
 }
 
 // Component panel with draggable components
-export function ComponentPanel() {
+export function ComponentPanel({
+    componentTypes: propComponentTypes,
+    componentGroups: propComponentGroups
+}: {
+    componentTypes?: ComponentType[],
+    componentGroups?: ComponentGroup[]
+} = {}) {
     const [isOpen, setIsOpen] = useState(false);
-    const [componentTypes, setComponentTypes] = useState<ComponentType[]>([]);
-    const [componentGroups, setComponentGroups] = useState<ComponentGroup[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [componentTypes, setComponentTypes] = useState<ComponentType[]>(propComponentTypes || []);
+    const [componentGroups, setComponentGroups] = useState<ComponentGroup[]>(propComponentGroups || []);
+    const [isLoading, setIsLoading] = useState(!propComponentTypes && !propComponentGroups);
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortAscending, setSortAscending] = useState(true);
     const [showGroups, setShowGroups] = useState(true);
 
-    // Fetch components from the server
+    // Use React's useEffect to load components when the component mounts
+    // This is the standard React pattern for data fetching
+    // Empty dependency array means this effect runs once when the component mounts
     useEffect(() => {
-        const fetchComponents = async () => {
-            try {
-                setIsLoading(true);
-                const mintflowClient = getMintflowClient();
+        // If props were provided, we don't need to fetch
+        if (propComponentTypes && propComponentGroups) {
+            setIsLoading(false);
+            return;
+        }
 
-                // Only fetch the fields we need for the component panel
-                const response = await mintflowClient.getNodes(['id', 'name', 'groups', 'description', 'icon']);
+        // Set loading state
+        setIsLoading(true);
 
-                if (response.nodes) {
-                    // Map the server response to our ComponentType format
-                    const components = response.nodes.map((node: any) => ({
-                        id: node.id,
-                        type: 'dynamic',
-                        name: node.name,
-                        description: node.description || 'No description available',
-                        icon: node.icon || 'Box', // Default icon if none provided
-                        groups: node.groups || ['uncategorized'] // Default group if none provided
-                    }));
-
-                    // Organize components into groups
-                    const groupMap = new Map<string, ComponentType[]>();
-
-                    // First, collect all components by their groups
-                    components.forEach((component: ComponentType) => {
-                        component.groups?.forEach((group: string) => {
-                            if (!groupMap.has(group)) {
-                                groupMap.set(group, []);
-                            }
-                            groupMap.get(group)?.push(component);
-                        });
-                    });
-
-                    // Convert the map to an array of ComponentGroup objects
-                    const groups: ComponentGroup[] = Array.from(groupMap.entries()).map(([name, components]) => ({
-                        name,
-                        components
-                    }));
-
-                    // Sort groups alphabetically
-                    groups.sort((a, b) => a.name.localeCompare(b.name));
-
-                    // Move "uncategorized" to the end if it exists
-                    const uncategorizedIndex = groups.findIndex(g => g.name === 'uncategorized');
-                    if (uncategorizedIndex !== -1) {
-                        const [uncategorized] = groups.splice(uncategorizedIndex, 1);
-                        groups.push(uncategorized);
-                    }
-
-                    // Sort components within each group
-                    groups.forEach(group => {
-                        group.components.sort((a, b) => a.name.localeCompare(b.name));
-                    });
-
-                    setComponentTypes(components);
-                    setComponentGroups(groups);
-                    setError(null);
-                } else {
-                    setError('Failed to fetch components');
+        // Use the node service to fetch nodes with groups
+        getNodesWithGroups()
+            .then(({ componentTypes, componentGroups }) => {
+                if (!componentTypes || componentTypes.length === 0) {
+                    setError('No components available');
+                    return;
                 }
-            } catch (err) {
-                console.error('Error fetching components:', err);
-                setError('Failed to load components');
-            } finally {
-                setIsLoading(false);
-            }
-        };
 
-        fetchComponents();
-    }, []);
+                setComponentTypes(componentTypes);
+                setComponentGroups(componentGroups);
+                setError(null);
+            })
+            .catch(err => {
+                console.error('Error loading components:', err);
+                setError('Failed to load components');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, [propComponentTypes, propComponentGroups]);
 
     // Handle search input change
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
-    // Toggle sort direction
-    const toggleSortDirection = () => {
-        setSortAscending(!sortAscending);
+    // Filter and sort components based on search term and sort direction
+    function getFilteredAndSortedGroups() {
+        if (!componentTypes.length) return [];
 
-        // Sort components within each group based on the new direction
-        setComponentGroups(prevGroups =>
-            prevGroups.map(group => ({
+        if (searchTerm) {
+            // Filter components directly
+            const filteredComponents = componentTypes.filter(component =>
+                component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                component.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                component.type.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            // Create filtered groups
+            const originalGroups = Object.entries(
+                componentTypes.reduce((groups, component) => {
+                    (component.groups || ['uncategorized']).forEach(group => {
+                        if (!groups[group]) groups[group] = [];
+                        groups[group].push(component);
+                    });
+                    return groups;
+                }, {} as Record<string, ComponentType[]>)
+            ).map(([name, components]) => ({ name, components }));
+
+            // Filter the original groups
+            return originalGroups.map(group => {
+                const groupFilteredComponents = group.components.filter(component =>
+                    filteredComponents.some(c => c.type === component.type)
+                );
+                return {
+                    ...group,
+                    components: groupFilteredComponents.sort((a, b) => {
+                        const comparison = a.name.localeCompare(b.name);
+                        return sortAscending ? comparison : -comparison;
+                    })
+                };
+            }).filter(group => group.components.length > 0);
+        } else {
+            // Just sort the existing groups
+            return componentGroups.map(group => ({
                 ...group,
                 components: [...group.components].sort((a, b) => {
                     const comparison = a.name.localeCompare(b.name);
-                    return sortAscending ? -comparison : comparison; // Note the inversion because we've already toggled sortAscending
+                    return sortAscending ? comparison : -comparison;
                 })
-            }))
-        );
+            }));
+        }
+    }
+
+    // Get all components as a flat list, sorted
+    const getAllComponentsSorted = () => {
+        // Filter components based on search term
+        const filtered = searchTerm
+            ? componentTypes.filter(component =>
+                component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                component.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                component.type.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            : componentTypes;
+
+        // Sort components by name
+        return [...filtered].sort((a, b) => {
+            const comparison = a.name.localeCompare(b.name);
+            return sortAscending ? comparison : -comparison;
+        });
+    };
+
+    // Toggle sort direction
+    const toggleSortDirection = () => {
+        setSortAscending(!sortAscending);
     };
 
     // Toggle between grouped and flat view
@@ -198,18 +229,8 @@ export function ComponentPanel() {
         setShowGroups(!showGroups);
     };
 
-    // Get all components as a flat list, sorted
-    const getAllComponentsSorted = () => {
-        return [...componentTypes].sort((a, b) => {
-            const comparison = a.name.localeCompare(b.name);
-            return sortAscending ? comparison : -comparison;
-        }).filter(component =>
-            !searchTerm ||
-            component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            component.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            component.type.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    };
+    // Get the filtered and sorted groups
+    const filteredGroups = getFilteredAndSortedGroups();
 
     return (
         <div className="flex flex-col border-r absolute top-[60px] left-[16px] bg-white shadow-md rounded-md z-50 transition-all duration-300 ease-in-out w-64">
@@ -280,10 +301,10 @@ export function ComponentPanel() {
                         <div className="p-3">
                             {showGroups ? (
                                 // Grouped view
-                                componentGroups.length === 0 ? (
+                                filteredGroups.length === 0 ? (
                                     <div className="text-center py-4 text-sm text-gray-500">No components available</div>
                                 ) : (
-                                    componentGroups.map((group) => (
+                                    filteredGroups.map((group) => (
                                         <ComponentGroupSection
                                             key={group.name}
                                             name={group.name}

@@ -11,6 +11,8 @@ import { AppmintForm } from '@appmint/form';
 export type FormNodeData = BaseNodeData & {
     componentType?: string;
     componentProps?: Record<string, any>;
+    inputSchema?: any;
+    id?: string;
 };
 
 // App View node component
@@ -24,6 +26,9 @@ export const FormNode = memo((props: NodeProps) => {
         setExpanded(!expanded);
     };
 
+    // Use the inputSchema from the node data if available, otherwise use the default schema
+    const formSchema = nodeData.inputSchema || schema;
+
     return (
         <BaseNode
             {...rest}
@@ -32,7 +37,14 @@ export const FormNode = memo((props: NodeProps) => {
             targetPosition={Position.Top}
         >
             <div className={`flex flex-col gap-2 rounded-md border bg-purple-500/10 p-3 ${expanded ? 'w-96 h-64' : ''}`}>
-                <AppmintForm schema={schema} initData={{}} rules={[]} datatype={'demo'} id='demo-form' theme='setting' />
+                <AppmintForm
+                    schema={formSchema}
+                    initData={{}}
+                    rules={[]}
+                    datatype={'node-form'}
+                    id={`form-${nodeData.id || 'default'}`}
+                    theme='setting'
+                />
             </div>
         </BaseNode>
     );
