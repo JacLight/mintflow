@@ -4,6 +4,9 @@ const sendgridPlugin = {
     name: "sendgrid",
     icon: "https://sendgrid.com/favicon.ico",
     description: "Email delivery service for sending transactional and marketing emails",
+    groups: ["communication"],
+    tags: ["email","messaging","communication","notification"],
+    version: '1.0.0',
     id: "sendgrid",
     runner: "node",
     inputSchema: {

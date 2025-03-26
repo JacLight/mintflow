@@ -15,6 +15,9 @@ const milvusPlugin = {
   name: "milvus",
   icon: "FaDatabase",
   description: "Connect to Milvus vector database for similarity search and vector operations",
+    groups: ["data"],
+    tags: ["data","storage","database","query","persistence"],
+    version: '1.0.0',
   id: "milvus",
   runner: "node",
   auth: {

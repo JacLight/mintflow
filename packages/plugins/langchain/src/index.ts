@@ -170,6 +170,9 @@ const langchainPlugin = {
     name: "LangChain Integration",
     icon: "GiArtificialIntelligence",
     description: "Integrates LangChain and LangGraph capabilities with MintFlow",
+    groups: ["ai"],
+    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    version: '1.0.0',
     id: "langchain",
     runner: "node",
     inputSchema: {

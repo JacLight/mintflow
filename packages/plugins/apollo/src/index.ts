@@ -5,6 +5,9 @@ const apolloPlugin = {
     name: "Apollo",
     icon: "🚀",
     description: "Sales intelligence and engagement platform for finding contact information and enriching company data",
+    groups: ["integration"],
+    tags: ["integration","connector","api","service","platform"],
+    version: '1.0.0',
     id: "apollo",
     runner: "node",
     auth: {

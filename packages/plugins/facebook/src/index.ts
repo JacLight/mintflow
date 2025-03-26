@@ -9,6 +9,9 @@ const facebookPlugin = {
     name: "Facebook",
     icon: "",
     description: "Social media platform for connecting with friends and sharing content",
+    groups: ["social"],
+    tags: ["social","media","platform","network","sharing"],
+    version: '1.0.0',
     id: "facebook",
     runner: "node",
     inputSchema: {

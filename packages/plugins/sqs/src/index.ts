@@ -6,6 +6,9 @@ const sqsPlugin = {
     name: "Amazon SQS",
     icon: "📬",
     description: "Send messages to Amazon SQS queues and manage SQS resources",
+    groups: ["integration"],
+    tags: ["integration","connector","api","service","platform"],
+    version: '1.0.0',
     id: "sqs",
     runner: "node",
     inputSchema: {

@@ -6,6 +6,9 @@ const timerPlugin = {
     name: "Timer",
     icon: "",
     description: "Description for timer",
+    groups: ["utility"],
+    tags: ["utility","tool","helper","function","operation"],
+    version: '1.0.0',
     id: "timer",
     runner: "node",
     inputSchema: {

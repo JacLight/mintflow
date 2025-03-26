@@ -31,6 +31,9 @@ const redisPlugin = {
   name: "Redis",
   icon: "FaDatabase",
   description: "Connect to Redis databases for caching, pub/sub messaging, and data storage",
+    groups: ["data"],
+    tags: ["data","storage","database","query","persistence"],
+    version: '1.0.0',
   id: "redis",
   runner: "node",
   inputSchema: {

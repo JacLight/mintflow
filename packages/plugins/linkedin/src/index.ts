@@ -5,6 +5,9 @@ const linkedinPlugin = {
     name: "linkedin",
     icon: "https://cdn.activepieces.com/pieces/linkedin.png",
     description: "Connect and network with professionals on LinkedIn",
+    groups: ["social"],
+    tags: ["social","media","platform","network","sharing"],
+    version: '1.0.0',
     id: "linkedin",
     runner: "node",
     inputSchema: {

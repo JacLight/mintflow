@@ -9,6 +9,9 @@ const filePlugin = {
     name: "File",
     icon: "",
     description: "Read, create, and manipulate files with various encodings and formats",
+    groups: ["file"],
+    tags: ["file","document","storage","media","content"],
+    version: '1.0.0',
     id: "file",
     runner: "node",
     inputSchema: {

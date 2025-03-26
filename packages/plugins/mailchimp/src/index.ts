@@ -16,6 +16,9 @@ const mailchimpPlugin = {
     name: "Mailchimp",
     icon: "",
     description: "Email marketing and automation platform",
+    groups: ["communication"],
+    tags: ["email","messaging","communication","notification"],
+    version: '1.0.0',
     id: "mailchimp",
     runner: "node",
     inputSchema: {

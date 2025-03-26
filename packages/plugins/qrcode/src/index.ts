@@ -4,6 +4,9 @@ const qrcodePlugin = {
     name: "qrcode",
     icon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1xcmNvZGUiPjxyZWN0IHdpZHRoPSI1IiBoZWlnaHQ9IjUiIHg9IjMiIHk9IjMiIHJ4PSIxIi8+PHJlY3Qgd2lkdGg9IjUiIGhlaWdodD0iNSIgeD0iMTYiIHk9IjMiIHJ4PSIxIi8+PHJlY3Qgd2lkdGg9IjUiIGhlaWdodD0iNSIgeD0iMyIgeT0iMTYiIHJ4PSIxIi8+PHBhdGggZD0iTTIxIDE2aC0zYTIgMiAwIDAgMC0yIDJ2MyIvPjxwYXRoIGQ9Ik0yMSAyMXYuMDEiLz48cGF0aCBkPSJNMTIgN3YzYTIgMiAwIDAgMCAyIDJoMyIvPjxwYXRoIGQ9Ik0xMiAxMnYuMDEiLz48cGF0aCBkPSJNMTIgMTZ2LjAxIi8+PHBhdGggZD0iTTE2IDEyaC4wMSIvPjxwYXRoIGQ9Ik0yMSAxMnYuMDEiLz48cGF0aCBkPSJNNyAxMmguMDEiLz48cGF0aCBkPSJNNyAxNnYuMDEiLz48L3N2Zz4=",
     description: "Generate QR codes from text or URLs",
+    groups: ["utility"],
+    tags: ["utility","tool","helper","function","operation"],
+    version: '1.0.0',
     id: "qrcode",
     runner: "node",
     inputSchema: {

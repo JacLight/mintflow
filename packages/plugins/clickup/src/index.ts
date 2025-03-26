@@ -4,6 +4,9 @@ const clickupPlugin = {
     name: "clickup",
     icon: "https://app.clickup.com/favicon.ico",
     description: "All-in-one productivity platform for tasks, docs, goals, and projects",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "clickup",
     runner: "node",
     inputSchema: {

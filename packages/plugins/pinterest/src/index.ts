@@ -11,6 +11,9 @@ const pinterestPlugin = {
     name: "Pinterest",
     icon: "",
     description: "Visual discovery engine for finding ideas like recipes, home decor, style inspiration, and more",
+    groups: ["social"],
+    tags: ["social","media","platform","network","sharing"],
+    version: '1.0.0',
     id: "pinterest",
     runner: "node",
     inputSchema: {

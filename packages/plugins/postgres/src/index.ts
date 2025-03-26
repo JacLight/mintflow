@@ -58,6 +58,9 @@ const postgresPlugin = {
   name: "PostgreSQL",
   icon: "FaDatabase",
   description: "Connect to PostgreSQL databases to execute queries and manage data",
+    groups: ["data"],
+    tags: ["data","storage","database","query","persistence"],
+    version: '1.0.0',
   id: "postgres",
   runner: "node",
   inputSchema: {

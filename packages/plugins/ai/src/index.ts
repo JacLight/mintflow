@@ -91,7 +91,9 @@ const aiPlugin = {
     icon: "GiBrain",
     description: "A plugin to interact with various AI models through APIs and Ollama",
     documentation: "https://docs.example.com/aiPlugin",
-
+    groups: ["ai"],
+    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    version: '1.0.0',
     // Input schema definition
     inputSchema: {
         config: { type: 'object' },
@@ -113,12 +115,12 @@ const aiPlugin = {
             ]
         },
         capability: { type: 'string' },
-        messages: { 
+        messages: {
             type: 'array',
             items: { type: 'object' }
         },
         memoryKey: { type: 'string' },
-        image: { 
+        image: {
             type: 'object',
             properties: {
                 data: { type: 'string' },
@@ -287,23 +289,23 @@ const aiPlugin = {
                 // Passthrough mode - directly pass the input to the provider's API
                 // This allows for advanced use cases where the user wants to use provider-specific features
                 // that aren't covered by the standard AI plugin interface
-                
+
                 const { config, provider, endpoint, data, method = 'post', headers = {} } = input;
-                
+
                 if (!provider) {
                     throw new Error('Provider is required for passthrough mode');
                 }
-                
+
                 if (!endpoint) {
                     throw new Error('Endpoint is required for passthrough mode');
                 }
-                
+
                 return tryWithFallback(config, provider, async (providerInstance) => {
                     // Get provider-specific configuration
                     let baseUrl = '';
                     let authHeaders: Record<string, string> = {};
                     let requestEndpoint = endpoint;
-                    
+
                     switch (provider) {
                         case 'openai':
                             if (!config.providers.openai) {
@@ -318,7 +320,7 @@ const aiPlugin = {
                                 authHeaders['OpenAI-Organization'] = config.providers.openai.organization;
                             }
                             break;
-                            
+
                         case 'anthropic':
                             if (!config.providers.anthropic) {
                                 throw new Error('Anthropic configuration missing');
@@ -330,7 +332,7 @@ const aiPlugin = {
                                 'anthropic-version': config.providers.anthropic.apiVersion || '2023-06-01'
                             };
                             break;
-                            
+
                         case 'google':
                             if (!config.providers.google) {
                                 throw new Error('Google configuration missing');
@@ -348,7 +350,7 @@ const aiPlugin = {
                                 authHeaders['Authorization'] = `Bearer ${config.providers.google.apiKey}`;
                             }
                             break;
-                            
+
                         case 'ollama':
                             if (!config.providers.ollama) {
                                 throw new Error('Ollama configuration missing');
@@ -358,14 +360,14 @@ const aiPlugin = {
                                 'Content-Type': 'application/json'
                             };
                             break;
-                            
+
                         default:
                             throw new Error(`Unknown provider type: ${provider}`);
                     }
-                    
+
                     // Merge custom headers with auth headers
                     const mergedHeaders = { ...authHeaders, ...headers };
-                    
+
                     // Make the API request
                     try {
                         const response = await axios({
@@ -374,7 +376,7 @@ const aiPlugin = {
                             data,
                             headers: mergedHeaders
                         });
-                        
+
                         return response.data;
                     } catch (error) {
                         if (axios.isAxiosError(error) && error.response) {

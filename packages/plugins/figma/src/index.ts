@@ -20,6 +20,9 @@ const figmaPlugin = {
     name: "Figma",
     icon: "",
     description: "Design and prototyping",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "figma",
     runner: "node",
     inputSchema: {

@@ -4,6 +4,9 @@ const authorizePlugin = {
     name: "Authorize",
     icon: "",
     description: "Build authorization processes in your workflows",
+    groups: ["utility"],
+    tags: ["utility","tool","helper","function","operation"],
+    version: '1.0.0',
     id: "authorize",
     runner: "node",
     inputSchema: {

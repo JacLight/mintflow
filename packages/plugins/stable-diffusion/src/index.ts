@@ -4,6 +4,9 @@ const stableDiffusionPlugin = {
   name: "stable-diffusion",
   icon: "",
   description: "A web interface for Stable Diffusion, an AI image generation model",
+    groups: ["ai"],
+    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    version: '1.0.0',
   id: "stable-diffusion",
   runner: "node",
   auth: {

@@ -18,6 +18,9 @@ const teamsPlugin = {
     name: "Microsoft Teams",
     icon: "",
     description: "Team collaboration, messaging, and meetings",
+    groups: ["communication"],
+    tags: ["communication","messaging","chat","notification","alert"],
+    version: '1.0.0',
     id: "teams",
     runner: "node",
     inputSchema: {

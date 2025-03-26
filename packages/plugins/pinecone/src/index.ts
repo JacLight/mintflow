@@ -34,6 +34,9 @@ const pineconePlugin = {
   name: "Pinecone",
   icon: "FaDatabase",
   description: "Connect to Pinecone vector database for similarity search and vector operations",
+    groups: ["data"],
+    tags: ["data","storage","database","query","persistence"],
+    version: '1.0.0',
   id: "pinecone",
   runner: "node",
   inputSchema: {

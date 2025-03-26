@@ -21,6 +21,9 @@ const googleSheetsPlugin = {
     name: "Google Sheets",
     icon: "",
     description: "Create, edit, and collaborate on spreadsheets online",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "google-sheets",
     runner: "node",
     inputSchema: {

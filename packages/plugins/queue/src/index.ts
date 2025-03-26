@@ -106,6 +106,9 @@ const queuePlugin = {
   name: "Queue",
   icon: "FaListOl",
   description: "Robust queue system powered by Bull and Redis for managing data flow, processing order, and job scheduling",
+    groups: ["utility"],
+    tags: ["utility","tool","helper","function","operation"],
+    version: '1.0.0',
   id: "queue",
   runner: "node",
   inputSchema: {

@@ -8,6 +8,9 @@ const instagramPlugin = {
     name: "Instagram",
     icon: "",
     description: "Social media platform for sharing photos and videos",
+    groups: ["social"],
+    tags: ["social","media","platform","network","sharing"],
+    version: '1.0.0',
     id: "instagram",
     runner: "node",
     inputSchema: {

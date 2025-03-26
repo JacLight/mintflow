@@ -8,6 +8,9 @@ const krispCallPlugin = {
   name: "krisp-call",
   icon: "",
   description: "KrispCall is a cloud telephony system for modern businesses, offering advanced features for high-growth startups and modern enterprises.",
+    groups: ["communication"],
+    tags: ["communication","messaging","chat","notification","alert"],
+    version: '1.0.0',
   id: "krisp-call",
   runner: "node",
   auth: {

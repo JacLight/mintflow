@@ -14,6 +14,9 @@ const zoomPlugin = {
     name: "Zoom",
     icon: "",
     description: "Video conferencing, web conferencing, webinars, and screen sharing",
+    groups: ["communication"],
+    tags: ["communication","messaging","chat","notification","alert"],
+    version: '1.0.0',
     id: "zoom",
     runner: "node",
     inputSchema: {

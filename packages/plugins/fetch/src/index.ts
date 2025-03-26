@@ -4,6 +4,9 @@ const fetchPlugin = {
     name: "Fetch",
     icon: "",
     description: "Description for fetch",
+    groups: ["integration"],
+    tags: ["integration","connector","api","service","platform"],
+    version: '1.0.0',
     id: "fetch",
     runner: "node",
     inputSchema: {

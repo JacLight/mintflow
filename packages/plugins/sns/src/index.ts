@@ -6,6 +6,9 @@ const snsPlugin = {
     name: "Amazon SNS",
     icon: "📨",
     description: "Send messages to Amazon SNS topics and manage SNS resources",
+    groups: ["integration"],
+    tags: ["integration","connector","api","service","platform"],
+    version: '1.0.0',
     id: "sns",
     runner: "node",
     inputSchema: {

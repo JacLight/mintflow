@@ -19,6 +19,9 @@ const shopifyPlugin = {
     name: "Shopify",
     icon: "",
     description: "Ecommerce platform for online stores",
+    groups: ["ecommerce"],
+    tags: ["ecommerce","shop","store","product","order"],
+    version: '1.0.0',
     id: "shopify",
     runner: "node",
     inputSchema: {

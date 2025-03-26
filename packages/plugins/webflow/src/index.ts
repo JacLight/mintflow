@@ -4,6 +4,9 @@ const webflowPlugin = {
     name: "webflow",
     icon: "https://cdn.worldvectorlogo.com/logos/webflow.svg",
     description: "Design, build, and launch responsive websites visually",
+    groups: ["ecommerce"],
+    tags: ["ecommerce","shop","store","product","order"],
+    version: '1.0.0',
     id: "webflow",
     runner: "node",
     inputSchema: {

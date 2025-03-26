@@ -31,6 +31,9 @@ const modifyPlugin = {
     name: "Modify",
     icon: "",
     description: "Description for modify",
+    groups: ["utility"],
+    tags: ["utility","tool","helper","function","operation"],
+    version: '1.0.0',
     id: "modify",
     runner: "node",
     inputSchema: {

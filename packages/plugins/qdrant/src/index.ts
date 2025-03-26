@@ -24,6 +24,9 @@ const qdrantPlugin = {
   name: "Qdrant",
   icon: "FaDatabase",
   description: "Connect to Qdrant vector database for similarity search and vector operations",
+    groups: ["data"],
+    tags: ["data","storage","database","query","persistence"],
+    version: '1.0.0',
   id: "qdrant",
   runner: "node",
   inputSchema: {

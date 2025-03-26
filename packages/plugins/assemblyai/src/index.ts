@@ -5,6 +5,9 @@ const assemblyaiPlugin = {
     name: "assemblyai",
     icon: "https://www.assemblyai.com/favicon.ico",
     description: "Advanced speech recognition and audio intelligence using AssemblyAI",
+    groups: ["ai"],
+    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    version: '1.0.0',
     id: "assemblyai",
     runner: "node",
     inputSchema: {

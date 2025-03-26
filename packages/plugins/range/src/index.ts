@@ -16,6 +16,9 @@ const rangePlugin = {
     name: "Range",
     icon: "",
     description: "Description for range",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "range",
     runner: "node",
     inputSchema: {

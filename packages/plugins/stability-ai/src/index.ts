@@ -5,6 +5,9 @@ const stabilityAiPlugin = {
     name: "Stability AI",
     icon: "TbPhoto",
     description: "Generative AI image model based on Stable Diffusion",
+    groups: ["ai"],
+    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    version: '1.0.0',
     id: "stability-ai",
     runner: "node",
     inputSchema: {

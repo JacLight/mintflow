@@ -52,6 +52,9 @@ const dataBridgePlugin = {
     name: "Data Bridge",
     icon: "",
     description: "Tools to transform and map data structures",
+    groups: ["integration"],
+    tags: ["integration","connector","api","service","platform"],
+    version: '1.0.0',
     id: "data-bridge",
     runner: "node",
     inputSchema: {
