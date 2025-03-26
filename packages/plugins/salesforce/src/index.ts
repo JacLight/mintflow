@@ -11,6 +11,9 @@ const salesforcePlugin = {
     name: "Salesforce",
     icon: "",
     description: "CRM software solutions and enterprise cloud computing",
+    groups: ["crm"],
+    tags: ["crm","marketing","customer","lead","sales"],
+    version: '1.0.0',
     id: "salesforce",
     runner: "node",
     inputSchema: {

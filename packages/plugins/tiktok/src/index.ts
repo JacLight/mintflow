@@ -9,6 +9,9 @@ const tiktokPlugin = {
     name: "TikTok",
     icon: "",
     description: "Short-form video hosting service for creating and sharing videos",
+    groups: ["social"],
+    tags: ["social","media","platform","network","sharing"],
+    version: '1.0.0',
     id: "tiktok",
     runner: "node",
     inputSchema: {

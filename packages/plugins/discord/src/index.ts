@@ -18,6 +18,9 @@ const discordPlugin = {
     name: "Discord",
     icon: "",
     description: "Instant messaging and VoIP social platform",
+    groups: ["communication"],
+    tags: ["communication","messaging","chat","notification","alert"],
+    version: '1.0.0',
     id: "discord",
     runner: "node",
     inputSchema: {

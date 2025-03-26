@@ -17,6 +17,9 @@ const dropboxPlugin = {
     name: "Dropbox",
     icon: "",
     description: "Cloud storage and file synchronization",
+    groups: ["file"],
+    tags: ["file","document","storage","media","content"],
+    version: '1.0.0',
     id: "dropbox",
     runner: "node",
     inputSchema: {

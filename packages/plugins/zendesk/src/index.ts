@@ -20,6 +20,9 @@ const zendeskPlugin = {
     name: "Zendesk",
     icon: "",
     description: "Customer service software and support ticket system",
+    groups: ["crm"],
+    tags: ["crm","marketing","customer","lead","sales"],
+    version: '1.0.0',
     id: "zendesk",
     runner: "node",
     inputSchema: {

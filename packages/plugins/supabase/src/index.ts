@@ -20,6 +20,9 @@ const supabasePlugin = {
   name: "Supabase",
   icon: "FaDatabase",
   description: "The open-source Firebase alternative with PostgreSQL at its core",
+    groups: ["data"],
+    tags: ["data","storage","database","query","persistence"],
+    version: '1.0.0',
   id: "supabase",
   runner: "node",
   inputSchema: {

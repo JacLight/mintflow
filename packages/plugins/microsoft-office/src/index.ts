@@ -9,6 +9,9 @@ const microsoftOfficePlugin = {
     name: "Microsoft Office",
     icon: "",
     description: "Work with Microsoft Office 365 services (Excel, Word, PowerPoint, SharePoint, Outlook, Dynamics)",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "microsoft-office",
     runner: "node",
     inputSchema: {

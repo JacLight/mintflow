@@ -28,6 +28,9 @@ const delayPlugin = {
     name: "delay",
     icon: "",
     description: "Description for delay",
+    groups: ["utility"],
+    tags: ["utility","tool","helper","function","operation"],
+    version: '1.0.0',
     id: "delay",
     runner: "node",
     inputSchema: {

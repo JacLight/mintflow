@@ -20,6 +20,9 @@ const googleDrivePlugin = {
     name: "Google Drive",
     icon: "",
     description: "Cloud storage and file backup",
+    groups: ["file"],
+    tags: ["file","document","storage","media","content"],
+    version: '1.0.0',
     id: "google-drive",
     runner: "node",
     inputSchema: {

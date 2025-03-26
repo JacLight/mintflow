@@ -4,6 +4,9 @@ const convertkitPlugin = {
     name: "convertkit",
     icon: "https://app.convertkit.com/favicon.ico",
     description: "Email marketing for creators",
+    groups: ["communication"],
+    tags: ["email","messaging","communication","notification"],
+    version: '1.0.0',
     id: "convertkit",
     runner: "node",
     inputSchema: {

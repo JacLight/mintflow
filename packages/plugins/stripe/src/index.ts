@@ -20,6 +20,9 @@ const stripePlugin = {
     name: "Stripe",
     icon: "",
     description: "Payment processing platform for online businesses",
+    groups: ["payment"],
+    tags: ["payment","finance","money","transaction","billing"],
+    version: '1.0.0',
     id: "stripe",
     runner: "node",
     inputSchema: {

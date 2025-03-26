@@ -25,6 +25,9 @@ const intercomPlugin = {
     name: "Intercom",
     icon: "",
     description: "Customer messaging platform for sales, marketing, and support",
+    groups: ["crm"],
+    tags: ["crm","marketing","customer","lead","sales"],
+    version: '1.0.0',
     id: "intercom",
     runner: "node",
     inputSchema: {

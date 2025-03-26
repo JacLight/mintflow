@@ -8,6 +8,9 @@ const airtablePlugin = {
     name: "Airtable",
     icon: "",
     description: "Low-code platform to build apps and databases",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "airtable",
     runner: "node",
     inputSchema: {

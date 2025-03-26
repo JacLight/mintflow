@@ -11,6 +11,9 @@ const snapchatPlugin = {
     name: "Snapchat",
     icon: "",
     description: "Multimedia messaging app for sharing photos, videos, and ads",
+    groups: ["social"],
+    tags: ["social","media","platform","network","sharing"],
+    version: '1.0.0',
     id: "snapchat",
     runner: "node",
     inputSchema: {

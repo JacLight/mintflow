@@ -21,6 +21,9 @@ const switchPlugin = {
     name: "Switch",
     icon: "",
     description: "Description for switch",
+    groups: ["utility"],
+    tags: ["utility","tool","helper","function","operation"],
+    version: '1.0.0',
     id: "switch",
     runner: "node",
     inputSchema: {

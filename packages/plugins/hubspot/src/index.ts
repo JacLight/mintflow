@@ -5,6 +5,9 @@ const hubspotPlugin = {
   name: "hubspot",
   icon: "https://developers.hubspot.com/hubfs/assets/hubspot.com/web-team/WBZ/Brand/Logos/hubspot-logo-web.svg",
   description: "Powerful CRM that offers tools for sales, customer service, and marketing automation.",
+    groups: ["crm"],
+    tags: ["crm","marketing","customer","lead","sales"],
+    version: '1.0.0',
   id: "hubspot",
   runner: "node",
   inputSchema: {

@@ -4,6 +4,9 @@ const mqttPlugin = {
     name: "Mqtt",
     icon: "",
     description: "Description for mqtt",
+    groups: ["integration"],
+    tags: ["integration","connector","api","service","platform"],
+    version: '1.0.0',
     id: "mqtt",
     runner: "node",
     inputSchema: {

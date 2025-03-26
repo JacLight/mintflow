@@ -6,6 +6,9 @@ const pdfPlugin = {
     name: "PDF",
     icon: "📄",
     description: "Work with PDF documents - extract text, convert text to PDF, and convert images to PDF",
+    groups: ["file"],
+    tags: ["file","document","storage","media","content"],
+    version: '1.0.0',
     id: "pdf",
     runner: "node",
     inputSchema: {

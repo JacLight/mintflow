@@ -9,7 +9,9 @@ const wordpressPlugin = {
     displayName: "WordPress",
     description: "Open-source website creation software",
     icon: "https://cdn.activepieces.com/pieces/wordpress.png",
-    version: "1.0.0",
+    groups: ["integration"],
+    tags: ["integration", "connector", "api", "service", "platform"],
+    version: '1.0.0',
     actions: [
         createPostAction,
         getPostAction,

@@ -11,6 +11,9 @@ const youtubePlugin = {
     name: "YouTube",
     icon: "",
     description: "Video sharing platform for watching, uploading, and sharing videos",
+    groups: ["social"],
+    tags: ["social","media","platform","network","sharing"],
+    version: '1.0.0',
     id: "youtube",
     runner: "node",
     inputSchema: {

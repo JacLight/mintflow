@@ -14,6 +14,9 @@ const notionPlugin = {
     name: "Notion",
     icon: "",
     description: "The all-in-one workspace",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "notion",
     runner: "node",
     inputSchema: {

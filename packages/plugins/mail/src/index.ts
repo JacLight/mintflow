@@ -46,6 +46,9 @@ const mailPlugin = {
     name: "Mail Plugin",
     icon: "GrMail",
     description: "A plugin to process emails using a local Python script",
+    groups: ["communication"],
+    tags: ["email","messaging","communication","notification"],
+    version: '1.0.0',
     documentation: "https://docs.example.com/mailPluginExec",
     inputSchema: {
         server: {

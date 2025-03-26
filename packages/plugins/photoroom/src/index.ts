@@ -4,6 +4,9 @@ const photoroomPlugin = {
     name: "PhotoRoom",
     icon: "TbPhotoEdit",
     description: "Background removal and image editing",
+    groups: ["ai"],
+    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    version: '1.0.0',
     id: "photoroom",
     runner: "node",
     inputSchema: {

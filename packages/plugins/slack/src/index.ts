@@ -20,6 +20,9 @@ const slackPlugin = {
     name: "Slack",
     icon: "",
     description: "Channel-based messaging platform",
+    groups: ["communication"],
+    tags: ["communication","messaging","chat","notification","alert"],
+    version: '1.0.0',
     id: "slack",
     runner: "node",
     inputSchema: {

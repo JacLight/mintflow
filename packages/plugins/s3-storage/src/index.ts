@@ -9,6 +9,9 @@ const s3StoragePlugin = {
     name: "S3 Storage",
     icon: "",
     description: "Interact with Amazon S3 and S3-compatible storage services",
+    groups: ["file"],
+    tags: ["file","document","storage","media","content"],
+    version: '1.0.0',
     id: "s3-storage",
     runner: "node",
     inputSchema: {

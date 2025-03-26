@@ -85,6 +85,9 @@ const aiPlugin = {
     name: "AI Plugin",
     icon: "GiBrain",
     description: "A plugin to interact with various AI models through APIs and Ollama",
+    groups: ["ai"],
+    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    version: '1.0.0',
     documentation: "https://docs.example.com/aiPlugin",
 
     // Input schema definition

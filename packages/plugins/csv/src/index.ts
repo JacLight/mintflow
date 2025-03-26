@@ -5,6 +5,9 @@ const csvPlugin = {
     name: "CSV",
     icon: "",
     description: "Convert between CSV and JSON formats",
+    groups: ["utility"],
+    tags: ["utility","tool","helper","function","operation"],
+    version: '1.0.0',
     id: "csv",
     runner: "node",
     inputSchema: {

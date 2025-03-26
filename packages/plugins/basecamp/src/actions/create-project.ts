@@ -1,4 +1,4 @@
-import { createBasecampClient, BasecampConfig } from '../common/client';
+import { createBasecampClient } from "src/common/client.js";
 
 export interface CreateProjectProps {
   name: string;
@@ -44,7 +44,7 @@ export const createProject = {
     try {
       const client = createBasecampClient(config.auth);
       const project = await client.createProject(input.name, input.description);
-      
+
       return {
         project,
       };

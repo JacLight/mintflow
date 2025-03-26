@@ -21,6 +21,9 @@ const trelloPlugin = {
     name: "Trello",
     icon: "",
     description: "Project management tool for teams",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "trello",
     runner: "node",
     inputSchema: {

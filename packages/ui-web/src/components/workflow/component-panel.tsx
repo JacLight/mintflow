@@ -12,6 +12,13 @@ type ComponentType = {
     name: string;
     description: string;
     icon: string | React.ReactNode;
+    groups?: string[];
+};
+
+// Group of components
+type ComponentGroup = {
+    name: string;
+    components: ComponentType[];
 };
 
 // Draggable component item
@@ -30,7 +37,7 @@ function DraggableComponent({ type, name, description, icon }: ComponentType) {
             onDragStart={onDragStart}
             title={description}
         >
-            <div className="flex  p-1 items-center justify-center rounded-md border bg-background">
+            <div className="flex p-1 items-center justify-center rounded-md border bg-background">
                 <IconRenderer icon={icon} className="h-5 w-5" />
             </div>
             <div className="flex-1">
@@ -40,15 +47,58 @@ function DraggableComponent({ type, name, description, icon }: ComponentType) {
     );
 }
 
+// Component group with collapsible list of components
+function ComponentGroupSection({ name, components, searchTerm }: ComponentGroup & { searchTerm: string }) {
+    const [isExpanded, setIsExpanded] = useState(true);
+
+    // Filter components based on search term
+    const filteredComponents = searchTerm
+        ? components.filter(component =>
+            component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            component.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            component.type.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : components;
+
+    // Don't render if no components match the search
+    if (filteredComponents.length === 0) return null;
+
+    // Format group name for display (capitalize first letter)
+    const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+
+    return (
+        <div className="mb-3">
+            <div
+                className="flex items-center justify-between py-1 px-2 bg-muted rounded cursor-pointer"
+                onClick={() => setIsExpanded(!isExpanded)}
+            >
+                <h3 className="text-sm font-medium">{displayName}</h3>
+                <IconRenderer
+                    icon={isExpanded ? 'ChevronDown' : 'ChevronRight'}
+                    className="h-4 w-4 text-muted-foreground"
+                />
+            </div>
+            {isExpanded && (
+                <div className="mt-2 space-y-2 pl-2">
+                    {filteredComponents.map((component) => (
+                        <DraggableComponent key={component.type} {...component} />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
 // Component panel with draggable components
 export function ComponentPanel() {
     const [isOpen, setIsOpen] = useState(false);
     const [componentTypes, setComponentTypes] = useState<ComponentType[]>([]);
-    const [filteredComponents, setFilteredComponents] = useState<ComponentType[]>([]);
+    const [componentGroups, setComponentGroups] = useState<ComponentGroup[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortAscending, setSortAscending] = useState(true);
+    const [showGroups, setShowGroups] = useState(true);
 
     // Fetch components from the server
     useEffect(() => {
@@ -58,19 +108,55 @@ export function ComponentPanel() {
                 const mintflowClient = getMintflowClient();
 
                 // Only fetch the fields we need for the component panel
-                const response = await mintflowClient.getNodes(['id', 'name', 'description', 'icon']);
+                const response = await mintflowClient.getNodes(['id', 'name', 'groups', 'description', 'icon']);
 
                 if (response.nodes) {
                     // Map the server response to our ComponentType format
                     const components = response.nodes.map((node: any) => ({
-                        type: node.id,
+                        id: node.id,
+                        type: 'dynamic',
                         name: node.name,
                         description: node.description || 'No description available',
-                        icon: node.icon || 'Box' // Default icon if none provided
+                        icon: node.icon || 'Box', // Default icon if none provided
+                        groups: node.groups || ['uncategorized'] // Default group if none provided
                     }));
 
+                    // Organize components into groups
+                    const groupMap = new Map<string, ComponentType[]>();
+
+                    // First, collect all components by their groups
+                    components.forEach((component: ComponentType) => {
+                        component.groups?.forEach((group: string) => {
+                            if (!groupMap.has(group)) {
+                                groupMap.set(group, []);
+                            }
+                            groupMap.get(group)?.push(component);
+                        });
+                    });
+
+                    // Convert the map to an array of ComponentGroup objects
+                    const groups: ComponentGroup[] = Array.from(groupMap.entries()).map(([name, components]) => ({
+                        name,
+                        components
+                    }));
+
+                    // Sort groups alphabetically
+                    groups.sort((a, b) => a.name.localeCompare(b.name));
+
+                    // Move "uncategorized" to the end if it exists
+                    const uncategorizedIndex = groups.findIndex(g => g.name === 'uncategorized');
+                    if (uncategorizedIndex !== -1) {
+                        const [uncategorized] = groups.splice(uncategorizedIndex, 1);
+                        groups.push(uncategorized);
+                    }
+
+                    // Sort components within each group
+                    groups.forEach(group => {
+                        group.components.sort((a, b) => a.name.localeCompare(b.name));
+                    });
+
                     setComponentTypes(components);
-                    setFilteredComponents(components);
+                    setComponentGroups(groups);
                     setError(null);
                 } else {
                     setError('Failed to fetch components');
@@ -86,31 +172,6 @@ export function ComponentPanel() {
         fetchComponents();
     }, []);
 
-    // Filter and sort components when search term or sort direction changes
-    useEffect(() => {
-        if (!componentTypes.length) return;
-
-        // Filter components based on search term
-        let filtered = componentTypes;
-        if (searchTerm) {
-            const term = searchTerm.toLowerCase();
-            filtered = componentTypes.filter(
-                component =>
-                    component.name.toLowerCase().includes(term) ||
-                    component.description.toLowerCase().includes(term) ||
-                    component.type.toLowerCase().includes(term)
-            );
-        }
-
-        // Sort components by name (ascending or descending)
-        filtered = [...filtered].sort((a, b) => {
-            const comparison = a.name.localeCompare(b.name);
-            return sortAscending ? comparison : -comparison;
-        });
-
-        setFilteredComponents(filtered);
-    }, [componentTypes, searchTerm, sortAscending]);
-
     // Handle search input change
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
@@ -119,6 +180,35 @@ export function ComponentPanel() {
     // Toggle sort direction
     const toggleSortDirection = () => {
         setSortAscending(!sortAscending);
+
+        // Sort components within each group based on the new direction
+        setComponentGroups(prevGroups =>
+            prevGroups.map(group => ({
+                ...group,
+                components: [...group.components].sort((a, b) => {
+                    const comparison = a.name.localeCompare(b.name);
+                    return sortAscending ? -comparison : comparison; // Note the inversion because we've already toggled sortAscending
+                })
+            }))
+        );
+    };
+
+    // Toggle between grouped and flat view
+    const toggleGroupView = () => {
+        setShowGroups(!showGroups);
+    };
+
+    // Get all components as a flat list, sorted
+    const getAllComponentsSorted = () => {
+        return [...componentTypes].sort((a, b) => {
+            const comparison = a.name.localeCompare(b.name);
+            return sortAscending ? comparison : -comparison;
+        }).filter(component =>
+            !searchTerm ||
+            component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            component.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            component.type.toLowerCase().includes(searchTerm.toLowerCase())
+        );
     };
 
     return (
@@ -175,14 +265,44 @@ export function ComponentPanel() {
                             >
                                 <IconRenderer icon={sortAscending ? "ArrowUp" : "ArrowDown"} className="h-4 w-4" />
                             </button>
+                            <button
+                                onClick={toggleGroupView}
+                                className={classNames(
+                                    "p-1 border rounded-md hover:bg-muted focus:outline-none focus:ring-1 focus:ring-blue-500",
+                                    showGroups ? "bg-muted" : ""
+                                )}
+                                aria-label={showGroups ? "Show flat list" : "Show grouped list"}
+                                title={showGroups ? "Show flat list" : "Show grouped list"}
+                            >
+                                <IconRenderer icon="Layers" className="h-4 w-4" />
+                            </button>
                         </div>
-                        <div className="space-y-2 p-3">
-                            {filteredComponents.length === 0 ? (
-                                <div className="text-center py-4 text-sm text-gray-500">No matching components</div>
+                        <div className="p-3">
+                            {showGroups ? (
+                                // Grouped view
+                                componentGroups.length === 0 ? (
+                                    <div className="text-center py-4 text-sm text-gray-500">No components available</div>
+                                ) : (
+                                    componentGroups.map((group) => (
+                                        <ComponentGroupSection
+                                            key={group.name}
+                                            name={group.name}
+                                            components={group.components}
+                                            searchTerm={searchTerm}
+                                        />
+                                    ))
+                                )
                             ) : (
-                                filteredComponents.map((component) => (
-                                    <DraggableComponent key={component.type} {...component} />
-                                ))
+                                // Flat view
+                                <div className="space-y-2">
+                                    {getAllComponentsSorted().length === 0 ? (
+                                        <div className="text-center py-4 text-sm text-gray-500">No matching components</div>
+                                    ) : (
+                                        getAllComponentsSorted().map((component) => (
+                                            <DraggableComponent key={component.type} {...component} />
+                                        ))
+                                    )}
+                                </div>
                             )}
                         </div>
                     </>

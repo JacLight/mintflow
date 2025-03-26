@@ -4,6 +4,9 @@ const klaviyoPlugin = {
     name: "klaviyo",
     icon: "https://cdn.klaviyo.com/assets/favicon-32x32.png",
     description: "Email marketing and customer data platform",
+    groups: ["crm"],
+    tags: ["crm","marketing","customer","lead","sales"],
+    version: '1.0.0',
     id: "klaviyo",
     runner: "node",
     inputSchema: {

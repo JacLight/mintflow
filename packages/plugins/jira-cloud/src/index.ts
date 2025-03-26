@@ -13,6 +13,9 @@ const jiraCloudPlugin = {
     name: "Jira Cloud",
     icon: "",
     description: "Issue tracking and project management",
+    groups: ["productivity"],
+    tags: ["productivity","collaboration","organization","workflow","task"],
+    version: '1.0.0',
     id: "jira-cloud",
     runner: "node",
     inputSchema: {

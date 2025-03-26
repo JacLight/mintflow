@@ -13,6 +13,9 @@ const speechPlugin = {
   name: "Speech",
   icon: "FaMicrophone",
   description: "Convert text to speech and speech to text using various AI services",
+    groups: ["ai"],
+    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    version: '1.0.0',
   id: "speech",
   runner: "node",
   inputSchema: {

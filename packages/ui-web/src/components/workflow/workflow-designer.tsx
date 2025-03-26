@@ -92,6 +92,46 @@ const initialNodes: Node[] = [
             icon: 'Zap'
         }
     },
+    {
+        id: 'form-1',
+        type: 'form',
+        position: { x: 250, y: 200 },
+        data: {
+            label: 'Form  Node',
+            componentType: 'ChatInterface',
+            icon: 'Zap'
+        }
+    },
+    {
+        id: 'improved-1',
+        type: 'improved',
+        position: { x: 250, y: 200 },
+        data: {
+            label: 'Improved Node',
+            componentType: 'ChatInterface',
+            icon: 'Zap'
+        }
+    },
+    {
+        id: 'Action-1',
+        type: 'action',
+        position: { x: 250, y: 200 },
+        data: {
+            label: 'Action Node',
+            componentType: 'ChatInterface',
+            icon: 'Zap'
+        }
+    },
+    {
+        id: 'Condition-1',
+        type: 'condition',
+        position: { x: 250, y: 200 },
+        data: {
+            label: 'Condition Node',
+            componentType: 'ChatInterface',
+            icon: 'Zap'
+        }
+    },
 ];
 
 const initialEdges: Edge[] = [];

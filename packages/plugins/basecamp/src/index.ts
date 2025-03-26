@@ -1,24 +1,17 @@
-import { createBasecampClient, BasecampConfig } from './common/client';
-import { listProjects } from './actions/list-projects';
-import { getProject } from './actions/get-project';
-import { createProject } from './actions/create-project';
-import { updateProject } from './actions/update-project';
-import { listTodoLists } from './actions/list-todo-lists';
-import { createTodoList } from './actions/create-todo-list';
-import { listTodoItems } from './actions/list-todo-items';
-import { createTodoItem } from './actions/create-todo-item';
-import { updateTodoItem } from './actions/update-todo-item';
-import { createMessage } from './actions/create-message';
-import { listPeople } from './actions/list-people';
-import { createScheduleEntry } from './actions/create-schedule-entry';
-import { newTodoItem } from './triggers/new-todo-item';
-import { newMessage } from './triggers/new-message';
-import { newScheduleEntry } from './triggers/new-schedule-entry';
+import { createBasecampClient, BasecampConfig } from './common/client.js';
+import { listProjects } from './actions/list-projects.js';
+import { createProject } from './actions/create-project.js';
+import { createTodoItem } from './actions/create-todo-item.js';
+import { newTodoItem } from './triggers/new-todo-item.js';
+
 
 const basecampPlugin = {
   name: "basecamp",
   icon: "FaTrello",
   description: "Project management and team communication platform",
+  groups: ["productivity"],
+  tags: ["productivity", "collaboration", "organization", "workflow", "task"],
+  version: '1.0.0',
   id: "basecamp",
   runner: "node",
   auth: {
@@ -60,22 +53,22 @@ const basecampPlugin = {
   method: "exec",
   actions: [
     listProjects,
-    getProject,
     createProject,
-    updateProject,
-    listTodoLists,
-    createTodoList,
-    listTodoItems,
     createTodoItem,
-    updateTodoItem,
-    createMessage,
-    listPeople,
-    createScheduleEntry,
+    // getProject,
+    // updateProject,
+    // listTodoLists,
+    // createTodoList,
+    // listTodoItems,
+    // updateTodoItem,
+    // createMessage,
+    // listPeople,
+    // createScheduleEntrt,
   ],
   triggers: [
     newTodoItem,
-    newMessage,
-    newScheduleEntry,
+    // newMessage,
+    // newScheduleEntry,
   ],
 };
 

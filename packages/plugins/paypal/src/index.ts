@@ -18,6 +18,9 @@ const paypalPlugin = {
     name: "PayPal",
     icon: "",
     description: "Online payment system supporting money transfers and e-commerce transactions",
+    groups: ["payment"],
+    tags: ["payment","finance","money","transaction","billing"],
+    version: '1.0.0',
     id: "paypal",
     runner: "node",
     inputSchema: {
