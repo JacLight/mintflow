@@ -3,7 +3,7 @@
 import { Team, Channel, Chat, ChatMessage, ConversationMember } from '@microsoft/microsoft-graph-types';
 
 // Re-export Microsoft Graph types for convenience
-export { Team, Channel, Chat, ChatMessage, ConversationMember };
+export type { Team, Channel, Chat, ChatMessage, ConversationMember };
 
 // Input parameters for Microsoft Teams actions
 export interface TeamsCreateChannelParams {

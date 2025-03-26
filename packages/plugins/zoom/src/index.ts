@@ -8,7 +8,7 @@ import {
     listMeetingRegistrants,
     getUser,
     listUsers
-} from './utils';
+} from './utils.js';
 
 const zoomPlugin = {
     name: "Zoom",
@@ -470,7 +470,7 @@ const zoomPlugin = {
                             org,
                             job_title,
                             comments,
-                            custom_questions: custom_questions ? Object.entries(custom_questions).map(([title, value]) => ({ title, value })) : undefined
+                            custom_questions: custom_questions ? Object.entries(custom_questions).map(([title, value]) => ({ title, value: String(value) })) : undefined
                         });
                     }
 
