@@ -7,6 +7,6 @@ export const mintflowEndpoints = {
   get_node: {
     name: 'get_node',
     method: 'get',
-    path: 'api/node',
+    path: 'api/nodes',
   },
 }

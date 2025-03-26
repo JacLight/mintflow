@@ -12,7 +12,8 @@ export const IconRenderer = ({ icon, className }: { icon?: React.ReactNode | str
       return <IconComponent className={twMerge("h-4 w-4 text-primary", className)} />;
     }
     // If not found, return the string (could be a class name or other identifier)
-    return <span className="h-4 w-4 flex items-center justify-center">{icon}</span>;
+    console.warn(`Icon not found: ${icon}`);
+    return <span className={twMerge("h-4 w-4 flex items-center justify-center text-ellipsis overflow-hidden", className)}>{icon}</span>;
   }
 
   // If it's already a React element, just return it
