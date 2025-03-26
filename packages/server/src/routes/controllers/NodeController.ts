@@ -6,32 +6,63 @@ import { NodeExecutorService } from "../../engine/NodeExecutorService.js";
 
 export const getNodes = async (req: Request, res: Response): Promise<any> => {
     try {
+        // Check if fields query parameter exists
+        const fieldsParam = req.query.fields as string | undefined;
+        const fields = fieldsParam ? fieldsParam.split(',') : null;
+
         // Remove the actual code from each node before sending
-
-
         const pluginMap = getPlugins();
-        logger.info('[nodeDefinitions] GET /nodes', pluginMap);
+        logger.info('[nodeDefinitions] GET /nodes', { fieldsRequested: fields });
         const nodeDefinitions = Array.from(pluginMap.values());
-        const safeNodes: Partial<PluginDescriptor>[] = nodeDefinitions.map(node => ({
-            id: node.id,
-            name: node.name,
-            description: node.description,
-            documentation: node.documentation,
-            icon: node.icon,
-            actions: node.actions?.map(action => ({
-                name: action.name,
-                description: action.description,
-                inputSchema: action.inputSchema,
-                outputSchema: action.outputSchema,
-                entry: action.entry,
-                exampleInput: action.exampleInput,
-                exampleOutput: action.exampleOutput,
-                method: action.method,
-                documentation: action.documentation,
 
+        const safeNodes: Partial<PluginDescriptor>[] = nodeDefinitions.map(node => {
+            // If no fields specified, return all fields
+            if (!fields) {
+                return {
+                    id: node.id,
+                    name: node.name,
+                    description: node.description,
+                    documentation: node.documentation,
+                    icon: node.icon,
+                    actions: node.actions?.map(action => ({
+                        name: action.name,
+                        description: action.description,
+                        inputSchema: action.inputSchema,
+                        outputSchema: action.outputSchema,
+                        entry: action.entry,
+                        exampleInput: action.exampleInput,
+                        exampleOutput: action.exampleOutput,
+                        method: action.method,
+                        documentation: action.documentation,
+                    }))
+                };
+            }
 
-            }))
-        }));
+            // If fields are specified, only return those fields
+            const filteredNode: Partial<PluginDescriptor> = {};
+
+            // Add requested fields to the filtered node
+            fields.forEach(field => {
+                if (field === 'actions' && node.actions) {
+                    filteredNode.actions = node.actions.map(action => ({
+                        name: action.name,
+                        description: action.description,
+                        inputSchema: action.inputSchema,
+                        outputSchema: action.outputSchema,
+                        entry: action.entry,
+                        exampleInput: action.exampleInput,
+                        exampleOutput: action.exampleOutput,
+                        method: action.method,
+                        documentation: action.documentation,
+                    }));
+                } else if (field in node) {
+                    // Use type assertion to handle dynamic property access
+                    (filteredNode as any)[field] = (node as any)[field];
+                }
+            });
+
+            return filteredNode;
+        });
         res.json({ nodes: safeNodes });
     } catch (err: any) {
         logger.error('[nodeDefinitions] GET /nodes error', { error: err.message });
@@ -43,26 +74,59 @@ export const getNodes = async (req: Request, res: Response): Promise<any> => {
 export const getNode = async (req: Request, res: Response): Promise<any> => {
     try {
         const { nodeId } = req.params;
+        // Check if fields query parameter exists
+        const fieldsParam = req.query.fields as string | undefined;
+        const fields = fieldsParam ? fieldsParam.split(',') : null;
+
         const node = getPlugin(nodeId);
         if (!node) return res.status(404).json({ error: 'Node not found' });
-        const safeNode: Partial<PluginDescriptor> = {
-            id: node.id,
-            name: node.name,
-            description: node.description,
-            documentation: node.documentation,
-            icon: node.icon,
-            actions: node.actions.map((action: any) => ({
-                name: action.name,
-                description: action.description,
-                inputSchema: action.inputSchema,
-                outputSchema: action.outputSchema,
-                entry: action.entry,
-                exampleInput: action.exampleInput,
-                exampleOutput: action.exampleOutput,
-                method: action.method,
-                documentation: action.documentation,
-            }))
-        };
+
+        let safeNode: Partial<PluginDescriptor>;
+
+        // If no fields specified, return all fields
+        if (!fields) {
+            safeNode = {
+                id: node.id,
+                name: node.name,
+                description: node.description,
+                documentation: node.documentation,
+                icon: node.icon,
+                actions: node.actions.map((action: any) => ({
+                    name: action.name,
+                    description: action.description,
+                    inputSchema: action.inputSchema,
+                    outputSchema: action.outputSchema,
+                    entry: action.entry,
+                    exampleInput: action.exampleInput,
+                    exampleOutput: action.exampleOutput,
+                    method: action.method,
+                    documentation: action.documentation,
+                }))
+            };
+        } else {
+            // If fields are specified, only return those fields
+            safeNode = {};
+
+            // Add requested fields to the filtered node
+            fields.forEach(field => {
+                if (field === 'actions' && node.actions) {
+                    safeNode.actions = node.actions.map((action: any) => ({
+                        name: action.name,
+                        description: action.description,
+                        inputSchema: action.inputSchema,
+                        outputSchema: action.outputSchema,
+                        entry: action.entry,
+                        exampleInput: action.exampleInput,
+                        exampleOutput: action.exampleOutput,
+                        method: action.method,
+                        documentation: action.documentation,
+                    }));
+                } else if (field in node) {
+                    // Use type assertion to handle dynamic property access
+                    (safeNode as any)[field] = (node as any)[field];
+                }
+            });
+        }
         return res.json({ node: safeNode });
     } catch (err: any) {
         logger.error('[nodeDefinitions] GET /nodes/:nodeId error', { error: err.message });
@@ -83,4 +147,3 @@ export const runNode = async (req: Request, res: Response): Promise<any> => {
         return res.status(500).json({ error: err.message });
     }
 }
-
