@@ -349,7 +349,7 @@ export class OpenAIProvider extends BaseProvider {
             
             return {
                 text: responseText,
-                messages: updatedMessages,
+                messages: updatedMessages as ChatMessage[],
                 usage: {
                     promptTokens: response.data.usage.prompt_tokens,
                     completionTokens: response.data.usage.completion_tokens,
@@ -494,7 +494,7 @@ export class OpenAIProvider extends BaseProvider {
                     
                     resolve({
                         text: fullText,
-                        messages: updatedMessages,
+                        messages: updatedMessages as ChatMessage[],
                         usage
                     });
                 });

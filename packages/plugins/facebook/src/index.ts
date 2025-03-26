@@ -3,7 +3,7 @@ import {
     createPhotoPost,
     createVideoPost,
     getPages
-} from './utils';
+} from './utils.js';
 
 const facebookPlugin = {
     name: "Facebook",

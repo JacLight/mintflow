@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MilvusConfig } from './list-collections';
+import { MilvusConfig } from './list-collections.js';
 
 export interface GetCollectionInfoProps {
   collectionName: string;

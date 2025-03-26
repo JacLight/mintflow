@@ -5,7 +5,7 @@ import {
     getChannelDetails,
     subscribeToChannel,
     checkSubscription
-} from './utils';
+} from './utils.js';
 
 const youtubePlugin = {
     name: "YouTube",

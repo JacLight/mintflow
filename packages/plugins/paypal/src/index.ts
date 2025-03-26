@@ -12,7 +12,7 @@ import {
     cancelBillingAgreement,
     listPayments,
     listBillingPlans
-} from './utils';
+} from './utils.js';
 
 const paypalPlugin = {
     name: "PayPal",

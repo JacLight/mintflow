@@ -3,7 +3,7 @@ import {
     InstagramBusinessAccount,
     InstagramPhotoPostParams,
     InstagramReelPostParams
-} from './models';
+} from './models.js';
 
 const BASE_URL = 'https://graph.facebook.com/v17.0';
 

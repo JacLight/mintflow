@@ -1,4 +1,4 @@
-import { createBasecampClient, BasecampConfig } from '../common/client';
+import { createBasecampClient, BasecampConfig } from '../common/client.js';
 
 export const listProjects = {
   name: 'list-projects',

@@ -1,4 +1,4 @@
-import { deleteContacts } from '../src/actions/delete-contacts';
+import { deleteContacts } from '../src/actions/delete-contacts.js';
 import axios from 'axios';
 
 // Mock axios

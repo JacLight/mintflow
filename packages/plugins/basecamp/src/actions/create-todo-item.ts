@@ -1,4 +1,4 @@
-import { createBasecampClient, BasecampConfig } from '../common/client';
+import { createBasecampClient, BasecampConfig } from '../common/client.js';
 
 export interface CreateTodoItemProps {
   projectId: string;

@@ -1,15 +1,9 @@
-import { createCollection } from './actions/create-collection';
-import { deleteCollection } from './actions/delete-collection';
-import { listCollections } from './actions/list-collections';
-import { getCollectionInfo } from './actions/get-collection-info';
-import { insertVectors } from './actions/insert-vectors';
-import { searchVectors } from './actions/search-vectors';
-import { getVectors } from './actions/get-vectors';
-import { deleteVectors } from './actions/delete-vectors';
-import { getCollectionStats } from './actions/get-collection-stats';
-import { createPartition } from './actions/create-partition';
-import { dropPartition } from './actions/drop-partition';
-import { listPartitions } from './actions/list-partitions';
+import { createCollection } from './actions/create-collection.js';
+import { deleteCollection } from './actions/delete-collection.js';
+import { listCollections } from './actions/list-collections.js';
+import { getCollectionInfo } from './actions/get-collection-info.js';
+import { insertVectors } from './actions/insert-vectors.js';
+import { searchVectors } from './actions/search-vectors.js';
 
 const milvusPlugin = {
   name: "milvus",
@@ -72,13 +66,7 @@ const milvusPlugin = {
     createCollection,
     deleteCollection,
     insertVectors,
-    searchVectors,
-    getVectors,
-    deleteVectors,
-    getCollectionStats,
-    createPartition,
-    dropPartition,
-    listPartitions
+    searchVectors
   ],
 };
 

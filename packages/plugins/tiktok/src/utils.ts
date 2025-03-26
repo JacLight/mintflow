@@ -6,7 +6,7 @@ import {
     TikTokVideoDetailsParams,
     TikTokUserDetailsParams,
     TikTokUploadVideoParams
-} from './models';
+} from './models.js';
 
 const BASE_URL = 'https://open.tiktokapis.com/v2';
 
