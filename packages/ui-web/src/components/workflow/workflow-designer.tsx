@@ -146,9 +146,9 @@ export interface WorkflowData {
 }
 
 // Component for the flow canvas with drag and drop functionality
-function FlowCanvas() {
-    const [nodes, setNodes] = useState<Node[]>(initialNodes);
-    const [edges, setEdges] = useState<Edge[]>(initialEdges);
+function FlowCanvas({ componentTypes }: { componentTypes: any }) {
+    const [nodes, setNodes] = useState<Node[]>([]);
+    const [edges, setEdges] = useState<Edge[]>([]);
     const [selectedElements, setSelectedElements] = useState<{ nodes: Node[], edges: Edge[] }>({ nodes: [], edges: [] });
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const reactFlowInstance = useReactFlow();
@@ -249,6 +249,8 @@ function FlowCanvas() {
             // Create a new node with data from the node registry
             const nodeId = `${type}-${Date.now()}`;
             const nodeData = getNodeDefaultData(type, name);
+            const nodeInfo = componentTypes.find((c: any) => c.name.toLowerCase() === name);
+            nodeData.inputSchema = nodeInfo?.inputSchema;;
 
             const newNode: Node = {
                 id: nodeId,
@@ -331,13 +333,13 @@ function FlowCanvas() {
 }
 
 // Main workflow designer component with split layout
-export function WorkflowDesigner() {
+export function WorkflowDesigner({ componentTypes, componentGroups }: { componentTypes: any, componentGroups: any }) {
     return (
         <ReactFlowProvider>
             <div className="flex h-full w-full relative">
-                <ComponentPanel />
+                <ComponentPanel componentTypes={componentTypes} componentGroups={componentGroups} />
                 <div className="flex-1">
-                    <FlowCanvas />
+                    <FlowCanvas componentTypes={componentTypes} />
                 </div>
             </div>
         </ReactFlowProvider>
