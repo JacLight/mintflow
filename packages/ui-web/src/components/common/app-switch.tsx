@@ -1,9 +1,9 @@
 'use client';
 import { Fragment, useEffect, useState } from 'react'
-import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
+// import { Listbox, Transition } from '@headlessui/react'
 import { classNames } from '@/lib/utils'
 import { usePathname, useRouter } from "next/navigation";
+import { IconRenderer } from '../ui/icon-renderer';
 
 const appNames = [
     { name: 'POS & Billing', href: '/business/pos', description: 'Integrated POS system with invoicing & service point', icon: '', current: false },
@@ -34,12 +34,12 @@ export default function BusinessAppSwitch() {
                     <div className="relative ">
                         <div className="inline-flex item divide-x divide-indigo-700 rounded-md shadow-sm">
                             <div className="inline-flex items-center gap-x-1.5 rounded-l-md bg-indigo-600 px-3 py-2 text-white shadow-sm">
-                                <CheckIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                                <IconRenderer icon='Check' className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                                 <p className="text-sm m-0 p-0 font-semibold">{selected?.name}</p>
                             </div>
                             <Listbox.Button className="inline-flex items-center rounded-l-none rounded-r-md bg-purple-600 p-2 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-50">
                                 <span className="sr-only">Change published status</span>
-                                <ChevronDownIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                                <IconRenderer icon='ChevronDown' className="h-5 w-5 text-white" aria-hidden="true" />
                             </Listbox.Button>
                         </div>
 
@@ -68,7 +68,7 @@ export default function BusinessAppSwitch() {
                                                     <p className={classNames(selected ? 'font-semibold' : 'font-normal', 'p-0 m-0')}>{option.name}</p>
                                                     {selected ? (
                                                         <span className={active ? 'text-white' : 'text-indigo-600'}>
-                                                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                                            <IconRenderer icon='Check' className="h-5 w-5" aria-hidden="true" />
                                                         </span>
                                                     ) : null}
                                                 </div>
