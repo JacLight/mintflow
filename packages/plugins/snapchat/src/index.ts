@@ -5,7 +5,7 @@ import {
     getAds,
     getCampaigns,
     getAdAccounts
-} from './utils';
+} from './utils.js';
 
 const snapchatPlugin = {
     name: "Snapchat",

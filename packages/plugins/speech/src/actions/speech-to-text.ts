@@ -75,37 +75,55 @@ export async function speechToText(input: SpeechToTextInput): Promise<SpeechToTe
       }
     });
 
-    // If audio data is provided instead of a URL, upload it first
-    if (!input.audioUrl && input.audioData) {
-      // Convert base64 to buffer
-      const audioBuffer = Buffer.from(input.audioData, 'base64');
-      
-      // Upload the audio file
-      const uploadResponse = await assemblyai.transcripts.upload(audioBuffer);
-      params.audio_url = uploadResponse.upload_url;
-    }
+      // If audio data is provided instead of a URL, upload it first
+      if (!input.audioUrl && input.audioData) {
+        // Convert base64 to buffer
+        const audioBuffer = Buffer.from(input.audioData, 'base64');
+        
+        // Upload the audio file using the newer API
+        const uploadResponse = await assemblyai.files.upload(audioBuffer);
+        // The response format might vary, handle different possible formats
+        if (typeof uploadResponse === 'string') {
+          params.audio_url = uploadResponse;
+        } else {
+          // Use type assertion to handle the unknown response type
+          const response = uploadResponse as any;
+          params.audio_url = response.url || response.upload_url || response.audio_url || '';
+        }
+      }
 
-    // Submit the transcription request
-    const transcript = await assemblyai.transcripts.submit(params);
+      // Submit the transcription request
+      const transcript = await assemblyai.transcripts.submit(params);
 
-    // If waitUntilReady is true, wait for the transcription to complete
-    if (input.waitUntilReady) {
-      const result = await assemblyai.transcripts.waitUntilDone(transcript.id);
+      // If waitUntilReady is true, wait for the transcription to complete
+      if (input.waitUntilReady) {
+        // Poll for the result instead of using waitUntilDone
+        let result = await assemblyai.transcripts.get(transcript.id);
+        let status = result.status;
+        
+        while (status !== 'completed' && status !== 'error') {
+          // Wait for a bit before polling again
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          // Get the latest status
+          result = await assemblyai.transcripts.get(transcript.id);
+          status = result.status;
+        }
       
-      return {
-        id: result.id,
-        text: result.text || '',
-        status: result.status,
-        audioUrl: result.audio_url,
-        words: result.words,
-        utterances: result.utterances,
-        confidence: result.confidence,
-        durationMs: result.audio_duration,
-        language: result.language_code,
-        sentiment: result.sentiment_analysis_results,
-        entities: result.entities,
-        error: result.error
-      };
+        return {
+          id: result.id,
+          text: result.text || '',
+          status: result.status,
+          audioUrl: result.audio_url,
+          words: result.words || undefined,
+          utterances: result.utterances || undefined,
+          confidence: result.confidence || undefined,
+          durationMs: result.audio_duration || undefined,
+          language: result.language_code,
+          sentiment: result.sentiment_analysis_results,
+          entities: result.entities || undefined,
+          error: result.error
+        };
     }
 
     // Otherwise, return the initial response
@@ -145,13 +163,13 @@ export async function getTranscriptionStatus(apiKey: string, transcriptId: strin
       text: result.text || '',
       status: result.status,
       audioUrl: result.audio_url,
-      words: result.words,
-      utterances: result.utterances,
-      confidence: result.confidence,
-      durationMs: result.audio_duration,
+      words: result.words || undefined,
+      utterances: result.utterances || undefined,
+      confidence: result.confidence || undefined,
+      durationMs: result.audio_duration || undefined,
       language: result.language_code,
       sentiment: result.sentiment_analysis_results,
-      entities: result.entities,
+      entities: result.entities || undefined,
       error: result.error
     };
   } catch (error: any) {

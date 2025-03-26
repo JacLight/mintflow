@@ -1,4 +1,4 @@
-import { sendSms } from '../src/actions/send-sms';
+import { sendSms } from '../src/actions/send-sms.js';
 import axios from 'axios';
 
 // Mock axios

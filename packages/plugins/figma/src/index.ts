@@ -12,9 +12,9 @@ import {
     getStyles,
     createWebhook,
     deleteWebhook
-} from './utils';
+} from './utils.js';
 
-import { FigmaWebhookEventType } from './models';
+import { FigmaWebhookEventType } from './models.js';
 
 const figmaPlugin = {
     name: "Figma",

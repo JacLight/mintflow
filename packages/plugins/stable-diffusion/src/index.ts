@@ -1,4 +1,4 @@
-import { textToImage } from './actions/text-to-image';
+import { textToImage } from './actions/text-to-image.js';
 
 const stableDiffusionPlugin = {
   name: "stable-diffusion",

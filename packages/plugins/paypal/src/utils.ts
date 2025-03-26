@@ -17,7 +17,7 @@ import {
     PayPalCancelBillingAgreementParams,
     PayPalListPaymentsParams,
     PayPalListBillingPlansParams
-} from './models';
+} from './models.js';
 
 // PayPal API endpoints
 const SANDBOX_BASE_URL = 'https://api.sandbox.paypal.com';

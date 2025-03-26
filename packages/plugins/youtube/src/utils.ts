@@ -6,7 +6,7 @@ import {
     YouTubeChannelDetailsParams,
     YouTubeVideo,
     YouTubeChannel
-} from './models';
+} from './models.js';
 
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
