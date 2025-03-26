@@ -1,8 +1,8 @@
-import { addContact } from './actions/add-contact';
-import { deleteContacts } from './actions/delete-contacts';
-import { sendSms } from './actions/send-sms';
-import { sendMms } from './actions/send-mms';
-import { triggers } from './triggers';
+import { addContact } from './actions/add-contact.js';
+import { deleteContacts } from './actions/delete-contacts.js';
+import { sendSms } from './actions/send-sms.js';
+import { sendMms } from './actions/send-mms.js';
+import { triggers } from './triggers.js';
 
 const krispCallPlugin = {
   name: "krisp-call",

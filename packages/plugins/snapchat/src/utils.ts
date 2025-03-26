@@ -10,7 +10,7 @@ import {
     SnapchatGetAdsParams,
     SnapchatGetCampaignsParams,
     SnapchatGetAdAccountsParams
-} from './models';
+} from './models.js';
 
 const BASE_URL = 'https://adsapi.snapchat.com/v1';
 

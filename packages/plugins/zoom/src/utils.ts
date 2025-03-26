@@ -12,7 +12,7 @@ import {
     ZoomListMeetingRegistrantsParams,
     ZoomGetUserParams,
     ZoomListUsersParams
-} from './models';
+} from './models.js';
 
 // Zoom API base URL
 const API_BASE_URL = 'https://api.zoom.us/v2';
@@ -194,7 +194,7 @@ export const createMeetingRegistrant = async (params: ZoomCreateMeetingRegistran
 
         // Format custom questions if provided
         if (registrantData.custom_questions) {
-            registrantData.custom_questions = registrantData.custom_questions.map(q => ({
+            registrantData.custom_questions = registrantData.custom_questions.map((q: { title: string; value: string }) => ({
                 title: q.title,
                 value: q.value
             }));

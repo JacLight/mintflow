@@ -1,4 +1,4 @@
-import { addContact } from '../src/actions/add-contact';
+import { addContact } from '../src/actions/add-contact.js';
 import axios from 'axios';
 
 // Mock axios

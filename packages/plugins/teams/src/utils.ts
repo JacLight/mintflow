@@ -15,7 +15,7 @@ import {
     Channel,
     Chat,
     ChatMessage
-} from './models';
+} from './models.js';
 
 /**
  * Initialize Microsoft Graph client with the provided token

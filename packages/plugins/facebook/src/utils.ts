@@ -4,7 +4,7 @@ import {
     FacebookPhotoPostParams,
     FacebookVideoPostParams,
     FacebookPage
-} from './models';
+} from './models.js';
 
 const BASE_URL = 'https://graph.facebook.com/v17.0';
 

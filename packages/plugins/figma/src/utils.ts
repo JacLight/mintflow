@@ -25,7 +25,7 @@ import {
     FigmaComponentSetsResponse,
     FigmaStylesResponse,
     FigmaWebhookResponse
-} from './models';
+} from './models.js';
 
 /**
  * Get a Figma file
