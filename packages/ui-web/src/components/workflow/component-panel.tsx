@@ -1,8 +1,10 @@
 'use client';
 
-import { DragEvent } from 'react';
+import { DragEvent, useState } from 'react';
 import { LucideIcon } from 'lucide-react';
 import { getComponentTypes } from './node-registry';
+import { IconRenderer } from '../ui/icon-renderer';
+import { classNames } from '@/lib/utils';
 
 // Component types that can be dragged onto the canvas
 type ComponentType = {
@@ -45,15 +47,31 @@ function DraggableComponent({ type, name, description, icon: Icon }: ComponentTy
 
 // Component panel with draggable components
 export function ComponentPanel() {
+    const [isOpen, setIsOpen] = useState(false);
     return (
-        <div className="flex w-64 flex-col border-r bg-muted/20">
-            <div className="p-4">
-                <h2 className="mb-2 text-lg font-semibold">Components</h2>
-                <p className="text-sm text-muted-foreground">
+        <div className="flex flex-col border-r absolute top-[60px] left-[16px] bg-white shadow-md rounded-md z-50 transition-all duration-300 ease-in-out w-64">
+            <div className="p-3">
+                <div className='flex items-center justify-between'>
+                    <h2 className="font-semibold">Components</h2>
+                    <button
+                        className='p-1 shadow-sm rounded-md hover:bg-muted'
+                        onClick={() => setIsOpen(!isOpen)}
+                        aria-label={isOpen ? "Close components panel" : "Open components panel"}
+                        title={isOpen ? "Close components panel" : "Open components panel"}
+                    >
+                        <IconRenderer icon={isOpen ? 'ChevronUp' : 'ChevronDown'} className='h-4 w-4' />
+                    </button>
+                </div>
+                <p className={classNames("text-sm text-muted-foreground transition-all duration-300 pt-2",
+                    isOpen ? "opacity-100 max-h-20" : "opacity-0 max-h-0 overflow-hidden"
+                )}>
                     Drag and drop components onto the canvas to build your workflow.
                 </p>
             </div>
-            <div className="flex-1 space-y-2 overflow-auto p-4">
+            <div className={classNames(
+                "flex-1 space-y-2 overflow-auto p-3 transition-all duration-300 ease-in-out",
+                isOpen ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden p-0'
+            )}>
                 {componentTypes.map((component) => (
                     <DraggableComponent key={component.type} {...component} />
                 ))}

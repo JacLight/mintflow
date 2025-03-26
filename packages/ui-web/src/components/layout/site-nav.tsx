@@ -126,7 +126,7 @@ const SideNav = ({ }) => {
                         {isExpanded && (
                             <div className='flex gap-4 items-center w-full'>
                                 <div className='w-8'>
-                                    <img src={'/mint_flow_logo.png'} alt='Business Made' className="w-full" />
+                                    <img src={'/images/mint_flow_logo.png'} alt='Business Made' className="w-full" />
                                 </div>
                                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                                     {sidebarLinks.name}

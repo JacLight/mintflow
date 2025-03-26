@@ -257,7 +257,7 @@ function FlowCanvas() {
                 <Controls />
                 <MiniMap />
                 <Panel position="top-left" className="bg-background border rounded-md shadow-md">
-                    <div className="p-2 text-sm font-medium">Workflow Designer</div>
+                    <div className="p-2 text-sm font-medium">Workflow Designer - New Flow</div>
                 </Panel>
                 <Panel position="top-right" className="bg-background border rounded-md shadow-md flex gap-2">
                     <button
@@ -294,7 +294,7 @@ function FlowCanvas() {
 export function WorkflowDesigner() {
     return (
         <ReactFlowProvider>
-            <div className="flex h-full w-full">
+            <div className="flex h-full w-full relative">
                 <ComponentPanel />
                 <div className="flex-1">
                     <FlowCanvas />
