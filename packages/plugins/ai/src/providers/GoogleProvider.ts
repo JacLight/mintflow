@@ -411,7 +411,10 @@ export class GoogleProvider extends BaseProvider {
             
             // Create chat session
             const chat = geminiModel.startChat({
-                history: geminiMessages,
+                history: geminiMessages.map(msg => ({
+                    role: msg.role,
+                    parts: msg.parts.map(part => typeof part.text === 'string' ? part : { text: '' })
+                })),
                 systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined,
                 generationConfig: {
                     temperature,
@@ -501,7 +504,10 @@ export class GoogleProvider extends BaseProvider {
             
             // Create chat session
             const chat = geminiModel.startChat({
-                history: geminiMessages.slice(0, -1), // Exclude the last message
+                history: geminiMessages.slice(0, -1).map(msg => ({
+                    role: msg.role,
+                    parts: msg.parts.map(part => typeof part.text === 'string' ? part : { text: '' })
+                })), // Exclude the last message
                 systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined,
             });
             
@@ -593,8 +599,9 @@ export class GoogleProvider extends BaseProvider {
                 const result = await geminiModel.generateContent([
                     prompt,
                     {
-                        fileData: {
-                            fileUri: uploadResult.file.uri,
+                        // Use the correct property name based on the API
+                        inlineData: {
+                            data: uploadResult.file.uri,
                             mimeType: uploadResult.file.mimeType
                         }
                     }

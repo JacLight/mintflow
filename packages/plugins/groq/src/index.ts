@@ -3,10 +3,10 @@ import { actions } from './actions/index.js';
 const groqPlugin = {
     name: "Groq",
     icon: "https://cdn.activepieces.com/pieces/groq.png",
-    description: "Use Groq'
+    description: "Use Groq's fast language models and audio processing capabilities.",
     groups: ["ai"],
     tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
-    version: '1.0.0',s fast language models and audio processing capabilities.",
+    version: '1.0.0',
     id: "groq",
     runner: "node",
     type: "node",
