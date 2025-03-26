@@ -249,7 +249,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             // Create a new node with data from the node registry
             const nodeId = `${type}-${Date.now()}`;
             const nodeData = getNodeDefaultData(type, name);
-            const nodeInfo = componentTypes.find((c: any) => c.name.toLowerCase() === name);
+            const nodeInfo = componentTypes.find((c: any) => c.name.toLowerCase() === name.toLowerCase());
             nodeData.inputSchema = nodeInfo?.inputSchema;;
 
             const newNode: Node = {

@@ -1,9 +1,141 @@
 'use client';
-import { Fragment, useEffect, useState } from 'react'
-// import { Listbox, Transition } from '@headlessui/react'
+import { Fragment, useEffect, useState, ReactNode } from 'react'
 import { classNames } from '@/lib/utils'
 import { usePathname, useRouter } from "next/navigation";
 import { IconRenderer } from '../ui/icon-renderer';
+
+// Custom Listbox components
+const Listbox = ({ value, onChange, children }: { value: any, onChange: (value: any) => void, children: (props: { open: boolean }) => ReactNode }) => {
+    const [open, setOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState(value);
+
+    useEffect(() => {
+        setSelectedValue(value);
+    }, [value]);
+
+    const handleSelect = (newValue: any) => {
+        setSelectedValue(newValue);
+        onChange(newValue);
+        setOpen(false);
+    };
+
+    return (
+        <div className="listbox-container">
+            {children({ open })}
+            <div className="listbox-context" style={{ display: 'none' }} data-open={open} data-value={JSON.stringify(selectedValue)}>
+                <button
+                    onClick={() => setOpen(!open)}
+                    style={{ display: 'none' }}
+                    aria-label="Toggle dropdown"
+                    title="Toggle dropdown"
+                ></button>
+            </div>
+        </div>
+    );
+};
+
+Listbox.Label = ({ className, children }: { className?: string, children: ReactNode }) => (
+    <label className={className}>{children}</label>
+);
+
+Listbox.Button = ({ className, children }: { className?: string, children: ReactNode }) => (
+    <button
+        className={className}
+        onClick={(e) => {
+            e.preventDefault();
+            const container = e.currentTarget.closest('.listbox-container');
+            if (container) {
+                const context = container.querySelector('.listbox-context');
+                if (context) {
+                    const toggleButton = context.querySelector('button');
+                    if (toggleButton) toggleButton.click();
+                }
+            }
+        }}
+    >
+        {children}
+    </button>
+);
+
+Listbox.Options = ({ className, children }: { className?: string, children: ReactNode }) => (
+    <div className={className}>{children}</div>
+);
+
+Listbox.Option = ({
+    className,
+    value,
+    children
+}: {
+    className: (props: { active: boolean }) => string,
+    value: any,
+    children: (props: { selected: boolean, active: boolean }) => ReactNode
+}) => {
+    const [isActive, setIsActive] = useState(false);
+    const [isSelected, setIsSelected] = useState(false);
+
+    useEffect(() => {
+        // Check if this option is selected by comparing with the context
+        const context = document.querySelector('.listbox-context');
+        if (context) {
+            try {
+                const contextValue = JSON.parse(context.getAttribute('data-value') || '{}');
+                setIsSelected(JSON.stringify(contextValue) === JSON.stringify(value));
+            } catch (e) {
+                setIsSelected(false);
+            }
+        }
+    }, [value]);
+
+    const handleClick = () => {
+        const container = document.querySelector('.listbox-container');
+        if (container) {
+            const context = container.querySelector('.listbox-context');
+            if (context) {
+                // Find the Listbox component instance
+                const listboxInstance = (container as any).__reactFiber$;
+                if (listboxInstance && listboxInstance.onChange) {
+                    listboxInstance.onChange(value);
+                } else {
+                    // Fallback: manually update the context
+                    context.setAttribute('data-value', JSON.stringify(value));
+                    const toggleButton = context.querySelector('button');
+                    if (toggleButton) toggleButton.click();
+                }
+            }
+        }
+    };
+
+    return (
+        <div
+            className={className({ active: isActive })}
+            onMouseEnter={() => setIsActive(true)}
+            onMouseLeave={() => setIsActive(false)}
+            onClick={handleClick}
+        >
+            {children({ selected: isSelected, active: isActive })}
+        </div>
+    );
+};
+
+// Simple Transition component
+const Transition = ({
+    show,
+    as: Component = Fragment,
+    children,
+    leave,
+    leaveFrom,
+    leaveTo
+}: {
+    show: boolean,
+    as?: any,
+    children: ReactNode,
+    leave?: string,
+    leaveFrom?: string,
+    leaveTo?: string
+}) => {
+    if (!show) return null;
+    return <Component>{children}</Component>;
+};
 
 const appNames = [
     { name: 'POS & Billing', href: '/business/pos', description: 'Integrated POS system with invoicing & service point', icon: '', current: false },
@@ -21,7 +153,7 @@ export default function BusinessAppSwitch() {
     const currentApp = appNames.find(app => pathname.startsWith(app.href));
     const [selected, setSelected] = useState<any>(currentApp)
 
-    const handleAppChange = (app) => {
+    const handleAppChange = (app: typeof appNames[0]) => {
         setSelected(app)
         router.push(app.href)
     }
