@@ -14,7 +14,7 @@ import {
     listSubscriptions,
     listProducts,
     listPrices
-} from './utils';
+} from './utils.js';
 
 const stripePlugin = {
     name: "Stripe",

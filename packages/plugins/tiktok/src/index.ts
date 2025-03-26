@@ -3,7 +3,7 @@ import {
     getVideoDetails,
     getUserDetails,
     uploadVideo
-} from './utils';
+} from './utils.js';
 
 const tiktokPlugin = {
     name: "TikTok",

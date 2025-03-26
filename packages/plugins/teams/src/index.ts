@@ -10,9 +10,9 @@ import {
     getChat,
     listChannelMessages,
     listChatMessages
-} from './utils';
+} from './utils.js';
 
-import { CHAT_TYPE } from './models';
+import { CHAT_TYPE } from './models.js';
 
 const teamsPlugin = {
     name: "Microsoft Teams",
@@ -232,13 +232,14 @@ const teamsPlugin = {
                         return chats.map(chat => {
                             const chatName = chat.topic ||
                                 chat.members
-                                    ?.filter(member => member.displayName)
-                                    .map(member => member.displayName)
+                                    ?.filter((member) => member.displayName !== undefined && member.displayName !== null)
+                                    .map((member) => member.displayName || '')
                                     .join(',');
 
+                            const chatType = chat.chatType as keyof typeof CHAT_TYPE || 'unknownFutureValue';
                             return {
                                 ...chat,
-                                formattedName: `(${CHAT_TYPE[chat.chatType || 'unknownFutureValue']} Chat) ${chatName || '(no title)'}`
+                                formattedName: `(${CHAT_TYPE[chatType]} Chat) ${chatName || '(no title)'}`
                             };
                         });
                     }

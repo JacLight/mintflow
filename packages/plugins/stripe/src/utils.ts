@@ -20,7 +20,7 @@ import {
     StripeListSubscriptionsParams,
     StripeListProductsParams,
     StripeListPricesParams
-} from './models';
+} from './models.js';
 
 const BASE_URL = 'https://api.stripe.com/v1';
 

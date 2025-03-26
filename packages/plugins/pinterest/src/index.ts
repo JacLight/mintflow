@@ -5,7 +5,7 @@ import {
     getUserBoards,
     getUserProfile,
     searchPins
-} from './utils';
+} from './utils.js';
 
 const pinterestPlugin = {
     name: "Pinterest",

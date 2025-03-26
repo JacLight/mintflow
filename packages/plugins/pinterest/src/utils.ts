@@ -8,7 +8,7 @@ import {
     PinterestGetPinsParams,
     PinterestGetBoardsParams,
     PinterestSearchParams
-} from './models';
+} from './models.js';
 
 const BASE_URL = 'https://api.pinterest.com/v5';
 

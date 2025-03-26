@@ -2,7 +2,7 @@ import {
     getInstagramAccounts,
     uploadPhoto,
     uploadReel
-} from './utils';
+} from './utils.js';
 
 const instagramPlugin = {
     name: "Instagram",
