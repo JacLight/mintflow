@@ -1,19 +1,12 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Connection, Handle, Position, useReactFlow } from '@xyflow/react';
 import { isValidConnection, scapedJSONStringfy } from '@/lib/reactflowUtils';
-import { ConnectionState } from '../types';
+import { ConnectionState, NodePosition } from '../types';
 import { classNames } from '@/lib-client/helpers';
-
-// Define the ConnectionState type
-export interface ConnectionState {
-  connectionStartNode: string | null;
-  connectionStartHandle: string | null;
-  connectionStartType: string | null;
-}
 
 interface HandleRenderComponentProps {
   left: boolean;
-  nodes: any[];
+  nodes?: any[];
   tooltipTitle: string;
   id: {
     input_types?: string[];
@@ -22,11 +15,35 @@ interface HandleRenderComponentProps {
     fieldName: string;
   };
   title: string;
-  edges: any[];
+  edges?: any[];
   nodeId: string;
   colorName: string[];
   connectionState: ConnectionState;
+  position?: NodePosition;  // Add support for custom positioning
 }
+
+// Calculate actual position for handles based on custom settings
+const calculateHandlePosition = (
+  nodeId: string,
+  handleData: NodePosition | undefined,
+  defaultPosition: Position
+): Position => {
+  if (!handleData || typeof handleData === 'string') {
+    return defaultPosition;
+  }
+
+  if (handleData.position) {
+    return handleData.position;
+  }
+
+  // For future implementation: position relative to another element
+  if (handleData.relativeElementId) {
+    // Logic to position relative to another element
+    console.log(`Positioning relative to ${handleData.relativeElementId} not yet implemented`);
+  }
+
+  return defaultPosition;
+};
 
 const HandleRenderComponent: React.FC<HandleRenderComponentProps> = ({
   left,
@@ -38,7 +55,14 @@ const HandleRenderComponent: React.FC<HandleRenderComponentProps> = ({
   nodeId,
   colorName,
   connectionState,
+  position,
 }) => {
+  // Calculate position based on custom settings or use default
+  const handlePosition = useMemo(() =>
+    calculateHandlePosition(nodeId, position, left ? Position.Left : Position.Right),
+    [nodeId, position, left]
+  );
+
   // This is a simplified implementation
   const handleStyle: React.CSSProperties = {
     width: '12px',
@@ -50,12 +74,21 @@ const HandleRenderComponent: React.FC<HandleRenderComponentProps> = ({
     position: 'relative',
   };
 
+  // Apply custom offsets if provided
+  if (position?.offsetX) {
+    handleStyle.left = `${position.offsetX}px`;
+  }
+
+  if (position?.offsetY) {
+    handleStyle.top = `${position.offsetY}px`;
+  }
+
   return (
-    <div
-      className={`handle ${left ? 'handle-left' : 'handle-right'}`}
+    <Handle
+      type={left ? "target" : "source"}
+      position={handlePosition}
       style={handleStyle}
-      title={tooltipTitle}
-      data-id={`${id.id}-${id.fieldName}`}
+      id={`${id.id}-${id.fieldName}`}
       data-nodeid={nodeId}
     />
   );

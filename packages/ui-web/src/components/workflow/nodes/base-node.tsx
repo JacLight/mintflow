@@ -1,12 +1,12 @@
 'use client';
 
-import { memo, useState, useRef, useEffect } from 'react';
+import { memo, useState, useRef, useEffect, useMemo } from 'react';
 import { Handle, Position, NodeProps, useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
-import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash } from 'lucide-react';
+import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Image } from 'lucide-react';
 import { ButtonDelete } from '@/components/ui/button-delete';
 import HandleRenderComponent from './handle-render-component';
-import { ConnectionState } from '../types';
+import { ConnectionState, NodePosition } from '../types';
 import GlowingHandle from './glowing-handle';
 import { classNames } from '@/lib-client/helpers';
 
@@ -15,27 +15,40 @@ export type BaseNodeData = {
   label: string;
   icon?: React.ReactNode | string;
   description?: string;
+  // Custom positioning for the main node handles
+  sourcePosition?: Position | NodePosition;
+  targetPosition?: Position | NodePosition;
   inputs?: Array<{
     name: string;
     type: string;
     label: string;
     required?: boolean;
     description?: string;
+    position?: NodePosition;  // Position for this specific input
   }>;
   outputs?: Array<{
     name: string;
     type: string;
     label: string;
     description?: string;
+    position?: NodePosition;  // Position for this specific output
+  }>;
+  // For dynamic handle positioning
+  dynamicHandlePositions?: Array<{
+    id: string;
+    calculatedPosition: Position;
+    offsetX?: number;
+    offsetY?: number;
   }>;
 };
 
 // Available node types for the add menu
 const availableNodeTypes = [
-  { id: 'dynamic', label: 'Dynamic Node', icon: <Box className="h-4 w-4" /> },
   { id: 'info', label: 'Info Node', icon: <Info className="h-4 w-4" /> },
   { id: 'app-view', label: 'App View', icon: <Zap className="h-4 w-4" /> },
-  { id: 'form', label: 'Form View', icon: <IconRenderer icon='FormInput' className="h-4 w-4" /> }
+  { id: 'form', label: 'Form View', icon: <IconRenderer icon='FormInput' className="h-4 w-4" /> },
+  { id: 'switch', label: 'Switch', icon: <Settings className="h-4 w-4" /> },
+  { id: 'image', label: 'Image', icon: <Image className="h-4 w-4" /> },
 ];
 
 // Helper function to get icon component
@@ -88,6 +101,79 @@ export const BaseNode = memo(({
     connectionStartHandle: null,
     connectionStartType: null
   };
+
+  // Calculate positions for main handles
+  const calculatedSourcePosition = useMemo(() => {
+    if (typeof data.sourcePosition === 'object' && data.sourcePosition !== null) {
+      return data.sourcePosition;
+    }
+    return sourcePosition;
+  }, [data.sourcePosition, sourcePosition]);
+
+  const calculatedTargetPosition = useMemo(() => {
+    if (typeof data.targetPosition === 'object' && data.targetPosition !== null) {
+      return data.targetPosition;
+    }
+    return targetPosition;
+  }, [data.targetPosition, targetPosition]);
+
+  // Process dynamic handle positions if provided
+  const processedInputs = useMemo(() => {
+    if (!data.inputs) return [];
+
+    // If dynamicHandlePositions is provided, apply them to the inputs
+    if (data.dynamicHandlePositions) {
+      return data.inputs.map(input => {
+        const dynamicPosition = data.dynamicHandlePositions?.find(
+          pos => pos.id === `${id}-${input.name}`
+        );
+
+        if (dynamicPosition) {
+          return {
+            ...input,
+            position: {
+              position: dynamicPosition.calculatedPosition,
+              offsetX: dynamicPosition.offsetX,
+              offsetY: dynamicPosition.offsetY
+            }
+          };
+        }
+
+        return input;
+      });
+    }
+
+    return data.inputs;
+  }, [data.inputs, data.dynamicHandlePositions, id]);
+
+  // Process dynamic handle positions for outputs
+  const processedOutputs = useMemo(() => {
+    if (!data.outputs) return [];
+
+    // If dynamicHandlePositions is provided, apply them to the outputs
+    if (data.dynamicHandlePositions) {
+      return data.outputs.map(output => {
+        const dynamicPosition = data.dynamicHandlePositions?.find(
+          pos => pos.id === `${id}-${output.name}`
+        );
+
+        if (dynamicPosition) {
+          return {
+            ...output,
+            position: {
+              position: dynamicPosition.calculatedPosition,
+              offsetX: dynamicPosition.offsetX,
+              offsetY: dynamicPosition.offsetY
+            }
+          };
+        }
+
+        return output;
+      });
+    }
+
+    return data.outputs;
+  }, [data.outputs, data.dynamicHandlePositions, id]);
   // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -210,7 +296,7 @@ export const BaseNode = memo(({
       {/* Input handle (target) */}
       <Handle
         type="target"
-        position={targetPosition}
+        position={calculatedTargetPosition as Position}
         className="!h-3 !w-3 !bg-primary"
       />
 
@@ -351,16 +437,16 @@ export const BaseNode = memo(({
       {/* Output handle (source) */}
       <GlowingHandle
         type="source"
-        position={sourcePosition}
+        position={calculatedSourcePosition}
         isConnectable={true}
         id={id}
       // className="!h-3 !w-3 !bg-primary"
       />
 
-      {data.inputs && data.inputs.length > 0 && (
+      {processedInputs.length > 0 && (
         <div className="mt-2 pt-2 border-t">
           <div className="text-xs font-medium text-gray-500 mb-1">Inputs</div>
-          {data.inputs.map((input, index) => (
+          {processedInputs.map((input, index) => (
             <div key={input.name} className="flex items-center justify-between py-1">
               <div className="flex items-center">
                 <HandleRenderComponent
@@ -375,6 +461,7 @@ export const BaseNode = memo(({
                   nodeId={id}
                   colorName={['primary']}
                   connectionState={connectionState}
+                  position={input.position}
                 />
                 <span className="text-xs ml-4">{input.label}</span>
                 {input.required && <span className="text-red-500 ml-1">*</span>}
@@ -386,10 +473,10 @@ export const BaseNode = memo(({
       )}
 
       {/* Output handles */}
-      {data.outputs && data.outputs.length > 0 && (
+      {processedOutputs.length > 0 && (
         <div className="mt-2 pt-2 border-t">
           <div className="text-xs font-medium text-gray-500 mb-1">Outputs</div>
-          {data.outputs.map((output, index) => (
+          {processedOutputs.map((output, index) => (
             <div key={output.name} className="flex items-center justify-between py-1">
               <span className="text-xs">{output.label}</span>
               <div className="flex items-center">
@@ -406,6 +493,7 @@ export const BaseNode = memo(({
                   nodeId={id}
                   colorName={['secondary']}
                   connectionState={connectionState}
+                  position={output.position}
                 />
               </div>
             </div>

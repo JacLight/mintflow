@@ -25,7 +25,7 @@ import { getNodeTypes, getEdgeTypes, getNodeDefaultData } from './node-registry'
 
 // Get node and edge types from the registry
 // You can filter which nodes to include by passing an array of types
-const nodeTypes = getNodeTypes(['info', 'dynamic', 'app-view', 'form', 'improved', 'action', 'condition']);
+const nodeTypes = getNodeTypes(['info', 'dynamic', 'app-view', 'form', 'improved', 'action', 'condition', 'switch', 'image']);
 const edgeTypes = getEdgeTypes(['custom']);
 
 // Sample schema for dynamic node
