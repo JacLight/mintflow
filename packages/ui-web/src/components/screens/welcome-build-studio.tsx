@@ -1,6 +1,9 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { DataList } from "../common/data-list";
+import { MintflowSchema } from "../../lib/models/flow-model";
+import { getMintflowService } from "../../lib/mintflow-service";
 import { IconRenderer } from "../ui/icon-renderer";
 import { formatDistance } from "date-fns";
 import { classNames } from "@/lib/utils";
@@ -64,8 +67,20 @@ const demoTemplates = [
     },
 ];
 
+// Define the type for page data
+interface PageData {
+    sk: string;
+    data: {
+        name: string;
+        thumbnail: string;
+        type?: string;
+    };
+    status: string;
+    modifydate: string;
+    type?: string;
+}
 
-const lastModifiedPages = [
+const lastModifiedPages: PageData[] = [
     {
         sk: '1', data: { name: 'Personal Portfolio', thumbnail: `https://picsum.photos/seed/picsum/201/301?random=23423` },
         status: 'published', modifydate: '2021-10-10', type: 'Website'
@@ -98,7 +113,8 @@ const aiSuggestions = [
 
 const WelcomeMintflow = () => {
     const [activeTab, setActiveTab] = useState('all');
-
+    const [showAllProjects, setShowAllProjects] = useState(false);
+    const mintflowService = getMintflowService();
 
     const buttons = [
         { method: null, icon: 'Layout', name: 'Create from template' },
@@ -115,9 +131,22 @@ const WelcomeMintflow = () => {
     const createWithAI = async () => {
     };
 
-    const showProjects = (e, type = 'page') => {
+    const showProjects = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setShowAllProjects(true);
     };
-    const openProject = (page) => {
+
+    const openProject = (rowId: string, row: any) => {
+        // Here you would navigate to the workflow designer with the selected flow
+        console.log('Opening project:', rowId, row);
+        // Example: router.push(`/workflow-designer/${rowId}`);
+    };
+
+    // Handle click on project card
+    const handleProjectCardClick = (page: PageData) => {
+        if (page && page.sk) {
+            openProject(page.sk, page);
+        }
     };
 
 
@@ -189,7 +218,7 @@ const WelcomeMintflow = () => {
 
                     {/* Project Cards */}
                     {lastModifiedPages?.slice(0, 5).map((page, index) => (
-                        <div key={page.sk} onClick={() => openProject(page)} className="bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+                        <div key={page.sk} onClick={() => handleProjectCardClick(page)} className="bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
                             {/* Preview Image */}
                             <div className="h-40 bg-gray-100 flex items-center justify-center">
                                 {page.data.thumbnail ? (
@@ -213,9 +242,13 @@ const WelcomeMintflow = () => {
                                 </p>
                                 <div className="flex items-center justify-between mt-3">
                                     <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                                        {page.data.type || 'Website'}
+                                        {page.type || page.data.type || 'Website'}
                                     </span>
-                                    <button className="text-gray-400 hover:text-gray-600" onClick={(e) => { e.stopPropagation(); }}>
+                                    <button
+                                        className="text-gray-400 hover:text-gray-600"
+                                        onClick={(e: React.MouseEvent) => { e.stopPropagation(); }}
+                                        aria-label="More options"
+                                    >
                                         <IconRenderer icon="MoreHorizontal" className="w-4 h-4" />
                                     </button>
                                 </div>
@@ -224,13 +257,18 @@ const WelcomeMintflow = () => {
                     ))}
                 </div>
 
-                {lastModifiedPages?.length > 5 && (
-                    <div className="text-center mb-8">
-                        <button onClick={showProjects} className="text-blue-600 font-medium hover:text-blue-700">
-                            View All Projects
-                        </button>
-                    </div>
-                )}
+                <div className="text-center mb-8">
+                    <button onClick={showProjects} className="text-blue-600 font-medium hover:text-blue-700">
+                        View All Projects
+                    </button>
+                </div>
+
+                <DataList
+                    show={showAllProjects}
+                    datatype={'mintflow'}
+                    onClose={() => setShowAllProjects(false)}
+                    onRowClick={openProject}
+                />
 
                 {/* Main Grid Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -249,7 +287,7 @@ const WelcomeMintflow = () => {
                         <div className="bg-white rounded-lg p-6 shadow-sm">
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-xl font-semibold text-gray-900">Quick Start Videos</h2>
-                                <a href='https://www.youtube.com/@appmint' target='_blank' className="text-blue-600 text-sm font-medium hover:text-blue-700">View Library</a>
+                                <a href='https://www.youtube.com/@appmint' target='_blank' rel="noopener noreferrer" className="text-blue-600 text-sm font-medium hover:text-blue-700">View Library</a>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {tutorials.map(tutorial => (
@@ -329,8 +367,13 @@ const WelcomeMintflow = () => {
     );
 };
 
+interface BasePageTemplateProps {
+    templates?: typeof demoTemplates;
+    itemClass?: string;
+    itemCount?: number;
+}
 
-const BasePageTemplate = ({ templates = demoTemplates }) => {
+const BasePageTemplate = ({ templates = demoTemplates, itemClass, itemCount }: BasePageTemplateProps) => {
     const [selected, setSelected] = useState<any>(null);
 
 
@@ -348,7 +391,7 @@ const BasePageTemplate = ({ templates = demoTemplates }) => {
                             <img className="w-full" src={item.image} alt={item?.path} />
                         </div>
                         <div className={classNames(commonClasses, "bottom-4 text-center w-full")}>
-                            <a href={item.url} target={'_blank'} className={classNames(item.url && "hover:bg-purple-700 px-2 py-1 text-sm semibold hover:text-white bg-white rounded-full")}>Live preview - {item?.title || item?.name}</a>
+                            <a href={item.url} target={'_blank'} rel="noopener noreferrer" className={classNames(item.url && "hover:bg-purple-700 px-2 py-1 text-sm semibold hover:text-white bg-white rounded-full")}>Live preview - {item?.title || item?.name}</a>
                         </div>
                         {item.tags && <div className={classNames(commonClasses, "top-10 left-10 px-2 py-1 rounded-full shadow bg-white")}>{item.tags}</div>}
                         <div className={classNames(commonClasses, "top-10 right-10 px-2 py-1 rounded-full shadow bg-purple-700 text-white")}>{item.templateTitle || item.templateName}</div>
