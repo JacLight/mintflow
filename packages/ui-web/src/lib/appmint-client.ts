@@ -106,7 +106,6 @@ export class AppEngineClient {
       }
       this.renewTries = 0;
       console.log('request success -> ', method, clientPath);
-      console.log('response -> ', rt?.data);
       return this.processResponse(rt);
     } catch (err) {
       const error = err as any;
