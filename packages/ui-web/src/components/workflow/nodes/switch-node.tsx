@@ -41,7 +41,8 @@ export const SwitchNode = memo((props: NodeProps) => {
         options,
         {
             strategy: 'distribute',
-            containerWidth: expanded ? 350 : 250
+            containerWidth: expanded ? 350 : 250,
+            containerHeight: options.length * 40 // Approximate height based on number of options
         }
     );
 

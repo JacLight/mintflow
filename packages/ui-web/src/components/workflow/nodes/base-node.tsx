@@ -474,30 +474,41 @@ export const BaseNode = memo(({
 
       {/* Output handles */}
       {processedOutputs.length > 0 && (
-        <div className="mt-2 pt-2 border-t">
+        <div className="mt-2 pt-2 border-t relative">
           <div className="text-xs font-medium text-gray-500 mb-1">Outputs</div>
-          {processedOutputs.map((output, index) => (
-            <div key={output.name} className="flex items-center justify-between py-1">
-              <span className="text-xs">{output.label}</span>
-              <div className="flex items-center">
-                <span className="text-xs text-gray-400 mr-4">{output.type}</span>
-                <HandleRenderComponent
-                  left={false}
-                  tooltipTitle={output.type}
-                  id={{
-                    output_types: [output.type],
-                    id: id,
-                    fieldName: output.name
-                  }}
-                  title={output.label}
-                  nodeId={id}
-                  colorName={['secondary']}
-                  connectionState={connectionState}
-                  position={output.position}
-                />
+          {processedOutputs.map((output, index) => {
+            // Find dynamic position for this output if available
+            const dynamicPosition = data.dynamicHandlePositions?.find(
+              pos => pos.id === `${id}-${output.name}`
+            );
+
+            return (
+              <div key={output.name} className="flex items-center justify-between py-1 relative">
+                <span className="text-xs">{output.label}</span>
+                <div className="flex items-center">
+                  <span className="text-xs text-gray-400 mr-4">{output.type}</span>
+                  <HandleRenderComponent
+                    left={false}
+                    tooltipTitle={output.type}
+                    id={{
+                      output_types: [output.type],
+                      id: id,
+                      fieldName: output.name
+                    }}
+                    title={output.label}
+                    nodeId={id}
+                    colorName={['secondary']}
+                    connectionState={connectionState}
+                    position={dynamicPosition ? {
+                      position: dynamicPosition.calculatedPosition,
+                      offsetX: dynamicPosition.offsetX,
+                      offsetY: dynamicPosition.offsetY
+                    } : output.position}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
