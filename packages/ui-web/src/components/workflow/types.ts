@@ -1,5 +1,16 @@
 import { HandleType, Position, Node, Edge, Connection, NodeProps, EdgeProps, NodeChange, EdgeChange, XYPosition } from '@xyflow/react';
 
+// Custom node positioning
+export type NodePosition = {
+    position?: Position;  // Custom position for the node handle
+    relativeElementId?: string;  // ID of element to position relative to
+    relativePosition?: 'top' | 'right' | 'bottom' | 'left' | 'center';  // Position relative to element
+    offsetX?: number;  // Fine-tuning offsets
+    offsetY?: number;
+    // Dynamic positioning
+    dynamicStrategy?: 'distribute' | 'align' | 'auto';
+    containerSelector?: string; // CSS selector for container to distribute within
+};
 
 // Context for connection state
 export interface ConnectionState {

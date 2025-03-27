@@ -12,6 +12,8 @@ import { ConditionNode } from './nodes/condition-node';
 
 // Import edge components
 import CustomEdge from './edges/base-edge';
+import { SwitchNode } from './nodes/switch-node';
+import { ImageOutputNode } from './nodes/image-output-node';
 
 // Node type definition
 export type NodeDefinition = {
@@ -93,6 +95,28 @@ export const NODE_REGISTRY: NodeDefinition[] = [
         component: ConditionNode,
         createDefaultData: (name) => ({
             label: name
+        })
+    },
+    {
+        type: 'switch',
+        name: 'Switch',
+        description: 'Switch node',
+        icon: GitBranch,
+        component: SwitchNode,
+        createDefaultData: (name) => ({
+            label: name,
+            branches: []
+        })
+    },
+    {
+        type: 'image',
+        name: 'Image',
+        description: 'Image node',
+        icon: GitBranch,
+        component: ImageOutputNode,
+        createDefaultData: (name) => ({
+            label: name,
+            branches: []
         })
     },
 ];
