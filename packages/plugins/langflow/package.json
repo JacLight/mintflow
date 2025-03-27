@@ -34,7 +34,6 @@
     "vitest": "^0.34.6"
   },
   "peerDependencies": {
-    "@mintflow/core": ">=0.1.0"
   },
   "engines": {
     "node": ">=18.0.0"

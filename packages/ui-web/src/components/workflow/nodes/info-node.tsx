@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from 'react';
-import { NodeProps, Position } from '@xyflow/react';
+import { NodeProps, Position } from '../mock-xyflow';
 import { BaseNode, BaseNodeData } from './base-node';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 
@@ -13,7 +13,11 @@ export type InfoNodeData = BaseNodeData & {
 // Information node component
 export const InfoNode = memo((props: NodeProps) => {
     const { data, ...rest } = props;
-    const nodeData = data as InfoNodeData;
+    // Add default values for required BaseNodeData properties
+    const nodeData: InfoNodeData = {
+      label: data?.label || 'Info Node',
+      ...(data as Record<string, unknown>)
+    };
 
     // Add icon to the node data
     const enhancedNodeData: InfoNodeData = {

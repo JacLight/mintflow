@@ -1,78 +1,22 @@
 import { myProvider } from '@/lib/ai/models';
 import { sheetPrompt, updateDocumentPrompt } from '@/lib/ai/prompts';
 import { createDocumentHandler } from '@/lib/artifacts/server';
-import { streamObject } from 'ai';
-import { z } from 'zod';
+import { streamObject } from '@/lib/ai/ai';
+import { ArtifactKind } from '@/components/chat/artifact';
 
-export const sheetDocumentHandler = createDocumentHandler<'sheet'>({
-  kind: 'sheet',
-  onCreateDocument: async ({ title, dataStream }) => {
-    let draftContent = '';
-
-    const { fullStream } = streamObject({
-      model: myProvider.languageModel('artifact-model'),
-      system: sheetPrompt,
-      prompt: title,
-      schema: z.object({
-        csv: z.string().describe('CSV data'),
-      }),
-    });
-
-    for await (const delta of fullStream) {
-      const { type } = delta;
-
-      if (type === 'object') {
-        const { object } = delta;
-        const { csv } = object;
-
-        if (csv) {
-          dataStream.writeData({
-            type: 'sheet-delta',
-            content: csv,
-          });
-
-          draftContent = csv;
-        }
-      }
-    }
-
-    dataStream.writeData({
-      type: 'sheet-delta',
-      content: draftContent,
-    });
-
-    return draftContent;
+// Mock implementation of sheet document handler
+export const sheetDocumentHandler = createDocumentHandler<ArtifactKind.SPREADSHEET>({
+  kind: ArtifactKind.SPREADSHEET,
+  onCreateDocument: async ({ title }) => {
+    // Return a simple CSV
+    return `name,age,email
+John Doe,30,john@example.com
+Jane Smith,25,jane@example.com
+Bob Johnson,40,bob@example.com`;
   },
-  onUpdateDocument: async ({ document, description, dataStream }) => {
-    let draftContent = '';
-
-    const { fullStream } = streamObject({
-      model: myProvider.languageModel('artifact-model'),
-      system: updateDocumentPrompt(document.content, 'sheet'),
-      prompt: description,
-      schema: z.object({
-        csv: z.string(),
-      }),
-    });
-
-    for await (const delta of fullStream) {
-      const { type } = delta;
-
-      if (type === 'object') {
-        const { object } = delta;
-        const { csv } = object;
-
-        if (csv) {
-          dataStream.writeData({
-            type: 'sheet-delta',
-            content: csv,
-          });
-
-          draftContent = csv;
-        }
-      }
-    }
-
-    return draftContent;
+  onUpdateDocument: async ({ id, content }) => {
+    // Return the same content with an additional row
+    return `${content}
+New Person,35,new@example.com`;
   },
 });

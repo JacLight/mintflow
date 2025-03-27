@@ -1,13 +1,19 @@
 'use client';
 
 import { memo } from 'react';
-import { NodeProps, Position, Handle } from '@xyflow/react';
+import { NodeProps, Position } from '../mock-xyflow';
+import { Handle } from '../handle';
 import { BaseNode, BaseNodeData } from './base-node';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 
 // Condition node component with multiple outputs
 export const ConditionNode = memo((props: NodeProps) => {
     const { data, ...rest } = props;
+    // Add default values for required BaseNodeData properties
+    const nodeData: BaseNodeData = {
+      label: data?.label || 'Condition Node',
+      ...(data as Record<string, unknown>)
+    };
     return (
         <div
             className={`rounded-md border bg-background p-3 shadow-md transition-all ${props.selected ? 'ring-2 ring-primary' : ''
@@ -26,7 +32,7 @@ export const ConditionNode = memo((props: NodeProps) => {
                     <span className="mr-2">
                         <IconRenderer icon="Github" />
                     </span>
-                    {(data as BaseNodeData).label}
+                    {nodeData.label}
                 </div>
                 <div className="flex items-center justify-center rounded-md border bg-amber-500/10 p-2">
                     <span className="text-amber-500">

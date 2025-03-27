@@ -33,12 +33,13 @@ export async function validateApiKey(apiKey: string): Promise<boolean> {
 export function createAssemblyAIClient(apiKey: string): AssemblyAI {
   return new AssemblyAI({
     apiKey,
-    userAgent: {
+    // @ts-ignore - userAgent is not in BaseServiceParams but is accepted by the API
+    userAgent: { 
       integration: {
         name: 'MintFlow',
         version: '1.0.0',
       },
     },
     baseUrl: BASE_URL,
-  });
+  } as any);
 }

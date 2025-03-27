@@ -213,7 +213,7 @@ const WelcomeMintflow = () => {
                                 </p>
                                 <div className="flex items-center justify-between mt-3">
                                     <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                                        {page.data.type || 'Website'}
+                                        {page.type || 'Website'}
                                     </span>
                                     <button className="text-gray-400 hover:text-gray-600" onClick={(e) => { e.stopPropagation(); }}>
                                         <IconRenderer icon="MoreHorizontal" className="w-4 h-4" />
@@ -330,7 +330,7 @@ const WelcomeMintflow = () => {
 };
 
 
-const BasePageTemplate = ({ templates = demoTemplates }) => {
+const BasePageTemplate = ({ templates = demoTemplates, itemCount, itemClass }) => {
     const [selected, setSelected] = useState<any>(null);
 
 

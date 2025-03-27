@@ -1,4 +1,4 @@
-import { Artifact } from '@/components/chat/create-artifact';
+import { Artifact } from '@/components/create-artifact';
 import { DiffView } from '@/components/chat/diffview';
 import { DocumentSkeleton } from '@/components/chat/document-skeleton';
 import { Editor } from '@/components/chat/text-editor';

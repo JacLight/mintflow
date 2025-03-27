@@ -1,4 +1,5 @@
-import { PromptTemplateRegistry, StoredPromptTemplate } from '../registry/PromptTemplateRegistry.js';
+import { PromptTemplateRegistry } from '../registry/PromptTemplateRegistry.js';
+import { PromptTemplate } from '../adapters/PromptPlugin.js';
 import { TemplateVersion } from '../adapters/PromptPlugin.js';
 
 /**
@@ -203,7 +204,7 @@ export class ABTestingFramework {
    * @param testId Test ID
    * @returns The template to use or undefined if the test doesn't exist
    */
-  getTestTemplate(testId: string): StoredPromptTemplate | undefined {
+  getTestTemplate(testId: string): PromptTemplate | undefined {
     const test = this.tests.get(testId);
     
     if (!test || !test.active) {
@@ -388,7 +389,7 @@ export class ABTestingFramework {
    * @param testId Test ID
    * @returns The winning template or undefined if there's no winner yet
    */
-  getWinningTemplate(testId: string): StoredPromptTemplate | undefined {
+  getWinningTemplate(testId: string): PromptTemplate | undefined {
     const test = this.tests.get(testId);
     const result = this.results.get(testId);
     

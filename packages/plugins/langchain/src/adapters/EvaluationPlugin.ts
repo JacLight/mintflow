@@ -302,7 +302,7 @@ const evaluationPlugin = {
         };
         
         // Evaluate the retrieval system
-        return evaluation.evaluateRetrievalSystem(input.queries, input.retrievedLists, options);
+        return evaluation.evaluateRetrieval(input.queries, input.retrievedLists, options);
       }
     },
     {
@@ -421,7 +421,7 @@ const evaluationPlugin = {
         };
         
         // Evaluate the generation system
-        return evaluation.evaluateGenerationSystem(input.prompt, input.generated, options);
+        return evaluation.evaluateGeneration(input.prompt, input.generated, options);
       }
     },
     {
@@ -603,7 +603,7 @@ const evaluationPlugin = {
         };
         
         // Evaluate the agent system
-        return evaluation.evaluateAgentSystem(input.tasks, options);
+        return evaluation.evaluateAgent(input.tasks, options);
       }
     }
   ]

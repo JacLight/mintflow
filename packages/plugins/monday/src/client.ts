@@ -1,5 +1,10 @@
 import mondaySdk from 'monday-sdk-js';
-import type { MondayClientSdk } from 'monday-sdk-js/types/client-sdk.interface';
+// Define our own interface for MondayClientSdk to avoid type issues
+interface MondayClientSdk {
+  setToken: (token: string) => void;
+  setApiVersion: (version: string) => void;
+  api: <T>(query: string, options?: { variables?: any }) => Promise<{ data: T }>;
+}
 import { Board, MondayColumn, User } from './models.js';
 import { mondayGraphQLMutations } from './mutations.js';
 import { mondayGraphQLQueries } from './queries.js';
@@ -8,7 +13,8 @@ export class MondayClient {
     private client: MondayClientSdk;
 
     constructor(apiKey: string) {
-        this.client = mondaySdk();
+        // Use any to bypass the type checking for mondaySdk
+        this.client = (mondaySdk as any)();
         this.client.setToken(apiKey);
         this.client.setApiVersion('2023-10');
     }

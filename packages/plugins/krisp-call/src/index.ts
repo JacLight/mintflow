@@ -2,7 +2,7 @@ import { addContact } from './actions/add-contact.js';
 import { deleteContacts } from './actions/delete-contacts.js';
 import { sendSms } from './actions/send-sms.js';
 import { sendMms } from './actions/send-mms.js';
-import { triggers } from './triggers.js';
+import { triggers } from './triggers/index.js';
 
 const krispCallPlugin = {
   name: "krisp-call",

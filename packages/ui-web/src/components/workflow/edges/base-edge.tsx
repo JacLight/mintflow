@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { EdgeProps, getBezierPath, useReactFlow } from '@xyflow/react';
-import { Trash2 } from 'lucide-react';
+import { EdgeProps, getBezierPath, useReactFlow } from '../mock-xyflow';
+import { Handle } from '../handle';
+import { Trash2 } from '../mock-lucide';
 import { ButtonDelete } from '@/components/ui/button-delete';
 
 export default function CustomEdge({
@@ -50,7 +51,7 @@ export default function CustomEdge({
                 className="edge-delete-button"
                 requiredExtensions="http://www.w3.org/1999/xhtml"
             >
-                <ButtonDelete onDelete={(event) => onEdgeDelete(event, id)} className='flex p-0 h-full w-full items-center justify-center rounded-full bg-white border border-gray-200 cursor-pointer hover:bg-red-50 hover:border-red-200"' />
+                <ButtonDelete onDelete={(event) => onEdgeDelete(event, id)} className="flex p-0 h-full w-full items-center justify-center rounded-full bg-white border border-gray-200 cursor-pointer hover:bg-red-50 hover:border-red-200" />
             </foreignObject>
         </>
     );

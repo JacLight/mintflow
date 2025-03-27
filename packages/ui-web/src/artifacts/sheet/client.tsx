@@ -1,4 +1,4 @@
-import { Artifact } from '@/components/chat/create-artifact';
+import { Artifact } from '@/components/create-artifact';
 import {
   CopyIcon,
   LineChartIcon,

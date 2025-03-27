@@ -56,18 +56,18 @@ export async function lemurTask(input: LemurTaskInput): Promise<LemurTaskOutput>
     const taskResponse = await client.lemur.task(taskParams);
     
     return {
-      id: taskResponse.id,
+      id: (taskResponse as any).id,
       request: {
-        prompt: taskResponse.request.prompt,
-        context: taskResponse.request.context,
-        transcript_ids: taskResponse.request.transcript_ids,
-        final_model: taskResponse.request.final_model,
-        max_output_size: taskResponse.request.max_output_size,
-        temperature: taskResponse.request.temperature
+        prompt: (taskResponse as any).request.prompt,
+        context: (taskResponse as any).request.context,
+        transcript_ids: (taskResponse as any).request.transcript_ids,
+        final_model: (taskResponse as any).request.final_model,
+        max_output_size: (taskResponse as any).request.max_output_size,
+        temperature: (taskResponse as any).request.temperature
       },
       response: taskResponse.response,
-      status: taskResponse.status,
-      error: taskResponse.error
+      status: (taskResponse as any).status,
+      error: (taskResponse as any).error
     };
   } catch (error: any) {
     throw new Error(`AssemblyAI LeMUR Task Error: ${error.message}`);

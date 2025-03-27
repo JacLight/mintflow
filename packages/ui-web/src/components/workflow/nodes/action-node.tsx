@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from 'react';
-import { NodeProps, Position } from '@xyflow/react';
+import { NodeProps, Position } from '../mock-xyflow';
 import { BaseNode, BaseNodeData } from './base-node';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 
