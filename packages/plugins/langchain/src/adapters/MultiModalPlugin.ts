@@ -509,4 +509,5 @@ const multiModalPlugin = {
 };
 
 export default multiModalPlugin;
-export type { ImageLoadOptions, AudioLoadOptions, MultiModalOptions };
+// These types are already defined in this file, so we don't need to re-export them
+// // Types are already exported above

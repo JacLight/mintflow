@@ -1,11 +1,20 @@
 'use client';
 
 import { memo } from 'react';
-import { NodeProps, Position } from '@xyflow/react';
-import { Layout, Maximize2, Minimize2 } from 'lucide-react';
+import { NodeProps, Position } from '../mock-xyflow';
+import { Layout, Maximize2, Minimize2 } from '../mock-lucide';
 import { useState } from 'react';
 import { BaseNode, BaseNodeData } from './base-node';
-import { AppmintForm } from '@appmint/form';
+
+// Mock implementation of AppmintForm
+const AppmintForm = ({ schema, initData, rules, datatype, id, theme }: any) => {
+  return (
+    <div className="p-2 border rounded">
+      <div className="text-sm font-medium mb-2">Form: {id}</div>
+      <div className="text-xs text-gray-500">Mock form implementation</div>
+    </div>
+  );
+};
 
 // Extended data type for app view nodes
 export type FormNodeData = BaseNodeData & {
@@ -18,7 +27,11 @@ export type FormNodeData = BaseNodeData & {
 // App View node component
 export const FormNode = memo((props: NodeProps) => {
     const { data, ...rest } = props;
-    const nodeData = data as FormNodeData;
+    // Add default values for required BaseNodeData properties
+    const nodeData: FormNodeData = {
+      label: data?.label || 'Form Node',
+      ...(data as Record<string, unknown>)
+    };
     const [expanded, setExpanded] = useState(false);
 
     // Toggle expansion

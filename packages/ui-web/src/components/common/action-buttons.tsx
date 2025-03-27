@@ -31,11 +31,11 @@ export const ActionButtons = ({ moreButtons }) => {
       {[...buttonsList, ...(moreButtons || [])].map((button, index) => {
         const Wrapper: any = button.url ? Link : ButtonTP
         return (
-          <Wrapper key={index} title={button.label} className={classNames(iconButtonClass, ' bg-white ')} onClick={() => onClickHandler(e, button)} value={button.name} href={button.url}>
+          <Wrapper key={index} title={button.label} className={classNames(iconButtonClass, ' bg-white ')} onClick={(e) => onClickHandler(e, button)} value={button.name} href={button.url}>
             <IconRenderer icon={button.icon} className={''} /> <span className={classNames(!button.showCaption && 'sr-only', 'sm:inline text-xs')}>{button.label}</span>
           </Wrapper>
         )
       })}
     </div>
   );
-}; 
+};

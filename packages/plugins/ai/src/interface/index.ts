@@ -1,4 +1,5 @@
 // interface/index.ts
+// No imports to fix in this file
 
 // Provider types
 export type ProviderType = 'openai' | 'anthropic' | 'google' | 'ollama';

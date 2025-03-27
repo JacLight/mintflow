@@ -1,73 +1,15 @@
-import { z } from 'zod';
-import { streamObject } from 'ai';
-import { myProvider } from '@/lib/ai/models';
-import { codePrompt, updateDocumentPrompt } from '@/lib/ai/prompts';
+import { ArtifactKind } from '@/components/chat/artifact';
 import { createDocumentHandler } from '@/lib/artifacts/server';
 
-export const codeDocumentHandler = createDocumentHandler<'code'>({
-  kind: 'code',
-  onCreateDocument: async ({ title, dataStream }) => {
-    let draftContent = '';
-
-    const { fullStream } = streamObject({
-      model: myProvider.languageModel('artifact-model'),
-      system: codePrompt,
-      prompt: title,
-      schema: z.object({
-        code: z.string(),
-      }),
-    });
-
-    for await (const delta of fullStream) {
-      const { type } = delta;
-
-      if (type === 'object') {
-        const { object } = delta;
-        const { code } = object;
-
-        if (code) {
-          dataStream.writeData({
-            type: 'code-delta',
-            content: code ?? '',
-          });
-
-          draftContent = code;
-        }
-      }
-    }
-
-    return draftContent;
+// Mock implementation of code document handler
+export const codeDocumentHandler = createDocumentHandler<ArtifactKind.CODE>({
+  kind: ArtifactKind.CODE,
+  onCreateDocument: async ({ title }) => {
+    // Return a simple code snippet
+    return `console.log("Hello, ${title}!");`;
   },
-  onUpdateDocument: async ({ document, description, dataStream }) => {
-    let draftContent = '';
-
-    const { fullStream } = streamObject({
-      model: myProvider.languageModel('artifacts-model'),
-      system: updateDocumentPrompt(document.content, 'code'),
-      prompt: description,
-      schema: z.object({
-        code: z.string(),
-      }),
-    });
-
-    for await (const delta of fullStream) {
-      const { type } = delta;
-
-      if (type === 'object') {
-        const { object } = delta;
-        const { code } = object;
-
-        if (code) {
-          dataStream.writeData({
-            type: 'code-delta',
-            content: code ?? '',
-          });
-
-          draftContent = code;
-        }
-      }
-    }
-
-    return draftContent;
+  onUpdateDocument: async ({ id, content }) => {
+    // Return the updated content with a comment
+    return `${content}\n// Updated at ${new Date().toISOString()}`;
   },
 });

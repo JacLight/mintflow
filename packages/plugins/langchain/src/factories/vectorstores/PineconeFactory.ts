@@ -28,7 +28,7 @@ export class PineconeFactory implements ComponentFactory<PineconeStore> {
     return await PineconeStore.fromExistingIndex(
       embeddings,
       {
-        pineconeIndex: index,
+        pineconeIndex: index as any, // TODO: Fix type mismatch
         namespace: config.namespace
       }
     );

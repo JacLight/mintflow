@@ -74,7 +74,7 @@ export async function transcribe(input: TranscribeInput): Promise<TranscribeOutp
     // Handle audio data if provided
     if (input.audioData && !input.audioUrl) {
       // Upload the audio data
-      const uploadResponse = await client.transcripts.upload({
+      const uploadResponse = await (client.transcripts as any).upload({
         data: Buffer.from(input.audioData, 'base64'),
         contentType: input.audioMimeType || 'audio/mpeg'
       });
@@ -87,7 +87,7 @@ export async function transcribe(input: TranscribeInput): Promise<TranscribeOutp
     
     // Wait for the transcription to complete if requested
     if (input.waitUntilReady) {
-      const completedTranscript = await client.transcripts.waitUntilDone(transcript.id);
+      const completedTranscript = await (client.transcripts as any).waitUntilDone(transcript.id);
       
       return {
         id: completedTranscript.id,

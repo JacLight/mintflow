@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { JiraAuth } from './models.js';
+import FormData from 'form-data';
 
 export class JiraClient {
     private axiosInstance: AxiosInstance;
@@ -375,8 +376,8 @@ export class JiraClient {
      */
     async addAttachment(issueIdOrKey: string, filename: string, content: string): Promise<any> {
         const formData = new FormData();
-        const blob = new Blob([content], { type: 'application/octet-stream' });
-        formData.append('file', blob, filename);
+        const buffer = Buffer.from(content);
+        formData.append('file', buffer, { filename });
 
         const response = await this.sendRequest({
             method: 'post',

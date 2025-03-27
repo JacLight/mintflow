@@ -1,4 +1,4 @@
-import { Artifact } from '@/components/chat/create-artifact';
+import { Artifact } from '@/components/create-artifact';
 import { CodeEditor } from '@/components/chat/code-editor';
 import {
   CopyIcon,
@@ -103,7 +103,7 @@ export const codeArtifact = new Artifact<'code', Metadata>({
             setConsoleOutputs={() => {
               setMetadata({
                 ...metadata,
-                outputs: [],
+                outputs: []
               });
             }}
           />
@@ -133,7 +133,7 @@ export const codeArtifact = new Artifact<'code', Metadata>({
         }));
 
         try {
-          // @ts-expect-error - loadPyodide is not defined
+          // loadPyodide is defined in lib/utils.ts
           const currentPyodideInstance = await globalThis.loadPyodide({
             indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.23.4/full/',
           });

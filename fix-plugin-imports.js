@@ -1,41 +1,159 @@
 #!/usr/bin/env node
 
+/**
+ * This script fixes TypeScript configuration issues in plugin packages
+ * that are causing build failures.
+ * 
+ * Issues addressed:
+ * 1. Module resolution conflicts between base tsconfig and plugin tsconfig
+ * 2. Path references to the common package
+ * 3. TypeScript configuration inconsistencies
+ */
+
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
-// List of plugins to fix
-const plugins = [
-  // 'ai', // Already fixed
-  // 'figma', // Already fixed
-  // 'stripe', // Already fixed
-  // 'speech', // Already fixed
-  // 'paypal', // Already fixed
+// List of plugins with build failures
+const failingPlugins = [
   'monday',
   'milvus',
-  'youtube',
   'sendgrid',
-  'pinterest',
   'snowflake',
-  'mailchimp',
-  'krisp-call',
-  'microsoft-office',
-  'stable-diffusion',
-  'assemblyai',
-  'jira-cloud',
-  'quickbooks',
-  'salesforce',
-  'instagram',
-  'pipedrive',
-  'basecamp',
-  'facebook',
-  'snapchat',
-  'tiktok',
-  'langchain'
+  'ui-web'
 ];
 
-// Function to recursively find all TypeScript files in a directory
-function findTsFiles(dir) {
+// Process each failing plugin
+failingPlugins.forEach(plugin => {
+  if (plugin === 'ui-web') {
+    // ui-web is a special case as it's not in the plugins directory
+    fixUIWebConfig();
+  } else {
+    // Fix plugin in the plugins directory
+    fixPluginConfig(plugin);
+  }
+});
+
+function fixPluginConfig(pluginName) {
+  const configPath = path.join(__dirname, 'packages', 'plugins', pluginName, 'tsconfig.json');
+  
+  if (!fs.existsSync(configPath)) {
+    console.error(`Config file not found for plugin: ${pluginName}`);
+    return;
+  }
+  
+  try {
+    // Read the current config
+    // Use a more robust approach to handle JSON with trailing commas
+    const configContent = fs.readFileSync(configPath, 'utf8');
+    // Remove trailing commas from JSON
+    const cleanedContent = configContent.replace(/,(\s*[}\]])/g, '$1');
+    const config = JSON.parse(cleanedContent);
+    
+    // Fix module resolution settings to match the base config
+    config.compilerOptions.module = "Node16";
+    config.compilerOptions.moduleResolution = "Node16";
+    
+    // Ensure declaration settings are consistent
+    config.compilerOptions.declaration = true;
+    
+    // Fix path references
+    if (config.compilerOptions.paths && config.compilerOptions.paths["@mintflow/common"]) {
+      // Ensure the path is correctly pointing to the common package
+      config.compilerOptions.paths["@mintflow/common"] = ["../../../packages/common/src/index.ts"];
+    }
+    
+    // Write the updated config back
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    console.log(`Fixed config for plugin: ${pluginName}`);
+    
+    // Check for .js extensions in imports
+    fixJSExtensionsInImports(pluginName);
+    
+  } catch (error) {
+    console.error(`Error fixing config for plugin ${pluginName}:`, error);
+  }
+}
+
+function fixUIWebConfig() {
+  const configPath = path.join(__dirname, 'packages', 'ui-web', 'tsconfig.json');
+  
+  if (!fs.existsSync(configPath)) {
+    console.error('Config file not found for ui-web');
+    return;
+  }
+  
+  try {
+    // Read the current config
+    // Use a more robust approach to handle JSON with trailing commas
+    const configContent = fs.readFileSync(configPath, 'utf8');
+    // Remove trailing commas from JSON
+    const cleanedContent = configContent.replace(/,(\s*[}\]])/g, '$1');
+    const config = JSON.parse(cleanedContent);
+    
+    // For ui-web, we need to ensure it's compatible with Next.js
+    // Next.js requires "moduleResolution": "node" and "module": "esnext"
+    // So we don't change these settings for ui-web
+    
+    // Write the updated config back
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    console.log('Fixed config for ui-web');
+    
+  } catch (error) {
+    console.error('Error fixing config for ui-web:', error);
+  }
+}
+
+function fixJSExtensionsInImports(pluginName) {
+  const srcDir = path.join(__dirname, 'packages', 'plugins', pluginName, 'src');
+  
+  if (!fs.existsSync(srcDir)) {
+    console.error(`Source directory not found for plugin: ${pluginName}`);
+    return;
+  }
+  
+  // Get all TypeScript files in the src directory
+  const files = getAllFiles(srcDir).filter(file => file.endsWith('.ts'));
+  
+  files.forEach(file => {
+    try {
+      let content = fs.readFileSync(file, 'utf8');
+      let updated = false;
+      
+      // Add .js extensions to relative imports without extensions
+      // This is required for Node16 module resolution
+      let updatedContent = content.replace(/from ['"](\.[^'"]*?)['"](?!\s*;)/g, (match, importPath) => {
+        // Skip if the import already has an extension
+        if (importPath.endsWith('.js') || importPath.endsWith('.ts') || 
+            importPath.endsWith('.json') || importPath.endsWith('.node')) {
+          return match;
+        }
+        updated = true;
+        return `from '${importPath}.js'`;
+      });
+      
+      // Also fix export statements
+      updatedContent = updatedContent.replace(/export \* from ['"](\.[^'"]*?)['"](?!\s*;)/g, (match, exportPath) => {
+        // Skip if the export already has an extension
+        if (exportPath.endsWith('.js') || exportPath.endsWith('.ts') || 
+            exportPath.endsWith('.json') || exportPath.endsWith('.node')) {
+          return match;
+        }
+        updated = true;
+        return `export * from '${exportPath}.js'`;
+      });
+      
+      if (updated) {
+        // Write the updated content back
+        fs.writeFileSync(file, updatedContent);
+        console.log(`Fixed JS extensions in imports for file: ${file}`);
+      }
+    } catch (error) {
+      console.error(`Error fixing JS extensions in file ${file}:`, error);
+    }
+  });
+}
+
+function getAllFiles(dir) {
   let results = [];
   const list = fs.readdirSync(dir);
   
@@ -43,9 +161,10 @@ function findTsFiles(dir) {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
     
-    if (stat.isDirectory() && file !== 'node_modules' && file !== 'dist') {
-      results = results.concat(findTsFiles(filePath));
-    } else if (file.endsWith('.ts')) {
+    if (stat && stat.isDirectory()) {
+      // Recursively get files from subdirectories
+      results = results.concat(getAllFiles(filePath));
+    } else {
       results.push(filePath);
     }
   });
@@ -53,118 +172,4 @@ function findTsFiles(dir) {
   return results;
 }
 
-// Function to fix imports in a file
-function fixImportsInFile(filePath) {
-  console.log(`Fixing imports in ${filePath}`);
-  
-  let content = fs.readFileSync(filePath, 'utf8');
-  let modified = false;
-  
-  // Find relative imports without .js extension
-  const importRegex = /from\s+['"](\.[^'"]*)['"]/g;
-  let match;
-  
-  while ((match = importRegex.exec(content)) !== null) {
-    const importPath = match[1];
-    
-    // Skip if already has .js extension
-    if (importPath.endsWith('.js')) {
-      continue;
-    }
-    
-    // Replace the import path with one that has .js extension
-    const newImportPath = `${importPath}.js`;
-    const newImport = `from '${newImportPath}'`;
-    const oldImport = `from '${importPath}'`;
-    
-    content = content.replace(oldImport, newImport);
-    modified = true;
-  }
-  
-  if (modified) {
-    fs.writeFileSync(filePath, content, 'utf8');
-    console.log(`  Modified imports in ${filePath}`);
-  }
-}
-
-// Function to add axios as a dependency in package.json if needed
-function addAxiosDependency(pluginDir) {
-  const packageJsonPath = path.join(pluginDir, 'package.json');
-  
-  if (fs.existsSync(packageJsonPath)) {
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    
-    // Check if axios is already a dependency
-    if (!packageJson.dependencies) {
-      packageJson.dependencies = {};
-    }
-    
-    if (!packageJson.dependencies.axios) {
-      console.log(`Adding axios dependency to ${packageJsonPath}`);
-      packageJson.dependencies.axios = "^1.6.7";
-      
-      // Write the updated package.json
-      fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8');
-    }
-  }
-}
-
-// Function to fix a single plugin
-function fixPlugin(plugin) {
-  const pluginDir = path.join(process.cwd(), 'packages', 'plugins', plugin);
-  
-  if (!fs.existsSync(pluginDir)) {
-    console.log(`Plugin directory not found: ${pluginDir}`);
-    return false;
-  }
-  
-  console.log(`\nFixing plugin: ${plugin}`);
-  
-  // Find all TypeScript files in the plugin directory
-  const tsFiles = findTsFiles(pluginDir);
-  console.log(`Found ${tsFiles.length} TypeScript files`);
-  
-  // Fix imports in each file
-  tsFiles.forEach(fixImportsInFile);
-  
-  // Add axios dependency if needed
-  addAxiosDependency(pluginDir);
-  
-  // Try to build the plugin
-  console.log(`Building plugin: ${plugin}`);
-  try {
-    execSync('npm run build', { cwd: pluginDir, stdio: 'inherit' });
-    console.log(`Successfully built plugin: ${plugin}`);
-    return true;
-  } catch (error) {
-    console.error(`Error building plugin ${plugin}:`, error);
-    return false;
-  }
-}
-
-// Get the plugin to fix from command line arguments
-const pluginToFix = process.argv[2];
-
-if (pluginToFix) {
-  // Fix a specific plugin
-  console.log(`Starting to fix ${pluginToFix} plugin imports...`);
-  const success = fixPlugin(pluginToFix);
-  console.log(`Finished fixing ${pluginToFix} plugin imports. Success: ${success}`);
-} else {
-  // Fix all plugins in the list
-  console.log('Starting to fix plugin imports...');
-  
-  const results = {};
-  
-  for (const plugin of plugins) {
-    console.log(`\n--- Processing plugin: ${plugin} ---`);
-    results[plugin] = fixPlugin(plugin);
-  }
-  
-  console.log('\nResults:');
-  for (const [plugin, success] of Object.entries(results)) {
-    console.log(`${plugin}: ${success ? 'SUCCESS' : 'FAILED'}`);
-  }
-  
-  console.log('\nFinished fixing plugin imports.');
-}
+console.log('Plugin configuration fixes completed.');

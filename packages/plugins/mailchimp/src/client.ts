@@ -4,7 +4,7 @@ import crypto from 'crypto';
 
 export class MailchimpClient {
     private axiosInstance: AxiosInstance;
-    private baseUrl: string;
+    private baseUrl: string = '';
     private server: string;
 
     constructor(private auth: MailchimpAuth, axiosInstance?: AxiosInstance) {

@@ -171,7 +171,7 @@ export class JSONParser {
     
     if (this.schema) {
       instructions += " The JSON should conform to the following schema:\n\n";
-      instructions += JSON.stringify(this.schema.describe(), null, 2);
+      instructions += JSON.stringify(this.schema.describe("JSON Schema"), null, 2);
     }
     
     return instructions;

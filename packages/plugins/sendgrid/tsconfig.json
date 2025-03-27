@@ -6,20 +6,33 @@
     "outDir": "./dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": false,
-    "module": "NodeNext",        
-    "moduleResolution": "NodeNext", 
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "target": "ESNext",
     "forceConsistentCasingInFileNames": true,
-    "types": ["node","jest"],
-    "paths":{
-      "@mintflow/common": ["../../common/src/index.ts"]
+    "types": [
+      "node",
+      "jest"
+    ],
+    "paths": {
+      "@mintflow/common": [
+        "../../../packages/common/src/index.ts"
+      ]
     },
-  },  
+    "declaration": true,
+    "strict": false
+  },
   "references": [
     {
       "path": "../../../packages/common"
-    },
+    }
   ],
-  "exclude": ["node_modules", "dist", "test"],
-  "include": ["src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ]
 }

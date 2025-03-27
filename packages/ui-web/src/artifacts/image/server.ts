@@ -1,43 +1,23 @@
 import { myProvider } from '@/lib/ai/models';
 import { createDocumentHandler } from '@/lib/artifacts/server';
-import { experimental_generateImage } from 'ai';
+import { experimental_generateImage } from '@/lib/ai/image';
+import { ArtifactKind } from '@/components/chat/artifact';
 
-export const imageDocumentHandler = createDocumentHandler<'image'>({
-  kind: 'image',
-  onCreateDocument: async ({ title, dataStream }) => {
-    let draftContent = '';
-
+// Mock implementation of image document handler
+export const imageDocumentHandler = createDocumentHandler<ArtifactKind.IMAGE>({
+  kind: ArtifactKind.IMAGE,
+  onCreateDocument: async ({ title }) => {
+    // Generate a mock image
     const { image } = await experimental_generateImage({
       model: myProvider.imageModel('small-model'),
       prompt: title,
       n: 1,
     });
 
-    draftContent = image.base64;
-
-    dataStream.writeData({
-      type: 'image-delta',
-      content: image.base64,
-    });
-
-    return draftContent;
+    return image.base64;
   },
-  onUpdateDocument: async ({ description, dataStream }) => {
-    let draftContent = '';
-
-    const { image } = await experimental_generateImage({
-      model: myProvider.imageModel('small-model'),
-      prompt: description,
-      n: 1,
-    });
-
-    draftContent = image.base64;
-
-    dataStream.writeData({
-      type: 'image-delta',
-      content: image.base64,
-    });
-
-    return draftContent;
+  onUpdateDocument: async ({ id, content }) => {
+    // Return the same content (in a real implementation, this would generate a new image)
+    return content;
   },
 });

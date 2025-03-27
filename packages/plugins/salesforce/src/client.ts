@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { SalesforceObject, SalesforceField, SalesforceCreateResponse, SalesforceUpsertResponse, SalesforceBulkJobResponse, SalesforceQueryResponse } from './models.js';
 
 export interface SalesforceAuth {
     access_token: string;

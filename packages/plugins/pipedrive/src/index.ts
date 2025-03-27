@@ -77,7 +77,7 @@ export default {
 
         Object.entries(customFields).forEach(([key, value]) => {
             // Format values if they are arrays
-            personCustomFields[key] = Array.isArray(value) ? value.join(',') : value;
+            personCustomFields[key] = Array.isArray(value) ? value.join(',') : String(value);
         });
 
         const response = await client.createPerson({
@@ -210,7 +210,7 @@ export default {
 
         Object.entries(customFields).forEach(([key, value]) => {
             // Format values if they are arrays
-            orgCustomFields[key] = Array.isArray(value) ? value.join(',') : value;
+            orgCustomFields[key] = Array.isArray(value) ? value.join(',') : String(value);
         });
 
         const response = await client.createOrganization({
@@ -343,7 +343,7 @@ export default {
 
         Object.entries(customFields).forEach(([key, value]) => {
             // Format values if they are arrays
-            dealCustomFields[key] = Array.isArray(value) ? value.join(',') : value;
+            dealCustomFields[key] = Array.isArray(value) ? value.join(',') : String(value);
         });
 
         const response = await client.createDeal({
@@ -491,7 +491,7 @@ export default {
 
         Object.entries(customFields).forEach(([key, value]) => {
             // Format values if they are arrays
-            leadCustomFields[key] = Array.isArray(value) ? value.join(',') : value;
+            leadCustomFields[key] = Array.isArray(value) ? value.join(',') : String(value);
         });
 
         const response = await client.createLead({
@@ -694,7 +694,7 @@ export default {
 
         Object.entries(customFields).forEach(([key, value]) => {
             // Format values if they are arrays
-            productCustomFields[key] = Array.isArray(value) ? value.join(',') : value;
+            productCustomFields[key] = Array.isArray(value) ? value.join(',') : String(value);
         });
 
         const response = await client.createProduct({

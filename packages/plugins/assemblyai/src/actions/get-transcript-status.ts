@@ -38,13 +38,13 @@ export async function getTranscriptStatus(input: GetTranscriptStatusInput): Prom
       status: transcript.status,
       text: transcript.text || '',
       audioUrl: transcript.audio_url,
-      words: transcript.words,
-      utterances: transcript.utterances,
-      confidence: transcript.confidence,
-      durationMs: transcript.audio_duration,
+      words: transcript.words || [],
+      utterances: transcript.utterances || [],
+      confidence: transcript.confidence || undefined,
+      durationMs: transcript.audio_duration || undefined,
       language: transcript.language_code,
       sentiment: transcript.sentiment_analysis_results,
-      entities: transcript.entities,
+      entities: transcript.entities || [],
       error: transcript.error
     };
   } catch (error: any) {

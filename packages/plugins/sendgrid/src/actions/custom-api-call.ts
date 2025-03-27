@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { sendgridCommon } from '../common/index.js';
+import { SENDGRID_API_URL } from '../common/constants.js';
 
 export const customApiCall = {
     name: "custom_api_call",
@@ -79,7 +79,7 @@ export const customApiCall = {
             // Send request to SendGrid API
             const response = await axios({
                 method: method,
-                url: `${sendgridCommon.baseUrl}/${normalizedPath}`,
+                url: `${SENDGRID_API_URL}/${normalizedPath}`,
                 data: body,
                 params: queryParams,
                 headers: {

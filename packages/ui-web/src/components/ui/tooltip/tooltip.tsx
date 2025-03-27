@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 export const Tooltip = ({ content, isVisible, target, position = 'bottom', gapY = 5, gapX = 5 }) => {
   const [positionStyle, setPositionStyle] = useState<any>({ opacity: 0 });
-  const tooltipRef: any = useRef();
+  const tooltipRef: any = useRef(null);
 
   useEffect(() => {
     if (isVisible && target && tooltipRef.current) {

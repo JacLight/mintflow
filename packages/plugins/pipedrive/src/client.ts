@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import FormData from 'form-data';
 import {
     Activity,
     Deal,

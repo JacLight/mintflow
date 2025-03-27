@@ -1,10 +1,11 @@
 import { memo, useState, useRef, useEffect, useCallback } from 'react';
-import { NodeProps, useReactFlow } from '@xyflow/react';
+import { NodeProps, useReactFlow } from '../mock-xyflow';
 import { IconRenderer } from '@/components/ui/icon-renderer';
-import { Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash } from 'lucide-react';
+import { Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash } from '../mock-lucide';
 import { ButtonDelete } from '@/components/ui/button-delete';
 import { classNames } from '@/lib/utils';
-import HandleRenderComponent, { ConnectionState } from './handle-render-component';
+import HandleRenderComponent from './handle-render-component';
+import { ConnectionState } from './handle-render-component';
 import { BaseNode } from './base-node';
 
 // Base node properties

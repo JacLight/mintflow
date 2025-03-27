@@ -1,40 +1,47 @@
 import React from 'react';
-import { Handle, HandleType, Position } from '@xyflow/react';
 
-/**
- * Generic handle component with glow effect
- */
-export const GlowingHandle = ({
-    id,
-    type,
-    position,
-    isConnectable,
-    nodeType = 'default',
-    style = {}
-}: {
-    id: string;
-    type: HandleType;
-    position: Position;
-    isConnectable?: boolean;
-    nodeType?: string;
-    style?: React.CSSProperties;
+interface GlowingHandleProps {
+  type: 'source' | 'target';
+  position: string;
+  id?: string;
+  style?: React.CSSProperties;
+  className?: string;
+  isConnectable?: boolean;
+}
+
+const GlowingHandle: React.FC<GlowingHandleProps> = ({
+  type,
+  position,
+  id,
+  style,
+  className,
+  isConnectable = true,
 }) => {
-    const handleClasses = `w-3 h-3 bg-purple-500 rounded-full border-2 border-purple-300 shadow-[0_0_10px_2px_rgba(139,92,246,0.6)]`;
+  const baseStyle: React.CSSProperties = {
+    width: '12px',
+    height: '12px',
+    borderRadius: '50%',
+    background: '#1a192b',
+    border: '2px solid #ddd',
+    cursor: 'pointer',
+    ...style,
+  };
 
-    return (
-        <Handle
-            id={id}
-            type={type}
-            position={position}
-            isConnectable={isConnectable !== false}
-            className={handleClasses}
-            style={{
-                ...style,
-                opacity: 1,
-            }}
-            data-nodetype={nodeType}
-        />
-    );
+  if (type === 'source') {
+    baseStyle.background = '#4caf50';
+  } else {
+    baseStyle.background = '#ff5722';
+  }
+
+  return (
+    <div
+      id={id}
+      className={`react-flow__handle react-flow__handle-${position} ${className || ''}`}
+      style={baseStyle}
+      data-type={type}
+      data-isconnectable={isConnectable}
+    />
+  );
 };
 
 export default GlowingHandle;
