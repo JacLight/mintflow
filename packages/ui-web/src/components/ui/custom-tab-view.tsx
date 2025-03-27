@@ -1,5 +1,5 @@
 import { tabButtonActiveClass, tabButtonClass } from '@/lib-client/constants';
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib-client/helpers';
 import React from 'react';
 
 export const CustomTabView = (props: { tabs }) => {

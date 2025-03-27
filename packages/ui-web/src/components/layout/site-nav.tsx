@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { IconRenderer } from "@/components/ui/icon-renderer";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { classNames } from "@/lib/utils";
+import { classNames } from "@/lib-client/helpers";
 import { sidebarLinks } from "./links";
 
 // Function to get document name from filename

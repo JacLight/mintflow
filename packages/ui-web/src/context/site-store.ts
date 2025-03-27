@@ -1,4 +1,4 @@
-import { getRandomString } from '@/lib/utils';
+import { getRandomString } from '@/lib-client/helpers';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

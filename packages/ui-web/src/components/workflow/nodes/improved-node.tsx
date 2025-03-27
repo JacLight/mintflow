@@ -3,7 +3,7 @@ import { NodeProps, useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 import { Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash } from 'lucide-react';
 import { ButtonDelete } from '@/components/ui/button-delete';
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib-client/helpers';
 import HandleRenderComponent, { ConnectionState } from './handle-render-component';
 import { BaseNode } from './base-node';
 

@@ -4,7 +4,7 @@ import { AppmintTable, RowEvents, TableEvents } from "@appmint/form";
 import { BaseModelDTO } from "../../lib/models/base.model";
 import { getMintflowService } from "../../lib/mintflow-service";
 import { MintflowSchema } from "../../lib/models/flow-model";
-import { getResponseErrorMessage } from "@/lib/utils";
+import { getResponseErrorMessage } from "@/lib-client/helpers";
 import { useSiteStore } from "@/context/site-store";
 
 interface DataListProps {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withTooltip } from './tooltip';
-import { classNames, getRandomString } from '@/lib/utils';
+import { classNames, getRandomString } from '@/lib-client/helpers';
 import { buttonClass, buttonHoverClass } from '@/lib-client/constants';
 import { IconRenderer } from './icon-renderer';
 import BusyIcon from './busy-icon';
