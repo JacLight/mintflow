@@ -1,16 +1,18 @@
+'use client';
+
 import React, { useState, useEffect } from "react";
 import ViewManager from "./view-manager";
-import { AppmintTable, RowEvents, TableEvents } from "@appmint/form";
 import { BaseModelDTO } from "../../lib/models/base.model";
 import { getMintflowService } from "../../lib/mintflow-service";
 import { MintflowSchema } from "../../lib/models/flow-model";
 import { getResponseErrorMessage } from "@/lib-client/helpers";
 import { useSiteStore } from "@/context/site-store";
+import { AppmintTable } from "appmint-form";
 
 interface DataListProps {
   datatype?: string;
   show?: boolean;
-  onRowClick?: (rowId: string, row: any) => void;
+  onRowClick?: (event: string, rowId: string, row: any) => void;
   onClose?: () => void;
 }
 
@@ -57,7 +59,7 @@ export const DataList: React.FC<DataListProps> = ({
     const eventName = String(event);
 
     if (eventName === 'click' && onRowClick) {
-      onRowClick(rowId, row);
+      onRowClick(event, rowId, row);
     } else if (eventName === 'delete') {
       handleDelete(rowId);
     }

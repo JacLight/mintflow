@@ -89,7 +89,6 @@ export async function getNodes(fields?: string[], forceRefresh: boolean = false)
         if (response.nodes) {
             // Map the response to our Node type
             nodesCache = response.nodes.map((node: any) => ({
-                id: node.id,
                 type: 'dynamic',
                 name: node.name,
                 description: node.description || 'No description available',

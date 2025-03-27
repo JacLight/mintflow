@@ -4,7 +4,7 @@ import { memo } from 'react';
 import { NodeProps, Position } from '@xyflow/react';
 import { useState } from 'react';
 import { BaseNode, BaseNodeData } from './base-node';
-import { AppmintForm } from '@appmint/form';
+import { AppmintForm } from 'appmint-form';
 
 // Extended data type for app view nodes
 export type FormNodeData = BaseNodeData & {

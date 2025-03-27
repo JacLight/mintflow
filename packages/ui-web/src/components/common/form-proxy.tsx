@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from "react";
 import ViewManager from "./view-manager";
 import { AppmintForm } from "appmint-form";

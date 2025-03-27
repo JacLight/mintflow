@@ -8,6 +8,7 @@ import { ButtonDelete } from '@/components/ui/button-delete';
 import HandleRenderComponent from './handle-render-component';
 import { ConnectionState } from '../types';
 import GlowingHandle from './glowing-handle';
+import { classNames } from '@/lib-client/helpers';
 
 // Base node properties
 export type BaseNodeData = {
@@ -60,12 +61,18 @@ export const BaseNode = memo(({
   selected,
   sourcePosition = Position.Bottom,
   targetPosition = Position.Top,
-  children
-}: NodeProps & {
-  data: BaseNodeData & { connectionState?: ConnectionState };
+  isExpanded = false,
+  className = '',
+  children,
+  toggleExpand
+}: NodeProps & { toggleExpand: any, isExpanded?: boolean, className?: string } & {
+  data: BaseNodeData & { connectionState?: ConnectionState }
   sourcePosition?: Position;
   targetPosition?: Position;
   children?: React.ReactNode;
+  className?: string;
+  toggleExpand: any;
+  isExpanded?: boolean;
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showAddMenu, setShowAddMenu] = useState(false);
@@ -198,8 +205,7 @@ export const BaseNode = memo(({
   };
   return (
     <div
-      className={`rounded-md border bg-background p-3 shadow-md transition-all min-w-[180px] ${selected ? 'ring-2 ring-primary' : ''
-        }`}
+      className={classNames(`rounded-md border border-gray-200 bg-background p-3 shadow-md transition-all`, selected ? 'ring-2 ring-purple-700' : '', className)}
     >
       {/* Input handle (target) */}
       <Handle
@@ -212,6 +218,16 @@ export const BaseNode = memo(({
       <div className="flex flex-col gap-2 relative">
         {/* Top right icons - with responsive sizing */}
         <div className="absolute top-0 right-0 flex space-x-1 scale-[0.85] origin-top-right">
+          <button
+            className="p-1 hover:bg-gray-100 rounded-full"
+            aria-label="Settings"
+            title="Settings"
+            onClick={toggleExpand}
+          >
+            <span className="h-3.5 w-3.5 text-gray-500">
+              <IconRenderer icon={isExpanded ? 'ChevronUp' : 'ChevronDown'} className="h-3.5 w-3.5" />
+            </span>
+          </button>
           <button
             className="p-1 hover:bg-gray-100 rounded-full"
             aria-label="Settings"
@@ -279,8 +295,9 @@ export const BaseNode = memo(({
           <span className="truncate">{data.label}</span>
         </div>
 
-        {children}
-
+        <div className={classNames(isExpanded ? 'w-[350px]' : 'w-64', 'max-h-[800px] overflow-auto')}>
+          {children}
+        </div>
         {/* Bottom icons - only shown when selected */}
         {selected && (
           <div className="flex justify-center space-x-3 mt-2 pt-2 border-t">
