@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, DragEvent } from 'react';
 import { DataList } from "../common/data-list";
+import { ConsolePanel } from '../console';
 import {
     ReactFlow,
     Background,
@@ -350,11 +351,14 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
 export function WorkflowDesigner({ componentTypes, componentGroups }: { componentTypes: any, componentGroups: any }) {
     return (
         <ReactFlowProvider>
-            <div className="flex h-full w-full relative">
-                <ComponentPanel componentTypes={componentTypes} componentGroups={componentGroups} />
-                <div className="flex-1">
-                    <FlowCanvas componentTypes={componentTypes} />
+            <div className="flex flex-col h-full w-full relative">
+                <div className="flex flex-1 min-h-0">
+                    <ComponentPanel componentTypes={componentTypes} componentGroups={componentGroups} />
+                    <div className="flex-1">
+                        <FlowCanvas componentTypes={componentTypes} />
+                    </div>
                 </div>
+                <ConsolePanel />
             </div>
         </ReactFlowProvider>
     );
