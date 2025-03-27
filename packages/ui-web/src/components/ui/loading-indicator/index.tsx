@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const LoadingIndicator = (props: { isLoading?; size?; color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'inherit' }) => {
+export const LoadingIndicator = (props: { isLoading?: boolean; size?: number; color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'inherit' }) => {
   if (props.isLoading === false) {
     return null;
   }

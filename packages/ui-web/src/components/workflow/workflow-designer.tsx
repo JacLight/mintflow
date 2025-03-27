@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef, DragEvent } from 'react';
+import { DataList } from "../common/data-list";
 import {
     ReactFlow,
     Background,
@@ -150,6 +151,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
     const [nodes, setNodes] = useState<Node[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [selectedElements, setSelectedElements] = useState<{ nodes: Node[], edges: Edge[] }>({ nodes: [], edges: [] });
+    const [showLoadDialog, setShowLoadDialog] = useState<boolean>(false);
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const reactFlowInstance = useReactFlow();
 
@@ -178,35 +180,42 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
         alert('Workflow saved successfully!');
     }, [reactFlowInstance]);
 
-    // Load workflow data
-    const handleLoadWorkflow = useCallback(() => {
-        // For demo purposes, we'll load from localStorage
-        // In a real app, you would fetch this from your server API
-        const savedData = localStorage.getItem('savedWorkflow');
+    // Show load dialog
+    const handleShowLoadDialog = useCallback(() => {
+        setShowLoadDialog(true);
+    }, []);
 
-        if (savedData) {
-            try {
-                const flowData: WorkflowData = JSON.parse(savedData);
+    // Handle flow selection
+    const handleFlowSelect = useCallback((rowEvent: string, rowId: string, row: any) => {
+        try {
+            if (row && row.data && row.data.flow) {
+                const flowData = row.data.flow;
 
                 if (flowData.nodes && flowData.edges) {
                     setNodes(flowData.nodes);
                     // Ensure all edges have the custom type
-                    const edgesWithCustomType = flowData.edges.map(edge => ({
+                    const edgesWithCustomType = flowData.edges.map((edge: Edge) => ({
                         ...edge,
                         type: 'custom'
                     }));
                     setEdges(edgesWithCustomType);
                     console.log('Workflow loaded:', flowData);
-                    alert('Workflow loaded successfully!');
+                    setShowLoadDialog(false);
+                    alert(`Workflow "${row.data.title}" loaded successfully!`);
                 }
-            } catch (error) {
-                console.error('Error loading workflow:', error);
-                alert('Error loading workflow data');
+            } else {
+                alert('Selected flow does not contain valid workflow data');
             }
-        } else {
-            alert('No saved workflow found');
+        } catch (error) {
+            console.error('Error loading workflow:', error);
+            alert('Error loading workflow data');
         }
     }, [setNodes, setEdges]);
+
+    // Close load dialog
+    const handleCloseLoadDialog = useCallback(() => {
+        setShowLoadDialog(false);
+    }, []);
 
     // Export workflow data as JSON file
     const handleExportWorkflow = useCallback(() => {
@@ -249,7 +258,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             // Create a new node with data from the node registry
             const nodeId = `${type}-${Date.now()}`;
             const nodeData = getNodeDefaultData(type, name);
-            const nodeInfo = componentTypes.find((c: any) => c.name.toLowerCase() === name);
+            const nodeInfo = componentTypes.find((c: any) => c.name.toLowerCase() === name.toLowerCase());
             nodeData.inputSchema = nodeInfo?.inputSchema;;
 
             const newNode: Node = {
@@ -311,7 +320,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                         <span>Save</span>
                     </button>
                     <button
-                        onClick={handleLoadWorkflow}
+                        onClick={handleShowLoadDialog}
                         className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
                         title="Load workflow"
                     >
@@ -327,6 +336,13 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                         <span>Export</span>
                     </button>
                 </Panel>
+
+                {/* Load Flow Dialog */}
+                <DataList
+                    show={showLoadDialog}
+                    datatype={'mintflow'}
+                    onRowClick={handleFlowSelect}
+                />
             </ReactFlow>
         </div>
     );

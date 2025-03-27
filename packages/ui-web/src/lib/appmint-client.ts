@@ -1,24 +1,24 @@
 import { appmintConfig } from "./appmint-config";
 import axios from "axios";
 import { appmintEndpoints } from './appmint-endpoints';
-import { deepCopy } from "./utils";
+import { deepCopy } from "@/lib-client/helpers";
+import { getProxiedUrl } from "./proxy-utils";
 
 export class AppEngineClient {
   private renewTries = 0;
   private token: string | null = null;
 
-  constructor(private appConfig: any, private axios: any) { }
+  constructor(private appConfig: any) { }
 
   async getToken() {
-    const path = `${this.appConfig.appengine.host}/${appmintEndpoints.appkey.path}`;
-
+    const path = getProxiedUrl(appmintEndpoints.appkey.path, this.appConfig.appengine.host, 'appmint');
     let data = {
       appId: this.appConfig.appengine.appId,
       secret: this.appConfig.appengine.secret,
       key: this.appConfig.appengine.key,
     };
     this.renewTries = this.renewTries + 1;
-    const rt = await this.axios.post(path, data, this.getBaseHeader());
+    const rt = await axios.post(path, data, this.getBaseHeader());
     if (rt?.data?.token) {
       return rt.data.token;
     } else {
@@ -72,13 +72,9 @@ export class AppEngineClient {
     clientInfo?: any,
     isMultiPath?: boolean
   ): Promise<any> {
-    let path;
-    if (clientPath.startsWith('/api')) {
-      path = this.appConfig.appengine.host + '/' + clientPath.substring(clientPath.indexOf('/api/') + 5);
-    } else {
-      path = this.appConfig.appengine.host + '/' + clientPath;
-    }
-    const header: any = await this.getHeaderWithToken();
+    const path = getProxiedUrl(clientPath, this.appConfig.appengine.host, 'appmint');
+    console.log('path -> ', path);
+    const header: any = typeof window !== 'undefined' ? { header: {} } : await this.getHeaderWithToken();
     if (clientAuthorization) {
       header.headers['x-client-authorization'] = clientAuthorization
     }
@@ -100,17 +96,16 @@ export class AppEngineClient {
     let rt;
     try {
       if (method === 'post') {
-        rt = await this.axios.post(path, data, header);
+        rt = await axios.post(path, data, header);
       } else if (method === 'put') {
-        rt = await this.axios.put(path, data, header);
+        rt = await axios.put(path, data, header);
       } else if (method === 'get') {
-        rt = await this.axios.get(path, header);
+        rt = await axios.get(path, header);
       } else if (method === 'delete') {
-        rt = await this.axios.delete(path, header);
+        rt = await axios.delete(path, header);
       }
       this.renewTries = 0;
       console.log('request success -> ', method, clientPath);
-      console.log('response -> ', rt?.data);
       return this.processResponse(rt);
     } catch (err) {
       const error = err as any;
@@ -175,9 +170,12 @@ export class AppEngineClient {
     formData.append('location', location);
     formData.append('files', file);
 
+    // Get the proxied URL if needed
+    const proxyPath = getProxiedUrl(path, this.appConfig.appengine.host, 'appmint');
+
     // let rt = await axios.post(path, formData, getHeaderToken());
     try {
-      let rt = await fetch(path, {
+      let rt = await fetch(proxyPath, {
         method: 'POST',
         headers: new Headers({
           ...((await this.getHeaderWithToken()) as Record<string, any>),
@@ -225,7 +223,7 @@ export class AppEngineClient {
 let appEngineClient: AppEngineClient;
 export const getAppEngineClient = (): AppEngineClient => {
   if (!appEngineClient) {
-    appEngineClient = new AppEngineClient(appmintConfig, axios)
+    appEngineClient = new AppEngineClient(appmintConfig)
   }
   return appEngineClient;
 }
