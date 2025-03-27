@@ -16,7 +16,6 @@ import {
     ConnectionLineType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { X, Trash2, Globe, ExternalLink, Eye, ChevronDown, Check, Play } from 'lucide-react';
 import { NodeData } from './types';
 import { getNodeTypes, getEdgeTypes, getNodeDefaultData } from './node-registry';
 import NodeConfigModal from './modals/node-config-modal';
