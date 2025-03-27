@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib-client/helpers';
 import { Check, Trash } from 'lucide-react';
 
 interface ButtonDeleteProps {

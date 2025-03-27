@@ -1,7 +1,7 @@
 import { appmintConfig } from "./appmint-config";
 import axios from "axios";
 import { appmintEndpoints } from './appmint-endpoints';
-import { deepCopy } from "./utils";
+import { deepCopy } from "@/lib-client/helpers";
 import { getProxiedUrl } from "./proxy-utils";
 
 export class AppEngineClient {

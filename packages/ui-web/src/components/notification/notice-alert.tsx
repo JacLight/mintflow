@@ -1,5 +1,5 @@
 import { useSiteStore } from '@/context/site-store';
-import { isNotEmpty } from '@/lib/utils';
+import { isNotEmpty } from '@/lib-client/helpers';
 import { produce } from 'immer';
 import React, { useState, useEffect } from 'react';
 import { useShallow } from 'zustand/shallow';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from './icons';
-import { getRandomNumber } from '@/lib/utils';
+import { getRandomNumber } from '@/lib-client/helpers';
+import { IconRenderer } from './icon-renderer';
 
 const MusicPlayer = () => {
     const favorites = [
@@ -122,19 +122,19 @@ const MusicPlayer = () => {
                 <div className="w-[90%] mx-auto px-3 py-3 flex items-center justify-between rounded-full bg-white/60 shadow-sm">
                     <div className="flex items-center space-x-3">
                         <button className="p-3 bg-gray-200 hover:bg-gray-300 rounded-full" title='Play'>
-                            <Icon name='FaPlay' className="w-6 h-6" />
+                            <IconRenderer icon='Play' className="w-6 h-6" />
                         </button>
                         <button className="p-2 hover:bg-gray-100 rounded-full" title='Shuffle'>
-                            <Icon name='FaShuffle' className="w-5 h-5" />
+                            <IconRenderer icon='Shuffle' className="w-5 h-5" />
                         </button>
                         <button className="p-2 hover:bg-gray-100 rounded-full" title='Repeat'>
-                            <Icon name='RiLoopRightLine' className="w-5 h-5" />
+                            <IconRenderer icon='Loop' className="w-5 h-5" />
                         </button>
                     </div>
 
                     <div className="flex items-center space-x-4 w-full max-w-md mt-2">
                         <button className="p-2 hover:bg-gray-100 rounded-full" title='Skip Back'>
-                            <Icon name='FaBackward' className="w-5 h-5" />
+                            <IconRenderer icon='Backward' className="w-5 h-5" />
                         </button>
                         <img
                             src={'https://picsum.photos/48/48?random=' + getRandomNumber(1, 100)}
@@ -155,16 +155,16 @@ const MusicPlayer = () => {
                             </div>
                         </div>
                         <button className="p-2 hover:bg-gray-100 rounded-full" title='Skip Forward'>
-                            <Icon name='FaForward' className="w-5 h-5" />
+                            <IconRenderer icon='Forward' className="w-5 h-5" />
                         </button>
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        <Icon name='BiVolume' className="w-5 h-5" />
+                        <IconRenderer icon='BiVolume' className="w-5 h-5" />
                         <div className="w-24 h-1 bg-gray-200 rounded-full">
                             <div className="w-2/3 h-full bg-gray-600 rounded-full"></div>
                         </div>
-                        <Icon name='BiVolumeFull' className="w-5 h-5" />
+                        <IconRenderer icon='VolumeFull' className="w-5 h-5" />
                     </div>
                 </div>
             </div>

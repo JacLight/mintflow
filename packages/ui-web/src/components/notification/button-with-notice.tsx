@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconRenderer } from '../ui/icon-renderer';
 import { LoadingIndicator } from '../ui/loading-indicator';
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib-client/helpers';
 import { buttonClass, buttonHoverClass } from '@/lib-client/constants';
 
 export default function CircularIntegration() {

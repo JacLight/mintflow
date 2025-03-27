@@ -1,6 +1,6 @@
 import { useSiteStore } from '@/context/site-store';
 import { buttonClass, buttonHoverClass } from '@/lib-client/constants';
-import { classNames, getRandomString } from '@/lib/utils';
+import { classNames, getRandomString } from '@/lib-client/helpers';
 import React from 'react';
 import { useShallow } from 'zustand/shallow';
 import { Button } from '../ui/button';

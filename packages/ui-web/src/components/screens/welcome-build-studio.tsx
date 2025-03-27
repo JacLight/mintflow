@@ -6,7 +6,7 @@ import { MintflowSchema } from "../../lib/models/flow-model";
 import { getMintflowService } from "../../lib/mintflow-service";
 import { IconRenderer } from "../ui/icon-renderer";
 import { formatDistance } from "date-fns";
-import { classNames } from "@/lib/utils";
+import { classNames } from "@/lib-client/helpers";
 import { CustomVideoPlayer } from "../custom-video-player";
 
 // Tutorial data

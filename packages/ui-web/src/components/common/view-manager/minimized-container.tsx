@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { minimizedWindowsManager, MinimizedPosition } from './minimized-windows';
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib-client/helpers';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 
 const getContainerStyles = (position: MinimizedPosition): string => {
   const baseStyles = 'view-manager-container z-[1050] bg-gray-100/90 border border-gray-300 shadow-md p-1';
-  
+
   switch (position) {
     case 'top':
       return `${baseStyles} top-0 left-0 w-full flex flex-row flex-wrap gap-1`;
@@ -22,31 +22,31 @@ const getContainerStyles = (position: MinimizedPosition): string => {
   }
 };
 
-export const MinimizedContainer: React.FC<{className?}> = ({className=''}) => {
+export const MinimizedContainer: React.FC<{ className?}> = ({ className = '' }) => {
   const [windows, setWindows] = useState(minimizedWindowsManager.getWindows());
   const [position, setPosition] = useState(minimizedWindowsManager.getPosition());
-  
+
   // Subscribe to changes in the minimized windows manager
   useEffect(() => {
     const unsubscribe = minimizedWindowsManager.subscribe(() => {
       setWindows(minimizedWindowsManager.getWindows());
       setPosition(minimizedWindowsManager.getPosition());
     });
-    
+
     return unsubscribe;
   }, []);
-  
+
   // If no minimized windows, don't render
   if (Object.keys(windows).length === 0) {
     return null;
   }
 
   const isHorizontal = position === 'top' || position === 'bottom';
-  
+
   return (
-    <div className={classNames(getContainerStyles(position),className)}>
+    <div className={classNames(getContainerStyles(position), className)}>
       {Object.values(windows).map((window) => (
-        <div 
+        <div
           key={window.id}
           className={`
             bg-white rounded-md shadow-sm border border-gray-200 flex items-center justify-between border-t-2 border-t-purple-700
