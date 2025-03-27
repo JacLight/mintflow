@@ -1,6 +1,6 @@
+import { classNames } from "@/lib-client/helpers"
 import * as React from "react"
 
-import { classNames } from "@/lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,

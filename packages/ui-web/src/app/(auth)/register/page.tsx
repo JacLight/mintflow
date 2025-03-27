@@ -95,7 +95,7 @@ export default function RegisterPage() {
                         </p>
                     </div>
 
-                    <Button type="submit" className="w-full h-11">
+                    <Button className="w-full h-11" type="submit">
                         Create account
                     </Button>
                 </form>

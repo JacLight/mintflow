@@ -1,8 +1,8 @@
 'use client';
 
 import { memo } from 'react';
-import { NodeProps, Position } from '../mock-xyflow';
-import { Layout, Maximize2, Minimize2 } from '../mock-lucide';
+import { NodeProps, Position } from '@xyflow/react';
+import { Layout, Maximize2, Minimize2 } from 'lucide-react';
 import { useState } from 'react';
 import { BaseNode, BaseNodeData } from './base-node';
 
@@ -17,8 +17,8 @@ export const AppViewNode = memo((props: NodeProps) => {
     const { data, ...rest } = props;
     // Add default values for required BaseNodeData properties
     const nodeData: AppViewNodeData = {
-      label: data?.label || 'App View Node',
-      ...(data as Record<string, unknown>)
+        label: data?.label || 'App View Node',
+        ...(data as Record<string, unknown>)
     };
     const [expanded, setExpanded] = useState(false);
 

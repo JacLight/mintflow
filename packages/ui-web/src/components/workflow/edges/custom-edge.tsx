@@ -1,5 +1,5 @@
 import React from 'react';
-import { EdgeProps, getBezierPath } from '../mock-reactflow';
+import { EdgeProps, getBezierPath } from '@xyflow/react'
 
 const CustomEdge = ({
   id,

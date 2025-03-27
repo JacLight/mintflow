@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { EdgeProps, getBezierPath, useReactFlow } from '../mock-xyflow';
+import { EdgeProps, getBezierPath, useReactFlow } from '@xyflow/react';
 import { Handle } from '../handle';
-import { Trash2 } from '../mock-lucide';
+import { Trash2 } from 'lucide-react';
 import { ButtonDelete } from '@/components/ui/button-delete';
 
 export default function CustomEdge({

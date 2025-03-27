@@ -1,7 +1,6 @@
 import React from 'react';
-import { Position } from './mock-xyflow';
+import { Position } from '@xyflow/react';
 
-// Mock Handle component
 export const Handle: React.FC<{
   type: 'source' | 'target';
   position: Position;

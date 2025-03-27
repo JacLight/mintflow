@@ -1,7 +1,5 @@
 'use client';
-import {
-    FiGithub,
-} from 'react-icons/fi';
+
 import { content, theme } from '@/data/appInfo';
 import ThemeToggle from '@/components/common/theme-toggle';
 import AIChat from '../ai/ai-chat';
@@ -9,8 +7,9 @@ import { ActionButtons } from '../common/action-buttons';
 import BusinessAppSwitch from '../common/app-switch';
 import SideNav from './site-nav';
 import { LinearLoader } from '../ui/loading-indicator/linear-loader';
-import { AlertIcon } from '../alert/AlertIcon';
 import { NoticeAlert } from '../notification/notice-alert';
+import { NoticeViewer } from '../notification/notice-viewer';
+import { IconRenderer } from '../ui/icon-renderer';
 
 const buttonsList = [
     { name: 'new-employee', label: 'New Employee', icon: 'UserPlus', showCaption: true, action: '', url: '/people/employees/employee-form' },
@@ -39,7 +38,7 @@ const MainLayout = ({ children }) => {
                                         <item.icon className="w-5 h-5" />
                                     </button>
                                 ))}
-                                <AlertIcon />
+                                <NoticeViewer />
                                 <ThemeToggle />
                                 <a
                                     href="https://github.com"
@@ -47,7 +46,7 @@ const MainLayout = ({ children }) => {
                                     rel="noopener noreferrer"
                                     className={`p-2 rounded-md ${theme.textSecondary} ${theme.navHover}`}
                                 >
-                                    <FiGithub className="w-5 h-5" />
+                                    <IconRenderer icon='Github' className="w-5 h-5" />
                                 </a>
                             </div>
                         </div>

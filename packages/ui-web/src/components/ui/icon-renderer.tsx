@@ -1,33 +1,22 @@
 import React from 'react';
+import * as LucideIcons from 'lucide-react';
+import { classNames } from '@/lib-client/helpers';
 
-interface IconRendererProps {
-  icon: React.ReactNode | string;
-  className?: string;
-  size?: number;
-}
 
-export const IconRenderer: React.FC<IconRendererProps> = ({ icon, className = '', size = 24 }) => {
-  // This is a simplified implementation
-  if (React.isValidElement(icon)) {
-    return <span className={className}>{icon}</span>;
+export const IconRenderer = ({ icon, className }: { icon?: React.ReactNode | string, size?: number, color?: string, className?: string, onClick?: () => void; }) => {
+  if (!icon) return null;
+
+  if (typeof icon === 'string') {
+    // Try to find the icon in Lucide icons
+    const IconComponent = (LucideIcons as any)[icon];
+    if (IconComponent) {
+      return <IconComponent className={classNames("h-4 w-4 text-primary", className)} />;
+    }
+    // If not found, return the string (could be a class name or other identifier)
+    console.warn(`Icon not found: ${icon}`);
+    return <span className={classNames("h-4 w-4 flex items-center justify-center text-ellipsis overflow-hidden", className)}>{icon}</span>;
   }
-  
-  return (
-    <span className={className}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        {/* Default icon is a circle */}
-        <circle cx="12" cy="12" r="10" />
-      </svg>
-    </span>
-  );
+
+  // If it's already a React element, just return it
+  return <>{icon}</>;
 };
