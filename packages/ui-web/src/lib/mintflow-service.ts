@@ -99,8 +99,8 @@ export class MintflowService {
     async getFlows(): Promise<BaseModelDTO<any>> {
         try {
             const response = await this.appEngineClient.processRequest(
-                appmintEndpoints.find.method,
-                `${appmintEndpoints.find.path}/mintflow`,
+                appmintEndpoints.find_by_attribute.method,
+                `${appmintEndpoints.find_by_attribute.path}/mintflow`,
                 { datatype: 'mintflow' }
             );
             return response;
