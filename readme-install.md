@@ -89,7 +89,10 @@ And join the Nx community:
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 pnpm run --filter=@mintflow/array test
+pnpm run --filter=@mintflow/microsoft-office build
+pnpm run --filter=@mintflow/common build
 pnpm run --filter=@mintflow/array build
+pnpm run --filter=@mintflow/ui-web build
 pnpm run --filter=@mintflow/array test
 pnpm nx show project
 pnpm nx run server:dev
