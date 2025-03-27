@@ -30,23 +30,23 @@ export const distributeHandles = (
     if (elements.length === 1) {
         return [{
             id: `${nodeId}-${elements[0].name}`,
-            calculatedPosition: Position.Bottom,
+            calculatedPosition: Position.Right,
             offsetX: 0,
             offsetY: 0
         }];
     }
 
-    // Distribute evenly along the bottom
+    // Distribute evenly along the right side
     if (strategy === 'distribute') {
-        const step = containerWidth / (elements.length + 1);
+        const step = containerHeight / (elements.length + 1);
 
         return elements.map((element, index) => {
-            const x = step * (index + 1);
+            const y = step * (index + 1);
             return {
                 id: `${nodeId}-${element.name}`,
-                calculatedPosition: Position.Bottom,
-                offsetX: x - (containerWidth / 2), // Center is 0
-                offsetY: 0
+                calculatedPosition: Position.Right,
+                offsetX: 0,
+                offsetY: y - (containerHeight / 2) // Center is 0
             };
         });
     }
@@ -56,14 +56,14 @@ export const distributeHandles = (
         return elements.map((element, index) => {
             // Zigzag pattern
             const isEven = index % 2 === 0;
-            const x = (containerWidth / (Math.ceil(elements.length / 2) + 1)) * (Math.floor(index / 2) + 1);
-            const y = isEven ? 0 : 10;
+            const y = (containerHeight / (Math.ceil(elements.length / 2) + 1)) * (Math.floor(index / 2) + 1);
+            const x = isEven ? 0 : 10;
 
             return {
                 id: `${nodeId}-${element.name}`,
-                calculatedPosition: Position.Bottom,
-                offsetX: x - (containerWidth / 2), // Center is 0
-                offsetY: y
+                calculatedPosition: Position.Right,
+                offsetX: x,
+                offsetY: y - (containerHeight / 2) // Center is 0
             };
         });
     }
@@ -82,7 +82,7 @@ export const distributeHandles = (
     // Default fallback
     return elements.map((element) => ({
         id: `${nodeId}-${element.name}`,
-        calculatedPosition: Position.Bottom
+        calculatedPosition: Position.Right
     }));
 };
 

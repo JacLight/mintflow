@@ -105,6 +105,57 @@ export class MintflowClient {
             }
         }
     }
+
+    async getSingleNode(nodeId: string, fields?: string[]): Promise<any> {
+        try {
+            const endpoint = mintflowEndpoints.get_node;
+
+            let path = `${endpoint.path}/${nodeId}`;
+            // Add fields parameter if specified
+            if (fields && fields.length > 0) {
+                path += `?fields=${fields.join(',')}`;
+            }
+            // Get the proxied URL if needed
+            const url = getProxiedUrl(path, this.baseUrl, 'mintflow');
+            const response = await axios({
+                method: endpoint.method,
+                url,
+            });
+            return response.data;
+        } catch (error: any) {
+            console.error('Error fetching node by name:', error);
+            if (error.response) {
+                return error.response.data;
+            } else {
+                return { error: 'Network error' };
+            }
+        }
+    }
+
+    async runNode(nodeId: string, data: any): Promise<any> {
+        try {
+            const endpoint = mintflowEndpoints.run_node;
+            const path = `${endpoint.path}/${nodeId}`;
+
+            // Get the proxied URL if needed
+            const url = getProxiedUrl(path, this.baseUrl, 'mintflow');
+
+            const response = await axios({
+                method: endpoint.method,
+                url,
+                data,
+            });
+
+            return response.data;
+        } catch (error: any) {
+            console.error('Error running node:', error);
+            if (error.response) {
+                return error.response.data;
+            } else {
+                return { error: 'Network error' };
+            }
+        }
+    }
 }
 
 // Create a singleton instance

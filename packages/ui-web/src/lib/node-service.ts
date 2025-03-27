@@ -58,6 +58,36 @@ function isCacheValid(): boolean {
     return !!nodesCache && (Date.now() - lastFetchTime < CACHE_DURATION);
 }
 
+
+/**
+ * Run node
+ * @param flowId Flow ID
+ * @param nodeId Node ID
+ * @param action Action to run
+ * @param input Input data
+ * @param config Configuration data
+ * @returns Promise that resolves to the result of the node execution
+ */
+export async function runNode(
+    flowId: string,
+    nodeId: string,
+    action: string,
+    input: any,
+    config?: any
+): Promise<any> {
+    try {
+        const mintflowClient = getMintflowClient();
+        const response = await mintflowClient.runNode(flowId, nodeId, action, input, config);
+        if (response.error) {
+            throw new Error(`Error running node: ${response.error}`);
+        }
+        return response.result;
+    } catch (error) {
+        console.error(`Error running node ${nodeId}:`, error);
+        throw error;
+    }
+}
+
 /**
  * Fetch all nodes from the server
  * @param fields Optional array of fields to fetch
