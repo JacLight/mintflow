@@ -1,3 +1,4 @@
+import { getRandomString } from '@/lib-client/helpers';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -66,6 +67,8 @@ interface UIState {
     setStateItem: (items: { [key: string]: any }) => void;
     getStateItem: (key: string) => any;
     quickViewProps: { id?: string, type?: string, data?: any, schema?: any, rules?: any };
+    showNotice: (message: string, type: string) => void;
+    notifications?: { id: string; title: string; message: string; type: string; status: string }[];
 }
 
 export const useUIStore = create<UIState>()(
@@ -80,6 +83,11 @@ export const useUIStore = create<UIState>()(
             getStateItem: (key: string) => key,
             setStateItem: (items: { [key: string]: any }) => set((state: any) => ({ ...items })),
             quickViewProps: {},
+            showNotice: (message: string, type: string) => {
+                if (typeof message !== 'string') return;
+                const notification = { id: getRandomString(6), title: '', message, type, status: 'new' };
+                set({ notifications: [...(get().notifications || []), notification] });
+            },
         }),
         {
             name: 'ui-storage', // unique name for localStorage

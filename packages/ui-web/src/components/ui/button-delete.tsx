@@ -1,4 +1,6 @@
-import React from 'react';
+import * as React from 'react';
+import { classNames } from '@/lib-client/helpers';
+import { Check, Trash } from 'lucide-react';
 
 interface ButtonDeleteProps {
   onDelete: (event?: React.MouseEvent) => void;

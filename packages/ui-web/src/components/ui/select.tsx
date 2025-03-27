@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as SelectPrimitive from './mock-select';
 import { Check, ChevronDown, ChevronUp } from './lucide-icons';
 
-import { classNames } from '@/lib/utils';
+import { classNames } from '@/lib-client/helpers';
 
 const Select = SelectPrimitive.Root;
 

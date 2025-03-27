@@ -9,7 +9,7 @@ import {
   UndoIcon,
 } from '@/components/chat/icons';
 import { toast } from 'sonner';
-import { generateUUID } from '@/lib/utils';
+import { generateUUID } from '@/lib-client/helpers';
 import {
   Console,
   ConsoleOutput,

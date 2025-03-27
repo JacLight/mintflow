@@ -10,6 +10,7 @@ import BusinessAppSwitch from '../common/app-switch';
 import SideNav from './site-nav';
 import { LinearLoader } from '../ui/loading-indicator/linear-loader';
 import { AlertIcon } from '../alert/AlertIcon';
+import { NoticeAlert } from '../notification/notice-alert';
 
 const buttonsList = [
     { name: 'new-employee', label: 'New Employee', icon: 'UserPlus', showCaption: true, action: '', url: '/people/employees/employee-form' },
@@ -52,6 +53,7 @@ const MainLayout = ({ children }) => {
                         </div>
                     </header>
                     <LinearLoader />
+                    <NoticeAlert />
                     <div className='w-full h-[calc(100%-69px)] overflow-auto'>
                         {children || 'Nothing Here'}
                     </div>
