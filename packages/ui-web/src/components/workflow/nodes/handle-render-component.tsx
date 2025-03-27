@@ -1,8 +1,8 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Connection, Handle, Position, useReactFlow } from '@xyflow/react';
-import { classNames } from '@/lib/utils';
-import { isValidConnection, scapedJSONStringfy } from '@/lib/utils/reactflowUtils';
+import { isValidConnection, scapedJSONStringfy } from '@/lib/reactflowUtils';
 import { ConnectionState } from '../types';
+import { classNames } from '@/lib-client/helpers';
 
 // Base styles for the handle
 const BASE_HANDLE_STYLES = {
