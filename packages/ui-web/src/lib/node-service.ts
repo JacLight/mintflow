@@ -64,7 +64,7 @@ function isCacheValid(): boolean {
  * @param forceRefresh Force a refresh of the cache
  * @returns Promise that resolves to an array of nodes
  */
-export async function fetchNodes(fields?: string[], forceRefresh: boolean = false): Promise<Node[]> {
+export async function getNodes(fields?: string[], forceRefresh: boolean = false): Promise<Node[]> {
     // Use cache if valid and not forcing refresh
     if (isCacheValid() && !forceRefresh && nodesCache) {
         return nodesCache;
@@ -114,15 +114,6 @@ export async function fetchNodes(fields?: string[], forceRefresh: boolean = fals
         }
         return [];
     }
-}
-
-/**
- * Get all nodes from the cache or fetch them if needed
- * @param fields Optional array of fields to fetch
- * @returns Promise that resolves to an array of nodes
- */
-export async function getNodes(fields?: string[]): Promise<Node[]> {
-    return fetchNodes(fields);
 }
 
 /**
@@ -327,84 +318,3 @@ export async function getNodesWithGroups(fields: string[] = COMPONENT_PANEL_FIEL
     };
 }
 
-// React hook for using nodes in components
-export function useNodes(fields?: string[]): {
-    nodes: Node[];
-    loading: boolean;
-    error: Error | null;
-    refetch: () => Promise<void>;
-} {
-    const [nodes, setNodes] = useState<Node[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<Error | null>(null);
-
-    // Import useState at the top of the file
-    function useState<T>(initialState: T): [T, (newState: T) => void] {
-        throw new Error('This hook can only be used in a React component');
-    }
-
-    async function fetchNodesForHook() {
-        try {
-            setLoading(true);
-            const fetchedNodes = await getNodes(fields);
-            setNodes(fetchedNodes);
-            setError(null);
-        } catch (err) {
-            setError(err instanceof Error ? err : new Error(String(err)));
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    // This is just a placeholder for documentation
-    // The actual implementation would be in a React component
-    function useEffect(effect: () => void | (() => void), deps?: any[]) {
-        throw new Error('This hook can only be used in a React component');
-    }
-
-    // useEffect(() => {
-    //   fetchNodesForHook();
-    //   
-    //   // Subscribe to node updates
-    //   const unsubscribe = subscribeToNodeUpdates(() => {
-    //     if (nodesCache) {
-    //       setNodes(nodesCache);
-    //     }
-    //   });
-    //   
-    //   return unsubscribe;
-    // }, []);
-
-    return {
-        nodes,
-        loading,
-        error,
-        refetch: fetchNodesForHook
-    };
-}
-
-// Export a comment explaining how to use the hook in a React component
-export const useNodesExample = `
-// Example usage in a React component:
-import { useEffect, useState } from 'react';
-import { useNodes } from '@/lib/node-service';
-
-function MyComponent() {
-  // Use the hook directly in a React component
-  const { nodes, loading, error, refetch } = useNodes(['id', 'name', 'description']);
-  
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  
-  return (
-    <div>
-      <button onClick={refetch}>Refresh</button>
-      <ul>
-        {nodes.map(node => (
-          <li key={node.id}>{node.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-`;
