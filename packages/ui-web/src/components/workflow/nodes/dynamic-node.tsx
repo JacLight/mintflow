@@ -81,7 +81,7 @@ export const DynamicNode = memo((props: NodeProps) => {
                                 onChange={updateFormData}
                             />
 
-                            {/* <div className="mt-2 rounded-md bg-muted p-2">
+                            {/* <div className="mt-2 rounded bg-muted p-2">
                                 <div className="text-xs font-medium mb-1">Current Form Data:</div>
                                 <pre className="text-[10px] overflow-auto max-h-32">
                                     {JSON.stringify(localFormData, null, 2)}
@@ -158,7 +158,7 @@ const theme = {
     },
     // Common styling for all components
     common: {
-        container: 'relative my-2',
+        container: 'relative my-0',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
         'label-inner': 'text-sm font-medium text-gray-700 dark:text-gray-300',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
@@ -187,18 +187,19 @@ const theme = {
     },
     // Form components
     form: {
-        container: 'space-y-4',
+        container: 'space-y-2',
         section: 'bg-white dark:bg-gray-800  rounded-lg p-4',
         header: 'text-lg font-medium text-gray-900 dark:text-gray-100 mb-4',
         footer: 'mt-4 flex justify-end space-x-3',
         group: 'gap-3',
     },
     'form-array': {
+        container: 'w-full',
         'array-item': 'relative mb-0 even:bg-gray-50  dark:even:bg-gray-600  dark:bg-gray-700 flex gap-2 items-center',
         'array-item-horizontal': 'bg-white dark:bg-gray-800 rounded-lg p-4',
     },
     'social-textarea': {
-        container: 'relative my-2 w-full',
+        container: 'relative my-0 w-full',
         'container-array': 'relative my-0 w-full',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
         textarea: 'block w-full p-2 dark:bg-gray-700 dark:text-white',
@@ -212,10 +213,10 @@ const theme = {
 
     // Text input styling
     text: {
-        container: 'relative my-2 w-full',
+        container: 'relative my-0 w-full',
         'container-array': 'relative my-0 w-full',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
-        input: 'block w-full rounded-md border-gray-400 dark:border-gray-600 border  focus:border-indigo-500 dark:focus:border-indigo-400 px-2 py-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        input: 'block w-full text-sm rounded border-gray-300 dark:border-gray-600 border focus:border-indigo-500 dark:focus:border-indigo-400 px-2 py-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
         error: 'mt-1 text-xs text-red-500 dark:text-red-400',
         icon: 'h-5 w-5 text-gray-400 dark:text-gray-500',
@@ -225,10 +226,10 @@ const theme = {
     },
     // Number input styling
     number: {
-        container: 'relative my-2 w-full',
+        container: 'relative my-0 w-full',
         'container-array': 'relative my-0 w-full',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
-        input: 'block w-full rounded-md border-gray-400 dark:border-gray-600  border py-2 px-2 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        input: 'block w-full  text-sm rounded border-gray-300 dark:border-gray-600  border py-2 px-2 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
         error: 'mt-1 text-xs text-red-500 dark:text-red-400',
         prefix: 'flex select-none items-center pl-3 text-gray-500 dark:text-gray-400 sm:text-sm',
@@ -238,10 +239,10 @@ const theme = {
         stepperDown: 'flex-1 px-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600',
     },
     'number-range': {
-        container: 'relative my-2  w-full',
+        container: 'relative my-0  w-full',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
-        maxInput: 'block w-full rounded-md border-gray-400 dark:border-gray-600  border py-2 px-2 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
-        minInput: 'block w-full rounded-md border-gray-400 dark:border-gray-600  border py-2 px-2 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        maxInput: 'block w-full  text-sm  rounded border-gray-300 dark:border-gray-600  border py-2 px-2 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        minInput: 'block w-full  text-sm  rounded border-gray-300 dark:border-gray-600  border py-2 px-2 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
         error: 'mt-1 text-xs text-red-500 dark:text-red-400',
         prefix: 'flex select-none items-center pl-3 text-gray-500 dark:text-gray-400 sm:text-sm',
@@ -252,19 +253,19 @@ const theme = {
     },
     // Textarea styling
     textarea: {
-        container: 'relative my-2  w-full',
+        container: 'relative my-0  w-full',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
-        textarea: 'block w-full rounded-md border-gray-400 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        textarea: 'block w-full  text-sm  rounded border-gray-300 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
         error: 'mt-1 text-xs text-red-500 dark:text-red-400',
     },
     // Date range styling
     'date-range': {
-        container: 'relative my-2  w-full',
-        input: 'block w-full rounded-md border-gray-400 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        container: 'relative my-0  w-full',
+        input: 'block w-full  text-sm  rounded border-gray-300 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
         prefix: 'flex select-none items-center pl-3 text-gray-500 dark:text-gray-400 sm:text-sm',
         suffix: 'flex select-none items-center pr-3 text-gray-500 dark:text-gray-400 sm:text-sm',
-        calendar: 'bg-white dark:bg-gray-800 shadow-lg rounded-md p-2 mt-1',
+        calendar: 'bg-white dark:bg-gray-800 shadow-lg rounded p-2 mt-1',
         calendarHeader: 'flex justify-between items-center mb-2',
         calendarDay: 'w-8 h-8 flex items-center justify-center rounded-full',
         calendarDaySelected: 'bg-indigo-600 text-white',
@@ -274,9 +275,9 @@ const theme = {
     },
     // Select styling
     select: {
-        container: 'relative my-2  w-full',
+        container: 'relative my-0  w-full',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
-        dropdown: 'block w-full rounded-md border-gray-400 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        dropdown: 'block w-full rounded border-gray-300 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
         option: 'py-2 px-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600',
         placeholder: 'text-gray-400 dark:text-gray-500',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
@@ -294,9 +295,9 @@ const theme = {
     listbox: {
         container: 'relative w-full',
         button: 'relative w-full cursor-default rounded bg-white dark:bg-gray-700 pl-2 py-2 pr-8 text-left text-gray-900 dark:text-white  ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm',
-        options: 'mt-1 max-h-80 min-w-48 overflow-auto rounded bg-white dark:bg-gray-700 py-2 text-base shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none sm:text-sm',
+        options: 'mt-1 max-h96 min-w-48 overflow-auto rounded bg-white dark:bg-gray-700 py-2 text-base shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none sm:text-sm',
         option: 'relative cursor-default select-none py-2 pl-3 pr-9',
-        optionActive: 'bg-indigo-600 text-white',
+        optionActive: 'bg-indigo-200',
         optionInactive: 'text-gray-900 dark:text-gray-100',
         icon: 'h-5 w-5 flex-shrink-0 rounded-full',
         selectedIcon: 'h-5 w-5',
@@ -310,20 +311,20 @@ const theme = {
     },
     // Checkbox styling
     checkbox: {
-        container: 'relative flex items-start my-2',
-        input: 'h-4 w-4 rounded border-gray-400 dark:border-gray-600 text-indigo-600 dark:text-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700',
+        container: 'relative flex items-start my-0',
+        input: 'h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-indigo-600 dark:text-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700',
         label: 'ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
         error: 'mt-1 text-xs text-red-500 dark:text-red-400',
     },
     // Radio styling
     radio: {
-        container: 'relative my-2',
+        container: 'relative my-0',
         group: 'space-y-2',
         option: 'relative flex cursor-pointer rounded-lg border p-4 focus:outline-none',
         optionSelected: 'bg-indigo-50 dark:bg-indigo-900 border-indigo-200 dark:border-indigo-700',
         optionUnselected: 'border-gray-200 dark:border-gray-700',
-        input: 'h-4 w-4 border-gray-400 dark:border-gray-600 text-indigo-600 dark:text-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700',
+        input: 'h-4 w-4 border-gray-300 dark:border-gray-600 text-indigo-600 dark:text-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700',
         label: 'ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300',
         labelSelected: 'text-indigo-900 dark:text-indigo-100 font-semibold',
         labelUnselected: 'text-gray-900 dark:text-gray-100',
@@ -334,7 +335,7 @@ const theme = {
     },
     // Switch styling
     switch: {
-        container: 'relative flex items-center my-2',
+        container: 'relative flex items-center my-0',
         track: 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-400 focus:ring-offset-2',
         trackOn: 'bg-indigo-600 dark:bg-indigo-500',
         trackOff: 'bg-gray-200 dark:bg-gray-600',
@@ -350,29 +351,29 @@ const theme = {
     },
     // Array styling
     array: {
-        container: 'relative my-2 space-y-2',
+        container: 'relative my-0 space-y-2',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
-        item: 'relative border border-gray-200 dark:border-gray-700 rounded-md p-3 dark:bg-gray-800',
-        addButton: 'mt-2 inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md  text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-indigo-400',
+        item: 'relative border border-gray-200 dark:border-gray-700 rounded p-3 dark:bg-gray-800',
+        addButton: 'mt-2 inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded  text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-indigo-400',
         removeButton: 'absolute top-2 right-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
         error: 'mt-1 text-xs text-red-500 dark:text-red-400',
     },
     // Color picker styling
     color: {
-        container: 'relative my-2',
+        container: 'relative my-0',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
-        input: 'block w-full rounded-md border-gray-400 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
-        preview: 'w-8 h-8 rounded-md border border-gray-400 dark:border-gray-600 overflow-hidden',
+        input: 'block w-full rounded border-gray-300 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        preview: 'w-8 h-8 rounded border border-gray-300 dark:border-gray-600 overflow-hidden',
         palette: 'grid grid-cols-8 gap-1 p-2 dark:bg-gray-800',
-        paletteItem: 'w-6 h-6 rounded-md cursor-pointer',
+        paletteItem: 'w-6 h-6 rounded cursor-pointer',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
         error: 'mt-1 text-xs text-red-500 dark:text-red-400',
     },
     // Button styling (added flex from element-style-class.ts)
     button: {
-        container: 'relative my-2 flex',
-        button: 'block w-full rounded-md border-gray-400 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
+        container: 'relative my-0 flex',
+        button: 'block w-full rounded border-gray-300 dark:border-gray-600  focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400 sm:text-sm dark:bg-gray-700 dark:text-white',
         label: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1',
         description: 'mt-1 text-xs text-gray-500 dark:text-gray-400',
         error: 'mt-1 text-xs text-red-500 dark:text-red-400',
