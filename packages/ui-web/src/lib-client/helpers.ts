@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
  * @returns A UUID string
  */
 export function generateUUID(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = Math.random() * 16 | 0;
     const v = c === 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
@@ -110,7 +110,7 @@ declare global {
   interface Window {
     loadPyodide: (options: { indexURL: string }) => Promise<any>;
   }
-  
+
   var loadPyodide: (options: { indexURL: string }) => Promise<any>;
 }
 
@@ -323,4 +323,58 @@ export const isValidHtmlId = (id: string) => {
   if (!id || typeof id !== 'string') return false;
   const idPattern = /^[A-Za-z][\w\:\-\.]*$/;
   return idPattern.test(id);
+}
+
+export const deepCopySimple = (obj: any) => {
+  if (!obj) return obj;
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  let clonedObj: any = Array.isArray(obj) ? [] : {};
+
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key];
+      clonedObj[key] = deepCopySimple(value);
+    }
+  }
+  return clonedObj;
+};
+
+export const isEmpty = (obj: any) => {
+  if (typeof obj === 'undefined') return true;
+  if (typeof obj === null) return true;
+  if (typeof obj === 'function') return false;
+  if (typeof obj === 'boolean' || typeof obj === 'number') return false;
+  if (typeof obj === 'string' && obj.length > 0) return false;
+  if (Array.isArray(obj) && obj.length > 0) return false;
+  if (obj !== null && typeof obj === 'object' && Object.keys(obj).length > 0)
+    return false;
+  return true;
+};
+
+export const isNotEmpty = (obj: any) => {
+  return !isEmpty(obj);
+}
+
+export const validUrl = (url: string) => {
+  if (!url) return false;
+  var pattern = new RegExp('^https?:\\/\\/'); // fragment locator
+  return !!pattern.test(url);
+};
+
+
+export function getRandomString(length = 20) {
+  const chars = 'abcdefghijklmnpqrstuvwxyz';
+  const numbers = '0123456789';
+  const allChars = chars + numbers;
+
+  let result = chars.charAt(Math.floor(Math.random() * chars.length)); // Start with a character
+
+  for (let i = 1; i < length; i++) { // Start loop from 1 since we already have the first character
+    result += allChars.charAt(Math.floor(Math.random() * allChars.length));
+  }
+
+  return result;
 }

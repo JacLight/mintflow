@@ -1,19 +1,10 @@
 'use client';
 
 import { memo, useState, useCallback } from 'react';
-import { NodeProps, Position, useReactFlow } from '../mock-xyflow';
-import { Box, ChevronDown, ChevronUp } from '../mock-lucide';
+import { NodeProps, Position, useReactFlow } from '@xyflow/react';
+import { Box, ChevronDown, ChevronUp } from 'lucide-react';
 import { BaseNode, BaseNodeData } from './base-node';
-
-// Mock implementation of AppmintForm
-const AppmintForm = ({ schema, initData, rules, datatype, id, theme, onChange }: any) => {
-  return (
-    <div className="p-2 border rounded">
-      <div className="text-sm font-medium mb-2">Form: {id}</div>
-      <div className="text-xs text-gray-500">Mock form implementation</div>
-    </div>
-  );
-};
+import { AppmintForm } from '@appmint/form';
 
 // Extended data type for dynamic nodes
 export type DynamicNodeData = BaseNodeData & {
@@ -26,11 +17,7 @@ export type DynamicNodeData = BaseNodeData & {
 // Dynamic node component with form based on schema
 export const DynamicNode = memo((props: NodeProps) => {
     const { data, id, ...rest } = props;
-    // Add default values for required BaseNodeData properties
-    const nodeData: DynamicNodeData = {
-      label: data?.label || 'Dynamic Node',
-      ...(data as Record<string, unknown>)
-    };
+    const nodeData = data as DynamicNodeData;
     const [expanded, setExpanded] = useState(false);
     const [localFormData, setLocalFormData] = useState<Record<string, any>>(nodeData.formData || {});
     const reactFlowInstance = useReactFlow();

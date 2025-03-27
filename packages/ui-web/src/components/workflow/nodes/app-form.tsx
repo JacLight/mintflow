@@ -1,20 +1,10 @@
 'use client';
 
 import { memo } from 'react';
-import { NodeProps, Position } from '../mock-xyflow';
-import { Layout, Maximize2, Minimize2 } from '../mock-lucide';
+import { NodeProps, Position } from '@xyflow/react';
 import { useState } from 'react';
 import { BaseNode, BaseNodeData } from './base-node';
-
-// Mock implementation of AppmintForm
-const AppmintForm = ({ schema, initData, rules, datatype, id, theme }: any) => {
-  return (
-    <div className="p-2 border rounded">
-      <div className="text-sm font-medium mb-2">Form: {id}</div>
-      <div className="text-xs text-gray-500">Mock form implementation</div>
-    </div>
-  );
-};
+import { AppmintForm } from '@appmint/form';
 
 // Extended data type for app view nodes
 export type FormNodeData = BaseNodeData & {
@@ -29,8 +19,8 @@ export const FormNode = memo((props: NodeProps) => {
     const { data, ...rest } = props;
     // Add default values for required BaseNodeData properties
     const nodeData: FormNodeData = {
-      label: data?.label || 'Form Node',
-      ...(data as Record<string, unknown>)
+        label: data?.label || 'Form Node',
+        ...(data as Record<string, unknown>)
     };
     const [expanded, setExpanded] = useState(false);
 
@@ -52,8 +42,7 @@ export const FormNode = memo((props: NodeProps) => {
             <div className={`flex flex-col gap-2 rounded-md border bg-purple-500/10 p-3 ${expanded ? 'w-96 h-64' : ''}`}>
                 <AppmintForm
                     schema={formSchema}
-                    initData={{}}
-                    rules={[]}
+                    data={{}}
                     datatype={'node-form'}
                     id={`form-${nodeData.id || 'default'}`}
                     theme='setting'

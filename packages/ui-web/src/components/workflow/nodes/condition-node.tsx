@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from 'react';
-import { NodeProps, Position } from '../mock-xyflow';
+import { NodeProps, Position } from '@xyflow/react';
 import { Handle } from '../handle';
 import { BaseNode, BaseNodeData } from './base-node';
 import { IconRenderer } from '@/components/ui/icon-renderer';
@@ -11,8 +11,8 @@ export const ConditionNode = memo((props: NodeProps) => {
     const { data, ...rest } = props;
     // Add default values for required BaseNodeData properties
     const nodeData: BaseNodeData = {
-      label: data?.label || 'Condition Node',
-      ...(data as Record<string, unknown>)
+        label: data?.label || 'Condition Node',
+        ...(data as Record<string, unknown>)
     };
     return (
         <div
