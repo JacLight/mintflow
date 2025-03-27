@@ -32,9 +32,7 @@ function DraggableComponent({ type, id, name, description, icon }: ComponentType
     const onDragStart = (event: DragEvent<HTMLDivElement>) => {
         event.dataTransfer.setData('application/reactflow/type', type);
         event.dataTransfer.setData('application/reactflow/name', name);
-        if (id) {
-            event.dataTransfer.setData('application/reactflow/id', id);
-        }
+        event.dataTransfer.setData('application/reactflow/id', id);
         event.dataTransfer.effectAllowed = 'move';
     };
 

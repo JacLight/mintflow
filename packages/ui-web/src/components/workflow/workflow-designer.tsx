@@ -10,7 +10,6 @@ import {
     ReactFlowProvider,
     Node,
     Edge,
-    NodeTypes,
     useReactFlow,
     Panel,
     applyNodeChanges,
@@ -248,6 +247,8 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
             const type = event.dataTransfer.getData('application/reactflow/type');
             const name = event.dataTransfer.getData('application/reactflow/name');
+            const nodeId = event.dataTransfer.getData('application/reactflow/id');
+            const nodeInfo = componentTypes.find((c: any) => c.id.toLowerCase() === nodeId.toLowerCase());
 
             // Get position where the node was dropped
             const position = reactFlowInstance.screenToFlowPosition({
@@ -256,16 +257,13 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             });
 
             // Create a new node with data from the node registry
-            const nodeId = `${type}-${Date.now()}`;
-            const nodeData = getNodeDefaultData(type, name);
-            const nodeInfo = componentTypes.find((c: any) => c.name.toLowerCase() === name.toLowerCase());
-            nodeData.inputSchema = nodeInfo?.inputSchema;;
+            const nodeData = getNodeDefaultData(type, nodeId);
 
             const newNode: Node = {
                 id: nodeId,
                 type,
                 position,
-                data: nodeData
+                data: { nodeId, ...nodeData, nodeInfo }
             };
 
             // Add the new node to the flow
@@ -302,7 +300,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                 edgeTypes={edgeTypes}
                 onDrop={onDrop}
                 onDragOver={onDragOver}
-                fitView
+            // fitView
             >
                 <Background />
                 <Controls />
