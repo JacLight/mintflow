@@ -2,7 +2,7 @@
 import { DriveItem } from '@microsoft/microsoft-graph-types';
 
 // Re-export Microsoft Graph types for convenience
-export { DriveItem };
+export type { DriveItem };
 
 // Common parameters
 export interface MicrosoftOfficeBaseParams {
@@ -110,4 +110,3 @@ export interface PowerPointExportResult {
     contentType: string;
     content: string; // Base64 encoded content
 }
-
