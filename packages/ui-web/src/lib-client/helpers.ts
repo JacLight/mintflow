@@ -1,233 +1,21 @@
-import type {
-  CoreAssistantMessage,
-  CoreToolMessage,
-  Message,
-  TextStreamPart,
-  ToolInvocation,
-  ToolSet,
-} from 'ai';
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-import type { Message as DBMessage, Document } from '@/lib/db/schema';
+import { twMerge } from "tailwind-merge";
 
 
-interface ApplicationError extends Error {
-  info: string;
-  status: number;
-}
-
-export const fetcher = async (url: string) => {
-  const res = await fetch(url);
-
-  if (!res.ok) {
-    const error = new Error(
-      'An error occurred while fetching the data.',
-    ) as ApplicationError;
-
-    error.info = await res.json();
-    error.status = res.status;
-
-    throw error;
+export const getResponseErrorMessage = e => {
+  if (!e) return;
+  if (e.constructor.name !== 'AxiosError') return e.message;
+  let errMsg = e.response?.data?.message || e.response?.data?.error;
+  let errPath = e.response?.data?.path;
+  let message = errMsg + ' ' + errPath + ' ' + e.message;
+  if (message.indexOf('/') > 1) {
+    message = message.split('/')[0];
   }
-
-  return res.json();
+  return message;
 };
 
-export function getLocalStorage(key: string) {
-  if (typeof window !== 'undefined') {
-    return JSON.parse(localStorage.getItem(key) || '[]');
-  }
-  return [];
+export function classNames(...classes: (string | undefined | null | false | 0)[]) {
+  return twMerge(classes.filter(Boolean).join(' '));
 }
-
-export function generateUUID(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
-
-function addToolMessageToChat({
-  toolMessage,
-  messages,
-}: {
-  toolMessage: CoreToolMessage;
-  messages: Array<Message>;
-}): Array<Message> {
-  return messages.map((message) => {
-    if (message.toolInvocations) {
-      return {
-        ...message,
-        toolInvocations: message.toolInvocations.map((toolInvocation) => {
-          const toolResult = toolMessage.content.find(
-            (tool) => tool.toolCallId === toolInvocation.toolCallId,
-          );
-
-          if (toolResult) {
-            return {
-              ...toolInvocation,
-              state: 'result',
-              result: toolResult.result,
-            };
-          }
-
-          return toolInvocation;
-        }),
-      };
-    }
-
-    return message;
-  });
-}
-
-export function convertToUIMessages(
-  messages: Array<DBMessage>,
-): Array<Message> {
-  return messages.reduce((chatMessages: Array<Message>, message) => {
-    if (message.role === 'tool') {
-      return addToolMessageToChat({
-        toolMessage: message as CoreToolMessage,
-        messages: chatMessages,
-      });
-    }
-
-    let textContent = '';
-    let reasoning: string | undefined = undefined;
-    const toolInvocations: Array<ToolInvocation> = [];
-
-    if (typeof message.content === 'string') {
-      textContent = message.content;
-    } else if (Array.isArray(message.content)) {
-      for (const content of message.content) {
-        if (content.type === 'text') {
-          textContent += content.text;
-        } else if (content.type === 'tool-call') {
-          toolInvocations.push({
-            state: 'call',
-            toolCallId: content.toolCallId,
-            toolName: content.toolName,
-            args: content.args,
-          });
-        } else if (content.type === 'reasoning') {
-          reasoning = content.reasoning;
-        }
-      }
-    }
-
-    chatMessages.push({
-      id: message.id,
-      role: message.role as Message['role'],
-      content: textContent,
-      reasoning,
-      toolInvocations,
-    });
-
-    return chatMessages;
-  }, []);
-}
-
-type ResponseMessageWithoutId = CoreToolMessage | CoreAssistantMessage;
-type ResponseMessage = ResponseMessageWithoutId & { id: string };
-
-export function sanitizeResponseMessages({
-  messages,
-  reasoning,
-}: {
-  messages: Array<ResponseMessage>;
-  reasoning: string | undefined;
-}) {
-  const toolResultIds: Array<string> = [];
-
-  for (const message of messages) {
-    if (message.role === 'tool') {
-      for (const content of message.content) {
-        if (content.type === 'tool-result') {
-          toolResultIds.push(content.toolCallId);
-        }
-      }
-    }
-  }
-
-  const messagesBySanitizedContent = messages.map((message) => {
-    if (message.role !== 'assistant') return message;
-
-    if (typeof message.content === 'string') return message;
-
-    const sanitizedContent = message.content.filter((content) =>
-      content.type === 'tool-call'
-        ? toolResultIds.includes(content.toolCallId)
-        : content.type === 'text'
-          ? content.text.length > 0
-          : true,
-    );
-
-    if (reasoning) {
-      // @ts-expect-error: reasoning message parts in sdk is wip
-      sanitizedContent.push({ type: 'reasoning', reasoning });
-    }
-
-    return {
-      ...message,
-      content: sanitizedContent,
-    };
-  });
-
-  return messagesBySanitizedContent.filter(
-    (message) => message.content.length > 0,
-  );
-}
-
-export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {
-  const messagesBySanitizedToolInvocations = messages.map((message) => {
-    if (message.role !== 'assistant') return message;
-
-    if (!message.toolInvocations) return message;
-
-    const toolResultIds: Array<string> = [];
-
-    for (const toolInvocation of message.toolInvocations) {
-      if (toolInvocation.state === 'result') {
-        toolResultIds.push(toolInvocation.toolCallId);
-      }
-    }
-
-    const sanitizedToolInvocations = message.toolInvocations.filter(
-      (toolInvocation) =>
-        toolInvocation.state === 'result' ||
-        toolResultIds.includes(toolInvocation.toolCallId),
-    );
-
-    return {
-      ...message,
-      toolInvocations: sanitizedToolInvocations,
-    };
-  });
-
-  return messagesBySanitizedToolInvocations.filter(
-    (message) =>
-      message.content.length > 0 ||
-      (message.toolInvocations && message.toolInvocations.length > 0),
-  );
-}
-
-export function getMostRecentUserMessage(messages: Array<Message>) {
-  const userMessages = messages.filter((message) => message.role === 'user');
-  return userMessages.at(-1);
-}
-
-export function getDocumentTimestampByIndex(
-  documents: Array<Document>,
-  index: number,
-) {
-  if (!documents) return new Date();
-  if (index > documents.length) return new Date();
-
-  return documents[index].createdAt;
-}
-
-
 
 export const toTitleCase = (str: string) => {
   if (!str) return str;
@@ -336,6 +124,23 @@ export function removeEmpty(obj: any): any {
   // Return the value as is if it's neither an array nor an object
   return obj;
 }
+
+export function executeFunctionByName(
+  functionName: string,
+  context: any /*, args */
+) {
+  var args = Array.prototype.slice.call(arguments, 2);
+  var namespaces = functionName.split('.');
+  var func = namespaces.pop();
+  for (var i = 0; i < namespaces.length; i++) {
+    context = context[namespaces[i]];
+  }
+  return context[func].apply(context, args);
+}
+
+export const getElementByClassName = (className: string) => {
+  return document.querySelector(className) as HTMLElement;
+};
 
 export const randomNumber = (length: number) => {
   var arr = [];
@@ -451,17 +256,15 @@ export function combineObjectArray(arr1: AnyObject[], arr2: AnyObject[], uniqueK
   );
 }
 
-export function classNames(...classes: any) {
-  return twMerge(classes.filter(Boolean).join(' '))
-}
-
-export function stringifyCSSObject(cssObject: any, indent = '') {
+export function cssObjectToString(cssObject: any, indent = '') {
+  if (!cssObject) return '';
   let result = '';
   for (const [key, value] of Object.entries(cssObject)) {
+    const keyString = key.replace(/([A-Z])/g, '-$1').toLowerCase();
     if (typeof value === 'object') {
-      result += `${indent}${key}: {\n${stringifyCSSObject(value, indent + '  ')}${indent}}\n`;
+      result += `${indent}${keyString}: {\n${cssObjectToString(value, indent + '  ')}${indent}}\n`;
     } else {
-      result += `${indent}${key}: ${value};\n`;
+      result += `${indent}${keyString}: ${value};\n`;
     }
   }
   return result;
@@ -511,15 +314,3 @@ export const isValidHtmlId = (id: string) => {
   const idPattern = /^[A-Za-z][\w\:\-\.]*$/;
   return idPattern.test(id);
 }
-
-export const getResponseErrorMessage = (e: any) => {
-  if (!e) return;
-  if (e.constructor.name !== 'AxiosError') return e.message;
-  let errMsg = e.response?.data?.message || e.response?.data?.error;
-  let errPath = e.response?.data?.path;
-  let message = errMsg + ' ' + errPath + ' ' + e.message;
-  if (message.indexOf('/') > 1) {
-    message = message.split('/')[0];
-  }
-  return message;
-};

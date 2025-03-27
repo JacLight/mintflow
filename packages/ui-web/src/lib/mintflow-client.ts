@@ -1,11 +1,27 @@
 import axios from 'axios';
 import { mintflowEndpoints } from './mintflow-endpoints';
+import { getProxiedUrl } from './proxy-utils';
 
 export const callServer = async (url: string, method: string, data: any, headers: any) => {
     try {
+        // Extract the host and path from the URL
+        let host = '';
+        let path = url;
+
+        try {
+            const urlObj = new URL(url);
+            host = urlObj.origin;
+            path = urlObj.pathname + urlObj.search;
+        } catch (error) {
+            // If URL parsing fails, assume it's just a path
+        }
+
+        // Get the proxied URL if needed
+        const proxiedUrl = getProxiedUrl(path, host, 'mintflow');
+
         const response = await axios({
             method,
-            url,
+            url: proxiedUrl,
             data,
             headers,
         });
@@ -22,19 +38,28 @@ export const callServer = async (url: string, method: string, data: any, headers
 export class MintflowClient {
     private baseUrl: string;
 
-    constructor(baseUrl: string = 'http://localhost:7001') {
-        this.baseUrl = baseUrl;
+    constructor(baseUrl?: string) {
+        // Use provided baseUrl or get from environment variable
+        this.baseUrl = baseUrl || process.env.MINTFLOW_ENDPOINT || '';
+
+        if (!this.baseUrl) {
+            console.warn('MINTFLOW_ENDPOINT environment variable is not set and no baseUrl provided');
+        }
     }
 
     async getNodes(fields?: string[]): Promise<any> {
         try {
             const endpoint = mintflowEndpoints.get_nodes;
-            let url = `${this.baseUrl}/${endpoint.path}/all`;
+            let path = `${endpoint.path}/all`;
 
             // Add fields parameter if specified
             if (fields && fields.length > 0) {
-                url += `?fields=${fields.join(',')}`;
+                path += `?fields=${fields.join(',')}`;
             }
+
+            // Get the proxied URL if needed
+            const url = getProxiedUrl(path, this.baseUrl, 'mintflow');
+            console.log('getNodes', url);
 
             const response = await axios({
                 method: endpoint.method,
@@ -55,12 +80,15 @@ export class MintflowClient {
     async getNode(nodeId: string, fields?: string[]): Promise<any> {
         try {
             const endpoint = mintflowEndpoints.get_node;
-            let url = `${this.baseUrl}/${endpoint.path}/${nodeId}`;
+            let path = `${endpoint.path}/${nodeId}`;
 
             // Add fields parameter if specified
             if (fields && fields.length > 0) {
-                url += `?fields=${fields.join(',')}`;
+                path += `?fields=${fields.join(',')}`;
             }
+
+            // Get the proxied URL if needed
+            const url = getProxiedUrl(path, this.baseUrl, 'mintflow');
 
             const response = await axios({
                 method: endpoint.method,

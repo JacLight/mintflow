@@ -3,7 +3,7 @@ import { getAppEngineClient } from './appmint-client';
 import { appmintEndpoints } from './appmint-endpoints';
 import { BaseModel, BaseModelDTO } from './models/base.model';
 import { createNewFlowBaseData } from './models/flow-model';
-import { getResponseErrorMessage } from './utils';
+import { getResponseErrorMessage } from '@/lib-client/helpers';
 
 /**
  * Service for managing mintflow data
