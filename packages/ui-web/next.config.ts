@@ -21,19 +21,5 @@ const nextConfig = {
       }
     ]
   },
-  experimental: {
-    turbo: {
-      resolve: {
-        alias: {
-          "appmint-form": path.resolve(__dirname, "../../../appmint-form/src"),
-          "appmint-form/*": path.resolve(__dirname, "../../../appmint-form/src/*"),
-        },
-      },
-    },
-    watchOptions: {
-      ignored: ['**/node_modules/**', '!**/node_modules/appmint-form/**'],
-      followSymlinks: true,
-    },
-  },
 };
 export default nextConfig;
