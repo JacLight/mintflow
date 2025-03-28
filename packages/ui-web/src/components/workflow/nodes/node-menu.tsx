@@ -39,7 +39,7 @@ export const NodeMenu: React.FC<any> = (props: { id }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="relative">
             <button
                 className="p-1 hover:bg-gray-100 rounded-full"
                 aria-label="More options"
@@ -53,7 +53,7 @@ export const NodeMenu: React.FC<any> = (props: { id }) => {
 
             {showMenu && (
                 <div
-                    className="absolute top-6 right-0 z-10 bg-white rounded-md shadow-lg border p-2 min-w-48"
+                    className="absolute top-6 -left-10 z-10 bg-white rounded-md shadow-lg border p-2 min-w-48"
                 >
                     <div className="text-xs font-medium px-2 py-1 text-gray-500 mb-2 border-b pb-2">Node Options</div>
                     <button
