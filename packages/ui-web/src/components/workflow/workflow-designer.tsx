@@ -181,8 +181,8 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
     }, [reactFlowInstance]);
 
     // Show load dialog
-    const handleShowLoadDialog = useCallback(() => {
-        setShowLoadDialog(true);
+    const handleShowLoadDialog = useCallback((showDialog) => {
+        setShowLoadDialog(showDialog);
     }, []);
 
     // Handle flow selection
@@ -319,7 +319,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                         <span>Save</span>
                     </button>
                     <button
-                        onClick={handleShowLoadDialog}
+                        onClick={() => handleShowLoadDialog(!showLoadDialog)}
                         className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
                         title="Load workflow"
                     >
@@ -336,13 +336,15 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                     </button>
                 </Panel>
 
-                {/* Load Flow Dialog */}
-                <DataList
-                    show={showLoadDialog}
-                    datatype={'mintflow'}
-                    onRowClick={handleFlowSelect}
-                />
+
             </ReactFlow>
+            {/* Load Flow Dialog */}
+            <DataList
+                show={showLoadDialog}
+                datatype={'mintflow'}
+                onRowClick={handleFlowSelect}
+                onClose={() => handleShowLoadDialog(false)}
+            />
         </div>
     );
 }

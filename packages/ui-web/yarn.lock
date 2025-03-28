@@ -1656,7 +1656,7 @@ __metadata:
 
 "appmint-form@file:../../../appmint-form::locator=%40mintflow%2Fui-web%40workspace%3A.":
   version: 0.3.3
-  resolution: "appmint-form@file:../../../appmint-form#../../../appmint-form::hash=e383f1&locator=%40mintflow%2Fui-web%40workspace%3A."
+  resolution: "appmint-form@file:../../../appmint-form#../../../appmint-form::hash=bdf5fe&locator=%40mintflow%2Fui-web%40workspace%3A."
   dependencies:
     "@radix-ui/react-select": "npm:^2.1.6"
     "@tailwindcss/vite": "npm:^4.0.9"
@@ -1678,7 +1678,7 @@ __metadata:
     zustand: "npm:5.0.2"
   peerDependencies:
     react: ">=18"
-  checksum: 10c0/0de9f812811184102a190456d2f769c29d47719eec4df15dc49bb96e1f9b5238752f13d4fa2b40fb777691d4c2e59012ff90b2e4394ea3d09d287069c093f9aa
+  checksum: 10c0/5800556cb40b46f7327aef1dca67ca8f8c1d0287476a8bc10f7cf257753b1ab5b46612a821b8737693e42056363a7097751f817d7d03ed2f5d00567220e3be52
   languageName: node
   linkType: hard
 

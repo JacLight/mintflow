@@ -302,7 +302,7 @@ export const BaseNode = memo(({
           </div>
         )}
       </div>
-      <div className=' bg-gray-100 w-full h-4 '></div>
+      <div className=' bg-gray-100 w-full h-4  dark:bg-gray-700 rounded-b-lg '></div>
     </div>
   );
 });
