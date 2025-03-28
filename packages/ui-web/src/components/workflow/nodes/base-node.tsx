@@ -9,6 +9,8 @@ import GlowingHandle from './glowing-handle';
 import { classNames } from '@/lib-client/helpers';
 import { NodeEdges } from './node-edges';
 import { NodeControl } from './node-control';
+import { NodeRun } from './node-run';
+import { NodeMenu } from './node-menu';
 
 // Base node properties
 export type BaseNodeData = {
@@ -261,8 +263,8 @@ export const BaseNode = memo(({
             </span>
           </button>
           {/* Status indicator */}
-          {/* <NodeRun isRunning={isRunning} output={runOutput} runStatus={runStatus} lastRunTimestamp={lastRunTimestamp} /> */}
-          {/* <NodeMenu id={id} /> */}
+          <NodeRun isRunning={isRunning} output={runOutput} runStatus={runStatus} lastRunTimestamp={lastRunTimestamp} />
+          <NodeMenu id={id} />
         </div>
 
 
