@@ -1,5 +1,6 @@
+'use client';
+
 import React, { useState } from 'react';
-import { classNames } from '@/lib/utils';
 
 // Placeholder component for site action buttons
 export const SiteActionButtons = () => {

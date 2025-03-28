@@ -27,9 +27,22 @@ export const sidebarLinks = {
             ]
         },
         {
+            "name": "flow-runs",
+            "label": "Flow Runs",
+            "icon": "MonitorCog",
+            "children": [
+                { "name": "executions", "label": "Runs", "icon": "Activity" },
+                { "name": "logs", "label": "Logs", "icon": "Clock" },
+                { "name": "usage", "label": "Usage", "icon": "BarChart3" },
+                { "name": "cost", "label": "Cost", "icon": 'FileText' },
+                { "name": "sep", "label": "Sep" },
+                { "name": "api-keys", "label": "API keys", "icon": "Key" },
+            ]
+        },
+        {
             "name": "account",
             "label": "Account",
-            "icon": "MonitorCog",
+            "icon": "ShieldCheck",
             "children": [
                 { "name": "profile", "label": "Profile", "icon": "User" },
                 { "name": "appearance", "label": "Appearance", "icon": "Palette" },
@@ -39,18 +52,7 @@ export const sidebarLinks = {
                 { "name": "billing", "label": "Billing", "icon": "CreditCard" },
                 { "name": "limits", "label": "Limits", "icon": "Lock" },
                 { "name": "sep", "label": "Sep" },
-            ]
-        },
-        {
-            "name": "api",
-            "label": "API",
-            "icon": "Key",
-            "children": [
-                { "name": "api-keys", "label": "API keys", "icon": "Key" },
-                { "name": "logs", "label": "Logs", "icon": "Clock" },
                 { "name": "privacy", "label": "Privacy controls", "icon": "Lock" },
-                { "name": "usage", "label": "Usage", "icon": "BarChart3" },
-                { "name": "cost", "label": "Cost", "icon": 'FileText' }
             ]
         },
         {
