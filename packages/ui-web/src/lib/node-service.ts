@@ -76,7 +76,7 @@ export async function runNode(
         if (response.error) {
             throw new Error(`Error running node: ${response.error}`);
         }
-        return response.result;
+        return response;
     } catch (error) {
         console.error(`Error running node ${data.nodeId}:`, error);
         throw error;
