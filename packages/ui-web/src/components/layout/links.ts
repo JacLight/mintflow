@@ -46,11 +46,11 @@ export const sidebarLinks = {
             "label": "API",
             "icon": "Key",
             "children": [
-                { "name": "/", "label": "API keys", "icon": "Key" },
-                { "name": "/", "label": "Logs", "icon": "Clock" },
-                { "name": "/", "label": "Privacy controls", "icon": "Lock" },
-                { "name": "/", "label": "Usage", "icon": "BarChart3" },
-                { "name": "/", "label": "Cost", "icon": 'FileText' }
+                { "name": "api-keys", "label": "API keys", "icon": "Key" },
+                { "name": "logs", "label": "Logs", "icon": "Clock" },
+                { "name": "privacy", "label": "Privacy controls", "icon": "Lock" },
+                { "name": "usage", "label": "Usage", "icon": "BarChart3" },
+                { "name": "cost", "label": "Cost", "icon": 'FileText' }
             ]
         },
         {
