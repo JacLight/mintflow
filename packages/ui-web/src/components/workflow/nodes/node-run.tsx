@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
-
 interface NodeRunProps {
     output: any;
     error?: any;
@@ -10,8 +9,6 @@ interface NodeRunProps {
     runStatus: any;
     lastRunTimestamp: any
 }
-
-
 
 export const NodeRun: React.FC<NodeRunProps> = ({ output, error, isRunning, runStatus, lastRunTimestamp }) => {
     const [activeTab, setActiveTab] = useState<'summary' | 'output' | 'raw'>('summary');
@@ -51,11 +48,13 @@ export const NodeRun: React.FC<NodeRunProps> = ({ output, error, isRunning, runS
         }
     };
 
+    if (!runStatus || runStatus === 'idle') return null;
+
     return (
-        <div className='relative'>
+        <div className='relative inline-flex items-center'>
             <button
                 onClick={() => setShowRunDetails(!showRunDetails)}
-                className="ml-auto flex-shrink-0 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                className="rounded-full hover:bg-gray-100 transition-colors"
                 title={`Run ${runStatus === 'success' ? 'succeeded' : 'failed'} at ${new Date(lastRunTimestamp || '').toLocaleTimeString()}`}
             >
                 {runStatus === 'success' ? (

@@ -5,8 +5,6 @@ import { ButtonDelete } from '@/components/ui/button-delete';
 import { useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 
-
-
 export const NodeMenu: React.FC<any> = (props: { id }) => {
     const [showMenu, setShowMenu] = useState(false);
     const reactFlowInstance = useReactFlow();

@@ -83,16 +83,14 @@ export const BaseNode = memo(({
   toggleExpand: any;
   isExpanded?: boolean;
 }) => {
-  const [showMenu, setShowMenu] = useState(false);
-  const [showAddMenu, setShowAddMenu] = useState(false);
-  const [deleteState, setDeleteState] = useState<'normal' | 'confirm'>('normal');
+  const [, setShowMenu] = useState(false);
+  const [, setShowAddMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const addMenuRef = useRef<HTMLDivElement>(null);
   const reactFlowInstance = useReactFlow();
   // State for node running and status
   const [isRunning, setIsRunning] = useState(false);
   const [runOutput, setRunOutput] = useState<any>(null);
-  const [showOutput, setShowOutput] = useState(false);
   const [runStatus, setRunStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [lastRunTimestamp, setLastRunTimestamp] = useState<string | null>(null);
 
@@ -219,88 +217,92 @@ export const BaseNode = memo(({
 
   return (
     <div
-      className={classNames(`rounded-md border border-gray-200 bg-background p-3 shadow-md transition-all`, selected ? 'ring-2 ring-purple-700' : '', className)}
+      className={classNames(`rounded-md border border-gray-200 bg-background shadow-md transition-all`, selected ? 'ring-2 ring-purple-700' : '', className)}
+    ><div
+      className={classNames(`p-3`)}
     >
-      {/* Input handle (target) */}
-      <Handle
-        type="target"
-        position={calculatedTargetPosition as Position}
-        className="!h-3 !w-3 !bg-primary"
-      />
+        {/* Input handle (target) */}
+        <Handle
+          type="target"
+          position={calculatedTargetPosition as Position}
+          className="!h-3 !w-3 !bg-primary"
+        />
 
-      {/* Node content */}
-      <div className="flex flex-col gap-2 relative">
-        {/* Top right icons - with responsive sizing */}
-        <div className="absolute top-0 right-0 flex space-x-1 scale-[0.85] origin-top-right">
-          <button
-            className="p-1 hover:bg-gray-100 rounded-full"
-            aria-label="Settings"
-            title="Settings"
-            onClick={toggleExpand}
-          >
-            <span className="h-3.5 w-3.5 text-gray-500">
-              <IconRenderer icon={isExpanded ? 'ChevronUp' : 'ChevronDown'} className="h-3.5 w-3.5" />
-            </span>
-          </button>
-          <button
-            className="p-1 hover:bg-gray-100 rounded-full"
-            aria-label="Settings"
-            title="Settings"
-            onClick={handleSettings}
-          >
-            <span className="h-3.5 w-3.5 text-gray-500">
-              <Settings className="h-3.5 w-3.5" />
-            </span>
-          </button>
-          <button
-            className="p-1 hover:bg-gray-100 rounded-full"
-            aria-label="Duplicate"
-            title="Duplicate"
-            onClick={handleClone}
-          >
-            <span className="h-3.5 w-3.5 text-gray-500">
-              <Copy className="h-3.5 w-3.5" />
-            </span>
-          </button>
-          {/* Status indicator */}
-          <NodeRun isRunning={isRunning} output={runOutput} runStatus={runStatus} lastRunTimestamp={lastRunTimestamp} />
-          <NodeMenu id={id} />
+        {/* Node content */}
+        <div className="flex flex-col gap-2 relative">
+          {/* Top right icons - with responsive sizing */}
+          <div className="absolute z-10 top-0 right-0 flex items-center gap-2 origin-top-right">
+            <button
+              className="p-1 hover:bg-gray-100 rounded-full"
+              aria-label="Settings"
+              title="Settings"
+              onClick={toggleExpand}
+            >
+              <span className="h-3.5 w-3.5 text-gray-500">
+                <IconRenderer icon={isExpanded ? 'ChevronUp' : 'ChevronDown'} className="h-3.5 w-3.5" />
+              </span>
+            </button>
+            <button
+              className="p-1 hover:bg-gray-100 rounded-full"
+              aria-label="Settings"
+              title="Settings"
+              onClick={handleSettings}
+            >
+              <span className="h-3.5 w-3.5 text-gray-500">
+                <Settings className="h-3.5 w-3.5" />
+              </span>
+            </button>
+            <button
+              className="p-1 hover:bg-gray-100 rounded-full"
+              aria-label="Duplicate"
+              title="Duplicate"
+              onClick={handleClone}
+            >
+              <span className="h-3.5 w-3.5 text-gray-500">
+                <Copy className="h-3.5 w-3.5" />
+              </span>
+            </button>
+            {/* Status indicator */}
+            <NodeRun isRunning={isRunning} output={runOutput} runStatus={runStatus} lastRunTimestamp={lastRunTimestamp} />
+            <NodeMenu id={id} />
+          </div>
+
+
+          {/* Node label with icon and status indicator */}
+          <div className="text-sm font-medium flex items-center min-h-[24px] overflow-hidden mt-1">
+            {data.icon && (
+              <span className="mr-2 flex-shrink-0">
+                {typeof data.icon === 'string' ? getIconComponent(data.icon) : data.icon}
+              </span>
+            )}
+            <span className="truncate">{data.label}</span>
+          </div>
+
+          <div className={classNames(isExpanded ? 'w-[350px]' : 'w-64', 'max-h-[800px] overflow-auto')}>
+            {children}
+          </div>
+          <NodeControl selected={selected} id={id} setIsRunning={setIsRunning} setRunStatus={setRunStatus} setRunOutput={setRunOutput} setLastRunTimestamp={setLastRunTimestamp} />
         </div>
 
+        {/* Output handle (source) */}
+        <GlowingHandle
+          type="source"
+          position={calculatedSourcePosition}
+          isConnectable={true}
+          id={id}
+        // className="!h-3 !w-3 !bg-primary"
+        />
 
-        {/* Node label with icon and status indicator */}
-        <div className="text-sm font-medium flex items-center min-h-[24px] overflow-hidden mt-1">
-          {data.icon && (
-            <span className="mr-2 flex-shrink-0">
-              {typeof data.icon === 'string' ? getIconComponent(data.icon) : data.icon}
-            </span>
-          )}
-          <span className="truncate">{data.label}</span>
-        </div>
+        <NodeEdges processedInputs={processedInputs} processedOutputs={processedOutputs} id={id} connectionState={connectionState} data={data} />
 
-        <div className={classNames(isExpanded ? 'w-[350px]' : 'w-64', 'max-h-[800px] overflow-auto')}>
-          {children}
-        </div>
-        <NodeControl selected={selected} id={id} setIsRunning={setIsRunning} setRunStatus={setRunStatus} setRunOutput={setRunOutput} setLastRunTimestamp={setLastRunTimestamp} />
+        {/* Run button with loading state */}
+        {isRunning && (
+          <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
+            <Loader className="h-6 w-6 text-purple-600 animate-spin" />
+          </div>
+        )}
       </div>
-
-      {/* Output handle (source) */}
-      <GlowingHandle
-        type="source"
-        position={calculatedSourcePosition}
-        isConnectable={true}
-        id={id}
-      // className="!h-3 !w-3 !bg-primary"
-      />
-
-      <NodeEdges processedInputs={processedInputs} processedOutputs={processedOutputs} id={id} connectionState={connectionState} data={data} />
-
-      {/* Run button with loading state */}
-      {isRunning && (
-        <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
-          <Loader className="h-6 w-6 text-purple-600 animate-spin" />
-        </div>
-      )}
+      <div className=' bg-gray-100 w-full h-4 '></div>
     </div>
   );
 });
