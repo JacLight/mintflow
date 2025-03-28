@@ -3,12 +3,15 @@
 import { memo, useState, useRef, useEffect, useMemo } from 'react';
 import { Handle, Position, NodeProps, useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
-import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Image } from 'lucide-react';
+import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Image, Loader } from 'lucide-react';
+import { runNode } from '@/lib/node-service';
+import { NodeRunOutput } from './node-run-output';
 import { ButtonDelete } from '@/components/ui/button-delete';
 import HandleRenderComponent from './handle-render-component';
 import { ConnectionState, NodePosition } from '../types';
 import GlowingHandle from './glowing-handle';
-import { classNames } from '@/lib-client/helpers';
+import { classNames, getResponseErrorMessage } from '@/lib-client/helpers';
+import { useSiteStore } from '@/context/site-store';
 
 // Base node properties
 export type BaseNodeData = {
@@ -219,10 +222,51 @@ export const BaseNode = memo(({
     reactFlowInstance.deleteElements({ nodes: [{ id }] });
   };
 
-  // Handle play button
-  const handlePlay = () => {
-    console.log(`Running node ${id}`);
-    // Stub for play functionality
+  // State for node running
+  const [isRunning, setIsRunning] = useState(false);
+  const [runOutput, setRunOutput] = useState<any>(null);
+  const [showOutput, setShowOutput] = useState(false);
+
+  // Handle play button - run the node
+  const handlePlay = async () => {
+    try {
+      // Get the node type from the id or data
+      const nodeType = id.split('-')[0]; // Assuming id format is like "inject-123456"
+      const plugin = nodeType;
+      const action = nodeType; // Default action is same as plugin name
+
+      // Get input values - this would need to be expanded based on your actual input handling
+      const input = {
+        name: "full_name",
+        type: "string",
+        value: "jacob ajiboye"
+      };
+
+      console.log(`Running node ${id} (plugin: ${plugin}, action: ${action})`);
+
+      setIsRunning(true);
+
+      // Prepare data for the API call
+      const data = {
+        nodeId: id,
+        plugin,
+        action,
+        input
+      };
+
+      // Call the API to run the node
+      const result = await runNode(data);
+
+      console.log('Node run result:', result);
+      setRunOutput(result);
+      setShowOutput(true);
+    } catch (error) {
+      const msg = getResponseErrorMessage(error);
+      useSiteStore().ui.getState().showNotice(msg, 'error');
+      console.error(error);
+    } finally {
+      setIsRunning(false);
+    }
   };
 
   // Handle adding a new connected node
@@ -510,6 +554,21 @@ export const BaseNode = memo(({
             );
           })}
         </div>
+      )}
+
+      {/* Run button with loading state */}
+      {isRunning && (
+        <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
+          <Loader className="h-6 w-6 text-purple-600 animate-spin" />
+        </div>
+      )}
+
+      {/* Output modal */}
+      {showOutput && runOutput && (
+        <NodeRunOutput
+          output={runOutput}
+          onClose={() => setShowOutput(false)}
+        />
       )}
     </div>
   );

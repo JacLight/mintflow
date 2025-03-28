@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { mintflowEndpoints } from './mintflow-endpoints';
 import { getProxiedUrl } from './proxy-utils';
+import { getResponseErrorMessage } from '@/lib-client/helpers';
 
 export const callServer = async (url: string, method: string, data: any, headers: any) => {
     try {
@@ -132,10 +133,10 @@ export class MintflowClient {
         }
     }
 
-    async runNode(nodeId: string, data: any): Promise<any> {
+    async runNode(data: any): Promise<any> {
         try {
             const endpoint = mintflowEndpoints.run_node;
-            const path = `${endpoint.path}/${nodeId}`;
+            const path = `${endpoint.path}`;
 
             // Get the proxied URL if needed
             const url = getProxiedUrl(path, this.baseUrl, 'mintflow');
@@ -154,6 +155,30 @@ export class MintflowClient {
             } else {
                 return { error: 'Network error' };
             }
+        }
+    }
+
+    async proxyClient(method: string, url: string, data: any, query: any): Promise<any> {
+        try {
+            let apiPath = url.split('/api-mintflow/')[1];
+            apiPath = getProxiedUrl(apiPath, this.baseUrl, 'mintflow');
+            console.log(`Proxying ${method} request from ${url} -> ${apiPath}`);
+            console.log(data);
+
+            const response = await axios({
+                method,
+                url: apiPath,
+                ...(method.toLowerCase() === 'post' && data ? { data } : {}),
+                ...(query ? { params: query } : {}),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('Proxy response:', response.data);
+            return response.data;
+        } catch (error: any) {
+            console.error('Error running node:', getResponseErrorMessage(error));
+            throw error;
         }
     }
 }

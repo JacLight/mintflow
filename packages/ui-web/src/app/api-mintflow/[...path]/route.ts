@@ -1,35 +1,21 @@
-import { getAppEngineClient } from '@/lib/appmint-client';
-import axios from 'axios';
+import { deepCopy } from '@/lib-client/helpers';
+import { getMintflowClient } from '@/lib/mintflow-client';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Define a single handler function for all HTTP methods
 const handler = async (request: any) => {
     try {
-        const authorization = request.headers['authorization'] || request.headers['Authorization']
-        const isMultiPath = request.headers['content-type'] && request.headers['content-type'].indexOf('multipart/form-data') >= 0;
-        const { method, query, body, url } = request
-        const clientInfo = {}
-        const appengineClient = getAppEngineClient();
-        const apiPath = url.split('/api-mintflow/')[1];
-
-        const response = await axios({
-            method: method,
-            url: apiPath,
-            data: body,
-            headers: Object.fromEntries(request.headers),
-            validateStatus: () => true, // Don't throw on any status code
-        });
-
-        // Return the response directly without wrapping in json()
-        return new NextResponse(
-            typeof response.data === 'string' ? response.data : JSON.stringify(response.data),
-            {
-                status: response.status,
-                headers: {
-                    'Content-Type': response.headers['content-type'] || 'application/json',
-                }
+        const { method, query, url } = await request
+        let body;
+        if (method !== 'GET' && method !== 'HEAD') {
+            body = await request.json();
+        }
+        const rt = await getMintflowClient().proxyClient(method, url, deepCopy(body), query,)
+        return NextResponse.json(rt, {
+            status: 200, headers: {
+                'Content-Type': 'application/json',
             }
-        );
+        });
     } catch (error: any) {
         console.error('[API Proxy] Error:', error.message);
         return NextResponse.json(
