@@ -3,15 +3,12 @@
 import { memo, useState, useRef, useEffect, useMemo } from 'react';
 import { Handle, Position, NodeProps, useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
-import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Image, Loader, AlertCircle, AlertTriangle } from 'lucide-react';
-import { runNode } from '@/lib/node-service';
-import { NodeRunOutput } from './node-run-output';
-import { ButtonDelete } from '@/components/ui/button-delete';
-import HandleRenderComponent from './handle-render-component';
+import { Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Loader } from 'lucide-react';
 import { ConnectionState, NodePosition } from '../types';
 import GlowingHandle from './glowing-handle';
-import { classNames, getResponseErrorMessage } from '@/lib-client/helpers';
-import { useSiteStore } from '@/context/site-store';
+import { classNames } from '@/lib-client/helpers';
+import { NodeEdges } from './node-edges';
+import { NodeControl } from './node-control';
 
 // Base node properties
 export type BaseNodeData = {
@@ -46,13 +43,7 @@ export type BaseNodeData = {
 };
 
 // Available node types for the add menu
-const availableNodeTypes = [
-  { id: 'info', label: 'Info Node', icon: <Info className="h-4 w-4" /> },
-  { id: 'app-view', label: 'App View', icon: <Zap className="h-4 w-4" /> },
-  { id: 'form', label: 'Form View', icon: <IconRenderer icon='FormInput' className="h-4 w-4" /> },
-  { id: 'switch', label: 'Switch', icon: <Settings className="h-4 w-4" /> },
-  { id: 'image', label: 'Image', icon: <Image className="h-4 w-4" /> },
-];
+
 
 // Helper function to get icon component
 const getIconComponent = (iconName: string) => {
@@ -96,6 +87,12 @@ export const BaseNode = memo(({
   const menuRef = useRef<HTMLDivElement>(null);
   const addMenuRef = useRef<HTMLDivElement>(null);
   const reactFlowInstance = useReactFlow();
+  // State for node running and status
+  const [isRunning, setIsRunning] = useState(false);
+  const [runOutput, setRunOutput] = useState<any>(null);
+  const [showOutput, setShowOutput] = useState(false);
+  const [runStatus, setRunStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [lastRunTimestamp, setLastRunTimestamp] = useState<string | null>(null);
 
 
   // Extract connection state from data prop
@@ -217,146 +214,7 @@ export const BaseNode = memo(({
     setShowMenu(false);
   };
 
-  // Handle node deletion
-  const handleDelete = () => {
-    reactFlowInstance.deleteElements({ nodes: [{ id }] });
-  };
 
-  // State for node running and status
-  const [isRunning, setIsRunning] = useState(false);
-  const [runOutput, setRunOutput] = useState<any>(null);
-  const [showOutput, setShowOutput] = useState(false);
-  const [runStatus, setRunStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [lastRunTimestamp, setLastRunTimestamp] = useState<string | null>(null);
-
-  // Handle play button - run the node
-  const handlePlay = async () => {
-    try {
-      // Get the node type from the id or data
-      const nodeType = id.split('-')[0]; // Assuming id format is like "inject-123456"
-      const plugin = nodeType;
-      const action = nodeType; // Default action is same as plugin name
-
-      // Get input values - this would need to be expanded based on your actual input handling
-      const input = {
-        name: "full_name",
-        type: "string",
-        value: "jacob ajiboye"
-      };
-
-      console.log(`Running node ${id} (plugin: ${plugin}, action: ${action})`);
-
-      setIsRunning(true);
-      setRunStatus('idle'); // Reset status when starting a new run
-
-      // Prepare data for the API call
-      const data = {
-        nodeId: id,
-        plugin,
-        action,
-        input
-      };
-
-      // Call the API to run the node
-      const result = await runNode(data);
-
-      console.log('Node run result:', result);
-      setRunOutput(result);
-
-      // Set the run status based on the result
-      if (result && result.error) {
-        setRunStatus('error');
-      } else {
-        setRunStatus('success');
-      }
-
-      // Set timestamp for the run
-      setLastRunTimestamp(new Date().toISOString());
-
-      // Automatically show output for immediate feedback
-      setShowOutput(true);
-    } catch (error) {
-      const msg = getResponseErrorMessage(error);
-      useSiteStore().ui.getState().showNotice(msg, 'error');
-      console.error(error);
-      setRunStatus('error');
-      setLastRunTimestamp(new Date().toISOString());
-    } finally {
-      setIsRunning(false);
-    }
-  };
-
-  // Handle clicking on the status icon to show run details
-  const handleShowRunDetails = () => {
-    if (runOutput) {
-      setShowOutput(true);
-    }
-  };
-
-  // Handle adding a new connected node
-  const handleAddNode = (nodeType: string, nodeLabel: string, nodeIcon: React.ReactNode) => {
-    const currentNode = reactFlowInstance.getNode(id);
-    if (currentNode) {
-      // Calculate position for new node
-      const newNodePosition = {
-        x: currentNode.position.x,
-        y: currentNode.position.y + 150
-      };
-
-      // Create new node
-      const newNodeId = `${nodeType}-${Date.now()}`;
-      const newNode = {
-        id: newNodeId,
-        type: nodeType,
-        position: newNodePosition,
-        data: {
-          label: nodeLabel,
-          icon: nodeIcon
-        }
-      };
-
-      // Check if current node is already connected to another node
-      const currentNodeConnections = reactFlowInstance.getEdges().filter(
-        edge => edge.source === id
-      );
-
-      if (currentNodeConnections.length > 0) {
-        // Get the target of the existing connection
-        const existingTargetId = currentNodeConnections[0].target;
-        const existingTarget = reactFlowInstance.getNode(existingTargetId);
-
-        if (existingTarget) {
-          // Position the new node between current and existing target
-          newNode.position = {
-            x: currentNode.position.x,
-            y: (currentNode.position.y + existingTarget.position.y) / 2
-          };
-
-          // Remove existing edge
-          reactFlowInstance.deleteElements({
-            edges: [{ id: currentNodeConnections[0].id }]
-          });
-
-          // Add new node
-          reactFlowInstance.addNodes(newNode);
-
-          // Add edges to connect current -> new -> existing
-          reactFlowInstance.addEdges([
-            { id: `e-${id}-${newNodeId}`, source: id, target: newNodeId },
-            { id: `e-${newNodeId}-${existingTargetId}`, source: newNodeId, target: existingTargetId }
-          ]);
-        }
-      } else {
-        // Just add the new node and connect it
-        reactFlowInstance.addNodes(newNode);
-        reactFlowInstance.addEdges([
-          { id: `e-${id}-${newNodeId}`, source: id, target: newNodeId }
-        ]);
-      }
-
-      setShowAddMenu(false);
-    }
-  };
   return (
     <div
       className={classNames(`rounded-md border border-gray-200 bg-background p-3 shadow-md transition-all`, selected ? 'ring-2 ring-purple-700' : '', className)}
@@ -403,56 +261,10 @@ export const BaseNode = memo(({
             </span>
           </button>
           {/* Status indicator */}
-          {runStatus !== 'idle' && (
-            <button
-              onClick={handleShowRunDetails}
-              className="ml-auto flex-shrink-0 p-1 rounded-full hover:bg-gray-100 transition-colors"
-              title={`Run ${runStatus === 'success' ? 'succeeded' : 'failed'} at ${new Date(lastRunTimestamp || '').toLocaleTimeString()}`}
-            >
-              {runStatus === 'success' ? (
-                <Check className="h-4 w-4 text-green-500" />
-              ) : (
-                <AlertCircle className="h-4 w-4 text-red-500" />
-              )}
-            </button>
-          )}
-          <button
-            className="p-1 hover:bg-gray-100 rounded-full"
-            aria-label="More options"
-            title="More options"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            <span className="h-3.5 w-3.5 text-gray-500">
-              <MoreHorizontal className="h-3.5 w-3.5" />
-            </span>
-          </button>
-
+          {/* <NodeRun isRunning={isRunning} output={runOutput} runStatus={runStatus} lastRunTimestamp={lastRunTimestamp} /> */}
+          {/* <NodeMenu id={id} /> */}
         </div>
 
-        {/* Context menu */}
-        {showMenu && (
-          <div
-            ref={menuRef}
-            className="absolute top-6 right-0 z-10 bg-white rounded-md shadow-lg border p-2 min-w-48"
-          >
-            <div className="text-xs font-medium px-2 py-1 text-gray-500 mb-2 border-b pb-2">Node Options</div>
-            <button
-              className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded flex items-center"
-              onClick={handleSettings}
-            >
-              <span className="mr-3 h-4 w-4 text-gray-600"><Settings className="h-4 w-4" /></span>
-              Settings
-            </button>
-            <button
-              className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded flex items-center"
-              onClick={handleClone}
-            >
-              <span className="mr-3 h-4 w-4 text-gray-600"><Copy className="h-4 w-4" /></span>
-              Duplicate
-            </button>
-            <ButtonDelete onDelete={handleDelete} />
-          </div>
-        )}
 
         {/* Node label with icon and status indicator */}
         <div className="text-sm font-medium flex items-center min-h-[24px] overflow-hidden mt-1">
@@ -467,54 +279,7 @@ export const BaseNode = memo(({
         <div className={classNames(isExpanded ? 'w-[350px]' : 'w-64', 'max-h-[800px] overflow-auto')}>
           {children}
         </div>
-        {/* Bottom icons - only shown when selected */}
-        {selected && (
-          <div className="flex justify-center space-x-3 mt-2 pt-2 border-t">
-            <button
-              className="p-1 hover:bg-gray-100 rounded-full"
-              aria-label="Run"
-              title="Run"
-              onClick={handlePlay}
-            >
-              <span className="h-3.5 w-3.5 text-gray-500">
-                <Play className="h-3.5 w-3.5" />
-              </span>
-            </button>
-            <button
-              className="p-1 hover:bg-gray-100 rounded-full"
-              aria-label="Add"
-              title="Add node"
-              onClick={() => setShowAddMenu(!showAddMenu)}
-            >
-              <span className="h-3.5 w-3.5 text-gray-500">
-                <Plus className="h-3.5 w-3.5" />
-              </span>
-            </button>
-            <ButtonDelete onDelete={handleDelete} />
-          </div>
-        )}
-
-        {/* Add node menu */}
-        {showAddMenu && (
-          <div
-            ref={addMenuRef}
-            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full z-10 bg-white rounded-md shadow-lg border p-2 min-w-48"
-          >
-            <div className="text-xs font-medium px-2 py-1 text-gray-500 mb-2 border-b pb-2">Add Node</div>
-            {availableNodeTypes.map((nodeType) => (
-              <button
-                key={nodeType.id}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded flex items-center"
-                onClick={() => handleAddNode(nodeType.id, nodeType.label, nodeType.icon)}
-              >
-                <span className="mr-3 h-4 w-4 text-gray-600">
-                  {nodeType.icon}
-                </span>
-                {nodeType.label}
-              </button>
-            ))}
-          </div>
-        )}
+        <NodeControl selected={selected} id={id} setIsRunning={setIsRunning} setRunStatus={setRunStatus} setRunOutput={setRunOutput} setLastRunTimestamp={setLastRunTimestamp} />
       </div>
 
       {/* Output handle (source) */}
@@ -526,109 +291,13 @@ export const BaseNode = memo(({
       // className="!h-3 !w-3 !bg-primary"
       />
 
-      {processedInputs.length > 0 && (
-        <div className="mt-2 pt-2 border-t">
-          <div className="text-xs font-medium text-gray-500 mb-1">Inputs</div>
-          {processedInputs.map((input, index) => (
-            <div key={input.name} className="flex items-center justify-between py-1">
-              <div className="flex items-center">
-                <HandleRenderComponent
-                  left={true}
-                  tooltipTitle={input.type}
-                  id={{
-                    input_types: [input.type],
-                    id: id,
-                    fieldName: input.name
-                  }}
-                  title={input.label}
-                  nodeId={id}
-                  colorName={['primary']}
-                  connectionState={connectionState}
-                  position={input.position}
-                />
-                <span className="text-xs ml-4">{input.label}</span>
-                {input.required && <span className="text-red-500 ml-1">*</span>}
-              </div>
-              <span className="text-xs text-gray-400">{input.type}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Output handles */}
-      {processedOutputs.length > 0 && (
-        <div className="mt-2 pt-2 border-t relative">
-          <div className="text-xs font-medium text-gray-500 mb-1">Outputs</div>
-          {processedOutputs.map((output, index) => {
-            // Find dynamic position for this output if available
-            const dynamicPosition = data.dynamicHandlePositions?.find(
-              pos => pos.id === `${id}-${output.name}`
-            );
-
-            return (
-              <div key={output.name} className="flex items-center justify-between py-1 relative">
-                <span className="text-xs">{output.label}</span>
-                <div className="flex items-center">
-                  <span className="text-xs text-gray-400 mr-4">{output.type}</span>
-                  <HandleRenderComponent
-                    left={false}
-                    tooltipTitle={output.type}
-                    id={{
-                      output_types: [output.type],
-                      id: id,
-                      fieldName: output.name
-                    }}
-                    title={output.label}
-                    nodeId={id}
-                    colorName={['secondary']}
-                    connectionState={connectionState}
-                    position={dynamicPosition ? {
-                      position: dynamicPosition.calculatedPosition,
-                      offsetX: dynamicPosition.offsetX,
-                      offsetY: dynamicPosition.offsetY
-                    } : output.position}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <NodeEdges processedInputs={processedInputs} processedOutputs={processedOutputs} id={id} connectionState={connectionState} data={data} />
 
       {/* Run button with loading state */}
       {isRunning && (
         <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
           <Loader className="h-6 w-6 text-purple-600 animate-spin" />
         </div>
-      )}
-
-      {/* Status indicator overlay (when not expanded) */}
-      {!isExpanded && runStatus !== 'idle' && !isRunning && (
-        <div className="absolute top-1 right-1 z-5">
-          <button
-            onClick={handleShowRunDetails}
-            className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-            title={`Run ${runStatus === 'success' ? 'succeeded' : 'failed'} at ${new Date(lastRunTimestamp || '').toLocaleTimeString()}`}
-          >
-            {runStatus === 'success' ? (
-              <div className="bg-green-100 p-1 rounded-full">
-                <Check className="h-3.5 w-3.5 text-green-600" />
-              </div>
-            ) : (
-              <div className="bg-red-100 p-1 rounded-full">
-                <AlertTriangle className="h-3.5 w-3.5 text-red-600" />
-              </div>
-            )}
-          </button>
-        </div>
-      )}
-
-      {/* Output modal */}
-      {showOutput && runOutput && (
-        <NodeRunOutput
-          output={runOutput}
-          onClose={() => setShowOutput(false)}
-        />
       )}
     </div>
   );
