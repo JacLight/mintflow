@@ -3,7 +3,7 @@
 import { memo, useState, useRef, useEffect, useMemo } from 'react';
 import { Handle, Position, NodeProps, useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
-import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Image, Loader } from 'lucide-react';
+import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Image, Loader, AlertCircle, AlertTriangle } from 'lucide-react';
 import { runNode } from '@/lib/node-service';
 import { NodeRunOutput } from './node-run-output';
 import { ButtonDelete } from '@/components/ui/button-delete';
@@ -222,10 +222,12 @@ export const BaseNode = memo(({
     reactFlowInstance.deleteElements({ nodes: [{ id }] });
   };
 
-  // State for node running
+  // State for node running and status
   const [isRunning, setIsRunning] = useState(false);
   const [runOutput, setRunOutput] = useState<any>(null);
   const [showOutput, setShowOutput] = useState(false);
+  const [runStatus, setRunStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [lastRunTimestamp, setLastRunTimestamp] = useState<string | null>(null);
 
   // Handle play button - run the node
   const handlePlay = async () => {
@@ -245,6 +247,7 @@ export const BaseNode = memo(({
       console.log(`Running node ${id} (plugin: ${plugin}, action: ${action})`);
 
       setIsRunning(true);
+      setRunStatus('idle'); // Reset status when starting a new run
 
       // Prepare data for the API call
       const data = {
@@ -259,13 +262,34 @@ export const BaseNode = memo(({
 
       console.log('Node run result:', result);
       setRunOutput(result);
+
+      // Set the run status based on the result
+      if (result && result.error) {
+        setRunStatus('error');
+      } else {
+        setRunStatus('success');
+      }
+
+      // Set timestamp for the run
+      setLastRunTimestamp(new Date().toISOString());
+
+      // Automatically show output for immediate feedback
       setShowOutput(true);
     } catch (error) {
       const msg = getResponseErrorMessage(error);
       useSiteStore().ui.getState().showNotice(msg, 'error');
       console.error(error);
+      setRunStatus('error');
+      setLastRunTimestamp(new Date().toISOString());
     } finally {
       setIsRunning(false);
+    }
+  };
+
+  // Handle clicking on the status icon to show run details
+  const handleShowRunDetails = () => {
+    if (runOutput) {
+      setShowOutput(true);
     }
   };
 
@@ -378,6 +402,20 @@ export const BaseNode = memo(({
               <Copy className="h-3.5 w-3.5" />
             </span>
           </button>
+          {/* Status indicator */}
+          {runStatus !== 'idle' && (
+            <button
+              onClick={handleShowRunDetails}
+              className="ml-auto flex-shrink-0 p-1 rounded-full hover:bg-gray-100 transition-colors"
+              title={`Run ${runStatus === 'success' ? 'succeeded' : 'failed'} at ${new Date(lastRunTimestamp || '').toLocaleTimeString()}`}
+            >
+              {runStatus === 'success' ? (
+                <Check className="h-4 w-4 text-green-500" />
+              ) : (
+                <AlertCircle className="h-4 w-4 text-red-500" />
+              )}
+            </button>
+          )}
           <button
             className="p-1 hover:bg-gray-100 rounded-full"
             aria-label="More options"
@@ -388,6 +426,7 @@ export const BaseNode = memo(({
               <MoreHorizontal className="h-3.5 w-3.5" />
             </span>
           </button>
+
         </div>
 
         {/* Context menu */}
@@ -415,7 +454,7 @@ export const BaseNode = memo(({
           </div>
         )}
 
-        {/* Node label with icon - ensure icon doesn't overlap when node is small */}
+        {/* Node label with icon and status indicator */}
         <div className="text-sm font-medium flex items-center min-h-[24px] overflow-hidden mt-1">
           {data.icon && (
             <span className="mr-2 flex-shrink-0">
@@ -560,6 +599,27 @@ export const BaseNode = memo(({
       {isRunning && (
         <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
           <Loader className="h-6 w-6 text-purple-600 animate-spin" />
+        </div>
+      )}
+
+      {/* Status indicator overlay (when not expanded) */}
+      {!isExpanded && runStatus !== 'idle' && !isRunning && (
+        <div className="absolute top-1 right-1 z-5">
+          <button
+            onClick={handleShowRunDetails}
+            className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+            title={`Run ${runStatus === 'success' ? 'succeeded' : 'failed'} at ${new Date(lastRunTimestamp || '').toLocaleTimeString()}`}
+          >
+            {runStatus === 'success' ? (
+              <div className="bg-green-100 p-1 rounded-full">
+                <Check className="h-3.5 w-3.5 text-green-600" />
+              </div>
+            ) : (
+              <div className="bg-red-100 p-1 rounded-full">
+                <AlertTriangle className="h-3.5 w-3.5 text-red-600" />
+              </div>
+            )}
+          </button>
         </div>
       )}
 
