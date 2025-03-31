@@ -3,3 +3,5 @@ export * from './Tenant.js';
 export * from './Log.js';
 export * from './FlowRun.js';
 export * from './Flow.js';
+export * from './ApiKey.js';
+export * from './UsageMetrics.js';

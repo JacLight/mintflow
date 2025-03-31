@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
 import { logger } from '@mintflow/common';
+import { AdminService } from '../../services/AdminService.js';
+
+// Get instance of AdminService
+const adminService = AdminService.getInstance();
 
 // ==================== API Keys ====================
 
@@ -8,27 +12,11 @@ import { logger } from '@mintflow/common';
  */
 export async function getAllApiKeys(req: Request, res: Response): Promise<any> {
     try {
-        // Mock data for now - would be replaced with actual service calls
-        const apiKeys = [
-            {
-                id: 'key_01',
-                name: 'Production API Key',
-                prefix: 'sk_123456',
-                created: '2025-02-15T14:32:00Z',
-                workspace: 'Default',
-                environment: 'Production',
-                lastUsed: '2025-03-28T09:47:12Z'
-            },
-            {
-                id: 'key_02',
-                name: 'Development API Key',
-                prefix: 'sk_789012',
-                created: '2025-03-10T11:23:18Z',
-                workspace: 'Claude Code',
-                environment: 'Development',
-                lastUsed: '2025-03-27T18:33:05Z'
-            }
-        ];
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
+
+        // Get API keys from service
+        const apiKeys = await adminService.getAllApiKeys(tenantId);
 
         return res.status(200).json(apiKeys);
     } catch (err: any) {
@@ -42,21 +30,20 @@ export async function getAllApiKeys(req: Request, res: Response): Promise<any> {
  */
 export async function getApiKeyById(req: Request, res: Response): Promise<any> {
     try {
-        const keyId = req.params.keyId;
+        const apiKeyId = req.params.keyId;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        // Mock data for now - would be replaced with actual service calls
-        const apiKey = {
-            id: keyId,
-            name: 'Production API Key',
-            prefix: 'sk_123456',
-            created: '2025-02-15T14:32:00Z',
-            workspace: 'Default',
-            environment: 'Production',
-            lastUsed: '2025-03-28T09:47:12Z'
-        };
+        // Get API key from service
+        const apiKey = await adminService.getApiKeyById(apiKeyId, tenantId);
 
         return res.status(200).json(apiKey);
     } catch (err: any) {
+        // Check for specific error types
+        if (err.message && err.message.includes('API key not found')) {
+            return res.status(404).json({ error: err.message });
+        }
+
         logger.error(`[AdminController] Error fetching API key: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch API key' });
     }
@@ -68,21 +55,36 @@ export async function getApiKeyById(req: Request, res: Response): Promise<any> {
 export async function createApiKey(req: Request, res: Response): Promise<any> {
     try {
         const { name, workspace, environment } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        // Mock data for now - would be replaced with actual service calls
-        const newApiKey = {
-            id: `key_${Date.now()}`,
+        // Validate input data
+        const { ApiKeyValidator } = await import('../../models/validators/ApiKeyValidator.js');
+        const { error, value } = ApiKeyValidator.validate({
             name,
-            prefix: `sk_${Math.floor(Math.random() * 1000000)}`,
-            fullKey: `sk_${Math.floor(Math.random() * 1000000)}${Math.random().toString(36).substring(2, 15)}`,
-            created: new Date().toISOString(),
             workspace,
             environment,
-            lastUsed: null
-        };
+            tenantId
+        });
+
+        if (error) {
+            logger.warn(`[AdminController] Validation error creating API key: ${error.message}`);
+            return res.status(400).json({
+                error: 'Validation error',
+                details: error.details.map(d => d.message)
+            });
+        }
+
+        // Create API key using service
+        const newApiKey = await adminService.createApiKey(value);
 
         return res.status(201).json(newApiKey);
     } catch (err: any) {
+        // Check for specific error types
+        if (err.message && err.message.includes('Tenant not found')) {
+            return res.status(404).json({ error: err.message });
+        }
+
         logger.error(`[AdminController] Error creating API key: ${err.message}`);
         return res.status(500).json({ error: 'Failed to create API key' });
     }
@@ -93,22 +95,43 @@ export async function createApiKey(req: Request, res: Response): Promise<any> {
  */
 export async function updateApiKey(req: Request, res: Response): Promise<any> {
     try {
-        const keyId = req.params.keyId;
+        const apiKeyId = req.params.keyId;
         const { name, workspace, environment } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        // Mock data for now - would be replaced with actual service calls
-        const updatedApiKey = {
-            id: keyId,
+        // Validate input data
+        const { ApiKeyValidator } = await import('../../models/validators/ApiKeyValidator.js');
+        const { error, value } = ApiKeyValidator.validate({
+            apiKeyId,
             name,
-            prefix: 'sk_123456',
-            created: '2025-02-15T14:32:00Z',
             workspace,
             environment,
-            lastUsed: '2025-03-28T09:47:12Z'
-        };
+            tenantId
+        });
+
+        if (error) {
+            logger.warn(`[AdminController] Validation error updating API key: ${error.message}`);
+            return res.status(400).json({
+                error: 'Validation error',
+                details: error.details.map(d => d.message)
+            });
+        }
+
+        // Update API key using service
+        const updatedApiKey = await adminService.updateApiKey(apiKeyId, {
+            name: value.name,
+            workspace: value.workspace,
+            environment: value.environment
+        }, tenantId);
 
         return res.status(200).json(updatedApiKey);
     } catch (err: any) {
+        // Check for specific error types
+        if (err.message && err.message.includes('API key not found')) {
+            return res.status(404).json({ error: err.message });
+        }
+
         logger.error(`[AdminController] Error updating API key: ${err.message}`);
         return res.status(500).json({ error: 'Failed to update API key' });
     }
@@ -119,11 +142,25 @@ export async function updateApiKey(req: Request, res: Response): Promise<any> {
  */
 export async function deleteApiKey(req: Request, res: Response): Promise<any> {
     try {
-        const keyId = req.params.keyId;
+        const apiKeyId = req.params.keyId;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        // Mock deletion - would be replaced with actual service calls
+        // Validate parameters
+        if (!apiKeyId) {
+            return res.status(400).json({ error: 'API key ID is required' });
+        }
+
+        // Delete API key using service
+        await adminService.deleteApiKey(apiKeyId, tenantId);
+
         return res.status(204).send();
     } catch (err: any) {
+        // Check for specific error types
+        if (err.message && err.message.includes('API key not found')) {
+            return res.status(404).json({ error: err.message });
+        }
+
         logger.error(`[AdminController] Error deleting API key: ${err.message}`);
         return res.status(500).json({ error: 'Failed to delete API key' });
     }
@@ -163,6 +200,14 @@ export async function getProfile(req: Request, res: Response): Promise<any> {
 export async function updateProfile(req: Request, res: Response): Promise<any> {
     try {
         const { name, email, avatar, preferences } = req.body;
+
+        // Validate input data
+        if (!name || !email) {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: ['Name and email are required']
+            });
+        }
 
         // Mock data for now - would be replaced with actual service calls
         const updatedProfile = {
@@ -223,6 +268,11 @@ export async function getMemberById(req: Request, res: Response): Promise<any> {
     try {
         const memberId = req.params.memberId;
 
+        // Validate parameters
+        if (!memberId) {
+            return res.status(400).json({ error: 'Member ID is required' });
+        }
+
         // Mock data for now - would be replaced with actual service calls
         const member = {
             id: memberId,
@@ -247,6 +297,14 @@ export async function getMemberById(req: Request, res: Response): Promise<any> {
 export async function inviteMember(req: Request, res: Response): Promise<any> {
     try {
         const { email, role, workspaces } = req.body;
+
+        // Validate input data
+        if (!email || !role) {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: ['Email and role are required']
+            });
+        }
 
         // Mock data for now - would be replaced with actual service calls
         const invitation = {
@@ -274,6 +332,19 @@ export async function updateMember(req: Request, res: Response): Promise<any> {
         const memberId = req.params.memberId;
         const { name, email, role, status, workspaces } = req.body;
 
+        // Validate parameters
+        if (!memberId) {
+            return res.status(400).json({ error: 'Member ID is required' });
+        }
+
+        // Validate input data
+        if (!name || !email || !role || !status) {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: ['Name, email, role, and status are required']
+            });
+        }
+
         // Mock data for now - would be replaced with actual service calls
         const updatedMember = {
             id: memberId,
@@ -298,6 +369,11 @@ export async function updateMember(req: Request, res: Response): Promise<any> {
 export async function removeMember(req: Request, res: Response): Promise<any> {
     try {
         const memberId = req.params.memberId;
+
+        // Validate parameters
+        if (!memberId) {
+            return res.status(400).json({ error: 'Member ID is required' });
+        }
 
         // Mock deletion - would be replaced with actual service calls
         return res.status(204).send();
@@ -346,6 +422,11 @@ export async function getWorkspaceById(req: Request, res: Response): Promise<any
     try {
         const workspaceId = req.params.workspaceId;
 
+        // Validate parameters
+        if (!workspaceId) {
+            return res.status(400).json({ error: 'Workspace ID is required' });
+        }
+
         // Mock data for now - would be replaced with actual service calls
         const workspace = {
             id: workspaceId,
@@ -371,6 +452,14 @@ export async function getWorkspaceById(req: Request, res: Response): Promise<any
 export async function createWorkspace(req: Request, res: Response): Promise<any> {
     try {
         const { name, description } = req.body;
+
+        // Validate input data
+        if (!name) {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: ['Name is required']
+            });
+        }
 
         // Mock data for now - would be replaced with actual service calls
         const newWorkspace = {
@@ -398,6 +487,19 @@ export async function updateWorkspace(req: Request, res: Response): Promise<any>
         const workspaceId = req.params.workspaceId;
         const { name, description } = req.body;
 
+        // Validate parameters
+        if (!workspaceId) {
+            return res.status(400).json({ error: 'Workspace ID is required' });
+        }
+
+        // Validate input data
+        if (!name) {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: ['Name is required']
+            });
+        }
+
         // Mock data for now - would be replaced with actual service calls
         const updatedWorkspace = {
             id: workspaceId,
@@ -423,6 +525,11 @@ export async function updateWorkspace(req: Request, res: Response): Promise<any>
 export async function deleteWorkspace(req: Request, res: Response): Promise<any> {
     try {
         const workspaceId = req.params.workspaceId;
+
+        // Validate parameters
+        if (!workspaceId) {
+            return res.status(400).json({ error: 'Workspace ID is required' });
+        }
 
         // Mock deletion - would be replaced with actual service calls
         return res.status(204).send();
@@ -476,6 +583,14 @@ export async function updateBillingInfo(req: Request, res: Response): Promise<an
     try {
         const { paymentMethod, billingAddress } = req.body;
 
+        // Validate input data
+        if (!paymentMethod || !billingAddress) {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: ['Payment method and billing address are required']
+            });
+        }
+
         // Mock data for now - would be replaced with actual service calls
         const updatedBillingInfo = {
             plan: 'Pro',
@@ -528,6 +643,11 @@ export async function getInvoices(req: Request, res: Response): Promise<any> {
 export async function getInvoiceById(req: Request, res: Response): Promise<any> {
     try {
         const invoiceId = req.params.invoiceId;
+
+        // Validate parameters
+        if (!invoiceId) {
+            return res.status(400).json({ error: 'Invoice ID is required' });
+        }
 
         // Mock data for now - would be replaced with actual service calls
         const invoice = {
@@ -586,6 +706,14 @@ export async function updateLimits(req: Request, res: Response): Promise<any> {
     try {
         const { apiRateLimit, maxWorkspaces, maxMembers, maxStorage } = req.body;
 
+        // Validate input data
+        if (!apiRateLimit || !maxWorkspaces || !maxMembers || !maxStorage) {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: ['All limit parameters are required']
+            });
+        }
+
         // Mock data for now - would be replaced with actual service calls
         const updatedLimits = {
             apiRateLimit,
@@ -638,6 +766,15 @@ export async function getPrivacySettings(req: Request, res: Response): Promise<a
 export async function updatePrivacySettings(req: Request, res: Response): Promise<any> {
     try {
         const { dataRetention, dataSharingConsent, marketingEmails, twoFactorAuth } = req.body;
+
+        // Validate input data
+        if (dataRetention === undefined || dataSharingConsent === undefined ||
+            marketingEmails === undefined || twoFactorAuth === undefined) {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: ['All privacy settings are required']
+            });
+        }
 
         // Mock data for now - would be replaced with actual service calls
         const updatedPrivacySettings = {

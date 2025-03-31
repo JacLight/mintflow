@@ -1,0 +1,810 @@
+{
+  "info": {
+    "_postman_id": "b5e8d5a0-5f5e-4c5a-8b5a-5f5e4c5a8b5a",
+    "name": "MintFlow API Consolidated Tests",
+    "description": "Consolidated collection for testing MintFlow Admin and Metrics APIs. Tests are designed to run in sequence, with each test depending on the results of previous tests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Setup",
+      "description": "Initial setup required for all subsequent tests",
+      "item": [
+        {
+          "name": "Create Test Tenant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Test if the tenant was created successfully",
+                  "pm.test(\"Tenant created successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('tenantId');",
+                  "    pm.expect(jsonData.name).to.eql(\"TEST_TENANT\");",
+                  "});",
+                  "",
+                  "// Save the tenant ID for subsequent requests",
+                  "if (jsonData && jsonData.tenantId) {",
+                  "    pm.environment.set(\"tenantId\", jsonData.tenantId);",
+                  "    console.log(\"Tenant ID saved: \" + jsonData.tenantId);",
+                  "}",
+                  "",
+                  "// Set default values for other variables if they don't exist",
+                  "if (!pm.environment.get(\"baseUrl\")) {",
+                  "    pm.environment.set(\"baseUrl\", \"http://localhost:7001\");",
+                  "    console.log(\"Base URL set to default: http://localhost:7001\");",
+                  "}",
+                  "",
+                  "if (!pm.environment.get(\"period\")) {",
+                  "    pm.environment.set(\"period\", \"daily\");",
+                  "    console.log(\"Period set to default: daily\");",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"TEST_TENANT\",\n    \"email\": \"test_tenant@example.com\",\n    \"password\": \"TestPassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tenants",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tenants"]
+            },
+            "description": "Create a test tenant that will be used for all subsequent tests"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. API Keys",
+      "description": "API Key management endpoints",
+      "item": [
+        {
+          "name": "Create Test API Key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Test if the API key was created successfully",
+                  "pm.test(\"API key created successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('apiKeyId');",
+                  "    pm.expect(jsonData.name).to.eql(\"TEST_API_KEY\");",
+                  "});",
+                  "",
+                  "// Save the API key ID for subsequent requests",
+                  "if (jsonData && jsonData.apiKeyId) {",
+                  "    pm.environment.set(\"apiKeyId\", jsonData.apiKeyId);",
+                  "    console.log(\"API Key ID saved: \" + jsonData.apiKeyId);",
+                  "}",
+                  "",
+                  "// Save the full key if available (only returned on creation)",
+                  "if (jsonData && jsonData.fullKey) {",
+                  "    pm.environment.set(\"apiKeyFullValue\", jsonData.fullKey);",
+                  "    console.log(\"API Key full value saved\");",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"TEST_API_KEY\",\n    \"workspace\": \"Default\",\n    \"environment\": \"Development\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/api-keys?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "api-keys"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Create a test API key"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All API Keys",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the API keys were returned",
+                  "pm.test(\"API keys returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Test if our test API key is in the list",
+                  "pm.test(\"Test API key is in the list\", function () {",
+                  "    var apiKeyId = pm.environment.get(\"apiKeyId\");",
+                  "    var found = false;",
+                  "    ",
+                  "    if (jsonData && jsonData.length > 0) {",
+                  "        for (var i = 0; i < jsonData.length; i++) {",
+                  "            if (jsonData[i].apiKeyId === apiKeyId) {",
+                  "                found = true;",
+                  "                break;",
+                  "            }",
+                  "        }",
+                  "    }",
+                  "    ",
+                  "    pm.expect(found).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/api-keys?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "api-keys"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get all API keys for the tenant"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Admin Endpoints",
+      "description": "Admin endpoints for profile, members, workspaces, etc.",
+      "item": [
+        {
+          "name": "Get Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the profile was returned",
+                  "pm.test(\"Profile returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData).to.have.property('name');",
+                  "    pm.expect(jsonData).to.have.property('email');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/profile?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "profile"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get user profile"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Members",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the members were returned",
+                  "pm.test(\"Members returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/members?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "members"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get all team members"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Workspaces",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the workspaces were returned",
+                  "pm.test(\"Workspaces returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/workspaces?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "workspaces"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get all workspaces"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Billing Info",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the billing info was returned",
+                  "pm.test(\"Billing info returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('plan');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/billing?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "billing"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get billing information"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Limits",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the limits were returned",
+                  "pm.test(\"Limits returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('apiRateLimit');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/limits?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "limits"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get account limits"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Privacy Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the privacy settings were returned",
+                  "pm.test(\"Privacy settings returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('dataRetention');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/privacy?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "privacy"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get privacy settings"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Metrics API",
+      "description": "Metrics API endpoints",
+      "item": [
+        {
+          "name": "Create Test Usage Metrics",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Test if the usage metrics were created successfully",
+                  "pm.test(\"Usage metrics created successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('usageId');",
+                  "    pm.expect(jsonData.totalRequests).to.eql(100);",
+                  "});",
+                  "",
+                  "// Save the usage metrics ID for subsequent requests",
+                  "if (jsonData && jsonData.usageId) {",
+                  "    pm.environment.set(\"usageId\", jsonData.usageId);",
+                  "    console.log(\"Usage Metrics ID saved: \" + jsonData.usageId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"totalRequests\": 100,\n    \"totalTokens\": 5000,\n    \"requestsByModel\": {\n        \"claude-3-sonnet\": 70,\n        \"claude-3-haiku\": 30\n    },\n    \"tokensByModel\": {\n        \"claude-3-sonnet\": 4000,\n        \"claude-3-haiku\": 1000\n    },\n    \"period\": \"daily\",\n    \"date\": \"2025-03-31T00:00:00.000Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/metrics/usage?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "metrics", "usage"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Create test usage metrics"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Usage Stats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the usage stats were returned",
+                  "pm.test(\"Usage stats returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('totalRequests');",
+                  "    pm.expect(jsonData).to.have.property('totalTokens');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metrics/usage?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "metrics", "usage"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get overall usage statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Usage by Period",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the usage stats by period were returned",
+                  "pm.test(\"Usage stats by period returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('period');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metrics/usage/daily?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "metrics", "usage", "daily"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get usage statistics for a specific period (daily)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cost Stats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the cost stats were returned",
+                  "pm.test(\"Cost stats returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('totalCost');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metrics/cost?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "metrics", "cost"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get overall cost statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cost by Period",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the response",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test if the cost stats by period were returned",
+                  "pm.test(\"Cost stats by period returned successfully\", function () {",
+                  "    pm.expect(jsonData).to.have.property('period');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metrics/cost/daily?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "metrics", "cost", "daily"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Get cost statistics for a specific period (daily)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Cleanup",
+      "description": "Clean up test data",
+      "item": [
+        {
+          "name": "Delete API Key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 204 or 200\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/api-keys/{{apiKeyId}}?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "api-keys", "{{apiKeyId}}"],
+              "query": [
+                {
+                  "key": "tenantId",
+                  "value": "{{tenantId}}"
+                }
+              ]
+            },
+            "description": "Delete the test API key"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Test Tenant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Test if the request was successful",
+                  "pm.test(\"Status code is 204 or 200\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});",
+                  "",
+                  "// Clear environment variables",
+                  "pm.environment.unset(\"tenantId\");",
+                  "pm.environment.unset(\"apiKeyId\");",
+                  "pm.environment.unset(\"apiKeyFullValue\");",
+                  "pm.environment.unset(\"usageId\");"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tenants/{{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tenants", "{{tenantId}}"]
+            },
+            "description": "Delete the test tenant"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global pre-request script",
+          "console.log('Running test: ' + pm.info.requestName);"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script",
+          "console.log('Completed test: ' + pm.info.requestName);"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:7001",
+      "type": "string",
+      "description": "Base URL for the API"
+    }
+  ],
+  "auth": {
+    "type": "noauth"
+  }
+}
