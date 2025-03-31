@@ -1,7 +1,43 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Copy, Building, ChevronDown } from 'lucide-react';
+import { Profile as ProfileType } from '@/lib/admin-service';
 
-const OrganizationProfile = () => {
+interface OrganizationProfileProps {
+    initialProfile?: ProfileType;
+}
+
+const OrganizationProfile = ({ initialProfile }: OrganizationProfileProps) => {
+    const [profile, setProfile] = useState<ProfileType | null>(initialProfile || null);
+    const [isLoading, setIsLoading] = useState(!initialProfile);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        // If initialProfile is provided, we don't need to fetch data
+        if (initialProfile) {
+            return;
+        }
+
+        const fetchProfile = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch('/api/admin/profile');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile data');
+                }
+                const data = await response.json();
+                setProfile(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching profile data:', err);
+                setError('Failed to load profile data. Please try again later.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProfile();
+    }, [initialProfile]);
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Sidebar is assumed to be in a parent layout component */}

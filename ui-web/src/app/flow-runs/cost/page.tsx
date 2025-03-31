@@ -9,13 +9,16 @@ export const metadata: Metadata = {
 
 // This is a server component in Next.js App Router
 export default async function CostPage() {
-    // In a real implementation, we would fetch data from the API
-    // For now, the component will handle data fetching internally
+    try {
+        // Fetch cost data from the server
+        const costStats = await getCostStats();
+        const costByPeriod = await getCostByPeriod('daily');
 
-    // Example of how we could fetch data server-side:
-    // const costStats = await getCostStats();
-    // const costByPeriod = await getCostByPeriod('daily');
-    // return <Cost costStats={costStats} costByPeriod={costByPeriod} />;
-
-    return <Cost />;
+        return <Cost initialCostStats={costStats} initialCostByPeriod={costByPeriod} />;
+    } catch (error) {
+        console.error('Error fetching cost data:', error);
+        // If there's an error, render the component without initial data
+        // The component will handle showing an error state
+        return <Cost />;
+    }
 }

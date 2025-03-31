@@ -1,25 +1,38 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronLeft, ChevronRight, Download, Calendar } from 'lucide-react';
+import { CostStats, CostByPeriod } from '@/lib/metrics-service';
 
-const CostPage = () => {
+interface CostPageProps {
+    initialCostStats?: CostStats;
+    initialCostByPeriod?: CostByPeriod;
+}
+
+const CostPage = ({ initialCostStats, initialCostByPeriod }: CostPageProps) => {
     const [selectedMonth, setSelectedMonth] = useState('Mar 2025');
     const [selectedGroup, setSelectedGroup] = useState('None');
     const [selectedWorkspace, setSelectedWorkspace] = useState('All Workspaces');
     const [selectedApiKey, setSelectedApiKey] = useState('All API keys');
     const [selectedModel, setSelectedModel] = useState('All Models');
 
-    const [costData, setCostData] = useState({
+    const [costData, setCostData] = useState<CostStats>(initialCostStats || {
         totalCost: 0,
         costByModel: {},
         costByWorkspace: {}
     });
 
-    const [dailyCostData, setDailyCostData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [dailyCostData, setDailyCostData] = useState<any[]>(
+        initialCostByPeriod?.data || []
+    );
+    const [isLoading, setIsLoading] = useState(!initialCostStats);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        // If initialCostStats and initialCostByPeriod are provided, we don't need to fetch data
+        if (initialCostStats && initialCostByPeriod) {
+            return;
+        }
+
         const fetchCostData = async () => {
             try {
                 setIsLoading(true);
@@ -43,56 +56,23 @@ const CostPage = () => {
             } catch (err) {
                 console.error('Error fetching cost data:', err);
                 setError('Failed to load cost data. Please try again later.');
-                // Use mock data as fallback
-                setDailyCostData(mockDailyCosts);
+                setDailyCostData([]);
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchCostData();
-    }, []);
+    }, [initialCostStats, initialCostByPeriod]);
 
-    // Fallback mock data for the chart
-    const mockDailyCosts = [
-        { date: '01', cost: 98 },
-        { date: '02', cost: 105 },
-        { date: '03', cost: 75 },
-        { date: '04', cost: 25 },
-        { date: '05', cost: 65 },
-        { date: '06', cost: 5 },
-        { date: '07', cost: 70 },
-        { date: '08', cost: 15 },
-        { date: '09', cost: 20 },
-        { date: '10', cost: 25 },
-        { date: '11', cost: 15 },
-        { date: '12', cost: 45 },
-        { date: '13', cost: 75 },
-        { date: '14', cost: 140 },
-        { date: '15', cost: 45 },
-        { date: '16', cost: 40 },
-        { date: '17', cost: 95 },
-        { date: '18', cost: 35 },
-        { date: '19', cost: 70 },
-        { date: '20', cost: 50 },
-        { date: '21', cost: 15 },
-        { date: '22', cost: 75 },
-        { date: '23', cost: 15 },
-        { date: '24', cost: 40 },
-        { date: '25', cost: 105 },
-        { date: '26', cost: 60 },
-        { date: '27', cost: 30 },
-        { date: '28', cost: 5 },
-    ];
-
-    // Use real data if available, otherwise use mock data
-    const dailyCosts = dailyCostData.length > 0 ? dailyCostData : mockDailyCosts;
+    // Use real data if available, otherwise use empty array
+    const dailyCosts = dailyCostData.length > 0 ? dailyCostData : [];
 
     // Calculate the max cost for scaling
-    const maxCost = Math.max(...dailyCosts.map(day => day.cost));
+    const maxCost = Math.max(...(dailyCosts.length > 0 ? dailyCosts.map(day => day.cost) : [0]));
 
     // Calculate total cost (use API data if available)
-    const totalCost = isLoading ? 0 : (costData.totalCost || dailyCosts.reduce((sum, day) => sum + day.cost, 0));
+    const totalCost = isLoading ? 0 : (costData.totalCost || (dailyCosts.length > 0 ? dailyCosts.reduce((sum, day) => sum + day.cost, 0) : 0));
 
     return (
         <div className="bg-gray-50 min-h-screen">

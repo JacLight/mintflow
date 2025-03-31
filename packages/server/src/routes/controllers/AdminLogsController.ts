@@ -1,25 +1,8 @@
 import { Request, Response } from 'express';
 import { logger } from '@mintflow/common';
 import { LogService } from '../../services/LogService.js';
-import { LogValidator } from '../../models/validators/LogValidator.js';
 
 const logService = new LogService();
-
-/**
- * Create a new log entry.
- */
-export async function createLog(req: Request, res: Response): Promise<any> {
-    try {
-        const { error } = LogValidator.validate(req.body);
-        if (error) return res.status(400).json({ error: error.details[0].message });
-
-        const log = await logService.createLog(req.body);
-        return res.status(201).json(log);
-    } catch (err: any) {
-        logger.error(`[LogController] Error creating log: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to create log' });
-    }
-}
 
 /**
  * Get all logs with filtering, pagination, and sorting.
@@ -76,20 +59,47 @@ export async function getAllLogs(req: Request, res: Response): Promise<any> {
 
         return res.status(200).json(result);
     } catch (err: any) {
-        logger.error(`[LogController] Error fetching logs: ${err.message}`);
+        logger.error(`[AdminLogsController] Error fetching logs: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch logs' });
     }
 }
 
 /**
- * Get logs for a specific flow with filtering and pagination.
+ * Get log by ID.
  */
-export async function getLogsByFlow(req: Request, res: Response): Promise<any> {
+export async function getLogById(req: Request, res: Response): Promise<any> {
     try {
-        const { flowId } = req.params;
+        const logId = req.params.logId;
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
+        if (!logId) {
+            return res.status(400).json({ error: 'Log ID is required' });
+        }
+
+        // Get log by ID using the LogService
+        const logs = await logService.getAllLogs();
+        const log = logs.find(l => l.logId === logId && (!tenantId || l.tenantId === tenantId));
+
+        if (!log) {
+            return res.status(404).json({ error: 'Log not found' });
+        }
+
+        return res.status(200).json(log);
+
+    } catch (err: any) {
+        logger.error(`[AdminLogsController] Error fetching log: ${err.message}`);
+        return res.status(500).json({ error: 'Failed to fetch log' });
+    }
+}
+
+/**
+ * Get logs for a specific flow.
+ */
+export async function getFlowLogs(req: Request, res: Response): Promise<any> {
+    try {
         // Extract query parameters
         const {
+            flowId,
             type,
             startDate,
             endDate,
@@ -101,12 +111,16 @@ export async function getLogsByFlow(req: Request, res: Response): Promise<any> {
             tenantId = 'default_tenant'
         } = req.query as { [key: string]: string };
 
+        if (!flowId) {
+            return res.status(400).json({ error: 'Flow ID is required' });
+        }
+
         // Parse pagination parameters
         const pageNum = parseInt(page, 10);
         const limitNum = parseInt(limit, 10);
 
         // Build filter object
-        const filter: any = { flowId, tenantId };
+        const filter: any = { tenantId, flowId };
 
         if (type) filter.type = type;
 
@@ -136,8 +150,8 @@ export async function getLogsByFlow(req: Request, res: Response): Promise<any> {
 
         return res.status(200).json(result);
     } catch (err: any) {
-        logger.error(`[LogController] Error fetching logs for flow ${req.params.flowId}: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to fetch logs' });
+        logger.error(`[AdminLogsController] Error fetching flow logs: ${err.message}`);
+        return res.status(500).json({ error: 'Failed to fetch flow logs' });
     }
 }
 
@@ -193,7 +207,7 @@ export async function exportLogs(req: Request, res: Response): Promise<any> {
         // Default to JSON if format is not specified or not supported
         return res.status(200).json(logs);
     } catch (err: any) {
-        logger.error(`[LogController] Error exporting logs: ${err.message}`);
+        logger.error(`[AdminLogsController] Error exporting logs: ${err.message}`);
         return res.status(500).json({ error: 'Failed to export logs' });
     }
 }
@@ -210,22 +224,7 @@ export async function getRetentionPolicy(req: Request, res: Response): Promise<a
 
         return res.status(200).json(policy);
     } catch (err: any) {
-        logger.error(`[LogController] Error fetching retention policy: ${err.message}`);
+        logger.error(`[AdminLogsController] Error fetching retention policy: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch retention policy' });
-    }
-}
-
-/**
- * Delete a log entry.
- */
-export async function deleteLog(req: Request, res: Response): Promise<any> {
-    try {
-        const deletedLog = await logService.deleteLog(req.params.logId);
-        if (!deletedLog) return res.status(404).json({ error: 'Log not found' });
-
-        return res.status(200).json({ message: 'Log deleted successfully' });
-    } catch (err: any) {
-        logger.error(`[LogController] Error deleting log: ${err.message}`);
-        return res.status(500).json({ error: 'Failed to delete log' });
     }
 }

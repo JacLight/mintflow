@@ -9,12 +9,15 @@ export const metadata: Metadata = {
 
 // This is a server component in Next.js App Router
 export default async function MembersPage() {
-    // In a real implementation, we would fetch data from the API
-    // For now, the component will handle data fetching internally
+    try {
+        // Fetch members data from the server
+        const members = await getAllMembers();
 
-    // Example of how we could fetch data server-side:
-    // const members = await getAllMembers();
-    // return <Members initialMembers={members} />;
-
-    return <Members />;
+        return <Members initialMembers={members} />;
+    } catch (error) {
+        console.error('Error fetching members data:', error);
+        // If there's an error, render the component without initial data
+        // The component will handle showing an error state
+        return <Members />;
+    }
 }

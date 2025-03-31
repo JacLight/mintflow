@@ -13,6 +13,7 @@ import nodeRouter from './routes/nodeRoutes.js';
 import tenantRouter from './routes/tenantRoutes.js';
 import metricsRouter from './routes/metricsRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
+import executionsRouter from './routes/executionsRoutes.js';
 
 
 export async function createApp(): Promise<express.Express> {
@@ -45,6 +46,7 @@ export async function createApp(): Promise<express.Express> {
     app.use('/api/logs', logRouter);
     app.use('/api/metrics', metricsRouter);
     app.use('/api/admin', adminRouter);
+    app.use('/api/admin/executions', executionsRouter);
 
 
 

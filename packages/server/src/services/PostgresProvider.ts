@@ -40,8 +40,25 @@ export class PostgresProvider {
         return await model.create(data);
     }
 
-    async find(model: any, query: any = {}) {
-        return await model.findAll({ where: query });
+    async find(model: any, query: any = {}, options: any = {}) {
+        const { skip, limit, sort } = options;
+        const findOptions: any = { where: query };
+
+        if (skip !== undefined && limit !== undefined) {
+            findOptions.offset = skip;
+            findOptions.limit = limit;
+        } else if (limit !== undefined) {
+            findOptions.limit = limit;
+        }
+
+        if (sort !== undefined) {
+            findOptions.order = Object.entries(sort).map(([field, direction]) => [
+                field,
+                (direction as number) === 1 ? 'ASC' : 'DESC'
+            ]);
+        }
+
+        return await model.findAll(findOptions);
     }
 
     async findOne(model: any, query: any) {
@@ -79,5 +96,9 @@ export class PostgresProvider {
             return records;
         }
         return null;
+    }
+
+    async count(model: any, query: any = {}) {
+        return await model.count({ where: query });
     }
 }

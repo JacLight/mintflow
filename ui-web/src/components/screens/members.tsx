@@ -1,7 +1,54 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Plus, ChevronRight } from 'lucide-react';
+import { Member } from '@/lib/admin-service';
 
-const MembersComponent = () => {
+interface MembersComponentProps {
+    initialMembers?: Member[];
+}
+
+const MembersComponent = ({ initialMembers }: MembersComponentProps) => {
+    const [members, setMembers] = useState<Member[]>(initialMembers || []);
+    const [isLoading, setIsLoading] = useState(!initialMembers);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        // If initialMembers is provided, we don't need to fetch data
+        if (initialMembers) {
+            return;
+        }
+
+        const fetchMembers = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch('/api/admin/members');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch members data');
+                }
+                const data = await response.json();
+                setMembers(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching members data:', err);
+                setError('Failed to load members data. Please try again later.');
+                // Fallback to mock data
+                setMembers([
+                    {
+                        id: 'member_01',
+                        name: 'Jacob',
+                        email: 'imolewolede@gmail.com',
+                        role: 'Admin',
+                        status: 'active',
+                        joinedAt: '2025-01-15T10:30:00Z'
+                    }
+                ]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchMembers();
+    }, [initialMembers]);
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Sidebar is assumed to be in a parent layout component */}

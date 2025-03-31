@@ -1,18 +1,30 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Calendar, ChevronDown, Download, ChevronRight } from 'lucide-react';
+import { UsageStats, UsageByPeriod } from '@/lib/metrics-service';
 
-const UsageDashboard = () => {
-    const [usageData, setUsageData] = useState({
+interface UsageDashboardProps {
+    initialUsageStats?: UsageStats;
+    initialUsageByPeriod?: UsageByPeriod;
+}
+
+const UsageDashboard = ({ initialUsageStats, initialUsageByPeriod }: UsageDashboardProps) => {
+    const [usageData, setUsageData] = useState<UsageStats>(initialUsageStats || {
         totalRequests: 0,
         totalTokens: 0,
         requestsByModel: {},
         tokensByModel: {}
     });
-    const [isLoading, setIsLoading] = useState(true);
+    const [usageByPeriod, setUsageByPeriod] = useState<UsageByPeriod | null>(initialUsageByPeriod || null);
+    const [isLoading, setIsLoading] = useState(!initialUsageStats);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        // If initialUsageStats is provided, we don't need to fetch data
+        if (initialUsageStats && initialUsageByPeriod) {
+            return;
+        }
+
         const fetchUsageData = async () => {
             try {
                 setIsLoading(true);
@@ -22,6 +34,14 @@ const UsageDashboard = () => {
                 }
                 const data = await response.json();
                 setUsageData(data);
+
+                // Also fetch usage by period
+                const periodResponse = await fetch('/api/metrics/usage/daily');
+                if (periodResponse.ok) {
+                    const periodData = await periodResponse.json();
+                    setUsageByPeriod(periodData);
+                }
+
                 setError(null);
             } catch (err) {
                 console.error('Error fetching usage data:', err);
@@ -32,7 +52,7 @@ const UsageDashboard = () => {
         };
 
         fetchUsageData();
-    }, []);
+    }, [initialUsageStats, initialUsageByPeriod]);
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Left sidebar assumed to be included in a parent component */}

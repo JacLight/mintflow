@@ -13,16 +13,38 @@ import {
     Info
 } from 'lucide-react';
 
-const ApiKeysPage = () => {
+// Define the type for API key
+interface ApiKeyData {
+    id: string;
+    name: string;
+    prefix: string;
+    secret: string;
+    fullSecret: string;
+    created: string;
+    workspace: string;
+    environment: string;
+    lastUsed: string;
+}
+
+interface ApiKeysProps {
+    initialApiKeys?: ApiKeyData[];
+}
+
+const ApiKeysPage = ({ initialApiKeys }: ApiKeysProps) => {
     const [selectedTab, setSelectedTab] = useState('active');
     const [copiedId, setCopiedId] = useState(null);
     const [showSecret, setShowSecret] = useState({});
-    const [apiKeys, setApiKeys] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [apiKeys, setApiKeys] = useState<ApiKeyData[]>(initialApiKeys || []);
+    const [isLoading, setIsLoading] = useState(!initialApiKeys);
     const [error, setError] = useState(null);
     const [newKeyData, setNewKeyData] = useState(null);
 
     useEffect(() => {
+        // If initialApiKeys is provided, we don't need to fetch data
+        if (initialApiKeys) {
+            return;
+        }
+
         const fetchApiKeys = async () => {
             try {
                 setIsLoading(true);
@@ -44,49 +66,14 @@ const ApiKeysPage = () => {
             } catch (err) {
                 console.error('Error fetching API keys:', err);
                 setError('Failed to load API keys. Please try again later.');
-                // Fallback to mock data
-                setApiKeys([
-                    {
-                        id: 'key_01',
-                        name: 'Production API Key',
-                        prefix: 'sk_123456',
-                        secret: '••••••••••••••••',
-                        fullSecret: 'sk_1234567890abcdefghij',
-                        created: '2025-02-15T14:32:00Z',
-                        workspace: 'Default',
-                        environment: 'Production',
-                        lastUsed: '2025-03-28T09:47:12Z'
-                    },
-                    {
-                        id: 'key_02',
-                        name: 'Development API Key',
-                        prefix: 'sk_789012',
-                        secret: '••••••••••••••••',
-                        fullSecret: 'sk_7890123456abcdefghij',
-                        created: '2025-03-10T11:23:18Z',
-                        workspace: 'Claude Code',
-                        environment: 'Development',
-                        lastUsed: '2025-03-27T18:33:05Z'
-                    },
-                    {
-                        id: 'key_03',
-                        name: 'Testing API Key',
-                        prefix: 'sk_345678',
-                        secret: '••••••••••••••••',
-                        fullSecret: 'sk_3456789012abcdefghij',
-                        created: '2025-03-21T09:15:47Z',
-                        workspace: 'Default',
-                        environment: 'Development',
-                        lastUsed: '2025-03-28T11:22:36Z'
-                    }
-                ]);
+                setApiKeys([]);
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchApiKeys();
-    }, []);
+    }, [initialApiKeys]);
 
     // Handle creating a new API key
     const handleCreateApiKey = async () => {

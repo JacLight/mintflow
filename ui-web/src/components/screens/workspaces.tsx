@@ -1,12 +1,63 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import {
     Plus,
     ChevronRight,
     Info,
     MoreVertical
 } from 'lucide-react';
+import { Workspace } from '@/lib/admin-service';
 
-const WorkspacesPage = () => {
+interface WorkspacesPageProps {
+    initialWorkspaces?: Workspace[];
+}
+
+const WorkspacesPage = ({ initialWorkspaces }: WorkspacesPageProps) => {
+    const [workspaces, setWorkspaces] = useState<Workspace[]>(initialWorkspaces || []);
+    const [isLoading, setIsLoading] = useState(!initialWorkspaces);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        // If initialWorkspaces is provided, we don't need to fetch data
+        if (initialWorkspaces) {
+            return;
+        }
+
+        const fetchWorkspaces = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch('/api/admin/workspaces');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch workspaces data');
+                }
+                const data = await response.json();
+                setWorkspaces(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching workspaces data:', err);
+                setError('Failed to load workspaces data. Please try again later.');
+                // Fallback to mock data
+                setWorkspaces([
+                    {
+                        id: 'workspace_01',
+                        name: 'Default',
+                        createdAt: '',
+                        memberCount: 1
+                    },
+                    {
+                        id: 'workspace_02',
+                        name: 'Claude Code',
+                        createdAt: '2025-02-26T16:39:00Z',
+                        memberCount: 2
+                    }
+                ]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchWorkspaces();
+    }, [initialWorkspaces]);
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Left sidebar assumed to be included in a parent component */}

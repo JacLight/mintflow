@@ -37,8 +37,8 @@ export class DatabaseService {
         return await this.retryOperation(DatabaseService.getInstance().create, collection, data);
     }
 
-    async find(collection: string, query: any = {}) {
-        return await this.retryOperation(DatabaseService.getInstance().find, collection, query);
+    async find(collection: string, query: any = {}, options: any = {}) {
+        return await this.retryOperation(DatabaseService.getInstance().find, collection, query, options);
     }
 
     async findOne(collection: string, query: any) {
@@ -55,5 +55,9 @@ export class DatabaseService {
 
     async deleteMany(collection: string, query: any) {
         return await this.retryOperation(DatabaseService.getInstance().deleteMany, collection, query);
+    }
+
+    async count(collection: string, query: any = {}) {
+        return await this.retryOperation(DatabaseService.getInstance().count, collection, query);
     }
 }

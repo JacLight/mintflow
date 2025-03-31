@@ -9,12 +9,15 @@ export const metadata: Metadata = {
 
 // This is a server component in Next.js App Router
 export default async function ProfilePage() {
-    // In a real implementation, we would fetch data from the API
-    // For now, the component will handle data fetching internally
+    try {
+        // Fetch profile data from the server
+        const profile = await getProfile();
 
-    // Example of how we could fetch data server-side:
-    // const profile = await getProfile();
-    // return <Profile initialProfile={profile} />;
-
-    return <Profile />;
+        return <Profile initialProfile={profile} />;
+    } catch (error) {
+        console.error('Error fetching profile data:', error);
+        // If there's an error, render the component without initial data
+        // The component will handle showing an error state
+        return <Profile />;
+    }
 }

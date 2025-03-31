@@ -28,9 +28,25 @@ export class MongoProvider {
         return await Model.create(data);
     }
 
-    async find(collection: string, query: any = {}) {
+    async find(collection: string, query: any = {}, options: any = {}) {
         const Model = mongoose.model(collection);
-        return await Model.find(query);
+        const { skip, limit, sort } = options;
+
+        let findQuery = Model.find(query);
+
+        if (skip !== undefined) {
+            findQuery = findQuery.skip(skip);
+        }
+
+        if (limit !== undefined) {
+            findQuery = findQuery.limit(limit);
+        }
+
+        if (sort !== undefined) {
+            findQuery = findQuery.sort(sort);
+        }
+
+        return await findQuery.exec();
     }
 
     async findOne(collection: string, query: any) {
@@ -57,5 +73,10 @@ export class MongoProvider {
     async deleteMany(collection: string, query: any) {
         const Model = mongoose.model(collection);
         return await Model.deleteMany(query);
+    }
+
+    async count(collection: string, query: any = {}) {
+        const Model = mongoose.model(collection);
+        return await Model.countDocuments(query);
     }
 }

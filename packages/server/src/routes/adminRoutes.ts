@@ -40,6 +40,15 @@ import {
     updatePrivacySettings
 } from './controllers/AdminController.js';
 
+// Import log controller
+import {
+    getAllLogs,
+    getLogById,
+    getFlowLogs,
+    exportLogs,
+    getRetentionPolicy
+} from './controllers/AdminLogsController.js';
+
 const adminRouter: Router = express.Router();
 
 // API Keys routes
@@ -80,5 +89,12 @@ adminRouter.put('/limits', updateLimits);
 // Privacy routes
 adminRouter.get('/privacy', getPrivacySettings);
 adminRouter.put('/privacy', updatePrivacySettings);
+
+// Logs routes
+adminRouter.get('/logs', getAllLogs);
+adminRouter.get('/logs/flow', getFlowLogs);
+adminRouter.get('/logs/export', exportLogs);
+adminRouter.get('/logs/retention', getRetentionPolicy);
+adminRouter.get('/logs/:logId', getLogById);
 
 export default adminRouter;

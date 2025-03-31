@@ -9,13 +9,16 @@ export const metadata: Metadata = {
 
 // This is a server component in Next.js App Router
 export default async function UsagePage() {
-    // In a real implementation, we would fetch data from the API
-    // For now, the component will handle data fetching internally
+    try {
+        // Fetch usage data from the server
+        const usageStats = await getUsageStats();
+        const usageByPeriod = await getUsageByPeriod('daily');
 
-    // Example of how we could fetch data server-side:
-    // const usageStats = await getUsageStats();
-    // const usageByPeriod = await getUsageByPeriod('daily');
-    // return <Usage usageStats={usageStats} usageByPeriod={usageByPeriod} />;
-
-    return <Usage />;
+        return <Usage initialUsageStats={usageStats} initialUsageByPeriod={usageByPeriod} />;
+    } catch (error) {
+        console.error('Error fetching usage data:', error);
+        // If there's an error, render the component without initial data
+        // The component will handle showing an error state
+        return <Usage />;
+    }
 }

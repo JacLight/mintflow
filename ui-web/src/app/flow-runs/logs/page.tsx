@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Logs from '@/components/screens/logs';
+import { getLogs, getLogRetentionPolicy } from '@/lib/logs-service';
 
 export const metadata: Metadata = {
     title: 'Logs | MintFlow',
@@ -8,8 +9,17 @@ export const metadata: Metadata = {
 
 // This is a server component in Next.js App Router
 export default async function LogsPage() {
-    // In a real implementation, we would fetch data from the API
-    // For now, the component will handle data fetching internally
+    try {
+        // Fetch logs data from the server
+        const logsData = await getLogs({ page: 1, limit: 20 });
+        const retentionPolicy = await getLogRetentionPolicy();
 
-    return <Logs />;
+        // Pass the data to the client component
+        return <Logs initialLogs={logsData} initialRetentionPolicy={retentionPolicy} />;
+    } catch (error) {
+        console.error('Error fetching logs data:', error);
+        // If there's an error, render the component without initial data
+        // The component will handle showing an error state
+        return <Logs />;
+    }
 }

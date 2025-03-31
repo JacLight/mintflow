@@ -1,7 +1,56 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Info, ExternalLink } from 'lucide-react';
+import { Limits } from '@/lib/admin-service';
 
-const RateLimits = () => {
+interface RateLimitsProps {
+    initialLimits?: Limits;
+}
+
+const RateLimits = ({ initialLimits }: RateLimitsProps) => {
+    const [limits, setLimits] = useState<Limits | null>(initialLimits || null);
+    const [isLoading, setIsLoading] = useState(!initialLimits);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        // If initialLimits is provided, we don't need to fetch data
+        if (initialLimits) {
+            return;
+        }
+
+        const fetchLimits = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch('/api/admin/limits');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch limits data');
+                }
+                const data = await response.json();
+                setLimits(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching limits data:', err);
+                setError('Failed to load limits data. Please try again later.');
+                // Fallback to mock data
+                setLimits({
+                    apiRateLimit: 4000,
+                    maxWorkspaces: 10,
+                    maxMembers: 25,
+                    maxStorage: 100,
+                    currentUsage: {
+                        apiCalls: 1534,
+                        workspaces: 2,
+                        members: 5,
+                        storage: 25
+                    }
+                });
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchLimits();
+    }, [initialLimits]);
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Sidebar is assumed to be in a parent layout component */}

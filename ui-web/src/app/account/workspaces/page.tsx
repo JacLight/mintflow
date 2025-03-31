@@ -9,12 +9,15 @@ export const metadata: Metadata = {
 
 // This is a server component in Next.js App Router
 export default async function WorkspacesPage() {
-    // In a real implementation, we would fetch data from the API
-    // For now, the component will handle data fetching internally
+    try {
+        // Fetch workspaces data from the server
+        const workspaces = await getAllWorkspaces();
 
-    // Example of how we could fetch data server-side:
-    // const workspaces = await getAllWorkspaces();
-    // return <Workspaces initialWorkspaces={workspaces} />;
-
-    return <Workspaces />;
+        return <Workspaces initialWorkspaces={workspaces} />;
+    } catch (error) {
+        console.error('Error fetching workspaces data:', error);
+        // If there's an error, render the component without initial data
+        // The component will handle showing an error state
+        return <Workspaces />;
+    }
 }

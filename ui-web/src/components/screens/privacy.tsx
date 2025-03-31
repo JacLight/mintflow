@@ -1,7 +1,53 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { ExternalLink, Info } from 'lucide-react';
+import { PrivacySettings } from '@/lib/admin-service';
 
-const PrivacyControls = () => {
+interface PrivacyControlsProps {
+    initialSettings?: PrivacySettings;
+}
+
+const PrivacyControls = ({ initialSettings }: PrivacyControlsProps) => {
+    const [settings, setSettings] = useState<PrivacySettings | null>(initialSettings || null);
+    const [isLoading, setIsLoading] = useState(!initialSettings);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        // If initialSettings is provided, we don't need to fetch data
+        if (initialSettings) {
+            return;
+        }
+
+        const fetchPrivacySettings = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch('/api/admin/privacy');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch privacy settings');
+                }
+                const data = await response.json();
+                setSettings(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching privacy settings:', err);
+                setError('Failed to load privacy settings. Please try again later.');
+                // Fallback to mock data
+                setSettings({
+                    dataRetention: {
+                        logs: 30,
+                        analytics: 90
+                    },
+                    dataSharingConsent: false,
+                    marketingEmails: true,
+                    twoFactorAuth: false
+                });
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchPrivacySettings();
+    }, [initialSettings]);
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Sidebar is assumed to be in a parent layout component */}
