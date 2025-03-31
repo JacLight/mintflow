@@ -4,13 +4,14 @@ export const sidebarLinks = {
     "siteTree": [
         {
             "name": "welcome",
-            "label": "App Root",
+            "label": "Start Here",
             "icon": "Home",
-            "children": [
-                { "name": "dashboard", "label": "Dashboard", "icon": "BarChart2" },
-                { "name": "active-flows", "label": "Active Flows", "icon": "Activities" },
-                { "name": "schdules", "label": "Schedules", "icon": "CalendarSync" },
-            ]
+            // "children": [
+            //     { "name": "welcome-dashboard", "label": "Welcome", "icon": "Home" },
+            //     { "name": "active-flows", "label": "Active Flows", "icon": "Activities" },
+            //     { "name": "schedules", "label": "Schedules", "icon": "CalendarSync" },
+            //     { "name": "template", "label": "Templates", "icon": "Desktop" },
+            // ]
         },
         {
             "name": "designer",

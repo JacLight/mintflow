@@ -114,6 +114,9 @@ const SideNav = ({ }) => {
         }
     }
 
+    const Level1Click = (item) => {
+    }
+
     // Only show menus based on active state, not hover state
     const displayL1 = activeL1;
     const displayL2 = activeL2;

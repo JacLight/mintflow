@@ -1,10 +1,10 @@
 import MainLayout from '@/components/layout/main-layout';
-import WelcomeMintflow from '@/components/screens/welcome-build-studio';
+import WelcomeDashboard from '@/components/screens/welcome-dashboard';
 
 export default function WorkflowLayout() {
   return (
     <MainLayout>
-      <WelcomeMintflow />
+      <WelcomeDashboard />
     </MainLayout>
   );
 }
