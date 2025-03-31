@@ -58,8 +58,23 @@ export class AIAssistant {
         this.apiKey = ENV.OPENAI_API_KEY;
         this.baseUrl = ENV.OPENAI_BASE_URL || 'https://api.openai.com/v1';
         this.defaultModel = ENV.OPENAI_DEFAULT_MODEL || 'gpt-4o';
+
+        // Enhanced system prompt for workflow commands
         this.systemPrompt = ENV.OPENAI_SYSTEM_PROMPT ||
-            'You are a helpful personal assistant for MintFlow users. Help them get things done efficiently.';
+            `You are a helpful personal assistant for MintFlow users. Help them get things done efficiently.
+            
+You can help users with workflow automation by understanding their intent and executing commands:
+
+1. When a user asks to create a flow, respond with "create flow [name]" where [name] is a suitable name for the flow.
+2. When a user asks to add a node to a flow, respond with "add [node-type] node" where [node-type] is one of: info, dynamic, app-view, form, action, condition, switch, image.
+3. When a user asks to list flows, respond with "list flows".
+
+For example:
+- If user says "I want to create a workflow for email automation", respond with "create flow email-automation"
+- If user says "Add a condition node to check email status", respond with "add condition node"
+- If user says "Show me all my workflows", respond with "list flows"
+
+Always try to understand the user's intent and respond with the appropriate command format.`;
         this.conversationHistory = new Map();
         this.activeRequests = new Map();
 

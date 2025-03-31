@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useCallback, useRef, DragEvent } from 'react';
+import { useState, useCallback, useRef, DragEvent, useEffect } from 'react';
 import { DataList } from "../common/data-list";
 import { ConsolePanel } from '../console';
+import WorkflowService from '@/lib/workflow-service';
 import {
     ReactFlow,
     Background,
@@ -154,6 +155,45 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
     const [showLoadDialog, setShowLoadDialog] = useState<boolean>(false);
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const reactFlowInstance = useReactFlow();
+
+    // Register the workflow instance with the WorkflowService
+    useEffect(() => {
+        if (reactFlowInstance) {
+            // Create a workflow instance API for the WorkflowService
+            const workflowInstance = {
+                addNode: (type: string, nodeId: string, position = { x: 250, y: 250 }) => {
+                    try {
+                        const nodeInfo = componentTypes.find((c: any) => c.id.toLowerCase() === nodeId.toLowerCase());
+                        const nodeData = getNodeDefaultData(type, nodeId);
+
+                        const newNode: Node = {
+                            id: nodeId,
+                            type,
+                            position,
+                            data: { nodeId, ...nodeData, nodeInfo }
+                        };
+
+                        // Add the new node to the flow
+                        setNodes((nds) => nds.concat(newNode));
+                        return newNode;
+                    } catch (error) {
+                        console.error('Error adding node:', error);
+                        return null;
+                    }
+                },
+                getNodes: () => reactFlowInstance.getNodes(),
+                getEdges: () => reactFlowInstance.getEdges()
+            };
+
+            // Register the workflow instance
+            WorkflowService.registerWorkflowInstance(workflowInstance);
+
+            return () => {
+                // Unregister the workflow instance when the component unmounts
+                WorkflowService.registerWorkflowInstance(null);
+            };
+        }
+    }, [reactFlowInstance]);
 
     // Track selected elements
     useOnSelectionChange({

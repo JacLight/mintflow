@@ -55,12 +55,6 @@ export const sidebarLinks = {
             ]
         },
         {
-            "name": "ai-assistant",
-            "label": "AI Assistant",
-            "icon": "Bot",
-            "view": 'primary'
-        },
-        {
             "name": "trash",
             "label": "Trash",
             "icon": "Trash",
@@ -93,5 +87,4 @@ export const sidebarLinks = {
             },
         }
     ]
-
 }

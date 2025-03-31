@@ -3,6 +3,7 @@ import { logger } from '@mintflow/common';
 import { INamespaceHandler, AIEventTypes } from '../types/socket.types.js';
 import { socketAuthMiddleware, socketTenantMiddleware } from '../middleware/auth.js';
 import { aiAssistant } from '../../services/AIAssistant.js';
+import { workflowService } from '../../services/WorkflowService.js';
 
 /**
  * Socket.IO namespace for AI server communication
@@ -190,12 +191,173 @@ export class AINamespace implements INamespaceHandler {
                     // For non-streaming responses
                     const response = await aiAssistant.processMessage(userId, prompt, model);
 
-                    socket.emit(AIEventTypes.AI_RESPONSE, {
-                        requestId,
-                        response,
-                        model: model || 'default',
-                        timestamp: new Date()
-                    });
+                    // Check if the response contains a command
+                    const commandPatterns = [
+                        // Create flow command
+                        {
+                            regex: /create\s+flow\s+([a-zA-Z0-9_-]+)/i,
+                            command: 'create_flow',
+                            paramsExtractor: (matches: RegExpMatchArray) => ({ name: matches[1] })
+                        },
+                        // Add node command
+                        {
+                            regex: /add\s+([a-zA-Z0-9_-]+)\s+node/i,
+                            command: 'add_node',
+                            paramsExtractor: (matches: RegExpMatchArray) => ({ nodeType: matches[1] })
+                        },
+                        // List flows command
+                        {
+                            regex: /list\s+flows/i,
+                            command: 'list_flows',
+                            paramsExtractor: () => ({})
+                        }
+                    ];
+
+                    // Check if the response contains a command
+                    let isCommand = false;
+                    let commandData: { command: string; params: any } | null = null;
+
+                    for (const pattern of commandPatterns) {
+                        const matches = response.match(pattern.regex);
+                        if (matches) {
+                            isCommand = true;
+                            commandData = {
+                                command: pattern.command,
+                                params: pattern.paramsExtractor(matches)
+                            };
+                            break;
+                        }
+                    }
+
+                    if (isCommand && commandData !== null) {
+                        logger.info(`[Socket:AI] Detected command in response`, {
+                            requestId,
+                            command: commandData.command
+                        });
+
+                        // Execute the command
+                        let result;
+                        switch (commandData.command) {
+                            case 'add_node':
+                                // Get parameters
+                                const nodeType = commandData.params.nodeType || 'info';
+                                const nodeId = `node-${Date.now()}`;
+                                const flowId = commandData.params.flowId || 'default-flow';
+
+                                try {
+                                    // Use the WorkflowService to add the node
+                                    const node = workflowService.addNode(flowId, nodeType, nodeId);
+
+                                    result = {
+                                        success: true,
+                                        nodeId,
+                                        nodeType,
+                                        flowId,
+                                        node
+                                    };
+
+                                    logger.info(`[Socket:AI] Node added to flow`, {
+                                        nodeId,
+                                        nodeType,
+                                        flowId
+                                    });
+                                } catch (error: any) {
+                                    result = {
+                                        success: false,
+                                        error: error.message,
+                                        nodeType,
+                                        flowId
+                                    };
+
+                                    logger.error(`[Socket:AI] Error adding node to flow`, {
+                                        error: error.message,
+                                        nodeType,
+                                        flowId
+                                    });
+                                }
+                                break;
+
+                            case 'create_flow':
+                                // Get parameters
+                                const flowName = commandData.params.name || 'New Flow';
+
+                                try {
+                                    // Use the WorkflowService to create the flow
+                                    const flow = workflowService.createFlow(flowName);
+
+                                    result = {
+                                        success: true,
+                                        flowId: flow.id,
+                                        name: flow.name,
+                                        flow
+                                    };
+
+                                    logger.info(`[Socket:AI] Flow created`, {
+                                        flowId: flow.id,
+                                        name: flow.name
+                                    });
+                                } catch (error: any) {
+                                    result = {
+                                        success: false,
+                                        error: error.message,
+                                        name: flowName
+                                    };
+
+                                    logger.error(`[Socket:AI] Error creating flow`, {
+                                        error: error.message,
+                                        name: flowName
+                                    });
+                                }
+                                break;
+
+                            case 'list_flows':
+                                try {
+                                    // Use the WorkflowService to get all flows
+                                    const flows = workflowService.getFlows();
+
+                                    result = {
+                                        success: true,
+                                        flows
+                                    };
+
+                                    logger.info(`[Socket:AI] Listed flows`, {
+                                        count: flows.length
+                                    });
+                                } catch (error: any) {
+                                    result = {
+                                        success: false,
+                                        error: error.message
+                                    };
+
+                                    logger.error(`[Socket:AI] Error listing flows`, {
+                                        error: error.message
+                                    });
+                                }
+                                break;
+
+                            default:
+                                result = {
+                                    success: false,
+                                    error: `Unknown command: ${commandData.command}`
+                                };
+                        }
+
+                        // Send the command result
+                        socket.emit(AIEventTypes.AI_COMMAND_RESULT, {
+                            requestId,
+                            command: commandData.command,
+                            result,
+                            timestamp: new Date()
+                        });
+                    } else {
+                        // Send the regular response
+                        socket.emit(AIEventTypes.AI_RESPONSE, {
+                            requestId,
+                            response,
+                            model: model || 'default',
+                            timestamp: new Date()
+                        });
+                    }
 
                     logger.info(`[Socket:AI] Sent response`, { requestId });
                 }
@@ -287,6 +449,160 @@ export class AINamespace implements INamespaceHandler {
             } catch (error: any) {
                 logger.error('[Socket:AI] Error cancelling stream', { error: error.message });
                 socket.emit('error', { message: 'Failed to cancel stream' });
+            }
+        });
+
+        // Handle AI command execution
+        socket.on(AIEventTypes.AI_COMMAND, async (data) => {
+            try {
+                const { command, params, requestId } = data;
+
+                if (!command || !requestId) {
+                    socket.emit('error', { message: 'Missing required parameters' });
+                    return;
+                }
+
+                // Get user ID from socket (or use socket ID if not available)
+                const userId = (socket as any).user?.id || socket.id;
+
+                logger.info(`[Socket:AI] Received command execution request`, {
+                    requestId,
+                    userId,
+                    command,
+                    params
+                });
+
+                // Execute the command
+                let result;
+                switch (command) {
+                    case 'add_node':
+                        // Get parameters
+                        const nodeType = params.nodeType || 'info';
+                        const nodeId = `node-${Date.now()}`;
+                        const flowId = params.flowId || 'default-flow';
+
+                        try {
+                            // Use the WorkflowService to add the node
+                            const node = workflowService.addNode(flowId, nodeType, nodeId);
+
+                            result = {
+                                success: true,
+                                nodeId,
+                                nodeType,
+                                flowId,
+                                node
+                            };
+
+                            logger.info(`[Socket:AI] Node added to flow`, {
+                                nodeId,
+                                nodeType,
+                                flowId
+                            });
+                        } catch (error: any) {
+                            result = {
+                                success: false,
+                                error: error.message,
+                                nodeType,
+                                flowId
+                            };
+
+                            logger.error(`[Socket:AI] Error adding node to flow`, {
+                                error: error.message,
+                                nodeType,
+                                flowId
+                            });
+                        }
+                        break;
+
+                    case 'create_flow':
+                        // Get parameters
+                        const flowName = params.name || 'New Flow';
+
+                        try {
+                            // Use the WorkflowService to create the flow
+                            const flow = workflowService.createFlow(flowName);
+
+                            result = {
+                                success: true,
+                                flowId: flow.id,
+                                name: flow.name,
+                                flow
+                            };
+
+                            logger.info(`[Socket:AI] Flow created`, {
+                                flowId: flow.id,
+                                name: flow.name
+                            });
+                        } catch (error: any) {
+                            result = {
+                                success: false,
+                                error: error.message,
+                                name: flowName
+                            };
+
+                            logger.error(`[Socket:AI] Error creating flow`, {
+                                error: error.message,
+                                name: flowName
+                            });
+                        }
+                        break;
+
+                    case 'list_flows':
+                        try {
+                            // Use the WorkflowService to get all flows
+                            const flows = workflowService.getFlows();
+
+                            result = {
+                                success: true,
+                                flows
+                            };
+
+                            logger.info(`[Socket:AI] Listed flows`, {
+                                count: flows.length
+                            });
+                        } catch (error: any) {
+                            result = {
+                                success: false,
+                                error: error.message
+                            };
+
+                            logger.error(`[Socket:AI] Error listing flows`, {
+                                error: error.message
+                            });
+                        }
+                        break;
+
+                    default:
+                        result = {
+                            success: false,
+                            error: `Unknown command: ${command}`
+                        };
+                }
+
+                // Send the command result
+                socket.emit(AIEventTypes.AI_COMMAND_RESULT, {
+                    requestId,
+                    command,
+                    result,
+                    timestamp: new Date()
+                });
+
+                logger.info(`[Socket:AI] Command executed`, {
+                    requestId,
+                    command,
+                    success: result.success
+                });
+            } catch (error: any) {
+                logger.error('[Socket:AI] Error executing command', {
+                    error: error.message,
+                    stack: error.stack?.split('\n').slice(0, 3).join('\n')
+                });
+
+                socket.emit(AIEventTypes.AI_ERROR, {
+                    requestId: data?.requestId,
+                    error: `Error executing command: ${error.message}`,
+                    timestamp: new Date()
+                });
             }
         });
     }

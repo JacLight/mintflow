@@ -1,172 +1,109 @@
-# Personal AI Assistant for MintFlow
+# AI Assistant Integration for MintFlow
 
-This module provides a personal AI assistant service for MintFlow users. It connects directly to OpenAI's API to provide intelligent assistance for getting things done.
-
-## Features
-
-- Real-time AI assistance through Socket.IO
-- Conversation history management
-- Support for streaming responses
-- Configurable system prompt and model
+This document describes the AI Assistant integration for MintFlow, which provides a personal AI assistant that helps users with workflow automation.
 
 ## Architecture
 
-The AI Assistant implementation consists of two main components:
+The AI Assistant integration consists of the following components:
 
-1. **AIAssistant Service**: A dedicated service that handles communication with OpenAI's API and manages conversation history.
-2. **AINamespace**: A Socket.IO namespace that provides real-time communication with clients.
+1. **AIAssistant Service**: A server-side service that handles communication with the OpenAI API and maintains conversation history.
+2. **Socket.IO Namespace**: A dedicated namespace for real-time communication between the client and server.
+3. **WorkflowService**: A service that manages workflows and provides methods for adding nodes, creating flows, etc.
+4. **Client-Side Components**: React components for the chat interface.
+
+## Server-Side Implementation
+
+### AIAssistant Service
+
+The `AIAssistant` class provides methods for processing user messages and generating responses. It maintains conversation history for each user and handles streaming responses.
+
+Key features:
+
+- Conversation history management
+- Streaming responses
+- Error handling
+- Command detection and execution
+
+### Socket.IO Namespace
+
+The `AINamespace` class handles real-time communication between the client and server. It registers event handlers for:
+
+- AI requests
+- Command execution
+- Conversation history clearing
+- Stream cancellation
+
+### WorkflowService
+
+The `WorkflowService` class provides methods for managing workflows:
+
+- Adding nodes to flows
+- Creating new flows
+- Listing flows
+
+## Client-Side Implementation
+
+The client-side implementation consists of:
+
+- `AIChat` component: Provides the chat interface
+- `WorkflowService`: Client-side service for interacting with the workflow designer
+
+## Command Handling
+
+The AI Assistant can understand and execute the following commands:
+
+1. **Create Flow**: `create flow [name]`
+   - Creates a new flow with the specified name
+
+2. **Add Node**: `add [node-type] node`
+   - Adds a node of the specified type to the active flow
+   - Supported node types: info, dynamic, app-view, form, action, condition, switch, image
+
+3. **List Flows**: `list flows`
+   - Lists all available flows
 
 ## Configuration
 
-The AI Assistant can be configured through environment variables:
+The AI Assistant is configured through environment variables:
 
 ```
+# OpenAI API Configuration
 OPENAI_API_KEY=your_openai_api_key
 OPENAI_BASE_URL=https://api.openai.com/v1
 OPENAI_DEFAULT_MODEL=gpt-4o
-OPENAI_SYSTEM_PROMPT=You are a helpful personal assistant for MintFlow users. Help them get things done efficiently.
+OPENAI_SYSTEM_PROMPT=custom_system_prompt
 ```
 
 ## Usage
 
-### Server-Side
+Users can interact with the AI Assistant through the chat interface. They can:
 
-The AIAssistant service is implemented as a singleton and can be imported and used in any part of the server:
+1. Ask questions
+2. Request to create flows
+3. Request to add nodes to flows
+4. Request to list flows
 
-```typescript
-import { aiAssistant } from '../services/AIAssistant.js';
-
-// Process a message
-const response = await aiAssistant.processMessage(userId, userMessage, model);
-
-// Process a message with streaming
-await aiAssistant.processMessageStream(
-  userId,
-  userMessage,
-  (chunk) => {
-    // Handle each chunk
-    console.log(chunk.text);
-    if (chunk.isComplete) {
-      console.log('Stream complete');
-    }
-  },
-  model
-);
-
-// Clear conversation history
-aiAssistant.clearConversationHistory(userId);
-```
-
-### Client-Side
-
-Clients can interact with the AI Assistant through the Socket.IO `/ai` namespace:
-
-```javascript
-// Connect to the AI namespace
-const aiSocket = io(`${SERVER_URL}/ai`, {
-  auth: {
-    token: AUTH_TOKEN // Optional: JWT token for authentication
-  }
-});
-
-// Send a non-streaming request
-const requestId = uuidv4();
-aiSocket.emit('ai_request', {
-  requestId,
-  model: 'gpt-4o', // Optional: Use the configured model or specify one
-  prompt: 'Hello, I need help organizing my tasks for today.',
-  stream: false
-});
-
-// Send a streaming request
-const streamRequestId = uuidv4();
-aiSocket.emit('ai_request', {
-  requestId: streamRequestId,
-  model: 'gpt-4o', // Optional: Use the configured model or specify one
-  prompt: 'Can you suggest a step-by-step plan for implementing a new feature?',
-  stream: true
-});
-
-// Clear conversation history
-aiSocket.emit('clear_history');
-
-// Listen for responses
-aiSocket.on('ai_response', (data) => {
-  console.log('AI response received:', data.response);
-});
-
-// Listen for streaming events
-aiSocket.on('ai_stream_start', (data) => {
-  console.log('AI stream started:', data);
-});
-
-aiSocket.on('ai_stream_chunk', (data) => {
-  console.log('Chunk received:', data.chunk);
-});
-
-aiSocket.on('ai_stream_end', (data) => {
-  console.log('AI stream ended:', data);
-});
-
-// Listen for errors
-aiSocket.on('ai_error', (data) => {
-  console.error('AI error:', data);
-});
-
-// Listen for history cleared event
-aiSocket.on('history_cleared', (data) => {
-  console.log('Conversation history cleared:', data);
-});
-```
+The AI Assistant will understand their intent and execute the appropriate commands.
 
 ## Implementation Details
 
-### Multi-User Support
+### Command Detection
 
-The AI Assistant is designed to handle multiple users chatting simultaneously:
+Commands are detected in two ways:
 
-- Each user has their own separate conversation history tracked by a unique user ID
-- When a user connects to the AI namespace, they are assigned a unique identifier (either their authenticated user ID or their socket ID)
-- All messages and responses are associated with the user's unique ID
-- Users cannot see or interact with each other's conversations
-- The system can handle many concurrent users, with each maintaining their own conversation context
+1. **Server-Side Pattern Matching**: The server checks for command patterns in the AI's responses
+2. **AI Intent Recognition**: The AI is prompted to respond with command syntax when it detects user intent
 
-### Conversation History Management
+### Workflow Interaction
 
-The AIAssistant service maintains conversation history for each user, allowing for contextual responses. The history is stored in memory and includes:
+When a command is detected:
 
-- System prompt (defines the assistant's personality and capabilities)
-- User messages
-- Assistant responses
-
-To prevent token overflow, the history is limited to a configurable number of messages (default: 100).
-
-### Streaming Responses
-
-The implementation supports streaming responses from OpenAI, which provides a more interactive experience for users. The streaming implementation:
-
-1. Sends an initial `ai_stream_start` event
-2. Streams chunks of the response as they are generated with `ai_stream_chunk` events
-3. Sends a final `ai_stream_end` event when the response is complete
-
-### Error Handling
-
-The implementation includes comprehensive error handling for:
-
-- API errors (e.g., invalid API key, rate limiting)
-- Network errors
-- Stream interruptions
-- Invalid requests
-
-Errors are logged and communicated to clients through the `ai_error` event.
+1. The server executes the command using the WorkflowService
+2. The result is sent back to the client
+3. The client updates the UI to reflect the changes
 
 ## Security Considerations
 
-- The AIAssistant service requires a valid OpenAI API key
-- Socket.IO connections can be secured with authentication middleware
-- Conversation history is stored in memory and not persisted to disk
-- System prompts can be configured to limit the assistant's capabilities
-
-## Example
-
-See `packages/server/examples/socket-client.js` for a complete example of how to interact with the AI Assistant from a client application.
+- The AI Assistant uses the user's session ID to maintain conversation history
+- API keys are stored securely in environment variables
+- Input validation is performed on all commands before execution

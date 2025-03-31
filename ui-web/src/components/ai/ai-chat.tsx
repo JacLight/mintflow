@@ -1,8 +1,9 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
-import { X, MessageSquare, User, Send, Minimize2, Maximize2, Paperclip, RefreshCw, Trash2 } from 'lucide-react';
+import { X, MessageSquare, User, Send, Minimize2, Maximize2, Paperclip, RefreshCw, Trash2, Terminal } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
+import WorkflowService from '@/lib/workflow-service';
 
 // Socket event types for AI server (must match server-side enum)
 enum AIEventTypes {
@@ -11,7 +12,9 @@ enum AIEventTypes {
     AI_STREAM_START = 'ai_stream_start',
     AI_STREAM_CHUNK = 'ai_stream_chunk',
     AI_STREAM_END = 'ai_stream_end',
-    AI_ERROR = 'ai_error'
+    AI_ERROR = 'ai_error',
+    AI_COMMAND = 'ai_command',
+    AI_COMMAND_RESULT = 'ai_command_result'
 }
 
 interface Message {
@@ -20,6 +23,8 @@ interface Message {
     content: string;
     timestamp: Date;
     isComplete?: boolean;
+    isCommand?: boolean;
+    commandResult?: any;
 }
 
 const AIChat = () => {
@@ -47,7 +52,7 @@ const AIChat = () => {
                 {
                     id: uuidv4(),
                     role: 'assistant',
-                    content: 'Hello! I\'m your personal assistant. How can I help you today?',
+                    content: 'Hello! I\'m your personal assistant. You can ask me questions or give me commands like "create a new flow" or "add an inject node". Type "help" to see all available commands.',
                     timestamp: new Date()
                 }
             ]);
@@ -151,13 +156,49 @@ const AIChat = () => {
             ]);
         });
 
+        // Handle command results
+        socket.on(AIEventTypes.AI_COMMAND_RESULT, (data) => {
+            console.log('Command result received:', data);
+
+            // Execute the command in the workflow
+            if (data.command === 'add_node' && data.result && data.result.success) {
+                // Add the node to the workflow
+                const nodeType = data.result.nodeType || 'info';
+                const nodeId = data.result.nodeId || `node-${Date.now()}`;
+
+                try {
+                    // Use the WorkflowService to add the node
+                    const newNode = WorkflowService.addNode(nodeType, nodeId);
+                    console.log('Node added to workflow:', newNode);
+
+                    // Update the command result with the actual node
+                    data.result.actualNode = newNode;
+                } catch (error) {
+                    console.error('Error adding node to workflow:', error);
+                }
+            }
+
+            // Add command result message
+            setMessages(prev => [
+                ...prev,
+                {
+                    id: uuidv4(),
+                    role: 'system',
+                    content: `Command executed: ${data.command}`,
+                    timestamp: new Date(),
+                    isCommand: true,
+                    commandResult: data.result
+                }
+            ]);
+        });
+
         socket.on('history_cleared', () => {
             console.log('Conversation history cleared');
             setMessages([
                 {
                     id: uuidv4(),
                     role: 'assistant',
-                    content: 'Conversation history has been cleared. How can I help you?',
+                    content: 'Conversation history has been cleared. You can ask me questions or use commands like "create flow" or "list flows". Type "help" to see all available commands.',
                     timestamp: new Date()
                 }
             ]);
@@ -203,6 +244,8 @@ const AIChat = () => {
         else setChatMode('minimized');
     };
 
+    // All command handling is now done on the server
+
     const handleSendMessage = () => {
         if (!chatInput.trim() || !isConnected || isLoading) return;
 
@@ -223,7 +266,9 @@ const AIChat = () => {
             }
         ]);
 
-        // Send message to server
+        // All command handling is now done on the server
+
+        // Send as regular message to server
         const requestId = uuidv4();
         activeRequestIdRef.current = requestId;
         setIsLoading(true);
@@ -253,14 +298,20 @@ const AIChat = () => {
             <div key={message.id} className={`flex mb-4 ${message.role === 'user' ? 'justify-end' : ''}`}>
                 {message.role !== 'user' && (
                     <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0 mr-2">
-                        <MessageSquare size={16} />
+                        {message.isCommand ? (
+                            <Terminal size={16} />
+                        ) : (
+                            <MessageSquare size={16} />
+                        )}
                     </div>
                 )}
                 <div
                     className={`${message.role === 'user'
                         ? 'bg-indigo-600 text-white rounded-lg rounded-tr-none'
                         : message.role === 'system'
-                            ? 'bg-orange-100 text-orange-800 rounded-lg rounded-tl-none'
+                            ? message.isCommand
+                                ? 'bg-green-100 text-green-800 rounded-lg rounded-tl-none'
+                                : 'bg-orange-100 text-orange-800 rounded-lg rounded-tl-none'
                             : 'bg-zinc-100 rounded-lg rounded-tl-none'
                         } p-3 max-w-xs md:max-w-md`}
                 >
@@ -271,6 +322,13 @@ const AIChat = () => {
                                 <RefreshCw size={12} />
                             </div>
                             <span className="text-xs text-zinc-500">Thinking...</span>
+                        </div>
+                    )}
+                    {message.commandResult && (
+                        <div className="mt-2 text-xs">
+                            <pre className="bg-gray-100 p-2 rounded overflow-auto max-h-40">
+                                {JSON.stringify(message.commandResult, null, 2)}
+                            </pre>
                         </div>
                     )}
                 </div>

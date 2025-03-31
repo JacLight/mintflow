@@ -91,5 +91,7 @@ export enum AIEventTypes {
     AI_STREAM_START = 'ai_stream_start',
     AI_STREAM_CHUNK = 'ai_stream_chunk',
     AI_STREAM_END = 'ai_stream_end',
-    AI_ERROR = 'ai_error'
+    AI_ERROR = 'ai_error',
+    AI_COMMAND = 'ai_command',
+    AI_COMMAND_RESULT = 'ai_command_result'
 }
