@@ -3,13 +3,13 @@ export const sidebarLinks = {
     "logo": "https://appmint.io/assets/img/logo.png",
     "siteTree": [
         {
-            "name": "approot",
+            "name": "welcome",
             "label": "App Root",
             "icon": "Home",
             "children": [
-                { "name": "site", "label": "Site - demo", "icon": "Monitor" },
-                { "name": "publish", "label": "Publish - demo", "icon": "Upload" },
                 { "name": "dashboard", "label": "Dashboard", "icon": "BarChart2" },
+                { "name": "active-flows", "label": "Active Flows", "icon": "Activities" },
+                { "name": "schdules", "label": "Schedules", "icon": "CalendarSync" },
             ]
         },
         {
@@ -27,7 +27,7 @@ export const sidebarLinks = {
             ]
         },
         {
-            "name": "flow-runs",
+            "name": "flow-runs/executions",
             "label": "Flow Runs",
             "icon": "MonitorCog",
             "children": [
@@ -40,7 +40,7 @@ export const sidebarLinks = {
             ]
         },
         {
-            "name": "account",
+            "name": "account/profile",
             "label": "Account",
             "icon": "ShieldCheck",
             "children": [
