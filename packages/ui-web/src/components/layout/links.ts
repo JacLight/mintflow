@@ -45,7 +45,6 @@ export const sidebarLinks = {
             "icon": "ShieldCheck",
             "children": [
                 { "name": "profile", "label": "Profile", "icon": "User" },
-                { "name": "appearance", "label": "Appearance", "icon": "Palette" },
                 { "name": "members", "label": "Members", "icon": "Users" },
                 { "name": "workspaces", "label": "Workspaces", "icon": "Building" },
                 { "name": "sep", "label": "Sep" },
