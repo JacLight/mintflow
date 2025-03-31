@@ -54,7 +54,14 @@ export const ENV = {
     GOOGLE_API_KEY: process.env.GOOGLE_API_KEY || '',
 
     METRICS_ENABLED: process.env.METRICS_ENABLED === 'true',
-    MQTT_URL: process.env.MQTT_URL || 'mqtt://localhost:1883'
+    MQTT_URL: process.env.MQTT_URL || 'mqtt://localhost:1883',
+
+    // 🔌 Socket.IO Configuration
+    SOCKET_AUTH_REQUIRED: process.env.SOCKET_AUTH_REQUIRED === 'true',
+    SOCKET_PATH: process.env.SOCKET_PATH || '/sync',
+    SOCKET_CORS_ORIGIN: process.env.SOCKET_CORS_ORIGIN || '*',
+    SOCKET_CORS_METHODS: process.env.SOCKET_CORS_METHODS || 'GET,POST,PUT,DELETE',
+    SOCKET_CORS_CREDENTIALS: process.env.SOCKET_CORS_CREDENTIALS === 'true'
 };
 
 // Quick log to confirm environment config (but avoid logging secrets)

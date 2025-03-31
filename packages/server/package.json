@@ -16,6 +16,7 @@
     "@bull-board/api": "^6.7.9",
     "@bull-board/express": "^6.7.9",
     "@pinecone-database/pinecone": "^5.0.2",
+    "@socket.io/redis-adapter": "^8.3.0",
     "axios": "^1.7.9",
     "bull": "^4.16.5",
     "chalk": "^5.4.1",
