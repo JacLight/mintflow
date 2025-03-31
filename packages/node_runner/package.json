@@ -1,0 +1,20 @@
+{
+  "name": "node-runner",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "tsc && node dist/runner.js",
+    "dev": "ts-node src/runner.ts"
+  },
+  "dependencies": {
+    "bull": "^4.10.3",
+    "dotenv": "^16.3.1",
+    "isolated-vm": "^5.0.3",
+    "axios": "^1.4.0",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.0",
+    "typescript": "^5.0.4",
+    "ts-node": "^10.9.1"
+  }
+}
