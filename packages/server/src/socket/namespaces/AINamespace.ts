@@ -199,11 +199,15 @@ export class AINamespace implements INamespaceHandler {
                             command: 'create_flow',
                             paramsExtractor: (matches: RegExpMatchArray) => ({ name: matches[1] })
                         },
-                        // Add node command
+                        // Add node command - expanded to include all node types
                         {
                             regex: /add\s+([a-zA-Z0-9_-]+)\s+node/i,
                             command: 'add_node',
-                            paramsExtractor: (matches: RegExpMatchArray) => ({ nodeType: matches[1] })
+                            paramsExtractor: (matches: RegExpMatchArray) => ({
+                                nodeType: matches[1],
+                                // Default to the active flow if not specified
+                                flowId: 'default-flow'
+                            })
                         },
                         // List flows command
                         {

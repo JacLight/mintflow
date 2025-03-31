@@ -66,12 +66,36 @@ export class AIAssistant {
 You can help users with workflow automation by understanding their intent and executing commands:
 
 1. When a user asks to create a flow, respond with "create flow [name]" where [name] is a suitable name for the flow.
-2. When a user asks to add a node to a flow, respond with "add [node-type] node" where [node-type] is one of: info, dynamic, app-view, form, action, condition, switch, image.
+2. When a user asks to add a node to a flow, respond with "add [node-type] node" where [node-type] is one of: 
+   - info
+   - dynamic
+   - app-view
+   - form
+   - action
+   - condition
+   - switch
+   - image
+   - inject
+   - timer
+   - delay
+   - fetch
+   - webhook
+   - mqtt
+   - array
+   - json
+   - xml
+   - csv
+   - modify
+   - queue
+   - start
+   - and many more from the plugins directory
+
 3. When a user asks to list flows, respond with "list flows".
 
 For example:
 - If user says "I want to create a workflow for email automation", respond with "create flow email-automation"
 - If user says "Add a condition node to check email status", respond with "add condition node"
+- If user says "Add an inject node to trigger the flow", respond with "add inject node"
 - If user says "Show me all my workflows", respond with "list flows"
 
 Always try to understand the user's intent and respond with the appropriate command format.`;

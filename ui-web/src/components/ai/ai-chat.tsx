@@ -244,7 +244,31 @@ const AIChat = () => {
         else setChatMode('minimized');
     };
 
-    // All command handling is now done on the server
+    // We'll let the AI determine if this is a command
+    const isHelpCommand = (input: string): boolean => {
+        return input.trim().toLowerCase() === 'help';
+    };
+
+    // Show help message
+    const showHelp = () => {
+        setMessages(prev => [
+            ...prev,
+            {
+                id: uuidv4(),
+                role: 'system',
+                content: `
+Available commands:
+- add [node type] node: Add a node to the active flow
+  Available node types include: info, dynamic, app-view, form, action, condition, switch, image, inject, timer, delay, fetch, webhook, mqtt, array, json, xml, csv, modify, queue, start, and many more
+- create flow [name]: Create a new flow
+- list flows: List all available flows
+- help: Show this help message
+                `,
+                timestamp: new Date(),
+                isCommand: true
+            }
+        ]);
+    };
 
     const handleSendMessage = () => {
         if (!chatInput.trim() || !isConnected || isLoading) return;
@@ -266,7 +290,11 @@ const AIChat = () => {
             }
         ]);
 
-        // All command handling is now done on the server
+        // Handle help command locally, other commands are handled by the server
+        if (isHelpCommand(userMessage)) {
+            showHelp();
+            return;
+        }
 
         // Send as regular message to server
         const requestId = uuidv4();
