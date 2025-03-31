@@ -25,12 +25,6 @@ import {
     updateWorkspace,
     deleteWorkspace,
 
-    // Billing
-    getBillingInfo,
-    updateBillingInfo,
-    getInvoices,
-    getInvoiceById,
-
     // Limits
     getLimits,
     updateLimits,
@@ -39,6 +33,14 @@ import {
     getPrivacySettings,
     updatePrivacySettings
 } from './controllers/AdminController.js';
+
+// Import billing controller
+import {
+    getBillingInfo,
+    updateBillingInfo,
+    getInvoices,
+    getInvoiceById
+} from './controllers/AdminBillingController.js';
 
 // Import log controller
 import {

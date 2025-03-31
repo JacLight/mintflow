@@ -172,21 +172,65 @@ export async function getCostStats(req: Request, res: Response): Promise<any> {
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const costData = {
-            totalCost: 1534.42,
-            costByModel: {
-                'claude-3-sonnet': 982.45,
-                'claude-3-haiku': 356.92,
-                'claude-3-opus': 195.05
-            },
-            costByWorkspace: {
-                'Default': 1200.50,
-                'Development': 333.92
-            }
-        };
+        try {
+            // Get cost metrics from service
+            const costMetrics = await metricsService.getCostMetrics(tenantId);
 
-        return res.status(200).json(costData);
+            // If no metrics found, return empty data
+            if (!costMetrics || costMetrics.length === 0) {
+                return res.status(200).json({
+                    totalCost: 0,
+                    costByModel: {},
+                    costByWorkspace: {}
+                });
+            }
+
+            // Find the monthly cost metrics
+            const monthlyCostMetrics = costMetrics.find(metric => metric.period === 'monthly');
+
+            if (monthlyCostMetrics) {
+                return res.status(200).json({
+                    totalCost: monthlyCostMetrics.totalCost || 0,
+                    costByModel: monthlyCostMetrics.costByModel || {},
+                    costByWorkspace: monthlyCostMetrics.costByWorkspace || {}
+                });
+            } else {
+                // If no monthly metrics, aggregate from all metrics
+                let totalCost = 0;
+                const costByModel: Record<string, number> = {};
+                const costByWorkspace: Record<string, number> = {};
+
+                costMetrics.forEach(metric => {
+                    totalCost += metric.totalCost || 0;
+
+                    // Merge model data
+                    if (metric.costByModel) {
+                        Object.entries(metric.costByModel).forEach(([model, cost]) => {
+                            costByModel[model] = (costByModel[model] || 0) + (cost as number);
+                        });
+                    }
+
+                    // Merge workspace data
+                    if (metric.costByWorkspace) {
+                        Object.entries(metric.costByWorkspace).forEach(([workspace, cost]) => {
+                            costByWorkspace[workspace] = (costByWorkspace[workspace] || 0) + (cost as number);
+                        });
+                    }
+                });
+
+                return res.status(200).json({
+                    totalCost,
+                    costByModel,
+                    costByWorkspace
+                });
+            }
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[MetricsController] Error fetching cost stats: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch cost statistics' });
@@ -226,22 +270,44 @@ export async function getCostByPeriod(req: Request, res: Response): Promise<any>
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const costData = {
-            period,
-            data: [
-                { date: '2025-03-01', cost: 98.00 },
-                { date: '2025-03-02', cost: 105.00 },
-                { date: '2025-03-03', cost: 75.00 },
-                { date: '2025-03-04', cost: 25.00 },
-                { date: '2025-03-05', cost: 65.00 },
-                { date: '2025-03-06', cost: 5.00 },
-                { date: '2025-03-07', cost: 70.00 },
-                // More data points would be here
-            ]
-        };
+        try {
+            // Get cost metrics from service
+            const costMetrics = await metricsService.getCostMetricsByPeriod(tenantId, period);
 
-        return res.status(200).json(costData);
+            // If no metrics found, return empty data
+            if (!costMetrics || costMetrics.length === 0) {
+                return res.status(200).json({
+                    period,
+                    data: []
+                });
+            }
+
+            // Format data for response
+            const data = costMetrics.map(metric => ({
+                date: metric.date ? new Date(metric.date).toISOString().split('T')[0] : null,
+                cost: metric.totalCost || 0,
+                costByModel: metric.costByModel || {},
+                costByWorkspace: metric.costByWorkspace || {}
+            }));
+
+            // Sort by date
+            data.sort((a, b) => {
+                if (!a.date) return 1;
+                if (!b.date) return -1;
+                return a.date.localeCompare(b.date);
+            });
+
+            return res.status(200).json({
+                period,
+                data
+            });
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[MetricsController] Error fetching cost by period: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch cost statistics by period' });
