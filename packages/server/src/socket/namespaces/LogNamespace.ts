@@ -3,6 +3,7 @@ import { logger } from '@mintflow/common';
 import { INamespaceHandler, LogEventTypes } from '../types/socket.types.js';
 import { socketAuthMiddleware, socketTenantMiddleware } from '../middleware/auth.js';
 import { LogService } from '../../services/LogService.js';
+import { FlowNamespace } from './FlowNamespace.js';
 
 /**
  * Socket.IO namespace for logs
@@ -138,6 +139,41 @@ export class LogNamespace implements INamespaceHandler {
         // If the log has a runId, also emit to the run room
         if (log.runId) {
             io.to(`run:${log.runId}`).emit(LogEventTypes.NEW_LOG, { log });
+        }
+
+        // Also send the log to the console sessions in the FlowNamespace
+        this.sendLogToConsole(log);
+    }
+
+    /**
+     * Send a log to all active console sessions
+     * @param log The log data to send
+     */
+    private sendLogToConsole(log: any): void {
+        try {
+            // Get the FlowNamespace instance
+            const flowNamespace = FlowNamespace.getInstance();
+
+            // Get the Socket.IO server instance for the flows namespace
+            const io = global.socketIO?.of('/flows');
+            if (!io) {
+                return;
+            }
+
+            // Format the log for console display
+            const logMessage = {
+                sessionId: 'system', // Special session ID for system logs
+                type: 'output',
+                stream: log.level === 'error' ? 'stderr' : 'stdout',
+                data: `[${new Date(log.timestamp).toLocaleTimeString()}] [${log.level.toUpperCase()}] ${log.message}\n`,
+                timestamp: Date.now()
+            };
+
+            // Emit the log message to all clients in the flows namespace
+            io.emit('console-message', logMessage);
+
+        } catch (error: any) {
+            logger.error('[Socket:Logs] Error sending log to console', { error: error.message });
         }
     }
 }

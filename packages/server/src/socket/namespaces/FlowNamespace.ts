@@ -1,8 +1,10 @@
 import { Server as SocketIOServer, Socket } from 'socket.io';
 import { logger } from '@mintflow/common';
-import { INamespaceHandler, FlowEventTypes } from '../types/socket.types.js';
+import { INamespaceHandler, FlowEventTypes, LogEventTypes } from '../types/socket.types.js';
 import { socketAuthMiddleware, socketTenantMiddleware } from '../middleware/auth.js';
 import { FlowEngine } from '../../engine/FlowEngine.js';
+import { v4 as uuidv4 } from 'uuid';
+import { exec, spawn, ChildProcess } from 'child_process';
 
 /**
  * Socket.IO namespace for flow engine
@@ -12,6 +14,14 @@ export class FlowNamespace implements INamespaceHandler {
     private static instance: FlowNamespace;
     private namespace: string = '/flows';
     private flowEngine: FlowEngine;
+
+    // Console session management
+    private consoleSessions: Map<string, {
+        id: string;
+        process: ChildProcess | null;
+        active: boolean;
+        createdAt: Date;
+    }> = new Map();
 
     private constructor() {
         this.flowEngine = FlowEngine.getInstance();
@@ -106,6 +116,182 @@ export class FlowNamespace implements INamespaceHandler {
             } catch (error: any) {
                 logger.error('[Socket:Flows] Error unsubscribing from flow', { error: error.message });
                 socket.emit('error', { message: 'Failed to unsubscribe from flow' });
+            }
+        });
+
+        // Console functionality - Create session
+        socket.on('create-session', () => {
+            try {
+                // Create a new session ID
+                const sessionId = uuidv4();
+
+                // Store session info
+                this.consoleSessions.set(sessionId, {
+                    id: sessionId,
+                    process: null,
+                    active: true,
+                    createdAt: new Date()
+                });
+
+                // Send session created event
+                socket.emit('session-created', { sessionId });
+
+                logger.info(`[Socket:Flows] Console session created: ${sessionId}`);
+            } catch (error: any) {
+                logger.error('[Socket:Flows] Error creating console session', { error: error.message });
+                socket.emit('error', { message: 'Failed to create console session' });
+            }
+        });
+
+        // Console functionality - Execute command
+        socket.on('execute-command', (data) => {
+            try {
+                const { sessionId, command } = data;
+
+                if (!sessionId || !command) {
+                    socket.emit('error', { message: 'Missing sessionId or command parameter' });
+                    return;
+                }
+
+                // Check if session exists
+                if (!this.consoleSessions.has(sessionId)) {
+                    socket.emit('error', { message: 'Session not found' });
+                    return;
+                }
+
+                const session = this.consoleSessions.get(sessionId)!;
+
+                // Execute the command
+                const childProcess = exec(command, (error, stdout, stderr) => {
+                    if (error) {
+                        // Send error message
+                        socket.emit('console-message', {
+                            sessionId,
+                            type: 'error',
+                            error: error.message,
+                            timestamp: Date.now()
+                        });
+
+                        // Send system message for process exit
+                        socket.emit('console-message', {
+                            sessionId,
+                            type: 'system',
+                            event: 'close',
+                            code: error.code || 1,
+                            timestamp: Date.now()
+                        });
+
+                        return;
+                    }
+
+                    // Send stdout if available
+                    if (stdout) {
+                        socket.emit('console-message', {
+                            sessionId,
+                            type: 'output',
+                            stream: 'stdout',
+                            data: stdout,
+                            timestamp: Date.now()
+                        });
+                    }
+
+                    // Send stderr if available
+                    if (stderr) {
+                        socket.emit('console-message', {
+                            sessionId,
+                            type: 'output',
+                            stream: 'stderr',
+                            data: stderr,
+                            timestamp: Date.now()
+                        });
+                    }
+
+                    // Send system message for process exit
+                    socket.emit('console-message', {
+                        sessionId,
+                        type: 'system',
+                        event: 'close',
+                        code: 0,
+                        timestamp: Date.now()
+                    });
+                });
+
+                // Store the process
+                session.process = childProcess;
+
+                logger.info(`[Socket:Flows] Command executed in session: ${sessionId}`, { command });
+            } catch (error: any) {
+                logger.error('[Socket:Flows] Error executing command', { error: error.message });
+                socket.emit('error', { message: 'Failed to execute command' });
+            }
+        });
+
+        // Console functionality - Terminal input
+        socket.on('terminal-input', (data) => {
+            try {
+                const { sessionId, input } = data;
+
+                if (!sessionId || !input) {
+                    socket.emit('error', { message: 'Missing sessionId or input parameter' });
+                    return;
+                }
+
+                // Check if session exists
+                if (!this.consoleSessions.has(sessionId)) {
+                    socket.emit('error', { message: 'Session not found' });
+                    return;
+                }
+
+                const session = this.consoleSessions.get(sessionId)!;
+
+                // Check if process exists
+                if (!session.process) {
+                    socket.emit('error', { message: 'No active process in session' });
+                    return;
+                }
+
+                // Send input to process
+                if (session.process.stdin) {
+                    session.process.stdin.write(input);
+                }
+
+                logger.debug(`[Socket:Flows] Input sent to process in session: ${sessionId}`);
+            } catch (error: any) {
+                logger.error('[Socket:Flows] Error sending input to process', { error: error.message });
+                socket.emit('error', { message: 'Failed to send input to process' });
+            }
+        });
+
+        // Console functionality - Terminate session
+        socket.on('terminate-session', (data) => {
+            try {
+                const { sessionId } = data;
+
+                if (!sessionId) {
+                    socket.emit('error', { message: 'Missing sessionId parameter' });
+                    return;
+                }
+
+                // Check if session exists
+                if (!this.consoleSessions.has(sessionId)) {
+                    socket.emit('error', { message: 'Session not found' });
+                    return;
+                }
+
+                const session = this.consoleSessions.get(sessionId)!;
+
+                // Kill the process if it exists
+                if (session.process) {
+                    session.process.kill();
+                }
+
+                // Remove the session
+                this.consoleSessions.delete(sessionId);
+
+                logger.info(`[Socket:Flows] Session terminated: ${sessionId}`);
+            } catch (error: any) {
+                logger.error('[Socket:Flows] Error terminating session', { error: error.message });
+                socket.emit('error', { message: 'Failed to terminate session' });
             }
         });
     }

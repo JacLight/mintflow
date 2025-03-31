@@ -78,29 +78,26 @@ export class ConsoleService {
         this.connectionStatus = 'connecting';
 
         try {
-            // Get the URL for the console namespace
-            // Use the same host but with the server port
-            const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
-            const host = window.location.hostname;
-            const port = '3001'; // Server port
-            const url = `${protocol}//${host}:${port}`;
-            console.log('[ConsoleService] Connecting to WebSocket URL:', url);
+            // Get the URL for the flows namespace
+            // Use the server URL from environment or default to localhost:7001
+            // const socketUrl = process.env.NEXT_PUBLIC_SOCKET_IP || 'http://localhost:7001';
+            // console.log('[ConsoleService] Connecting to WebSocket URL:', socketUrl);
 
-            // Connect to the console namespace
-            this.socket = io(`${url}/console`, {
-                path: '/socket.io',
-                transports: ['websocket', 'polling'],
-                reconnectionAttempts: this.maxReconnectAttempts,
-                reconnectionDelay: 1000,
-                timeout: 20000
-            });
+            // // Connect to the flows namespace instead of console
+            // this.socket = io(`${socketUrl}/flows`, {
+            //     path: '/socket.io', // This should match SOCKET_PATH in server's .env
+            //     transports: ['websocket', 'polling'],
+            //     reconnectionAttempts: this.maxReconnectAttempts,
+            //     reconnectionDelay: 1000,
+            //     timeout: 20000
+            // });
 
-            // Set up event handlers
-            this.socket.on('connect', this.handleConnect.bind(this));
-            this.socket.on('disconnect', this.handleDisconnect.bind(this));
-            this.socket.on('console-message', this.handleConsoleMessage.bind(this));
-            this.socket.on('error', this.handleError.bind(this));
-            this.socket.on('connect_error', this.handleConnectError.bind(this));
+            // // Set up event handlers
+            // this.socket.on('connect', this.handleConnect.bind(this));
+            // this.socket.on('disconnect', this.handleDisconnect.bind(this));
+            // this.socket.on('console-message', this.handleConsoleMessage.bind(this));
+            // this.socket.on('error', this.handleError.bind(this));
+            // this.socket.on('connect_error', this.handleConnectError.bind(this));
         } catch (error) {
             console.error('[ConsoleService] Error connecting to console server:', error);
             this.activateFallback();
@@ -372,6 +369,25 @@ export class ConsoleService {
         // Extract session ID from the message
         const { sessionId, ...message } = messageWithId;
 
+        // Special handling for system logs (sessionId === 'system')
+        if (sessionId === 'system') {
+            // Send the system log to all active sessions
+            this.sessions.forEach((session, sessionId) => {
+                if (session.active) {
+                    // Add the message to the session
+                    session.messages.push(message);
+
+                    // Notify handlers
+                    const handlers = this.messageHandlers.get(sessionId);
+                    if (handlers) {
+                        handlers.forEach(handler => handler(message));
+                    }
+                }
+            });
+            return;
+        }
+
+        // Regular session message handling
         const session = this.sessions.get(sessionId);
         if (!session) {
             console.error(`[ConsoleService] Session not found: ${sessionId}`);
