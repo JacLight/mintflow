@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import ApiKeys from '@/components/screens/api-keys';
-import { getAllApiKeys } from '@/lib/admin-service';
 
 export const metadata: Metadata = {
     title: 'API Keys | MintFlow',
@@ -16,5 +15,7 @@ export default async function ApiKeysPage() {
     // const apiKeys = await getAllApiKeys();
     // return <ApiKeys initialApiKeys={apiKeys} />;
 
-    return <ApiKeys />;
+    return (<>
+        <ApiKeys />;
+    </>)
 }
