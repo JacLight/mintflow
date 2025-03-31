@@ -54,12 +54,12 @@ export const sidebarLinks = {
                 { "name": "privacy", "label": "Privacy controls", "icon": "Lock" },
             ]
         },
-        {
-            "name": "trash",
-            "label": "Trash",
-            "icon": "Trash",
-            "view": 'secondary'
-        }
+        // {
+        //     "name": "trash",
+        //     "label": "Trash",
+        //     "icon": "Trash",
+        //     "view": 'secondary'
+        // }
     ],
     footer: [
         {

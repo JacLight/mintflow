@@ -9,3 +9,8 @@ export * from './Billing.js';
 export * from './Invoice.js';
 export * from './CostMetrics.js';
 export * from './FlowExecution.js';
+export * from './Profile.js';
+export * from './Member.js';
+export * from './Workspace.js';
+export * from './Limits.js';
+export * from './Privacy.js';

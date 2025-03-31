@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { logger } from '@mintflow/common';
 import { AdminService } from '../../services/AdminService.js';
+import { ProfileService } from '../../services/ProfileService.js';
+import { MemberService } from '../../services/MemberService.js';
+import { WorkspaceService } from '../../services/WorkspaceService.js';
+import { LimitsService } from '../../services/LimitsService.js';
+import { PrivacyService } from '../../services/PrivacyService.js';
+import { BillingService } from '../../services/BillingService.js';
 
 // Get instance of AdminService
 const adminService = AdminService.getInstance();
@@ -173,21 +179,21 @@ export async function deleteApiKey(req: Request, res: Response): Promise<any> {
  */
 export async function getProfile(req: Request, res: Response): Promise<any> {
     try {
-        // Mock data for now - would be replaced with actual service calls
-        const profile = {
-            id: 'user_123',
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            avatar: 'https://example.com/avatar.jpg',
-            role: 'Admin',
-            createdAt: '2024-12-01T10:00:00Z',
-            preferences: {
-                theme: 'light',
-                notifications: true
-            }
-        };
+        // Get user ID from request (in a real app, this would come from auth middleware)
+        const userId = req.query.userId as string || 'user_123';
 
-        return res.status(200).json(profile);
+        try {
+            // Get profile from service
+            const profileService = ProfileService.getInstance();
+            const profile = await profileService.getProfileByUserId(userId);
+            return res.status(200).json(profile);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Profile not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching profile: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch profile' });
@@ -200,6 +206,8 @@ export async function getProfile(req: Request, res: Response): Promise<any> {
 export async function updateProfile(req: Request, res: Response): Promise<any> {
     try {
         const { name, email, avatar, preferences } = req.body;
+        // Get user ID from request (in a real app, this would come from auth middleware)
+        const userId = req.query.userId as string || 'user_123';
 
         // Validate input data
         if (!name || !email) {
@@ -209,18 +217,24 @@ export async function updateProfile(req: Request, res: Response): Promise<any> {
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const updatedProfile = {
-            id: 'user_123',
-            name,
-            email,
-            avatar,
-            role: 'Admin',
-            createdAt: '2024-12-01T10:00:00Z',
-            preferences
-        };
+        try {
+            // Update profile using service
+            const profileService = ProfileService.getInstance();
+            const updatedProfile = await profileService.updateProfile(userId, {
+                name,
+                email,
+                avatar,
+                preferences
+            });
 
-        return res.status(200).json(updatedProfile);
+            return res.status(200).json(updatedProfile);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Profile not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error updating profile: ${err.message}`);
         return res.status(500).json({ error: 'Failed to update profile' });
@@ -234,27 +248,21 @@ export async function updateProfile(req: Request, res: Response): Promise<any> {
  */
 export async function getAllMembers(req: Request, res: Response): Promise<any> {
     try {
-        // Mock data for now - would be replaced with actual service calls
-        const members = [
-            {
-                id: 'user_123',
-                name: 'John Doe',
-                email: 'john.doe@example.com',
-                role: 'Admin',
-                status: 'Active',
-                joinedAt: '2024-12-01T10:00:00Z'
-            },
-            {
-                id: 'user_456',
-                name: 'Jane Smith',
-                email: 'jane.smith@example.com',
-                role: 'Editor',
-                status: 'Active',
-                joinedAt: '2025-01-15T14:30:00Z'
-            }
-        ];
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        return res.status(200).json(members);
+        try {
+            // Get members from service
+            const memberService = MemberService.getInstance();
+            const members = await memberService.getAllMembers(tenantId);
+            return res.status(200).json(members);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching members: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch members' });
@@ -267,24 +275,29 @@ export async function getAllMembers(req: Request, res: Response): Promise<any> {
 export async function getMemberById(req: Request, res: Response): Promise<any> {
     try {
         const memberId = req.params.memberId;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate parameters
         if (!memberId) {
             return res.status(400).json({ error: 'Member ID is required' });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const member = {
-            id: memberId,
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            role: 'Admin',
-            status: 'Active',
-            joinedAt: '2024-12-01T10:00:00Z',
-            workspaces: ['Default', 'Development']
-        };
-
-        return res.status(200).json(member);
+        try {
+            // Get member from service
+            const memberService = MemberService.getInstance();
+            const member = await memberService.getMemberById(memberId, tenantId);
+            return res.status(200).json(member);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Member not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching member: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch member' });
@@ -297,6 +310,8 @@ export async function getMemberById(req: Request, res: Response): Promise<any> {
 export async function inviteMember(req: Request, res: Response): Promise<any> {
     try {
         const { email, role, workspaces } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate input data
         if (!email || !role) {
@@ -306,18 +321,28 @@ export async function inviteMember(req: Request, res: Response): Promise<any> {
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const invitation = {
-            id: `inv_${Date.now()}`,
-            email,
-            role,
-            workspaces,
-            status: 'Pending',
-            invitedAt: new Date().toISOString(),
-            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
-        };
+        try {
+            // Invite member using service
+            const memberService = MemberService.getInstance();
+            const newMember = await memberService.inviteMember({
+                name: email.split('@')[0], // Default name from email
+                email,
+                role,
+                workspaces,
+                tenantId
+            });
 
-        return res.status(201).json(invitation);
+            return res.status(201).json(newMember);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Member with email')) {
+                return res.status(400).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error inviting member: ${err.message}`);
         return res.status(500).json({ error: 'Failed to invite member' });
@@ -331,6 +356,8 @@ export async function updateMember(req: Request, res: Response): Promise<any> {
     try {
         const memberId = req.params.memberId;
         const { name, email, role, status, workspaces } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate parameters
         if (!memberId) {
@@ -345,18 +372,28 @@ export async function updateMember(req: Request, res: Response): Promise<any> {
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const updatedMember = {
-            id: memberId,
-            name,
-            email,
-            role,
-            status,
-            joinedAt: '2024-12-01T10:00:00Z',
-            workspaces
-        };
+        try {
+            // Update member using service
+            const memberService = MemberService.getInstance();
+            const updatedMember = await memberService.updateMember(memberId, {
+                name,
+                email,
+                role,
+                status,
+                workspaces
+            }, tenantId);
 
-        return res.status(200).json(updatedMember);
+            return res.status(200).json(updatedMember);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Member not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error updating member: ${err.message}`);
         return res.status(500).json({ error: 'Failed to update member' });
@@ -369,14 +406,29 @@ export async function updateMember(req: Request, res: Response): Promise<any> {
 export async function removeMember(req: Request, res: Response): Promise<any> {
     try {
         const memberId = req.params.memberId;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate parameters
         if (!memberId) {
             return res.status(400).json({ error: 'Member ID is required' });
         }
 
-        // Mock deletion - would be replaced with actual service calls
-        return res.status(204).send();
+        try {
+            // Remove member using service
+            const memberService = MemberService.getInstance();
+            await memberService.removeMember(memberId, tenantId);
+            return res.status(204).send();
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Member not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error removing member: ${err.message}`);
         return res.status(500).json({ error: 'Failed to remove member' });
@@ -390,25 +442,21 @@ export async function removeMember(req: Request, res: Response): Promise<any> {
  */
 export async function getAllWorkspaces(req: Request, res: Response): Promise<any> {
     try {
-        // Mock data for now - would be replaced with actual service calls
-        const workspaces = [
-            {
-                id: 'ws_123',
-                name: 'Default',
-                description: 'Default workspace',
-                createdAt: '2024-12-01T10:00:00Z',
-                memberCount: 5
-            },
-            {
-                id: 'ws_456',
-                name: 'Development',
-                description: 'Development workspace',
-                createdAt: '2025-01-15T14:30:00Z',
-                memberCount: 3
-            }
-        ];
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        return res.status(200).json(workspaces);
+        try {
+            // Get workspaces from service
+            const workspaceService = WorkspaceService.getInstance();
+            const workspaces = await workspaceService.getAllWorkspaces(tenantId);
+            return res.status(200).json(workspaces);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching workspaces: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch workspaces' });
@@ -421,25 +469,29 @@ export async function getAllWorkspaces(req: Request, res: Response): Promise<any
 export async function getWorkspaceById(req: Request, res: Response): Promise<any> {
     try {
         const workspaceId = req.params.workspaceId;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate parameters
         if (!workspaceId) {
             return res.status(400).json({ error: 'Workspace ID is required' });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const workspace = {
-            id: workspaceId,
-            name: 'Default',
-            description: 'Default workspace',
-            createdAt: '2024-12-01T10:00:00Z',
-            members: [
-                { id: 'user_123', name: 'John Doe', role: 'Admin' },
-                { id: 'user_456', name: 'Jane Smith', role: 'Editor' }
-            ]
-        };
-
-        return res.status(200).json(workspace);
+        try {
+            // Get workspace from service
+            const workspaceService = WorkspaceService.getInstance();
+            const workspace = await workspaceService.getWorkspaceById(workspaceId, tenantId);
+            return res.status(200).json(workspace);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Workspace not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching workspace: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch workspace' });
@@ -451,7 +503,9 @@ export async function getWorkspaceById(req: Request, res: Response): Promise<any
  */
 export async function createWorkspace(req: Request, res: Response): Promise<any> {
     try {
-        const { name, description } = req.body;
+        const { name, description, members } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate input data
         if (!name) {
@@ -461,18 +515,24 @@ export async function createWorkspace(req: Request, res: Response): Promise<any>
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const newWorkspace = {
-            id: `ws_${Date.now()}`,
-            name,
-            description,
-            createdAt: new Date().toISOString(),
-            members: [
-                { id: 'user_123', name: 'John Doe', role: 'Admin' }
-            ]
-        };
+        try {
+            // Create workspace using service
+            const workspaceService = WorkspaceService.getInstance();
+            const newWorkspace = await workspaceService.createWorkspace({
+                name,
+                description,
+                members,
+                tenantId
+            });
 
-        return res.status(201).json(newWorkspace);
+            return res.status(201).json(newWorkspace);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error creating workspace: ${err.message}`);
         return res.status(500).json({ error: 'Failed to create workspace' });
@@ -485,7 +545,9 @@ export async function createWorkspace(req: Request, res: Response): Promise<any>
 export async function updateWorkspace(req: Request, res: Response): Promise<any> {
     try {
         const workspaceId = req.params.workspaceId;
-        const { name, description } = req.body;
+        const { name, description, members } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate parameters
         if (!workspaceId) {
@@ -500,19 +562,26 @@ export async function updateWorkspace(req: Request, res: Response): Promise<any>
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const updatedWorkspace = {
-            id: workspaceId,
-            name,
-            description,
-            createdAt: '2024-12-01T10:00:00Z',
-            members: [
-                { id: 'user_123', name: 'John Doe', role: 'Admin' },
-                { id: 'user_456', name: 'Jane Smith', role: 'Editor' }
-            ]
-        };
+        try {
+            // Update workspace using service
+            const workspaceService = WorkspaceService.getInstance();
+            const updatedWorkspace = await workspaceService.updateWorkspace(workspaceId, {
+                name,
+                description,
+                members
+            }, tenantId);
 
-        return res.status(200).json(updatedWorkspace);
+            return res.status(200).json(updatedWorkspace);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Workspace not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error updating workspace: ${err.message}`);
         return res.status(500).json({ error: 'Failed to update workspace' });
@@ -525,14 +594,29 @@ export async function updateWorkspace(req: Request, res: Response): Promise<any>
 export async function deleteWorkspace(req: Request, res: Response): Promise<any> {
     try {
         const workspaceId = req.params.workspaceId;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate parameters
         if (!workspaceId) {
             return res.status(400).json({ error: 'Workspace ID is required' });
         }
 
-        // Mock deletion - would be replaced with actual service calls
-        return res.status(204).send();
+        try {
+            // Delete workspace using service
+            const workspaceService = WorkspaceService.getInstance();
+            await workspaceService.deleteWorkspace(workspaceId, tenantId);
+            return res.status(204).send();
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Workspace not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error deleting workspace: ${err.message}`);
         return res.status(500).json({ error: 'Failed to delete workspace' });
@@ -546,30 +630,24 @@ export async function deleteWorkspace(req: Request, res: Response): Promise<any>
  */
 export async function getBillingInfo(req: Request, res: Response): Promise<any> {
     try {
-        // Mock data for now - would be replaced with actual service calls
-        const billingInfo = {
-            plan: 'Pro',
-            status: 'Active',
-            nextBillingDate: '2025-04-15T00:00:00Z',
-            paymentMethod: {
-                type: 'card',
-                last4: '4242',
-                expiryMonth: 12,
-                expiryYear: 2027,
-                brand: 'Visa'
-            },
-            billingAddress: {
-                name: 'John Doe',
-                line1: '123 Main St',
-                line2: 'Suite 100',
-                city: 'San Francisco',
-                state: 'CA',
-                postalCode: '94105',
-                country: 'US'
-            }
-        };
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        return res.status(200).json(billingInfo);
+        try {
+            // Get billing info from service
+            const billingService = BillingService.getInstance();
+            const billingInfo = await billingService.getBillingInfo(tenantId);
+            return res.status(200).json(billingInfo);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Billing information not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching billing info: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch billing information' });
@@ -582,6 +660,8 @@ export async function getBillingInfo(req: Request, res: Response): Promise<any> 
 export async function updateBillingInfo(req: Request, res: Response): Promise<any> {
     try {
         const { paymentMethod, billingAddress } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate input data
         if (!paymentMethod || !billingAddress) {
@@ -591,16 +671,25 @@ export async function updateBillingInfo(req: Request, res: Response): Promise<an
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const updatedBillingInfo = {
-            plan: 'Pro',
-            status: 'Active',
-            nextBillingDate: '2025-04-15T00:00:00Z',
-            paymentMethod,
-            billingAddress
-        };
+        try {
+            // Update billing info using service
+            const billingService = BillingService.getInstance();
+            const updatedBillingInfo = await billingService.updateBillingInfo(tenantId, {
+                paymentMethod,
+                billingAddress
+            });
 
-        return res.status(200).json(updatedBillingInfo);
+            return res.status(200).json(updatedBillingInfo);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Billing information not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error updating billing info: ${err.message}`);
         return res.status(500).json({ error: 'Failed to update billing information' });
@@ -612,25 +701,21 @@ export async function updateBillingInfo(req: Request, res: Response): Promise<an
  */
 export async function getInvoices(req: Request, res: Response): Promise<any> {
     try {
-        // Mock data for now - would be replaced with actual service calls
-        const invoices = [
-            {
-                id: 'inv_123',
-                amount: 49.99,
-                status: 'Paid',
-                date: '2025-03-15T00:00:00Z',
-                pdf: 'https://example.com/invoices/inv_123.pdf'
-            },
-            {
-                id: 'inv_456',
-                amount: 49.99,
-                status: 'Paid',
-                date: '2025-02-15T00:00:00Z',
-                pdf: 'https://example.com/invoices/inv_456.pdf'
-            }
-        ];
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        return res.status(200).json(invoices);
+        try {
+            // Get invoices from service
+            const billingService = BillingService.getInstance();
+            const invoices = await billingService.getInvoices(tenantId);
+            return res.status(200).json(invoices);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching invoices: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch invoices' });
@@ -643,28 +728,29 @@ export async function getInvoices(req: Request, res: Response): Promise<any> {
 export async function getInvoiceById(req: Request, res: Response): Promise<any> {
     try {
         const invoiceId = req.params.invoiceId;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate parameters
         if (!invoiceId) {
             return res.status(400).json({ error: 'Invoice ID is required' });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const invoice = {
-            id: invoiceId,
-            amount: 49.99,
-            status: 'Paid',
-            date: '2025-03-15T00:00:00Z',
-            pdf: 'https://example.com/invoices/inv_123.pdf',
-            items: [
-                { description: 'Pro Plan - Monthly', amount: 49.99 }
-            ],
-            subtotal: 49.99,
-            tax: 0,
-            total: 49.99
-        };
-
-        return res.status(200).json(invoice);
+        try {
+            // Get invoice from service
+            const billingService = BillingService.getInstance();
+            const invoice = await billingService.getInvoiceById(invoiceId, tenantId);
+            return res.status(200).json(invoice);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            if (serviceErr.message && serviceErr.message.includes('Invoice not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching invoice: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch invoice' });
@@ -678,21 +764,21 @@ export async function getInvoiceById(req: Request, res: Response): Promise<any> 
  */
 export async function getLimits(req: Request, res: Response): Promise<any> {
     try {
-        // Mock data for now - would be replaced with actual service calls
-        const limits = {
-            apiRateLimit: 100,
-            maxWorkspaces: 5,
-            maxMembers: 10,
-            maxStorage: 10 * 1024 * 1024 * 1024, // 10 GB
-            currentUsage: {
-                apiCalls: 42,
-                workspaces: 2,
-                members: 5,
-                storage: 2.5 * 1024 * 1024 * 1024 // 2.5 GB
-            }
-        };
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        return res.status(200).json(limits);
+        try {
+            // Get limits from service
+            const limitsService = LimitsService.getInstance();
+            const limits = await limitsService.getLimits(tenantId);
+            return res.status(200).json(limits);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching limits: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch account limits' });
@@ -705,6 +791,8 @@ export async function getLimits(req: Request, res: Response): Promise<any> {
 export async function updateLimits(req: Request, res: Response): Promise<any> {
     try {
         const { apiRateLimit, maxWorkspaces, maxMembers, maxStorage } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate input data
         if (!apiRateLimit || !maxWorkspaces || !maxMembers || !maxStorage) {
@@ -714,21 +802,24 @@ export async function updateLimits(req: Request, res: Response): Promise<any> {
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const updatedLimits = {
-            apiRateLimit,
-            maxWorkspaces,
-            maxMembers,
-            maxStorage,
-            currentUsage: {
-                apiCalls: 42,
-                workspaces: 2,
-                members: 5,
-                storage: 2.5 * 1024 * 1024 * 1024 // 2.5 GB
-            }
-        };
+        try {
+            // Update limits using service
+            const limitsService = LimitsService.getInstance();
+            const updatedLimits = await limitsService.updateLimits(tenantId, {
+                apiRateLimit,
+                maxWorkspaces,
+                maxMembers,
+                maxStorage
+            });
 
-        return res.status(200).json(updatedLimits);
+            return res.status(200).json(updatedLimits);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error updating limits: ${err.message}`);
         return res.status(500).json({ error: 'Failed to update account limits' });
@@ -742,18 +833,21 @@ export async function updateLimits(req: Request, res: Response): Promise<any> {
  */
 export async function getPrivacySettings(req: Request, res: Response): Promise<any> {
     try {
-        // Mock data for now - would be replaced with actual service calls
-        const privacySettings = {
-            dataRetention: {
-                logs: 30, // days
-                analytics: 90 // days
-            },
-            dataSharingConsent: true,
-            marketingEmails: false,
-            twoFactorAuth: true
-        };
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
-        return res.status(200).json(privacySettings);
+        try {
+            // Get privacy settings from service
+            const privacyService = PrivacyService.getInstance();
+            const privacySettings = await privacyService.getPrivacySettings(tenantId);
+            return res.status(200).json(privacySettings);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error fetching privacy settings: ${err.message}`);
         return res.status(500).json({ error: 'Failed to fetch privacy settings' });
@@ -766,6 +860,8 @@ export async function getPrivacySettings(req: Request, res: Response): Promise<a
 export async function updatePrivacySettings(req: Request, res: Response): Promise<any> {
     try {
         const { dataRetention, dataSharingConsent, marketingEmails, twoFactorAuth } = req.body;
+        // Get tenant ID from request (in a real app, this would come from auth middleware)
+        const tenantId = req.query.tenantId as string || 'default_tenant';
 
         // Validate input data
         if (dataRetention === undefined || dataSharingConsent === undefined ||
@@ -776,15 +872,24 @@ export async function updatePrivacySettings(req: Request, res: Response): Promis
             });
         }
 
-        // Mock data for now - would be replaced with actual service calls
-        const updatedPrivacySettings = {
-            dataRetention,
-            dataSharingConsent,
-            marketingEmails,
-            twoFactorAuth
-        };
+        try {
+            // Update privacy settings using service
+            const privacyService = PrivacyService.getInstance();
+            const updatedSettings = await privacyService.updatePrivacySettings(tenantId, {
+                dataRetention,
+                dataSharingConsent,
+                marketingEmails,
+                twoFactorAuth
+            });
 
-        return res.status(200).json(updatedPrivacySettings);
+            return res.status(200).json(updatedSettings);
+        } catch (serviceErr: any) {
+            // Check for specific error types
+            if (serviceErr.message && serviceErr.message.includes('Tenant not found')) {
+                return res.status(404).json({ error: serviceErr.message });
+            }
+            throw serviceErr;
+        }
     } catch (err: any) {
         logger.error(`[AdminController] Error updating privacy settings: ${err.message}`);
         return res.status(500).json({ error: 'Failed to update privacy settings' });
