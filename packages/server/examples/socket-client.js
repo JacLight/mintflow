@@ -170,8 +170,8 @@ aiSocket.on('connect', () => {
     // Example of a non-streaming request
     aiSocket.emit('ai_request', {
         requestId,
-        model: 'example-model',
-        prompt: 'Hello, AI!',
+        model: 'gpt-4o', // Use the configured model or specify one
+        prompt: 'Hello, I need help organizing my tasks for today.',
         stream: false
     });
     
@@ -179,10 +179,18 @@ aiSocket.on('connect', () => {
     const streamRequestId = uuidv4();
     aiSocket.emit('ai_request', {
         requestId: streamRequestId,
-        model: 'example-model',
-        prompt: 'Hello, AI! Please stream the response.',
+        model: 'gpt-4o', // Use the configured model or specify one
+        prompt: 'Can you suggest a step-by-step plan for implementing a new feature?',
         stream: true
     });
+    
+    // Example of clearing conversation history
+    // aiSocket.emit('clear_history');
+});
+
+// Listen for history cleared event
+aiSocket.on('history_cleared', (data) => {
+    console.log('Conversation history cleared:', data);
 });
 
 aiSocket.on('ai_response', (data) => {

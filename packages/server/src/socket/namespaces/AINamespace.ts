@@ -2,6 +2,7 @@ import { Server as SocketIOServer, Socket } from 'socket.io';
 import { logger } from '@mintflow/common';
 import { INamespaceHandler, AIEventTypes } from '../types/socket.types.js';
 import { socketAuthMiddleware, socketTenantMiddleware } from '../middleware/auth.js';
+import { aiAssistant } from '../../services/AIAssistant.js';
 
 /**
  * Socket.IO namespace for AI server communication
@@ -67,8 +68,12 @@ export class AINamespace implements INamespaceHandler {
                     return;
                 }
 
+                // Get user ID from socket (or use socket ID if not available)
+                const userId = (socket as any).user?.id || socket.id;
+
                 logger.info(`[Socket:AI] Received AI request`, {
                     requestId,
+                    userId,
                     model: model || 'default',
                     streamMode: stream
                 });
@@ -78,6 +83,7 @@ export class AINamespace implements INamespaceHandler {
                     // Store stream info
                     this.activeStreams.set(requestId, {
                         socketId: socket.id,
+                        userId,
                         startTime: new Date(),
                         model: model || 'default',
                         status: 'active'
@@ -89,19 +95,44 @@ export class AINamespace implements INamespaceHandler {
                         timestamp: new Date()
                     });
 
-                    // In a real implementation, you would connect to an AI service here
-                    // For this example, we'll simulate a streaming response
-                    this.simulateStreamingResponse(socket, requestId, prompt);
+                    // Process the message with streaming
+                    await aiAssistant.processMessageStream(
+                        userId,
+                        prompt,
+                        (chunk) => {
+                            if (chunk.isComplete) {
+                                // End of stream
+                                socket.emit(AIEventTypes.AI_STREAM_END, {
+                                    requestId,
+                                    status: 'completed',
+                                    timestamp: new Date()
+                                });
+
+                                this.activeStreams.delete(requestId);
+                                logger.info(`[Socket:AI] Stream completed`, { requestId });
+                            } else {
+                                // Send chunk
+                                socket.emit(AIEventTypes.AI_STREAM_CHUNK, {
+                                    requestId,
+                                    chunk: chunk.text,
+                                    timestamp: new Date()
+                                });
+                            }
+                        },
+                        model
+                    );
                 } else {
-                    // For non-streaming responses, simulate a simple response
-                    setTimeout(() => {
-                        socket.emit(AIEventTypes.AI_RESPONSE, {
-                            requestId,
-                            response: `Response to: ${prompt}`,
-                            model: model || 'default',
-                            timestamp: new Date()
-                        });
-                    }, 1000);
+                    // For non-streaming responses
+                    const response = await aiAssistant.processMessage(userId, prompt, model);
+
+                    socket.emit(AIEventTypes.AI_RESPONSE, {
+                        requestId,
+                        response,
+                        model: model || 'default',
+                        timestamp: new Date()
+                    });
+
+                    logger.info(`[Socket:AI] Sent response`, { requestId });
                 }
             } catch (error: any) {
                 logger.error('[Socket:AI] Error processing AI request', { error: error.message });
@@ -110,6 +141,19 @@ export class AINamespace implements INamespaceHandler {
                     error: error.message,
                     timestamp: new Date()
                 });
+            }
+        });
+
+        // Handle conversation history clear request
+        socket.on('clear_history', () => {
+            try {
+                const userId = (socket as any).user?.id || socket.id;
+                aiAssistant.clearConversationHistory(userId);
+                socket.emit('history_cleared', { success: true, timestamp: new Date() });
+                logger.info(`[Socket:AI] Cleared conversation history`, { userId });
+            } catch (error: any) {
+                logger.error('[Socket:AI] Error clearing history', { error: error.message });
+                socket.emit('error', { message: 'Failed to clear conversation history' });
             }
         });
 

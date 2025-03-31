@@ -51,6 +51,9 @@ export const ENV = {
 
     // 📡 API Keys (if required)
     OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
+    OPENAI_BASE_URL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+    OPENAI_DEFAULT_MODEL: process.env.OPENAI_DEFAULT_MODEL || 'gpt-4o',
+    OPENAI_SYSTEM_PROMPT: process.env.OPENAI_SYSTEM_PROMPT || 'You are a helpful personal assistant for MintFlow users. Help them get things done efficiently.',
     GOOGLE_API_KEY: process.env.GOOGLE_API_KEY || '',
 
     METRICS_ENABLED: process.env.METRICS_ENABLED === 'true',
