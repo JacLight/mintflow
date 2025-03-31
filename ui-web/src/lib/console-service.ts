@@ -80,24 +80,24 @@ export class ConsoleService {
         try {
             // Get the URL for the flows namespace
             // Use the server URL from environment or default to localhost:7001
-            // const socketUrl = process.env.NEXT_PUBLIC_SOCKET_IP || 'http://localhost:7001';
-            // console.log('[ConsoleService] Connecting to WebSocket URL:', socketUrl);
+            const socketUrl = process.env.NEXT_PUBLIC_SOCKET_IP || 'http://localhost:7001';
+            console.log('[ConsoleService] Connecting to WebSocket URL:', socketUrl);
 
-            // // Connect to the flows namespace instead of console
-            // this.socket = io(`${socketUrl}/flows`, {
-            //     path: '/socket.io', // This should match SOCKET_PATH in server's .env
-            //     transports: ['websocket', 'polling'],
-            //     reconnectionAttempts: this.maxReconnectAttempts,
-            //     reconnectionDelay: 1000,
-            //     timeout: 20000
-            // });
+            // Connect to the flows namespace instead of console
+            this.socket = io(`${socketUrl}/flows`, {
+                path: '/socket.io', // This should match SOCKET_PATH in server's .env
+                transports: ['websocket', 'polling'],
+                reconnectionAttempts: this.maxReconnectAttempts,
+                reconnectionDelay: 1000,
+                timeout: 20000
+            });
 
-            // // Set up event handlers
-            // this.socket.on('connect', this.handleConnect.bind(this));
-            // this.socket.on('disconnect', this.handleDisconnect.bind(this));
-            // this.socket.on('console-message', this.handleConsoleMessage.bind(this));
-            // this.socket.on('error', this.handleError.bind(this));
-            // this.socket.on('connect_error', this.handleConnectError.bind(this));
+            // Set up event handlers
+            this.socket.on('connect', this.handleConnect.bind(this));
+            this.socket.on('disconnect', this.handleDisconnect.bind(this));
+            this.socket.on('console-message', this.handleConsoleMessage.bind(this));
+            this.socket.on('error', this.handleError.bind(this));
+            this.socket.on('connect_error', this.handleConnectError.bind(this));
         } catch (error) {
             console.error('[ConsoleService] Error connecting to console server:', error);
             this.activateFallback();

@@ -2,24 +2,15 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { getConsoleService, ConsoleMessage } from '@/lib/console-service';
+import { getLogService, LogEntry, LogEventTypes, LogLevel } from '@/lib/log-service';
 
 interface LogViewerProps {
     className?: string;
     flowId?: string;
+    runId?: string;
 }
 
-type LogLevel = 'info' | 'error' | 'warning' | 'debug';
-
-interface LogEntry {
-    id: string;
-    timestamp: Date;
-    level: LogLevel;
-    message: string;
-    source?: string;
-    flowId?: string;
-}
-
-export const LogViewer: React.FC<LogViewerProps> = ({ className, flowId }) => {
+export const LogViewer: React.FC<LogViewerProps> = ({ className, flowId, runId }) => {
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [filter, setFilter] = useState<LogLevel | 'all'>('all');
     const [searchTerm, setSearchTerm] = useState('');
@@ -27,25 +18,37 @@ export const LogViewer: React.FC<LogViewerProps> = ({ className, flowId }) => {
     const logContainerRef = useRef<HTMLDivElement>(null);
     const [sessionId, setSessionId] = useState<string | null>(null);
     const consoleService = getConsoleService();
+    const logService = getLogService();
 
-    // Connect to console server and create a session
+    // Connect to console server and logs server
     useEffect(() => {
+        // Connect to console service
         consoleService.connect();
+
+        // Connect to log service
+        logService.connect();
+
+        // Add initial logs
+        addLog('info', 'Log viewer initialized');
+
+        // Request log history if flowId or runId is provided
+        if (flowId || runId) {
+            logService.requestLogHistory(flowId, runId);
+        }
+
+        // Subscribe to log events
+        const unsubscribeLogs = logService.subscribeToLogs(handleLogEvent);
 
         const setupSession = async () => {
             try {
                 const newSessionId = await consoleService.createSession();
                 setSessionId(newSessionId);
 
-                // Add some sample logs for demonstration
-                addLog('info', 'Log viewer initialized');
-                addLog('info', 'Connected to console server');
-
                 // Subscribe to console messages
-                const unsubscribe = consoleService.subscribeToMessages(newSessionId, handleConsoleMessage);
+                const unsubscribeConsole = consoleService.subscribeToMessages(newSessionId, handleConsoleMessage);
 
                 return () => {
-                    unsubscribe();
+                    unsubscribeConsole();
                     if (newSessionId) {
                         consoleService.terminateSession(newSessionId);
                     }
@@ -53,15 +56,24 @@ export const LogViewer: React.FC<LogViewerProps> = ({ className, flowId }) => {
             } catch (error) {
                 console.error('Error setting up log viewer session:', error);
                 addLog('error', 'Failed to connect to console server');
+                return () => { };
             }
         };
 
         const cleanup = setupSession();
+
         return () => {
             cleanup.then(cleanupFn => cleanupFn && cleanupFn());
+            unsubscribeLogs();
             consoleService.disconnect();
+            logService.disconnect();
         };
-    }, []);
+    }, [flowId, runId]);
+
+    // Handle log events from the log service
+    const handleLogEvent = (logEntry: LogEntry) => {
+        setLogs(prevLogs => [...prevLogs, logEntry]);
+    };
 
     // Handle console messages
     const handleConsoleMessage = (message: ConsoleMessage) => {
@@ -110,6 +122,11 @@ export const LogViewer: React.FC<LogViewerProps> = ({ className, flowId }) => {
     // Clear logs
     const clearLogs = () => {
         setLogs([]);
+
+        // If flowId is provided, also clear logs on the server
+        if (flowId) {
+            logService.clearLogs(flowId);
+        }
     };
 
     // Get CSS class for log level
@@ -183,7 +200,9 @@ export const LogViewer: React.FC<LogViewerProps> = ({ className, flowId }) => {
                     filteredLogs.map(log => (
                         <div key={log.id} className="log-entry mb-1">
                             <span className="text-gray-500">
-                                {log.timestamp.toLocaleTimeString()}
+                                {typeof log.timestamp === 'string'
+                                    ? new Date(log.timestamp).toLocaleTimeString()
+                                    : log.timestamp.toLocaleTimeString()}
                             </span>
                             <span className={`ml-2 font-semibold ${getLogLevelClass(log.level)}`}>
                                 [{log.level.toUpperCase()}]

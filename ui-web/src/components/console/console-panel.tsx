@@ -126,7 +126,7 @@ export const ConsolePanel: React.FC<ConsolePanelProps> = ({
                     )}
 
                     {activeTab === 'logs' && (
-                        <LogViewer className="h-full" flowId={flowId} />
+                        <LogViewer className="h-full" flowId={flowId} runId={undefined} />
                     )}
 
                     {activeTab === 'system' && (

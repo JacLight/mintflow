@@ -32,7 +32,11 @@ const DynamicScreenComponent = async (path: string) => {
 
 export default async function CatchAllPage({ params }: { params: { catchall: string[] } }) {
     // Get the path from the catchall parameter
-    const path = params.catchall.join('/');
+
+    if (typeof params === 'undefined' || !Array.isArray(params.catchall)) {
+        notFound();
+    }
+    const path = params?.catchall.join('/') || '';
 
     // Check if this is a system file request that should be ignored
     if (SYSTEM_FILES.includes(path) || path.endsWith('.js.map') || path.endsWith('.css.map')) {
