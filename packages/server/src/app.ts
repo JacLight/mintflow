@@ -11,6 +11,8 @@ import flowRunRouter from './routes/flowRunRoutes.js';
 import logRouter from './routes/logRoutes.js';
 import nodeRouter from './routes/nodeRoutes.js';
 import tenantRouter from './routes/tenantRoutes.js';
+import metricsRouter from './routes/metricsRoutes.js';
+import adminRouter from './routes/adminRoutes.js';
 
 
 export async function createApp(): Promise<express.Express> {
@@ -41,6 +43,8 @@ export async function createApp(): Promise<express.Express> {
     app.use('/api/flows', flowRouter);
     app.use('/api/flow-runs', flowRunRouter);
     app.use('/api/logs', logRouter);
+    app.use('/api/metrics', metricsRouter);
+    app.use('/api/admin', adminRouter);
 
 
 

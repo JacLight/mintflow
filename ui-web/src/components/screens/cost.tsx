@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronLeft, ChevronRight, Download, Calendar } from 'lucide-react';
 
 const CostPage = () => {
@@ -9,8 +9,52 @@ const CostPage = () => {
     const [selectedApiKey, setSelectedApiKey] = useState('All API keys');
     const [selectedModel, setSelectedModel] = useState('All Models');
 
-    // Sample data for the chart
-    const dailyCosts = [
+    const [costData, setCostData] = useState({
+        totalCost: 0,
+        costByModel: {},
+        costByWorkspace: {}
+    });
+
+    const [dailyCostData, setDailyCostData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchCostData = async () => {
+            try {
+                setIsLoading(true);
+                // Fetch overall cost data
+                const costResponse = await fetch('/api/metrics/cost');
+                if (!costResponse.ok) {
+                    throw new Error('Failed to fetch cost data');
+                }
+                const costDataResult = await costResponse.json();
+                setCostData(costDataResult);
+
+                // Fetch daily cost data
+                const dailyResponse = await fetch('/api/metrics/cost/daily');
+                if (!dailyResponse.ok) {
+                    throw new Error('Failed to fetch daily cost data');
+                }
+                const dailyDataResult = await dailyResponse.json();
+                setDailyCostData(dailyDataResult.data || []);
+
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching cost data:', err);
+                setError('Failed to load cost data. Please try again later.');
+                // Use mock data as fallback
+                setDailyCostData(mockDailyCosts);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchCostData();
+    }, []);
+
+    // Fallback mock data for the chart
+    const mockDailyCosts = [
         { date: '01', cost: 98 },
         { date: '02', cost: 105 },
         { date: '03', cost: 75 },
@@ -41,11 +85,14 @@ const CostPage = () => {
         { date: '28', cost: 5 },
     ];
 
+    // Use real data if available, otherwise use mock data
+    const dailyCosts = dailyCostData.length > 0 ? dailyCostData : mockDailyCosts;
+
     // Calculate the max cost for scaling
     const maxCost = Math.max(...dailyCosts.map(day => day.cost));
 
-    // Calculate total cost
-    const totalCost = dailyCosts.reduce((sum, day) => sum + day.cost, 0);
+    // Calculate total cost (use API data if available)
+    const totalCost = isLoading ? 0 : (costData.totalCost || dailyCosts.reduce((sum, day) => sum + day.cost, 0));
 
     return (
         <div className="bg-gray-50 min-h-screen">
@@ -92,7 +139,9 @@ const CostPage = () => {
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-6 mb-8 flex items-center">
                     <div className="mr-8">
                         <div className="text-gray-600 mb-2 text-sm">Total cost</div>
-                        <div className="text-3xl font-semibold">USD {totalCost.toFixed(2)}</div>
+                        <div className="text-3xl font-semibold">
+                            {isLoading ? 'Loading...' : `USD ${totalCost.toFixed(2)}`}
+                        </div>
                     </div>
 
                     <div className="w-32 h-32">
@@ -193,27 +242,21 @@ const CostPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="border-b">
-                                    <td className="py-3 text-sm">Claude 3.7 Sonnet</td>
-                                    <td className="py-3 text-sm text-right">215</td>
-                                    <td className="py-3 text-sm text-right">640,456</td>
-                                    <td className="py-3 text-sm text-right">72,890</td>
-                                    <td className="py-3 text-sm text-right font-medium">$982.45</td>
-                                </tr>
-                                <tr className="border-b">
-                                    <td className="py-3 text-sm">Claude 3.5 Sonnet</td>
-                                    <td className="py-3 text-sm text-right">85</td>
-                                    <td className="py-3 text-sm text-right">245,782</td>
-                                    <td className="py-3 text-sm text-right">32,145</td>
-                                    <td className="py-3 text-sm text-right font-medium">$356.92</td>
-                                </tr>
-                                <tr className="border-b">
-                                    <td className="py-3 text-sm">Claude 3.5 Haiku</td>
-                                    <td className="py-3 text-sm text-right">125</td>
-                                    <td className="py-3 text-sm text-right">186,329</td>
-                                    <td className="py-3 text-sm text-right">28,762</td>
-                                    <td className="py-3 text-sm text-right font-medium">$195.05</td>
-                                </tr>
+                                {isLoading ? (
+                                    <tr className="border-b">
+                                        <td colSpan={5} className="py-3 text-center">Loading cost data...</td>
+                                    </tr>
+                                ) : (
+                                    Object.entries(costData.costByModel || {}).map(([model, cost], index) => (
+                                        <tr key={index} className="border-b">
+                                            <td className="py-3 text-sm">{model}</td>
+                                            <td className="py-3 text-sm text-right">215</td>
+                                            <td className="py-3 text-sm text-right">640,456</td>
+                                            <td className="py-3 text-sm text-right">72,890</td>
+                                            <td className="py-3 text-sm text-right font-medium">${(cost as number).toFixed(2)}</td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -221,7 +264,9 @@ const CostPage = () => {
                                     <td className="pt-3 text-sm text-right font-semibold">425</td>
                                     <td className="pt-3 text-sm text-right font-semibold">1,072,567</td>
                                     <td className="pt-3 text-sm text-right font-semibold">133,797</td>
-                                    <td className="pt-3 text-sm text-right font-semibold">$1,534.42</td>
+                                    <td className="pt-3 text-sm text-right font-semibold">
+                                        ${isLoading ? '0.00' : totalCost.toFixed(2)}
+                                    </td>
                                 </tr>
                             </tfoot>
                         </table>

@@ -1,7 +1,38 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Calendar, ChevronDown, Download, ChevronRight } from 'lucide-react';
 
 const UsageDashboard = () => {
+    const [usageData, setUsageData] = useState({
+        totalRequests: 0,
+        totalTokens: 0,
+        requestsByModel: {},
+        tokensByModel: {}
+    });
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchUsageData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch('/api/metrics/usage');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch usage data');
+                }
+                const data = await response.json();
+                setUsageData(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching usage data:', err);
+                setError('Failed to load usage data. Please try again later.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchUsageData();
+    }, []);
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Left sidebar assumed to be included in a parent component */}
@@ -54,7 +85,9 @@ const UsageDashboard = () => {
 
                     <div className="bg-white rounded-md shadow-sm p-4">
                         <div className="text-gray-600 mb-2 text-sm">Total tokens</div>
-                        <div className="text-2xl font-semibold mb-2">769,404</div>
+                        <div className="text-2xl font-semibold mb-2">
+                            {isLoading ? 'Loading...' : usageData.totalTokens.toLocaleString()}
+                        </div>
                         <div className="h-12 bg-gray-50 relative mt-2 mb-3">
                             {/* Simplified line chart */}
                             <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-300"></div>
@@ -62,7 +95,9 @@ const UsageDashboard = () => {
                             <div className="absolute bottom-0 right-1/3 w-1 h-1/2 bg-red-500"></div>
                         </div>
                         <div className="text-gray-600 mb-2 text-sm">Total requests</div>
-                        <div className="text-xl font-semibold">272</div>
+                        <div className="text-xl font-semibold">
+                            {isLoading ? 'Loading...' : usageData.totalRequests.toLocaleString()}
+                        </div>
                     </div>
                 </div>
 
@@ -79,9 +114,9 @@ const UsageDashboard = () => {
                         </div>
                         <div className="flex items-center mb-2 text-sm">
                             <div className="w-3 h-3 bg-purple-600 mr-2 rounded"></div>
-                            <span>272 requests</span>
+                            <span>{isLoading ? 'Loading...' : usageData.totalRequests.toLocaleString()} requests</span>
                             <div className="w-3 h-3 bg-blue-300 mx-2 rounded"></div>
-                            <span>769,404K input tokens</span>
+                            <span>{isLoading ? 'Loading...' : usageData.totalTokens.toLocaleString()} input tokens</span>
                         </div>
                         <div className="text-gray-600 text-sm">226</div>
                         <div className="h-32 bg-gray-50 relative mt-4">
