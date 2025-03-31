@@ -27,7 +27,7 @@ export const sidebarLinks = {
             ]
         },
         {
-            "name": "flow-runs/executions",
+            "name": "flow-runs",
             "label": "Flow Runs",
             "icon": "MonitorCog",
             "children": [
@@ -40,7 +40,7 @@ export const sidebarLinks = {
             ]
         },
         {
-            "name": "account/profile",
+            "name": "account",
             "label": "Account",
             "icon": "ShieldCheck",
             "children": [
