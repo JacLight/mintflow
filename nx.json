@@ -1,0 +1,334 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "workspaceLayout": {
+    "appsDir": "packages",
+    "libsDir": "packages"
+  },
+  "projects": {
+    "server": {
+      "root": "packages/server"
+    },
+    "ui-web": {
+      "root": "packages/ui-web"
+    },
+    "node_runner": {
+      "root": "packages/node_runner"
+    },
+    "python_runner": {
+      "root": "packages/python_runner"
+    },
+    "common": {
+      "root": "packages/common"
+    },
+    "@mintflow/array": {
+      "root": "packages/plugins/array"
+    },
+    "@mintflow/delay": {
+      "root": "packages/plugins/delay"
+    },
+    "@mintflow/exec": {
+      "root": "packages/plugins/exec"
+    },
+    "@mintflow/fetch": {
+      "root": "packages/plugins/fetch"
+    },
+    "@mintflow/inject": {
+      "root": "packages/plugins/inject"
+    },
+    "@mintflow/langchain": {
+      "root": "packages/plugins/langchain"
+    },
+    "@mintflow/llm": {
+      "root": "packages/plugins/llm"
+    },
+    "@mintflow/mail": {
+      "root": "packages/plugins/mail"
+    },
+    "@mintflow/modify": {
+      "root": "packages/plugins/modify"
+    },
+    "@mintflow/mqtt": {
+      "root": "packages/plugins/mqtt"
+    },
+    "@mintflow/range": {
+      "root": "packages/plugins/range"
+    },
+    "@mintflow/start": {
+      "root": "packages/plugins/start"
+    },
+    "@mintflow/switch": {
+      "root": "packages/plugins/switch"
+    },
+    "@mintflow/timer": {
+      "root": "packages/plugins/timer"
+    },
+    "@mintflow/twilio": {
+      "root": "packages/plugins/twilio"
+    },
+    "@mintflow/__ref_only": {
+      "root": "packages/plugins/__ref_only"
+    },
+    "@mintflow/activecampaign": {
+      "root": "packages/plugins/activecampaign"
+    },
+    "@mintflow/ai": {
+      "root": "packages/plugins/ai"
+    },
+    "@mintflow/airtable": {
+      "root": "packages/plugins/airtable"
+    },
+    "@mintflow/apollo": {
+      "root": "packages/plugins/apollo"
+    },
+    "@mintflow/asana": {
+      "root": "packages/plugins/asana"
+    },
+    "@mintflow/assemblyai": {
+      "root": "packages/plugins/assemblyai"
+    },
+    "@mintflow/authorize": {
+      "root": "packages/plugins/authorize"
+    },
+    "@mintflow/calendly": {
+      "root": "packages/plugins/calendly"
+    },
+    "@mintflow/crypto": {
+      "root": "packages/plugins/crypto"
+    },
+    "@mintflow/csv": {
+      "root": "packages/plugins/csv"
+    },
+    "@mintflow/data-bridge": {
+      "root": "packages/plugins/data-bridge"
+    },
+    "@mintflow/discord": {
+      "root": "packages/plugins/discord"
+    },
+    "@mintflow/dropbox": {
+      "root": "packages/plugins/dropbox"
+    },
+    "@mintflow/facebook": {
+      "root": "packages/plugins/facebook"
+    },
+    "@mintflow/figma": {
+      "root": "packages/plugins/figma"
+    },
+    "@mintflow/file": {
+      "root": "packages/plugins/file"
+    },
+    "@mintflow/github": {
+      "root": "packages/plugins/github"
+    },
+    "@mintflow/google-ai": {
+      "root": "packages/plugins/google-ai"
+    },
+    "@mintflow/google-business": {
+      "root": "packages/plugins/google-business"
+    },
+    "@mintflow/google-drive": {
+      "root": "packages/plugins/google-drive"
+    },
+    "@mintflow/google-search": {
+      "root": "packages/plugins/google-search"
+    },
+    "@mintflow/google-sheets": {
+      "root": "packages/plugins/google-sheets"
+    },
+    "@mintflow/google-workspace": {
+      "root": "packages/plugins/google-workspace"
+    },
+    "@mintflow/hubspot": {
+      "root": "packages/plugins/hubspot"
+    },
+    "@mintflow/instagram": {
+      "root": "packages/plugins/instagram"
+    },
+    "@mintflow/intercom": {
+      "root": "packages/plugins/intercom"
+    },
+    "@mintflow/jira-cloud": {
+      "root": "packages/plugins/jira-cloud"
+    },
+    "@mintflow/json": {
+      "root": "packages/plugins/json"
+    },
+    "@mintflow/linkedin": {
+      "root": "packages/plugins/linkedin"
+    },
+    "@mintflow/mailchimp": {
+      "root": "packages/plugins/mailchimp"
+    },
+    "@mintflow/media-processor": {
+      "root": "packages/plugins/media-processor"
+    },
+    "@mintflow/monday": {
+      "root": "packages/plugins/monday"
+    },
+    "@mintflow/mysql": {
+      "root": "packages/plugins/mysql"
+    },
+    "@mintflow/notion": {
+      "root": "packages/plugins/notion"
+    },
+    "@mintflow/paypal": {
+      "root": "packages/plugins/paypal"
+    },
+    "@mintflow/pdf": {
+      "root": "packages/plugins/pdf"
+    },
+    "@mintflow/pinecone": {
+      "root": "packages/plugins/pinecone"
+    },
+    "@mintflow/pinterest": {
+      "root": "packages/plugins/pinterest"
+    },
+    "@mintflow/pipedrive": {
+      "root": "packages/plugins/pipedrive"
+    },
+    "@mintflow/postgres": {
+      "root": "packages/plugins/postgres"
+    },
+    "@mintflow/qdrant": {
+      "root": "packages/plugins/qdrant"
+    },
+    "@mintflow/qrcode": {
+      "root": "packages/plugins/qrcode"
+    },
+    "@mintflow/queue": {
+      "root": "packages/plugins/queue"
+    },
+    "@mintflow/redis": {
+      "root": "packages/plugins/redis"
+    },
+    "@mintflow/s3-storage": {
+      "root": "packages/plugins/s3-storage"
+    },
+    "@mintflow/salesforce": {
+      "root": "packages/plugins/salesforce"
+    },
+    "@mintflow/sendgrid": {
+      "root": "packages/plugins/sendgrid"
+    },
+    "@mintflow/shopify": {
+      "root": "packages/plugins/shopify"
+    },
+    "@mintflow/slack": {
+      "root": "packages/plugins/slack"
+    },
+    "@mintflow/snapchat": {
+      "root": "packages/plugins/snapchat"
+    },
+    "@mintflow/sns": {
+      "root": "packages/plugins/sns"
+    },
+    "@mintflow/speech": {
+      "root": "packages/plugins/speech"
+    },
+    "@mintflow/sqs": {
+      "root": "packages/plugins/sqs"
+    },
+    "@mintflow/stripe": {
+      "root": "packages/plugins/stripe"
+    },
+    "@mintflow/supabase": {
+      "root": "packages/plugins/supabase"
+    },
+    "@mintflow/teams": {
+      "root": "packages/plugins/teams"
+    },
+    "@mintflow/text-parser": {
+      "root": "packages/plugins/text-parser"
+    },
+    "@mintflow/tiktok": {
+      "root": "packages/plugins/tiktok"
+    },
+    "@mintflow/translation": {
+      "root": "packages/plugins/translation"
+    },
+    "@mintflow/trello": {
+      "root": "packages/plugins/trello"
+    },
+    "@mintflow/typeform": {
+      "root": "packages/plugins/typeform"
+    },
+    "@mintflow/webhook": {
+      "root": "packages/plugins/webhook"
+    },
+    "@mintflow/woocommerce": {
+      "root": "packages/plugins/woocommerce"
+    },
+    "@mintflow/xml": {
+      "root": "packages/plugins/xml"
+    },
+    "@mintflow/youtube": {
+      "root": "packages/plugins/youtube"
+    },
+    "@mintflow/zendesk": {
+      "root": "packages/plugins/zendesk"
+    },
+    "@mintflow/zoom": {
+      "root": "packages/plugins/zoom"
+    },
+    "@mintflow/soap": {
+      "root": "packages/plugins/soap"
+    },
+    "@mintflow/clickup": {
+      "root": "packages/plugins/clickup"
+    },
+    "@mintflow/confluence": {
+      "root": "packages/plugins/confluence"
+    },
+    "@mintflow/convertkit": {
+      "root": "packages/plugins/convertkit"
+    },
+    "@mintflow/klaviyo": {
+      "root": "packages/plugins/klaviyo"
+    },
+    "@mintflow/telegram": {
+      "root": "packages/plugins/telegram"
+    },
+    "@mintflow/webflow": {
+      "root": "packages/plugins/webflow"
+    },
+    "@mintflow/whatsapp": {
+      "root": "packages/plugins/whatsapp"
+    },
+    "@mintflow/wordpress": {
+      "root": "packages/plugins/wordpress"
+    }
+  },
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "production": [
+      "default",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.mjs",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/src/test-setup.[jt]s"
+    ],
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/ci.yml"
+    ]
+  },
+  "nxCloudId": "67b4cfb69bfdb27c89dc33b4",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+@mintflow/ai:build
+@mintflow/figma:build
+@mintflow/stripe:build
+@mintflow/speech:build
+@mintflow/paypal:build
+@mintflow/monday:build
+@mintflow/milvus:build
+@mintflow/youtube:build
+@mintflow/sendgrid:build
+@mintflow/pinterest:build
+@mintflow/snowflake:build
+@mintflow/mailchimp:build
+@mintflow/krisp-call:build
+@mintflow/microsoft-office:build
+@mintflow/stable-diffusion:build
+@mintflow/assemblyai:build
+@mintflow/jira-cloud:build
+@mintflow/quickbooks:build
+@mintflow/salesforce:build
+@mintflow/instagram:build
+@mintflow/pipedrive:build
+ @mintflow/basecamp:build
+ @mintflow/facebook:build
+ @mintflow/snapchat:build
+ @mintflow/tiktok:build
+ @mintflow/langchain:build

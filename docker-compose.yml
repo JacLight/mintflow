@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  keydb:
+    image: eqalpha/keydb
+    container_name: keydb
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - my-network
+    volumes:
+      - keydb_data:/data
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  weaviate:
+    image: semitechnologies/weaviate
+    container_name: weaviate
+    restart: always
+    environment:
+      QUERY_DEFAULTS_LIMIT: 50
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      DEFAULT_VECTORIZER_MODULE: "text2vec-openai"
+      ENABLE_MODULES: "text2vec-openai"
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "27017:27017"
+    networks:
+      - my-network
+    volumes:
+      - mongo_data:/data/db
+
+  # app:
+  #   build: .
+  #   container_name: node-app
+  #   restart: always
+  #   depends_on:
+  #     - keydb
+  #     - postgres
+  #     - weaviate
+  #     - mongodb
+  #   environment:
+  #     DATABASE_URL: "postgres://admin:admin@postgres:5432/mydatabase"
+  #     MONGO_URI: "mongodb://admin:admin@mongodb:27017"
+  #     WEAVIATE_URL: "http://weaviate:8080"
+  #     KEYDB_URL: "redis://keydb:6379"
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - my-network
+  #   volumes:
+  #     - .:/usr/src/app
+
+  langflow-runner:
+    build:
+      context: ./packages/python_runner
+      dockerfile: Dockerfile.langflow
+    container_name: langflow-runner
+    restart: always
+    depends_on:
+      - keydb
+      - weaviate
+      - mongodb
+    environment:
+      REDIS_HOST: "keydb"
+      REDIS_PORT: "6379"
+      FLOWENGINE_URL: "http://app:3000/flowengine"
+      TENANTS: "default"
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+      GOOGLE_API_KEY: "${GOOGLE_API_KEY}"
+      PINECONE_API_KEY: "${PINECONE_API_KEY}"
+      WEAVIATE_URL: "http://weaviate:8080"
+      MONGO_URI: "mongodb://admin:admin@mongodb:27017"
+    volumes:
+      - langflow_data:/app/data
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  keydb_data:
+  postgres_data:
+  mongo_data:
+  langflow_data:

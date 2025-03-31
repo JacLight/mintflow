@@ -1,0 +1,30 @@
+{
+  "name": "@mintflow/common",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "object-path": "^0.11.8",
+    "tslib": "^2.3.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/object-path": "^0.11.4"
+  }
+}

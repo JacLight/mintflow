@@ -1,0 +1,30 @@
+{
+  "name": "@mintflow/discord",
+  "version": "1.0.0",
+  "description": "Discord plugin for MintFlow",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [
+    "mintflow",
+    "discord",
+    "plugin"
+  ],
+  "author": "MintFlow Team",
+  "license": "MIT",
+  "dependencies": {
+    "@types/form-data": "^2.5.2",
+    "discord.js": "^14.18.0",
+    "form-data": "^4.0.2"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "axios-mock-adapter": "^1.22.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  }
+}
