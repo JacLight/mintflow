@@ -60,8 +60,14 @@ export class AINamespace implements INamespaceHandler {
     private registerEventHandlers(socket: Socket): void {
         // Handle AI request
         socket.on(AIEventTypes.AI_REQUEST, async (data) => {
+            // Store request info outside try/catch to access it in catch block
+            let requestId = data?.requestId;
+            let userId = '';
+            let streamMode = false;
+
             try {
-                const { requestId, model, prompt, stream = false, options = {} } = data;
+                const { model, prompt, stream = false, options = {} } = data;
+                requestId = data.requestId; // Ensure requestId is available in catch block
 
                 if (!requestId || !prompt) {
                     socket.emit('error', { message: 'Missing required parameters' });
@@ -69,13 +75,14 @@ export class AINamespace implements INamespaceHandler {
                 }
 
                 // Get user ID from socket (or use socket ID if not available)
-                const userId = (socket as any).user?.id || socket.id;
+                userId = (socket as any).user?.id || socket.id;
+                streamMode = stream;
 
                 logger.info(`[Socket:AI] Received AI request`, {
                     requestId,
                     userId,
                     model: model || 'default',
-                    streamMode: stream
+                    streamMode
                 });
 
                 // If streaming is requested, start a streaming response
@@ -95,32 +102,90 @@ export class AINamespace implements INamespaceHandler {
                         timestamp: new Date()
                     });
 
-                    // Process the message with streaming
-                    await aiAssistant.processMessageStream(
-                        userId,
-                        prompt,
-                        (chunk) => {
-                            if (chunk.isComplete) {
-                                // End of stream
-                                socket.emit(AIEventTypes.AI_STREAM_END, {
-                                    requestId,
-                                    status: 'completed',
-                                    timestamp: new Date()
-                                });
+                    try {
+                        // Process the message with streaming
+                        await aiAssistant.processMessageStream(
+                            userId,
+                            prompt,
+                            (chunk) => {
+                                if (chunk.isComplete) {
+                                    // End of stream
+                                    socket.emit(AIEventTypes.AI_STREAM_END, {
+                                        requestId,
+                                        status: 'completed',
+                                        timestamp: new Date()
+                                    });
 
-                                this.activeStreams.delete(requestId);
-                                logger.info(`[Socket:AI] Stream completed`, { requestId });
+                                    this.activeStreams.delete(requestId);
+                                    logger.info(`[Socket:AI] Stream completed`, { requestId });
+                                } else {
+                                    // Send chunk
+                                    socket.emit(AIEventTypes.AI_STREAM_CHUNK, {
+                                        requestId,
+                                        chunk: chunk.text,
+                                        timestamp: new Date()
+                                    });
+                                }
+                            },
+                            model
+                        );
+                    } catch (error: unknown) {
+                        const streamError = error as Error;
+
+                        // Detailed logging for debugging
+                        logger.error('[Socket:AI] Stream processing error:', {
+                            errorType: streamError.constructor?.name || 'Unknown',
+                            requestId,
+                            userId
+                        });
+
+                        // Log only safe properties to avoid circular references
+                        try {
+                            if (streamError instanceof Error) {
+                                logger.error('[Socket:AI] Stream error details:', {
+                                    name: streamError.name,
+                                    message: streamError.message,
+                                    // Only log the first part of the stack trace
+                                    stack: streamError.stack?.split('\n').slice(0, 3).join('\n')
+                                });
                             } else {
-                                // Send chunk
-                                socket.emit(AIEventTypes.AI_STREAM_CHUNK, {
-                                    requestId,
-                                    chunk: chunk.text,
-                                    timestamp: new Date()
+                                logger.error('[Socket:AI] Non-Error object thrown:', {
+                                    value: String(streamError)
                                 });
                             }
-                        },
-                        model
-                    );
+                        } catch (logError) {
+                            logger.error('[Socket:AI] Error while logging stream error details:', {
+                                errorMessage: logError instanceof Error ? logError.message : String(logError)
+                            });
+                        }
+
+                        // Handle streaming errors
+                        let errorMessage = '';
+
+                        // Handle circular JSON structure errors
+                        if (streamError instanceof Error && streamError.message.includes('circular structure')) {
+                            errorMessage = 'Error processing response: Circular reference detected';
+                            logger.error('[Socket:AI] Circular reference error in streaming response', {
+                                requestId,
+                                originalError: streamError.message
+                            });
+                        } else {
+                            errorMessage = streamError instanceof Error ? streamError.message : String(streamError);
+                            logger.error('[Socket:AI] Error in streaming response', {
+                                error: errorMessage,
+                                requestId
+                            });
+                        }
+
+                        socket.emit(AIEventTypes.AI_ERROR, {
+                            requestId,
+                            error: errorMessage,
+                            timestamp: new Date()
+                        });
+
+                        // Clean up the stream
+                        this.activeStreams.delete(requestId);
+                    }
                 } else {
                     // For non-streaming responses
                     const response = await aiAssistant.processMessage(userId, prompt, model);
@@ -134,11 +199,42 @@ export class AINamespace implements INamespaceHandler {
 
                     logger.info(`[Socket:AI] Sent response`, { requestId });
                 }
-            } catch (error: any) {
-                logger.error('[Socket:AI] Error processing AI request', { error: error.message });
+            } catch (error: unknown) {
+                // Safely extract error message to avoid circular reference issues
+                const err = error as Error;
+                const errorMessage = err instanceof Error ? err.message : String(err);
+
+                // Detailed logging for debugging
+                logger.error('[Socket:AI] Error processing AI request', {
+                    error: errorMessage,
+                    errorType: err.constructor?.name || 'Unknown',
+                    requestId: requestId || data?.requestId,
+                    userId
+                });
+
+                // Log only safe properties to avoid circular references
+                try {
+                    if (err instanceof Error) {
+                        logger.error('[Socket:AI] Main catch block error details:', {
+                            name: err.name,
+                            message: err.message,
+                            // Only log the first part of the stack trace
+                            stack: err.stack?.split('\n').slice(0, 3).join('\n')
+                        });
+                    } else {
+                        logger.error('[Socket:AI] Non-Error object thrown in main catch:', {
+                            value: String(err)
+                        });
+                    }
+                } catch (logError) {
+                    logger.error('[Socket:AI] Error while logging main error details:', {
+                        errorMessage: logError instanceof Error ? logError.message : String(logError)
+                    });
+                }
+
                 socket.emit(AIEventTypes.AI_ERROR, {
-                    requestId: data?.requestId,
-                    error: error.message,
+                    requestId: requestId || data?.requestId,
+                    error: errorMessage,
                     timestamp: new Date()
                 });
             }
@@ -193,56 +289,6 @@ export class AINamespace implements INamespaceHandler {
                 socket.emit('error', { message: 'Failed to cancel stream' });
             }
         });
-    }
-
-    /**
-     * Simulate a streaming response for demonstration purposes
-     * In a real implementation, this would connect to an AI service
-     * @param socket The Socket.IO socket
-     * @param requestId The request ID
-     * @param prompt The prompt
-     */
-    private simulateStreamingResponse(socket: Socket, requestId: string, prompt: string): void {
-        const words = `This is a simulated streaming response to your prompt: "${prompt}". In a real implementation, this would connect to an AI service and stream the response as it's generated.`.split(' ');
-        let index = 0;
-
-        const interval = setInterval(() => {
-            // Check if stream is still active
-            if (!this.activeStreams.has(requestId) || this.activeStreams.get(requestId).status !== 'active') {
-                clearInterval(interval);
-                return;
-            }
-
-            // Check if socket is still connected
-            if (!socket.connected) {
-                clearInterval(interval);
-                this.activeStreams.delete(requestId);
-                return;
-            }
-
-            // Send next chunk
-            if (index < words.length) {
-                socket.emit(AIEventTypes.AI_STREAM_CHUNK, {
-                    requestId,
-                    chunk: words[index] + ' ',
-                    index,
-                    timestamp: new Date()
-                });
-                index++;
-            } else {
-                // End of stream
-                clearInterval(interval);
-
-                socket.emit(AIEventTypes.AI_STREAM_END, {
-                    requestId,
-                    status: 'completed',
-                    timestamp: new Date()
-                });
-
-                this.activeStreams.delete(requestId);
-                logger.info(`[Socket:AI] Stream completed`, { requestId });
-            }
-        }, 200); // Send a word every 200ms
     }
 
     /**

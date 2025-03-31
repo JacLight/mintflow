@@ -130,13 +130,6 @@ export class AIAssistant {
     }
 
     /**
-     * Process a user message and generate a response
-     * @param userId User ID or session ID
-     * @param userMessage User's message
-     * @param model OpenAI model to use (optional)
-     * @returns Assistant's response
-     */
-    /**
      * Check if a user has an active request
      * @param userId User ID or session ID
      * @returns True if the user has an active request
@@ -158,14 +151,31 @@ export class AIAssistant {
         }
     }
 
+    /**
+     * Process a user message and generate a response
+     * @param userId User ID or session ID
+     * @param userMessage User's message
+     * @param model OpenAI model to use (optional)
+     * @returns Assistant's response
+     */
     public async processMessage(
         userId: string,
         userMessage: string,
         model?: string
     ): Promise<string> {
         try {
+            // If OpenAI API key is not configured, inform the user
             if (!this.apiKey) {
-                return "OpenAI API key not configured. Please set the OPENAI_API_KEY environment variable.";
+                logger.warn('[AIAssistant] OpenAI API key not configured');
+
+                // Add user message to history anyway
+                this.addMessageToHistory(userId, { role: 'user', content: userMessage });
+
+                // Add error message to history
+                const errorMessage = "OpenAI API key not configured. Please set the OPENAI_API_KEY environment variable to enable AI assistant functionality.";
+                this.addMessageToHistory(userId, { role: 'system', content: errorMessage });
+
+                return errorMessage;
             }
 
             // Check if user already has an active request
@@ -217,16 +227,21 @@ export class AIAssistant {
             // Clear active request status on error
             this.setActiveRequest(userId, false);
 
-            if (axios.isAxiosError(error) && error.response) {
-                logger.error('[AIAssistant] OpenAI API error', {
-                    status: error.response.status,
-                    data: error.response.data
-                });
+            // Add error message to history
+            let errorMessage = '';
 
-                return `Error processing your request: ${error.response.status} - ${JSON.stringify(error.response.data)}`;
+            // Handle circular JSON structure errors
+            if (error.message && error.message.includes('circular structure')) {
+                errorMessage = 'Error processing response: Circular reference detected';
+            } else if (axios.isAxiosError(error) && error.response) {
+                errorMessage = `Error connecting to OpenAI API: ${error.response.status} - ${JSON.stringify(error.response.data)}`;
+            } else {
+                errorMessage = `Error connecting to OpenAI API: ${error.message}`;
             }
 
-            return `Error processing your request: ${error.message}`;
+            this.addMessageToHistory(userId, { role: 'system', content: errorMessage });
+
+            return errorMessage;
         }
     }
 
@@ -245,22 +260,28 @@ export class AIAssistant {
         model?: string
     ): Promise<string> {
         try {
+            // If OpenAI API key is not configured, inform the user
             if (!this.apiKey) {
-                callback({
-                    text: "OpenAI API key not configured. Please set the OPENAI_API_KEY environment variable.",
-                    isComplete: true
-                });
-                return "OpenAI API key not configured. Please set the OPENAI_API_KEY environment variable.";
+                logger.warn('[AIAssistant] OpenAI API key not configured');
+
+                // Add user message to history anyway
+                this.addMessageToHistory(userId, { role: 'user', content: userMessage });
+
+                // Add error message to history
+                const errorMessage = "OpenAI API key not configured. Please set the OPENAI_API_KEY environment variable to enable AI assistant functionality.";
+                this.addMessageToHistory(userId, { role: 'system', content: errorMessage });
+
+                callback({ text: errorMessage, isComplete: true });
+                return errorMessage;
             }
 
             // Check if user already has an active request
             if (this.hasActiveRequest(userId)) {
                 logger.warn(`[AIAssistant] User ${userId} already has an active request`);
-                callback({
-                    text: "You already have an active request. Please wait for it to complete.",
-                    isComplete: true
-                });
-                return "You already have an active request. Please wait for it to complete.";
+
+                const errorMessage = "You already have an active request. Please wait for it to complete.";
+                callback({ text: errorMessage, isComplete: true });
+                return errorMessage;
             }
 
             // Mark user as having an active request
@@ -287,7 +308,11 @@ export class AIAssistant {
                 request,
                 {
                     headers: this.getHeaders(),
-                    responseType: 'stream'
+                    responseType: 'stream',
+                    maxRedirects: 5,
+                    timeout: 60000,
+                    // Prevent circular references in the response
+                    transformResponse: [(data) => data] // Don't transform the response data
                 }
             );
 
@@ -296,32 +321,67 @@ export class AIAssistant {
             // Return a Promise that resolves once the stream is complete
             return new Promise((resolve, reject) => {
                 response.data.on('data', (chunk: Buffer) => {
-                    const lines = chunk
-                        .toString()
-                        .split('\n')
-                        .filter(line => line.trim() !== '');
+                    try {
+                        // Log the chunk constructor and basic info
+                        logger.debug('[AIAssistant] Stream data chunk received:', {
+                            chunkType: chunk.constructor.name,
+                            chunkLength: chunk.length,
+                            userId
+                        });
 
-                    for (const line of lines) {
-                        if (line.startsWith('data: ')) {
-                            const data = line.substring(6);
-                            if (data === '[DONE]') {
-                                callback({ text: '', isComplete: true });
-                                continue;
-                            }
+                        const chunkStr = chunk.toString();
+                        const lines = chunkStr
+                            .split('\n')
+                            .filter(line => line.trim() !== '');
 
-                            try {
-                                const parsed = JSON.parse(data);
-                                if (parsed.choices && parsed.choices.length > 0) {
-                                    const delta = parsed.choices[0].delta;
-                                    if (delta.content) {
-                                        fullText += delta.content;
-                                        callback({ text: delta.content, isComplete: false });
-                                    }
+                        logger.debug('[AIAssistant] Chunk content:', {
+                            linesCount: lines.length,
+                            firstLine: lines.length > 0 ? lines[0].substring(0, 50) : 'No lines'
+                        });
+
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                const data = line.substring(6);
+                                if (data === '[DONE]') {
+                                    logger.debug('[AIAssistant] Stream complete signal received');
+                                    callback({ text: '', isComplete: true });
+                                    continue;
                                 }
-                            } catch (e) {
-                                logger.error('[AIAssistant] Error parsing stream:', e);
+
+                                try {
+                                    const parsed = JSON.parse(data);
+                                    logger.debug('[AIAssistant] Parsed JSON data:', {
+                                        hasChoices: !!parsed.choices,
+                                        choicesLength: parsed.choices?.length
+                                    });
+
+                                    if (parsed.choices && parsed.choices.length > 0) {
+                                        const delta = parsed.choices[0].delta;
+                                        logger.debug('[AIAssistant] Delta content:', {
+                                            hasDelta: !!delta,
+                                            hasContent: delta?.content ? true : false,
+                                            contentLength: delta?.content?.length
+                                        });
+
+                                        if (delta && delta.content) {
+                                            fullText += delta.content;
+                                            callback({ text: delta.content, isComplete: false });
+                                        }
+                                    }
+                                } catch (e) {
+                                    // Handle parsing errors gracefully
+                                    logger.error('[AIAssistant] Error parsing stream:', {
+                                        error: e instanceof Error ? e.message : String(e),
+                                        data: data.substring(0, 100) // Log only the first 100 chars to avoid huge logs
+                                    });
+                                }
                             }
                         }
+                    } catch (chunkError) {
+                        logger.error('[AIAssistant] Error processing chunk:', {
+                            error: chunkError instanceof Error ? chunkError.message : String(chunkError),
+                            userId
+                        });
                     }
                 });
 
@@ -339,35 +399,106 @@ export class AIAssistant {
                 });
 
                 response.data.on('error', (err: Error) => {
-                    logger.error('[AIAssistant] Stream error:', err);
+                    // Detailed logging for debugging
+                    logger.error('[AIAssistant] Stream error:', {
+                        error: err instanceof Error ? err.message : String(err),
+                        userId
+                    });
+
+                    // Log the error object properties to understand its structure
+                    try {
+                        const errorProps = Object.getOwnPropertyNames(err);
+                        logger.error('[AIAssistant] Error object properties:', {
+                            properties: errorProps,
+                            name: err.name,
+                            stack: err.stack?.substring(0, 500) // Limit stack trace size
+                        });
+
+                        // If it's a specific type of error, log more details
+                        if (err.name === 'AxiosError' && (err as any).request) {
+                            logger.error('[AIAssistant] Axios error details:', {
+                                config: {
+                                    url: (err as any).config?.url,
+                                    method: (err as any).config?.method,
+                                    headers: (err as any).config?.headers
+                                },
+                                status: (err as any).response?.status,
+                                statusText: (err as any).response?.statusText
+                            });
+                        }
+                    } catch (logError) {
+                        logger.error('[AIAssistant] Error while logging error details:', logError);
+                    }
 
                     // Clear active request status on error
                     this.setActiveRequest(userId, false);
 
-                    reject(err);
+                    // Handle circular JSON structure errors
+                    if (err.message && err.message.includes('circular structure')) {
+                        const errorMessage = 'Error processing response: Circular reference detected';
+                        this.addMessageToHistory(userId, { role: 'system', content: errorMessage });
+                        reject(new Error(errorMessage));
+                    } else {
+                        reject(err);
+                    }
                 });
             });
         } catch (error: any) {
+            // Detailed logging for debugging
             logger.error('[AIAssistant] Error processing message stream', {
                 error: error.message,
-                userId
+                userId,
+                errorType: error.constructor.name
             });
+
+            // Log detailed error information
+            try {
+                const errorProps = Object.getOwnPropertyNames(error);
+                logger.error('[AIAssistant] Catch block error details:', {
+                    properties: errorProps,
+                    name: error.name,
+                    code: error.code,
+                    stack: error.stack?.substring(0, 500) // Limit stack trace size
+                });
+
+                // If it's an Axios error, log more details - but be careful with circular references
+                if (axios.isAxiosError(error)) {
+                    // Only log safe properties that won't cause circular references
+                    logger.error('[AIAssistant] Axios error in catch block:', {
+                        config: error.config ? {
+                            url: error.config.url,
+                            method: error.config.method,
+                            baseURL: error.config.baseURL
+                            // Avoid logging headers as they might contain sensitive info
+                        } : 'No config',
+                        status: error.response?.status,
+                        statusText: error.response?.statusText,
+                        // Avoid logging the full response data or request objects
+                        message: error.message,
+                        code: error.code
+                    });
+                }
+            } catch (logError) {
+                logger.error('[AIAssistant] Error while logging error details in catch block:', logError);
+            }
 
             // Clear active request status on error
             this.setActiveRequest(userId, false);
 
-            if (axios.isAxiosError(error) && error.response) {
-                logger.error('[AIAssistant] OpenAI API error', {
-                    status: error.response.status,
-                    data: error.response.data
-                });
+            // Add error message to history
+            let errorMessage = '';
 
-                const errorMessage = `Error processing your request: ${error.response.status} - ${JSON.stringify(error.response.data)}`;
-                callback({ text: errorMessage, isComplete: true });
-                return errorMessage;
+            // Handle circular JSON structure errors
+            if (error.message && error.message.includes('circular structure')) {
+                errorMessage = 'Error processing response: Circular reference detected';
+            } else if (axios.isAxiosError(error) && error.response) {
+                errorMessage = `Error connecting to OpenAI API: ${error.response.status} - ${JSON.stringify(error.response.data)}`;
+            } else {
+                errorMessage = `Error connecting to OpenAI API: ${error.message}`;
             }
 
-            const errorMessage = `Error processing your request: ${error.message}`;
+            this.addMessageToHistory(userId, { role: 'system', content: errorMessage });
+
             callback({ text: errorMessage, isComplete: true });
             return errorMessage;
         }

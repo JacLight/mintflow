@@ -59,7 +59,7 @@ The Socket.IO implementation can be configured using environment variables:
 ```
 # Socket.IO Configuration
 SOCKET_AUTH_REQUIRED=false
-SOCKET_PATH=/sync
+SOCKET_PATH=/socket.io
 SOCKET_CORS_ORIGIN=*
 SOCKET_CORS_METHODS=GET,POST,PUT,DELETE
 SOCKET_CORS_CREDENTIALS=false

@@ -61,7 +61,7 @@ export const ENV = {
 
     // 🔌 Socket.IO Configuration
     SOCKET_AUTH_REQUIRED: process.env.SOCKET_AUTH_REQUIRED === 'true',
-    SOCKET_PATH: process.env.SOCKET_PATH || '/sync',
+    SOCKET_PATH: process.env.SOCKET_PATH || '/socket.io',
     SOCKET_CORS_ORIGIN: process.env.SOCKET_CORS_ORIGIN || '*',
     SOCKET_CORS_METHODS: process.env.SOCKET_CORS_METHODS || 'GET,POST,PUT,DELETE',
     SOCKET_CORS_CREDENTIALS: process.env.SOCKET_CORS_CREDENTIALS === 'true'

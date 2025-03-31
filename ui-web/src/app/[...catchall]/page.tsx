@@ -1,4 +1,3 @@
-import MainLayout from '@/components/layout/main-layout';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
