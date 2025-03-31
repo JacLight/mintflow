@@ -51,3 +51,8 @@ vitest.config.*.timestamp*
 # Ignore build directories in any folder
 **/build
 **/dist
+
+# Environment files
+.env
+.env.*
+**/packages/*/.env

@@ -53,7 +53,7 @@ export const DataList: React.FC<DataListProps> = ({
     return null;
   }
 
-  const onRowEvent = (event: RowEvents, rowId: string, row: any) => {
+  const onRowEvent = (event, rowId: string, row: any) => {
     console.log('onRowEvent', event, rowId, row);
     // Convert event to string for comparison
     const eventName = String(event);
@@ -65,7 +65,7 @@ export const DataList: React.FC<DataListProps> = ({
     }
   };
 
-  const onTableEvent = (event: TableEvents, options: any, selected: any[]) => {
+  const onTableEvent = (event, options: any, selected: any[]) => {
     console.log('onTableEvent', event, options, selected);
 
     // Convert event to string for comparison

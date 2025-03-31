@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, MessageSquare, User, Send, Minimize2, Maximize2, Paperclip, RefreshCw, Trash2, Terminal } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
-import WorkflowService from '@/lib/workflow-service';
+import WorkflowService from '../../lib/workflow-service';
 
 // Socket event types for AI server (must match server-side enum)
 enum AIEventTypes {

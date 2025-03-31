@@ -1,4 +1,4 @@
-import { DragEvent, useState, useEffect } from 'react';
+import React, { DragEvent, useState, useEffect } from 'react';
 import { IconRenderer } from '../ui/icon-renderer';
 import { classNames } from '@/lib-client/helpers';
 import {
