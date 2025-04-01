@@ -1,4 +1,3 @@
-import type { NextAuthConfig } from 'next-auth';
 
 export const authConfig = {
   pages: {
@@ -36,4 +35,4 @@ export const authConfig = {
       return true;
     },
   },
-} satisfies NextAuthConfig;
+} 

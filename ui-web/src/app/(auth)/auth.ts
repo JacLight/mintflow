@@ -1,123 +1,87 @@
 // app/lib/auth.ts
-import NextAuth, { type User, type Session } from 'next-auth';
-import GitHub from 'next-auth/providers/github';
-import Google from 'next-auth/providers/google';
-import Facebook from 'next-auth/providers/facebook';
-import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 import { loginWithAppMint, validateSocialLoginWithAppMint } from '@/lib/appmint-auth-integration';
 
 // Declare module augmentation for next-auth
-declare module 'next-auth' {
-  interface User {
-    appmintToken?: string;
-  }
 
-  interface Session {
-    appmintToken?: string;
-    user: User;
-  }
-}
 
-interface ExtendedSession extends Session {
-  user: User;
-}
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  ...authConfig,
-  debug: true, // Enable debug mode to get more detailed logs
-  providers: [
-    GitHub({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
-    Google({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-    }),
-    Facebook({
-      clientId: process.env.FACEBOOK_ID,
-      clientSecret: process.env.FACEBOOK_SECRET,
-    }),
-    Credentials({
-      credentials: {},
-      async authorize({ email, password }: any) {
-        try {
-          // Use AppMint for username/password login
-          const response = await loginWithAppMint(email, password);
+// Credentials({
+//   credentials: {},
+//   async authorize({ email, password }: any) {
+//     try {
+//       // Use AppMint for username/password login
+//       const response = await loginWithAppMint(email, password);
 
-          if (response && response.token) {
-            // Return user data in the format expected by NextAuth
-            return {
-              id: response.user?.id || response.userId || 'appmint-user',
-              email: email,
-              name: response.user?.name || response.user?.firstName || '',
-              image: response.user?.image || '',
-              // Store AppMint token for future use
-              appmintToken: response.token,
-            };
-          }
+//       if (response && response.token) {
+//         // Return user data in the format expected by NextAuth
+//         return {
+//           id: response.user?.id || response.userId || 'appmint-user',
+//           email: email,
+//           name: response.user?.name || response.user?.firstName || '',
+//           image: response.user?.image || '',
+//           // Store AppMint token for future use
+//           appmintToken: response.token,
+//         };
+//       }
 
-          return null;
-        } catch (error) {
-          console.error('AppMint login error:', error);
-          return null;
-        }
-      },
-    }),
-  ],
-  callbacks: {
-    async signIn({ user, account, profile }) {
-      // For social logins, validate with AppMint
-      if (account && account.provider !== 'credentials' && user.email) {
-        try {
-          // Validate social login with AppMint, passing both user and account info
-          const validatedUser = await validateSocialLoginWithAppMint(user, account);
+//       return null;
+//     } catch (error) {
+//       console.error('AppMint login error:', error);
+//       return null;
+//     }
+//   },
+// }),
+//   ],
 
-          // Update user with AppMint data if available
-          if (validatedUser.appmintUser) {
-            user.appmintToken = validatedUser.appmintUser.token;
-          }
+// const callbacks = () => {
+//     async signIn({ user, account, profile }) {
+//     // For social logins, validate with AppMint
+//     if (account && account.provider !== 'credentials' && user.email) {
+//       try {
+//         // Validate social login with AppMint, passing both user and account info
+//         const validatedUser = await validateSocialLoginWithAppMint(user, account);
 
-          return true;
-        } catch (error) {
-          console.error('Error validating social login with AppMint:', error);
-          // Allow sign in even if AppMint validation fails
-          return true;
-        }
-      }
+//         // Update user with AppMint data if available
+//         if (validatedUser.appmintUser) {
+//           user.appmintToken = validatedUser.appmintUser.token;
+//         }
 
-      return true;
-    },
-    async jwt({ token, user, account }) {
-      // Add AppMint token to JWT token
-      if (user && user.appmintToken) {
-        token.appmintToken = user.appmintToken;
-      }
+//         return true;
+//       } catch (error) {
+//         console.error('Error validating social login with AppMint:', error);
+//         // Allow sign in even if AppMint validation fails
+//         return true;
+//       }
+//     }
 
-      if (user) {
-        token.id = user.id;
-      }
+//     return true;
+//   },
+//     async jwt({ token, user, account }) {
+//     // Add AppMint token to JWT token
+//     if (user && user.appmintToken) {
+//       token.appmintToken = user.appmintToken;
+//     }
 
-      return token;
-    },
-    async session({
-      session,
-      token,
-    }: {
-      session: ExtendedSession;
-      token: any;
-    }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        // Add AppMint token to session
-        (session as any).appmintToken = token.appmintToken;
-      }
+//     if (user) {
+//       token.id = user.id;
+//     }
 
-      return session;
-    },
-  },
-  pages: {
-    signIn: '/login',
-  }
-});
+//     return token;
+//   },
+//     async session({
+//     session,
+//     token,
+//   }: {
+//     session: ExtendedSession;
+//     token: any;
+//   }) {
+//     if (session.user) {
+//       session.user.id = token.id as string;
+//       // Add AppMint token to session
+//       (session as any).appmintToken = token.appmintToken;
+//     }
+
+//     return session;
+//   },
+// },
