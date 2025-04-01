@@ -40,39 +40,7 @@ const ApiKeysPage = ({ initialApiKeys }: ApiKeysProps) => {
     const [newKeyData, setNewKeyData] = useState(null);
 
     useEffect(() => {
-        // If initialApiKeys is provided, we don't need to fetch data
-        if (initialApiKeys) {
-            return;
-        }
 
-        const fetchApiKeys = async () => {
-            try {
-                setIsLoading(true);
-                const response = await fetch('/api/admin/api-keys');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch API keys');
-                }
-                const data = await response.json();
-
-                // Transform the data to match our UI expectations
-                const transformedData = data.map(key => ({
-                    ...key,
-                    secret: '••••••••••••••••',
-                    fullSecret: key.fullKey || `${key.prefix}...` // Use fullKey if available, otherwise create a placeholder
-                }));
-
-                setApiKeys(transformedData);
-                setError(null);
-            } catch (err) {
-                console.error('Error fetching API keys:', err);
-                setError('Failed to load API keys. Please try again later.');
-                setApiKeys([]);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchApiKeys();
     }, [initialApiKeys]);
 
     // Handle creating a new API key
