@@ -4,7 +4,12 @@
 import { Button } from '@/components/ui/button';
 import { Github, Facebook } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { socialLoginUrls } from './social-login-urls';
+
+export const socialLoginUrls = {
+    github: '/auth/github',
+    google: '/auth/google',
+    facebook: '/auth/facebook'
+};
 
 function GoogleIcon() {
     return (

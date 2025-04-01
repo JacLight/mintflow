@@ -245,16 +245,27 @@ export async function validateSocialLoginWithAppMint(user: any, account?: any): 
         // Check if user exists in AppMint
         const existingUser = await checkUserExistsInAppMint(user.email);
 
+        let result;
+
         if (existingUser && !existingUser.error) {
             // User exists, return the AppMint user data
-            return {
+            result = {
                 ...user,
                 appmintUser: existingUser,
             };
+
+            // Store session data if we're in a client-side context
+            if (typeof window !== 'undefined' && existingUser.token && existingUser.user) {
+                activeSession.setActiveSession(
+                    existingUser.token,
+                    existingUser.user,
+                    existingUser.refreshToken || ''
+                );
+            }
         } else if (existingUser && existingUser.exists) {
             // User exists but we couldn't login (expected since we used a dummy password)
             // We could potentially get user details from AppMint here if needed
-            return {
+            result = {
                 ...user,
                 appmintUserExists: true,
             };
@@ -278,11 +289,22 @@ export async function validateSocialLoginWithAppMint(user: any, account?: any): 
                 }),
             });
 
-            return {
+            result = {
                 ...user,
                 appmintUser: registeredUser,
             };
+
+            // Store session data if we're in a client-side context
+            if (typeof window !== 'undefined' && registeredUser.token && registeredUser.user) {
+                activeSession.setActiveSession(
+                    registeredUser.token,
+                    registeredUser.user,
+                    registeredUser.refreshToken || ''
+                );
+            }
         }
+
+        return result;
     } catch (error) {
         console.error('Failed to validate social login with AppMint:', error);
         // Return the original user data if validation fails

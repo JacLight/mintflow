@@ -10,6 +10,7 @@ import { LinearLoader } from '../ui/loading-indicator/linear-loader';
 import { NoticeAlert } from '../notification/notice-alert';
 import { NoticeViewer } from '../notification/notice-viewer';
 import { IconRenderer } from '../ui/icon-renderer';
+import { InitSession } from '@/app/(auth)/auth/init-session';
 
 const buttonsList = [
     { name: 'new-employee', label: 'New Employee', icon: 'UserPlus', showCaption: true, action: '', url: '/people/employees/employee-form' },
@@ -18,6 +19,8 @@ const MainLayout = ({ children }) => {
 
     return (
         <div className={`w-full h-full ${theme.background} transition-colors duration-200`}>
+            {/* Initialize session from cookies */}
+            <InitSession />
             <div className='flex justify-between w-full h-full'>
                 <SideNav />
                 {/* <SideNav /> */}

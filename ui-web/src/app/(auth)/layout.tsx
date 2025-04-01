@@ -1,5 +1,6 @@
 // app/auth/layout.tsx
 import { SocialLogins } from './social-logins';
+import { InitSession } from './auth/init-session';
 
 export default function AuthLayout({
     children
@@ -8,6 +9,8 @@ export default function AuthLayout({
 }) {
     return (
         <div className="min-h-screen grid  bg-gradient-to-b from-gray-50 to-gray-100">
+            {/* Initialize session from cookies */}
+            <InitSession />
             {/* Social Login Side */}
             {/* <div className="hidden lg:flex flex-col items-center justify-center p-8 bg-muted/50">
                 <div className="w-full max-w-sm space-y-8">
