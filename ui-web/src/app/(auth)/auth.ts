@@ -25,10 +25,20 @@ interface ExtendedSession extends Session {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
+  debug: true, // Enable debug mode to get more detailed logs
   providers: [
-    GitHub,
-    Google,
-    Facebook,
+    GitHub({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
+    Google({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+    Facebook({
+      clientId: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+    }),
     Credentials({
       credentials: {},
       async authorize({ email, password }: any) {
@@ -61,8 +71,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // For social logins, validate with AppMint
       if (account && account.provider !== 'credentials' && user.email) {
         try {
-          // Validate social login with AppMint
-          const validatedUser = await validateSocialLoginWithAppMint(user);
+          // Validate social login with AppMint, passing both user and account info
+          const validatedUser = await validateSocialLoginWithAppMint(user, account);
 
           // Update user with AppMint data if available
           if (validatedUser.appmintUser) {
@@ -108,7 +118,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   pages: {
-    signIn: '/auth/login',
-    // Add other custom pages as needed
+    signIn: '/login',
   }
 });

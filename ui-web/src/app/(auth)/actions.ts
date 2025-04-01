@@ -2,7 +2,7 @@
 // app/auth/actions.ts
 
 import { redirect } from 'next/navigation';
-import { registerUserInAppMint, loginWithAppMint } from '@/lib/appmint-auth-integration';
+import * as authService from '@/lib/auth-service';
 
 // Server action for credentials login
 export async function loginWithCredentials(formData: FormData) {
@@ -12,21 +12,19 @@ export async function loginWithCredentials(formData: FormData) {
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
 
-        // Use AppMint for login
-        const response = await loginWithAppMint(email, password);
+        // Use our auth service for login
+        const response = await authService.login(email, password);
 
         if (response && response.token) {
             // Login successful, return success and redirect URL
-            // Note: In a real implementation, you would need to set cookies or session
-            // This is a simplified version
             return { success: true, redirectUrl: '/ui' };
         } else {
             // Login failed
             return { error: 'Invalid credentials' };
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error('Login error:', error);
-        return { error: 'Login failed. Please try again.' };
+        return { error: error.message || 'Login failed. Please try again.' };
     }
 }
 
@@ -58,33 +56,22 @@ export async function registerUser(formData: FormData) {
     const name = formData.get('name') as string;
 
     try {
-        // First register the user in AppMint
-        const nameParts = name.split(' ');
-        const firstName = nameParts[0];
-        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
-
-        const registrationResult = await registerUserInAppMint({
+        // Register the user using our auth service
+        const registrationResult = await authService.register({
             email,
             password,
-            firstName,
-            lastName,
             name
         });
 
-        if (registrationResult) {
-            // Registration successful, now login
-            const loginResult = await loginWithAppMint(email, password);
-
-            if (loginResult && loginResult.token) {
-                // Login successful, return success and redirect URL
-                return { success: true, redirectUrl: '/' };
-            }
+        if (registrationResult && registrationResult.token) {
+            // Registration and login successful
+            return { success: true, redirectUrl: '/' };
         }
 
         return { success: true };
-    } catch (error) {
+    } catch (error: any) {
         console.error('Registration error:', error);
         // Return error information
-        return { error: 'Registration failed. Please try again.' };
+        return { error: error.message || 'Registration failed. Please try again.' };
     }
 }

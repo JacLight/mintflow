@@ -83,7 +83,7 @@ export async function registerUserInAppMint(userData: {
  * @param user User data from social login
  * @returns Promise with validated user data
  */
-export async function validateSocialLoginWithAppMint(user: any): Promise<any> {
+export async function validateSocialLoginWithAppMint(user: any, account?: any): Promise<any> {
     try {
         // Check if user exists in AppMint
         const existingUser = await checkUserExistsInAppMint(user.email);
@@ -107,7 +107,18 @@ export async function validateSocialLoginWithAppMint(user: any): Promise<any> {
                 email: user.email,
                 name: user.name,
                 image: user.image,
-                // Include any other fields from the social login that might be useful
+                // Include provider-specific data
+                provider: account?.provider || 'unknown',
+                providerAccountId: account?.providerAccountId || user.id,
+                // Additional metadata that might be useful
+                providerProfile: JSON.stringify({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    image: user.image,
+                    provider: account?.provider,
+                    providerAccountId: account?.providerAccountId,
+                }),
             });
 
             return {

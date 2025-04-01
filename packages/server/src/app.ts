@@ -5,6 +5,7 @@ import { QueueManager } from './queues/queueManager.js';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import { authMiddleware } from './middlewares/authMiddleware.js';
 import userRouter from './routes/userRoutes.js';
 import flowRouter from './routes/flowRoutes.js';
 import flowRunRouter from './routes/flowRunRoutes.js';
@@ -14,6 +15,7 @@ import tenantRouter from './routes/tenantRoutes.js';
 import metricsRouter from './routes/metricsRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 import executionsRouter from './routes/executionsRoutes.js';
+import authRouter from './routes/authRoutes.js';
 
 
 export async function createApp(): Promise<express.Express> {
@@ -24,29 +26,24 @@ export async function createApp(): Promise<express.Express> {
     app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 
 
-    // Health check
+    // Health check - public route
     app.get('/', (req: express.Request, res: express.Response) => {
         res.send('Node Orchestrator / Runner / Providers / UI is running.');
     });
 
+    // Authentication routes
+    app.use('/api/auth', authRouter);
 
-    // Flow routes (Node & Python tasks)
-    // app.use('/flow', flowRouter);
-    // app.use('/tenant', tenantRouter);
-    // app.use('/listener', listenerRouter);
-    // app.use('engine', feRouter)
-    // app.use('/vector', vectorRouter);
-    // app.use('/ui', uiRouter);
-
-    app.use('/api/nodes', nodeRouter);
-    app.use('/api/tenants', tenantRouter);
-    app.use('/api/users', userRouter);
-    app.use('/api/flows', flowRouter);
-    app.use('/api/flow-runs', flowRunRouter);
-    app.use('/api/logs', logRouter);
-    app.use('/api/metrics', metricsRouter);
-    app.use('/api/admin', adminRouter);
-    app.use('/api/admin/executions', executionsRouter);
+    // Protected routes - require authentication
+    app.use('/api/nodes', authMiddleware, nodeRouter);
+    app.use('/api/tenants', authMiddleware, tenantRouter);
+    app.use('/api/users', authMiddleware, userRouter);
+    app.use('/api/flows', authMiddleware, flowRouter);
+    app.use('/api/flow-runs', authMiddleware, flowRunRouter);
+    app.use('/api/logs', authMiddleware, logRouter);
+    app.use('/api/metrics', authMiddleware, metricsRouter);
+    app.use('/api/admin', authMiddleware, adminRouter);
+    app.use('/api/admin/executions', authMiddleware, executionsRouter);
 
 
 
