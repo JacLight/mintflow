@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { ExternalLink, Info } from 'lucide-react';
-import { PrivacySettings } from '@/lib/admin-service';
+import { PrivacySettings, getPrivacySettings } from '@/lib/admin-service';
 
 interface PrivacyControlsProps {
     initialSettings?: PrivacySettings;
@@ -21,26 +21,15 @@ const PrivacyControls = ({ initialSettings }: PrivacyControlsProps) => {
         const fetchPrivacySettings = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch('/api/admin/privacy');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch privacy settings');
-                }
-                const data = await response.json();
+                // Use the admin-service function instead of direct fetch
+                const data = await getPrivacySettings();
                 setSettings(data);
                 setError(null);
             } catch (err) {
                 console.error('Error fetching privacy settings:', err);
                 setError('Failed to load privacy settings. Please try again later.');
-                // Fallback to mock data
-                setSettings({
-                    dataRetention: {
-                        logs: 30,
-                        analytics: 90
-                    },
-                    dataSharingConsent: false,
-                    marketingEmails: true,
-                    twoFactorAuth: false
-                });
+                // Set settings to null instead of using mock data
+                setSettings(null);
             } finally {
                 setIsLoading(false);
             }
@@ -48,6 +37,7 @@ const PrivacyControls = ({ initialSettings }: PrivacyControlsProps) => {
 
         fetchPrivacySettings();
     }, [initialSettings]);
+
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Sidebar is assumed to be in a parent layout component */}
@@ -63,8 +53,14 @@ const PrivacyControls = ({ initialSettings }: PrivacyControlsProps) => {
                 </p>
 
                 <div className="flex items-center justify-between bg-gray-100 p-4 rounded-md mb-6">
-                    <div className="font-medium">30 day retention period</div>
-                    <a href="#" className="flex items-center text-gray-700 hover:text-gray-900">
+                    <div className="font-medium">
+                        {isLoading ? 'Loading...' : settings ? `${settings.dataRetention.logs} day retention period` : 'Retention period not available'}
+                    </div>
+                    <a
+                        href="#"
+                        className="flex items-center text-gray-700 hover:text-gray-900"
+                        aria-label="Contact support for data retention settings"
+                    >
                         Contact Support <ExternalLink className="w-4 h-4 ml-1" />
                     </a>
                 </div>
@@ -77,8 +73,8 @@ const PrivacyControls = ({ initialSettings }: PrivacyControlsProps) => {
                             <p className="mb-2">Allow users to send feedback on model response to Anthropic. Reports include the full prompt, response, and feedback for future improvements to our models.</p>
                         </div>
                         <div>
-                            <div className="w-12 h-6 bg-gray-200 rounded-full relative">
-                                <div className="absolute right-1 top-1 bg-white w-4 h-4 rounded-full"></div>
+                            <div className={`w-12 h-6 ${settings?.dataSharingConsent ? 'bg-green-500' : 'bg-gray-200'} rounded-full relative`}>
+                                <div className={`absolute ${settings?.dataSharingConsent ? 'right-1' : 'left-1'} top-1 bg-white w-4 h-4 rounded-full`}></div>
                             </div>
                         </div>
                     </div>
@@ -92,7 +88,10 @@ const PrivacyControls = ({ initialSettings }: PrivacyControlsProps) => {
                             <p className="mb-2">Any user with an API key can still download batches via the API.</p>
                         </div>
                         <div>
-                            <select className="border rounded-md p-2 w-48">
+                            <select
+                                className="border rounded-md p-2 w-48"
+                                aria-label="Select workspaces for batch download permissions"
+                            >
                                 <option>All workspaces</option>
                             </select>
                         </div>

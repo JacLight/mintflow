@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Info, ExternalLink } from 'lucide-react';
-import { Limits } from '@/lib/admin-service';
+import { Limits, getLimits } from '@/lib/admin-service';
 
 interface RateLimitsProps {
     initialLimits?: Limits;
@@ -21,29 +21,15 @@ const RateLimits = ({ initialLimits }: RateLimitsProps) => {
         const fetchLimits = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch('/api/admin/limits');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch limits data');
-                }
-                const data = await response.json();
+                // Use the admin-service function instead of direct fetch
+                const data = await getLimits();
                 setLimits(data);
                 setError(null);
             } catch (err) {
                 console.error('Error fetching limits data:', err);
                 setError('Failed to load limits data. Please try again later.');
-                // Fallback to mock data
-                setLimits({
-                    apiRateLimit: 4000,
-                    maxWorkspaces: 10,
-                    maxMembers: 25,
-                    maxStorage: 100,
-                    currentUsage: {
-                        apiCalls: 1534,
-                        workspaces: 2,
-                        members: 5,
-                        storage: 25
-                    }
-                });
+                // Set limits to null instead of mock data
+                setLimits(null);
             } finally {
                 setIsLoading(false);
             }
@@ -51,6 +37,7 @@ const RateLimits = ({ initialLimits }: RateLimitsProps) => {
 
         fetchLimits();
     }, [initialLimits]);
+
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Sidebar is assumed to be in a parent layout component */}
@@ -72,7 +59,10 @@ const RateLimits = ({ initialLimits }: RateLimitsProps) => {
                         <p className="text-gray-600 text-sm mb-4">
                             Contact the Anthropic accounts team to learn more about custom rate limits.
                         </p>
-                        <button className="bg-black text-white px-4 py-2 rounded-md w-full">
+                        <button
+                            className="bg-black text-white px-4 py-2 rounded-md w-full"
+                            aria-label="Contact sales for custom limits"
+                        >
                             Contact sales
                         </button>
                     </div>
@@ -142,7 +132,9 @@ const RateLimits = ({ initialLimits }: RateLimitsProps) => {
                             <div className="font-medium">Batch requests</div>
                             <div className="text-sm text-gray-600">Limit per minute across all models</div>
                         </div>
-                        <div className="text-xl font-semibold">4,000</div>
+                        <div className="text-xl font-semibold">
+                            {isLoading ? 'Loading...' : limits?.apiRateLimit || 'N/A'}
+                        </div>
                     </div>
                 </div>
 
@@ -153,20 +145,40 @@ const RateLimits = ({ initialLimits }: RateLimitsProps) => {
                     <div className="bg-white rounded-md shadow-sm p-6">
                         <h3 className="font-medium mb-4">Monthly limit</h3>
                         <div className="w-full bg-gray-200 h-2 rounded-full mb-4">
-                            <div className="bg-red-500 h-2 rounded-full w-1/3"></div>
+                            <div
+                                className="bg-red-500 h-2 rounded-full"
+                                style={{
+                                    width: isLoading || !limits ? '0%' :
+                                        `${(limits.currentUsage.apiCalls / limits.apiRateLimit) * 100}%`
+                                }}
+                            ></div>
                         </div>
                         <div className="flex items-center justify-between mb-4">
-                            <div className="text-2xl font-semibold">$1,534.56</div>
-                            <div className="text-gray-600">of $5,000</div>
+                            <div className="text-2xl font-semibold">
+                                {isLoading ? 'Loading...' : limits ? `$${limits.currentUsage.apiCalls.toLocaleString()}` : 'N/A'}
+                            </div>
+                            <div className="text-gray-600">
+                                of ${isLoading ? '...' : limits ? limits.apiRateLimit.toLocaleString() : 'N/A'}
+                            </div>
                         </div>
                         <div className="text-sm text-gray-600">Resets on 1 Apr 2025</div>
-                        <button className="mt-4 border border-gray-300 px-4 py-2 rounded-md">Change Limit</button>
+                        <button
+                            className="mt-4 border border-gray-300 px-4 py-2 rounded-md"
+                            aria-label="Change monthly spend limit"
+                        >
+                            Change Limit
+                        </button>
                     </div>
 
                     <div className="bg-white rounded-md shadow-sm p-6">
                         <h3 className="font-medium mb-4">Email notification</h3>
                         <p className="text-gray-600 mb-6">Notify all admins when monthly spend reaches a certain amount</p>
-                        <button className="bg-white border border-gray-300 px-4 py-2 rounded-md w-full">Add notification</button>
+                        <button
+                            className="bg-white border border-gray-300 px-4 py-2 rounded-md w-full"
+                            aria-label="Add email notification for spend limits"
+                        >
+                            Add notification
+                        </button>
                     </div>
                 </div>
             </div>

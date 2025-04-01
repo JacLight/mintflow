@@ -31,10 +31,20 @@ export class AdminService {
     async getAllApiKeys(tenantId: string) {
         try {
             const apiKeys = await this.db.find(API_KEYS_TABLE, { tenantId });
-            // Don't return the full key in the response
+            // Transform the data to match UI expectations
             return apiKeys.map(key => {
                 const { fullKey, ...safeKey } = key;
-                return safeKey;
+                return {
+                    id: key.apiKeyId,
+                    name: key.name,
+                    prefix: key.apiKeyId.substring(0, 8),
+                    secret: '••••••••••••••••',
+                    fullSecret: key.fullKey || `${key.apiKeyId.substring(0, 8)}...`,
+                    created: key.createdAt,
+                    workspace: key.workspace,
+                    environment: key.environment,
+                    lastUsed: key.lastUsed || key.createdAt
+                };
             });
         } catch (error) {
             logger.error(`[AdminService] Error fetching API keys: ${(error as any).message}`);

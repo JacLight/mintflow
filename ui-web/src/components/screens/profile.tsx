@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Copy, Building, ChevronDown } from 'lucide-react';
-import { Profile as ProfileType } from '@/lib/admin-service';
+import { Profile as ProfileType, getProfile } from '@/lib/admin-service';
 
 interface OrganizationProfileProps {
     initialProfile?: ProfileType;
@@ -21,16 +21,15 @@ const OrganizationProfile = ({ initialProfile }: OrganizationProfileProps) => {
         const fetchProfile = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch('/api/admin/profile');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch profile data');
-                }
-                const data = await response.json();
+                // Use the admin-service function instead of direct fetch
+                const data = await getProfile();
                 setProfile(data);
                 setError(null);
             } catch (err) {
                 console.error('Error fetching profile data:', err);
                 setError('Failed to load profile data. Please try again later.');
+                // Set profile to null instead of using mock data
+                setProfile(null);
             } finally {
                 setIsLoading(false);
             }
@@ -38,6 +37,10 @@ const OrganizationProfile = ({ initialProfile }: OrganizationProfileProps) => {
 
         fetchProfile();
     }, [initialProfile]);
+
+    // Default organization name to display while loading or if data is not available
+    const organizationName = isLoading ? 'Loading...' : (profile?.name || 'Organization name not available');
+
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Sidebar is assumed to be in a parent layout component */}
@@ -50,7 +53,9 @@ const OrganizationProfile = ({ initialProfile }: OrganizationProfileProps) => {
                     <input
                         type="text"
                         className="w-full border rounded-md p-2 mb-6"
-                        value="appmint"
+                        value={organizationName}
+                        readOnly={isLoading}
+                        aria-label="Organization name"
                     />
 
                     <h2 className="text-lg font-medium mb-4">Primary business address</h2>
@@ -58,12 +63,14 @@ const OrganizationProfile = ({ initialProfile }: OrganizationProfileProps) => {
                         <input
                             type="text"
                             className="border rounded-md p-2"
-                            value="8259 Bristlegrass Way"
+                            placeholder="Address line 1"
+                            aria-label="Address line 1"
                         />
                         <input
                             type="text"
                             className="border rounded-md p-2"
                             placeholder="Line 2"
+                            aria-label="Address line 2"
                         />
                     </div>
 
@@ -80,7 +87,8 @@ const OrganizationProfile = ({ initialProfile }: OrganizationProfileProps) => {
                             <input
                                 type="text"
                                 className="w-full border rounded-md p-2"
-                                value="TX"
+                                placeholder="State"
+                                aria-label="State or province"
                             />
                         </div>
                         <div>
@@ -88,7 +96,8 @@ const OrganizationProfile = ({ initialProfile }: OrganizationProfileProps) => {
                             <input
                                 type="text"
                                 className="w-full border rounded-md p-2"
-                                value="Dallas"
+                                placeholder="City"
+                                aria-label="City"
                             />
                         </div>
                         <div>
@@ -96,14 +105,18 @@ const OrganizationProfile = ({ initialProfile }: OrganizationProfileProps) => {
                             <input
                                 type="text"
                                 className="w-full border rounded-md p-2"
-                                value="75252"
+                                placeholder="Postal code"
+                                aria-label="Postal code"
                             />
                         </div>
                     </div>
 
                     <div className="flex items-center text-sm text-gray-600 mb-2">
-                        <span>Organization ID: 09113f5e-4425-4487-89f6-8685aa2b9e80</span>
-                        <button className="ml-2 text-gray-500">
+                        <span>Organization ID: {isLoading ? 'Loading...' : (profile?.id || 'ID not available')}</span>
+                        <button
+                            className="ml-2 text-gray-500"
+                            aria-label="Copy organization ID"
+                        >
                             <Copy className="w-4 h-4" />
                         </button>
                     </div>

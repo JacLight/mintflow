@@ -12,8 +12,9 @@ import {
     AlertCircle,
     Info
 } from 'lucide-react';
+import { ApiKey, createApiKey, getAllApiKeys } from '@/lib/admin-service';
 
-// Define the type for API key
+// Define the type for API key - matches the transformed data from the server
 interface ApiKeyData {
     id: string;
     name: string;
@@ -23,7 +24,12 @@ interface ApiKeyData {
     created: string;
     workspace: string;
     environment: string;
-    lastUsed: string;
+    lastUsed?: string; // Make optional to match ApiKey type
+}
+
+// Ensure the ApiKey type from admin-service matches our ApiKeyData interface
+declare module '@/lib/admin-service' {
+    interface ApiKey extends ApiKeyData { }
 }
 
 interface ApiKeysProps {
@@ -36,54 +42,83 @@ const ApiKeysPage = ({ initialApiKeys }: ApiKeysProps) => {
     const [showSecret, setShowSecret] = useState({});
     const [apiKeys, setApiKeys] = useState<ApiKeyData[]>(initialApiKeys || []);
     const [isLoading, setIsLoading] = useState(!initialApiKeys);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     const [newKeyData, setNewKeyData] = useState(null);
+    const [showCreateForm, setShowCreateForm] = useState(false);
+    const [newKeyName, setNewKeyName] = useState('');
+    const [newKeyExpiration, setNewKeyExpiration] = useState('');
 
     useEffect(() => {
+        // If initialApiKeys is provided, we don't need to fetch data
+        if (initialApiKeys) {
+            return;
+        }
 
+        const fetchApiKeys = async () => {
+            try {
+                setIsLoading(true);
+
+                // Use the admin-service function instead of direct fetch
+                const data = await getAllApiKeys();
+                setApiKeys(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching API keys:', err);
+                setError('Failed to load API keys. Please try again later.');
+                setApiKeys([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchApiKeys();
     }, [initialApiKeys]);
 
     // Handle creating a new API key
     const handleCreateApiKey = async () => {
         try {
-            const response = await fetch('/api/admin/api-keys', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: 'New API Key',
-                    workspace: 'Default',
-                    environment: 'Development'
-                }),
+            if (!newKeyName.trim()) {
+                setError('API key name is required');
+                return;
+            }
+
+            setIsLoading(true);
+
+            // Use the admin-service function instead of direct fetch
+            const newKey = await createApiKey({
+                name: newKeyName.trim(),
+                workspace: 'Default',
+                environment: 'Development'
+                // Note: expiration is not supported in the current API
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to create API key');
-            }
-
-            const newKey = await response.json();
+            // Successfully created the key
             setNewKeyData(newKey);
+            setShowCreateForm(false);
+            setNewKeyName('');
+            setNewKeyExpiration('');
+            setError(null);
 
             // Refresh the API keys list
-            const keysResponse = await fetch('/api/admin/api-keys');
-            if (keysResponse.ok) {
-                const data = await keysResponse.json();
-                const transformedData = data.map(key => ({
-                    ...key,
-                    secret: '••••••••••••••••',
-                    fullSecret: key.fullKey || `${key.prefix}...`
-                }));
-                setApiKeys(transformedData);
-            }
+            const data = await getAllApiKeys();
+            setApiKeys(data);
         } catch (err) {
             console.error('Error creating API key:', err);
             setError('Failed to create API key. Please try again later.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
+    // Handle form submission
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        handleCreateApiKey();
+    };
+
     // Format timestamp for display
-    const formatDate = (timestamp) => {
+    const formatDate = (timestamp?: string) => {
+        if (!timestamp) return '-';
         const date = new Date(timestamp);
         return date.toLocaleDateString('en-US', {
             year: 'numeric',
@@ -130,8 +165,8 @@ const ApiKeysPage = ({ initialApiKeys }: ApiKeysProps) => {
                             <ChevronDown className="w-4 h-4 ml-2 text-gray-500" />
                         </div>
                         <button
-                            className="flex items-center px-4 py-2 bg-black text-white rounded-md"
-                            onClick={handleCreateApiKey}
+                            className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                            onClick={() => setShowCreateForm(true)}
                         >
                             <Plus className="w-4 h-4 mr-2" /> Create API Key
                         </button>
@@ -284,6 +319,139 @@ const ApiKeysPage = ({ initialApiKeys }: ApiKeysProps) => {
                     </div>
                 </div>
             </div>
+
+            {/* Create API Key Modal */}
+            {showCreateForm && !newKeyData && (
+                <div
+                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+                    onClick={(e) => {
+                        // Close modal when clicking outside
+                        if (e.target === e.currentTarget) {
+                            setShowCreateForm(false);
+                        }
+                    }}
+                >
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                        <h2 className="text-xl font-semibold mb-4">Create New API Key</h2>
+
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-4">
+                                <label htmlFor="keyName" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Key Name <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    id="keyName"
+                                    type="text"
+                                    className="w-full border rounded-md p-2"
+                                    value={newKeyName}
+                                    onChange={(e) => setNewKeyName(e.target.value)}
+                                    placeholder="Enter a name for this API key"
+                                    required
+                                />
+                            </div>
+
+                            <div className="mb-6">
+                                <label htmlFor="keyExpiration" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Expiration Date
+                                </label>
+                                <input
+                                    id="keyExpiration"
+                                    type="date"
+                                    className="w-full border rounded-md p-2"
+                                    value={newKeyExpiration}
+                                    onChange={(e) => setNewKeyExpiration(e.target.value)}
+                                    min={new Date().toISOString().split('T')[0]}
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    If no date is selected, the key will not expire
+                                </p>
+                            </div>
+
+                            <div className="flex justify-end space-x-3">
+                                <button
+                                    type="button"
+                                    className="px-4 py-2 border rounded-md"
+                                    onClick={() => setShowCreateForm(false)}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                                >
+                                    Create Key
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* New API Key Created Modal */}
+            {newKeyData && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50"
+                    onClick={(e) => {
+                        // Close modal when clicking outside
+                        if (e.target === e.currentTarget) {
+                            setNewKeyData(null);
+                        }
+                    }}
+                >
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                        <h2 className="text-xl font-semibold mb-4">API Key Created</h2>
+
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-6">
+                            <div className="flex">
+                                <AlertCircle className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
+                                <div>
+                                    <h3 className="font-medium text-yellow-800 mb-1">Important</h3>
+                                    <p className="text-yellow-700 text-sm">
+                                        This is the only time your full API key will be displayed. Please copy it now and store it securely.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mb-6">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                API Key
+                            </label>
+                            <div className="flex items-center">
+                                <input
+                                    type="text"
+                                    className="w-full border rounded-md p-2 font-mono bg-gray-50"
+                                    value={newKeyData.fullKey || ''}
+                                    readOnly
+                                    aria-label="Your new API key"
+                                    placeholder="API key will appear here"
+                                />
+                                <button
+                                    className="ml-2 text-gray-400 hover:text-gray-600"
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(newKeyData.fullKey || '');
+                                        setCopiedId('new-key');
+                                        setTimeout(() => setCopiedId(null), 2000);
+                                    }}
+                                    aria-label="Copy API key"
+                                >
+                                    {copiedId === 'new-key' ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-end">
+                            <button
+                                type="button"
+                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                                onClick={() => setNewKeyData(null)}
+                            >
+                                Done
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
