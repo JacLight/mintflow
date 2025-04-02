@@ -1,6 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 import { validateSocialLoginWithAppMint, login } from '@/lib/auth-service';
 
 // Provider configuration
@@ -89,17 +90,34 @@ async function getGithubEmail(accessToken: string): Promise<string | null> {
     return primaryEmail ? primaryEmail.email : null;
 }
 
+// Define a result type for the OAuth callback
+type OAuthCallbackResult = {
+    success: boolean;
+    redirectTo: string;
+    error?: string;
+    cookies?: {
+        token: string;
+        user: string;
+        refreshToken: string;
+    };
+};
+
 // Process OAuth callback
 export async function processOAuthCallback(
     provider: string,
     code: string,
     state: string
-): Promise<Response> {
+): Promise<OAuthCallbackResult> {
     try {
         const config = providerConfig[provider as keyof typeof providerConfig];
 
         if (!config) {
-            return redirect('/login/error?error=Unsupported+provider');
+            // Return result object instead of redirecting
+            return {
+                success: false,
+                redirectTo: '/login/error?error=Unsupported+provider',
+                error: 'Unsupported provider'
+            };
         }
 
         // Exchange code for access token
@@ -156,35 +174,47 @@ export async function processOAuthCallback(
         // Parse state to get callback URL
         const { callbackUrl } = parseState(state);
 
-        // Create a response with cookies
+        // If user is validated, set cookies
         if (validatedUser.customer && validatedUser.token) {
-            // Create a response that redirects and sets cookies
-            const response = Response.redirect(new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'));
+            try {
+                // Set cookies using Next.js cookies API
+                // Use a different approach with response cookies
+                const cookieOptions = {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'lax' as const,
+                    path: '/',
+                };
 
-            // Set cookies - using the same pattern as in auth-service.ts
-            const token = validatedUser.token;
-            const user = validatedUser.customer || userData;
-            const refreshToken = validatedUser.refreshToken || '';
-
-            // Set cookies
-            // response.headers.append('Set-Cookie', `token=${token}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 7}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
-            // response.headers.append('Set-Cookie', `user=${JSON.stringify(user)}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 7}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
-
-            // if (refreshToken) {
-            //     response.headers.append('Set-Cookie', `refreshToken=${refreshToken}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 30}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
-            // }
-
-            // return response;
-            return redirect('/welcome');
+                // Store token and user data in cookies that will be sent with the response
+                // These will be handled by the page component when it redirects
+                return {
+                    success: true,
+                    redirectTo: '/welcome',
+                    cookies: {
+                        token: validatedUser.token,
+                        user: JSON.stringify(validatedUser.customer),
+                        refreshToken: validatedUser.refreshToken || ''
+                    }
+                };
+            } catch (error) {
+                console.error('Error setting cookies:', error);
+            }
         }
 
-        // Redirect to callback URL if no token
-        // return redirect(callbackUrl || '/');
-        return redirect('/welcome');
+        // Return success result
+        return {
+            success: true,
+            redirectTo: '/welcome'
+        };
     } catch (error: any) {
         console.error('Social login error:', error);
 
-        // Redirect to error page with message
-        return redirect(`/login/error?error=${encodeURIComponent(error.message || 'Authentication failed')}`);
+        // Return error result
+        return {
+            success: false,
+            redirectTo: `/login/error?error=${encodeURIComponent(error.message || 'Authentication failed')}`,
+            error: error.message || 'Authentication failed'
+        };
     }
 }

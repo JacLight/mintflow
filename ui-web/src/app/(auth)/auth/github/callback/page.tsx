@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { processOAuthCallback } from '../../callback-action';
 
 export default async function GitHubCallbackPage({
@@ -7,11 +8,11 @@ export default async function GitHubCallbackPage({
 }) {
     const { code, state, error } = searchParams;
 
-    // Handle missing parameters
     if (!code || !state) {
         return new Response('Missing required parameters', { status: 400 });
     }
 
-    // Process the OAuth callback
-    return processOAuthCallback('github', code, state);
+    const result = await processOAuthCallback('github', code, state);
+    const redirectUrl = result.redirectTo || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    redirect(redirectUrl)
 }

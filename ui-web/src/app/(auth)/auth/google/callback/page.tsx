@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { processOAuthCallback } from '../../callback-action';
 
 export default async function GoogleCallbackPage({
@@ -17,5 +18,7 @@ export default async function GoogleCallbackPage({
     }
 
     // Process the OAuth callback
-    return processOAuthCallback('google', code, state);
+    const result = await processOAuthCallback('google', code, state);
+    const redirectUrl = result.redirectTo || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    redirect(redirectUrl)
 }
