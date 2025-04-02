@@ -157,28 +157,30 @@ export async function processOAuthCallback(
         const { callbackUrl } = parseState(state);
 
         // Create a response with cookies
-        if (validatedUser.appmintUser && validatedUser.appmintUser.token) {
+        if (validatedUser.customer && validatedUser.token) {
             // Create a response that redirects and sets cookies
-            const response = Response.redirect(new URL(callbackUrl || '/', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'));
+            const response = Response.redirect(new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'));
 
             // Set cookies - using the same pattern as in auth-service.ts
-            const token = validatedUser.appmintUser.token;
-            const user = validatedUser.appmintUser.user || userData;
-            const refreshToken = validatedUser.appmintUser.refreshToken || '';
+            const token = validatedUser.token;
+            const user = validatedUser.customer || userData;
+            const refreshToken = validatedUser.refreshToken || '';
 
             // Set cookies
-            response.headers.append('Set-Cookie', `token=${token}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 7}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
-            response.headers.append('Set-Cookie', `user=${JSON.stringify(user)}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 7}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
+            // response.headers.append('Set-Cookie', `token=${token}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 7}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
+            // response.headers.append('Set-Cookie', `user=${JSON.stringify(user)}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 7}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
 
-            if (refreshToken) {
-                response.headers.append('Set-Cookie', `refreshToken=${refreshToken}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 30}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
-            }
+            // if (refreshToken) {
+            //     response.headers.append('Set-Cookie', `refreshToken=${refreshToken}; Path=/; HttpOnly; Max-Age=${60 * 60 * 24 * 30}; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`);
+            // }
 
-            return response;
+            // return response;
+            return redirect('/welcome');
         }
 
         // Redirect to callback URL if no token
-        return redirect(callbackUrl || '/');
+        // return redirect(callbackUrl || '/');
+        return redirect('/welcome');
     } catch (error: any) {
         console.error('Social login error:', error);
 

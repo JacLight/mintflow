@@ -8,6 +8,8 @@
   "scripts": {
     "dev": "next dev",
     "dev-turbo": "next dev --turbopack",
+    "debug": "node --inspect node_modules/next/dist/bin/next dev",
+    "debug-brk": "node --inspect-brk node_modules/next/dist/bin/next dev",
     "build": "next build",
     "start": "next start"
   },

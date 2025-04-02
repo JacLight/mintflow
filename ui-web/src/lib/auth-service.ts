@@ -33,8 +33,8 @@ export async function login(email: string, password: string) {
         const data = await response.json();
 
         // Store session data
-        if (data.token && data.user) {
-            activeSession.setActiveSession(data.token, data.user, data.refreshToken || '');
+        if (data.token && data.customer) {
+            activeSession.setActiveSession(data.token, data.customer, data.refreshToken || '');
         }
 
         return data;
@@ -71,8 +71,8 @@ export async function register(userData: {
         const data = await response.json();
 
         // Store session data
-        if (data.token && data.user) {
-            activeSession.setActiveSession(data.token, data.user, data.refreshToken || '');
+        if (data.token && data.customer) {
+            activeSession.setActiveSession(data.token, data.customer, data.refreshToken || '');
         }
 
         return data;
@@ -165,30 +165,6 @@ import { getAppmintAuth } from './appmint-auth';
 // Get the AppMint Auth instance
 const appmintAuth = getAppmintAuth();
 
-/**
- * Check if a user exists in AppMint
- * @param email User's email
- * @returns Promise with login response or null if user doesn't exist
- */
-export async function checkUserExistsInAppMint(email: string): Promise<any> {
-    try {
-        // Try to login with a dummy password to check if user exists
-        // This is a workaround since AppMint doesn't provide a direct way to check if a user exists
-        // The actual implementation might vary based on AppMint's API
-        const response = await appmintAuth.login(email, 'dummy-password-for-check');
-
-        // If login succeeds, user exists
-        return response;
-    } catch (error: any) {
-        // If error is "Invalid credentials" but not "User not found", user exists
-        if (error.message && error.message.includes('Invalid credentials') && !error.message.includes('User not found')) {
-            return { exists: true, error };
-        }
-
-        // User doesn't exist or other error
-        return null;
-    }
-}
 
 /**
  * Register a user in AppMint
@@ -243,66 +219,15 @@ export async function registerUserInAppMint(userData: {
 export async function validateSocialLoginWithAppMint(user: any, account?: any): Promise<any> {
     try {
         // Check if user exists in AppMint
-        const existingUser = await checkUserExistsInAppMint(user.email);
-
-        let result;
-
-        if (existingUser && !existingUser.error) {
-            // User exists, return the AppMint user data
-            result = {
-                ...user,
-                appmintUser: existingUser,
-            };
-
-            // Store session data if we're in a client-side context
-            if (typeof window !== 'undefined' && existingUser.token && existingUser.user) {
-                activeSession.setActiveSession(
-                    existingUser.token,
-                    existingUser.user,
-                    existingUser.refreshToken || ''
-                );
-            }
-        } else if (existingUser && existingUser.exists) {
-            // User exists but we couldn't login (expected since we used a dummy password)
-            // We could potentially get user details from AppMint here if needed
-            result = {
-                ...user,
-                appmintUserExists: true,
-            };
-        } else {
-            // User doesn't exist, register them in AppMint
-            const registeredUser = await registerUserInAppMint({
-                email: user.email,
-                name: user.name,
-                image: user.image,
-                // Include provider-specific data
-                provider: account?.provider || 'unknown',
-                providerAccountId: account?.providerAccountId || user.id,
-                // Additional metadata that might be useful
-                providerProfile: JSON.stringify({
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    image: user.image,
-                    provider: account?.provider,
-                    providerAccountId: account?.providerAccountId,
-                }),
-            });
-
-            result = {
-                ...user,
-                appmintUser: registeredUser,
-            };
-
-            // Store session data if we're in a client-side context
-            if (typeof window !== 'undefined' && registeredUser.token && registeredUser.user) {
-                activeSession.setActiveSession(
-                    registeredUser.token,
-                    registeredUser.user,
-                    registeredUser.refreshToken || ''
-                );
-            }
+        const result = await appmintAuth.validateSocialLogin({ user, account });
+        if (typeof window !== 'undefined' && result.token && result.user) {
+            activeSession.setActiveSession(
+                result.token,
+                result.user,
+                result.refreshToken || ''
+            );
         }
+        // }
 
         return result;
     } catch (error) {

@@ -5,7 +5,11 @@ export default async function GoogleCallbackPage({
 }: {
     searchParams: { code?: string; state?: string; error?: string };
 }) {
-    const { code, state, error } = searchParams;
+    // Properly await searchParams to fix the NextJS error
+    const params = await Promise.resolve(searchParams);
+    const code = params.code;
+    const state = params.state;
+    const error = params.error;
 
     // Handle missing parameters
     if (!code || !state) {

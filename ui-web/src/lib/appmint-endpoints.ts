@@ -124,6 +124,21 @@ export const appmintEndpoints = {
     method: 'post',
     path: 'profile/customer/signin',
   },
+  customer_profile: {
+    name: 'customer_profile',
+    method: 'get',
+    path: 'profile/customer/profile',
+  },
+  customer_exist: {
+    name: 'customer_exist',
+    method: 'get',
+    path: 'profile/customer/exist',
+  },
+  customer_social_login: {
+    name: 'customer_social_login',
+    method: 'post',
+    path: 'profile/customer/social-login',
+  },
   dashboard_auth: {
     name: 'dashboard_auth',
     method: 'get',

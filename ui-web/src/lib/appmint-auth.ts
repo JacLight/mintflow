@@ -10,6 +10,39 @@ export class AppmintAuth {
     private appEngineClient = getAppEngineClient();
 
     /**
+     * Find Customer by email
+     * @param email User's email
+     */
+    async customerExist(email: string) {
+        try {
+            return await this.appEngineClient.processRequest(
+                appmintEndpoints.customer_exist.method,
+                `${appmintEndpoints.customer_exist.path}/${encodeURIComponent(email)}`,
+            );
+        } catch (error) {
+            console.error('Find customer by email error:', error);
+            throw error;
+        }
+    }
+
+    /**
+     *  validate social login
+     * @param socialdata
+    */
+    async validateSocialLogin(data) {
+        try {
+            return await this.appEngineClient.processRequest(
+                appmintEndpoints.customer_social_login.method,
+                appmintEndpoints.customer_social_login.path,
+                data
+            );
+        } catch (error) {
+            console.error('Find customer by email error:', error);
+            throw error;
+        }
+    }
+
+    /**
      * Login a user with email and password
      * @param email User's email
      * @param password User's password
