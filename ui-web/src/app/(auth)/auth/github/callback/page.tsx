@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { processOAuthCallback } from '../../callback-action';
+import { setAuthCookies } from '../../oauth-utils';
 
 export default async function GitHubCallbackPage({
     searchParams,
@@ -13,6 +14,8 @@ export default async function GitHubCallbackPage({
     }
 
     const result = await processOAuthCallback('github', code, state);
+    await setAuthCookies(result);
+
     const redirectUrl = result.redirectTo || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
     redirect(redirectUrl)
 }

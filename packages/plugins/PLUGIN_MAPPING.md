@@ -431,7 +431,7 @@ These plugins are unique to MintFlow and don't have a direct reference plugin co
 | paypal | Provides integration with PayPal API for processing payments, handling refunds, and managing recurring billing. |
 | stripe | Provides integration with Stripe API for payment processing, subscription management, and product/price management. |
 | langchain | Provides integration with LangChain for building LLM applications. |
-| llm | Provides integration with various Large Language Models. |
+| ai | Provides integration with various AI models including Large Language Models, chat capabilities, and image analysis. |
 | mail | Provides email sending and receiving capabilities. |
 | modify | Modifies data in the workflow context. |
 | mqtt | Provides MQTT messaging capabilities for IoT applications. |

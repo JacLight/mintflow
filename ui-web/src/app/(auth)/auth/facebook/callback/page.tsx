@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { processOAuthCallback } from '../../callback-action';
+import { setAuthCookies } from '../../oauth-utils';
 
 export default async function FacebookCallbackPage({
     searchParams,
@@ -15,6 +16,7 @@ export default async function FacebookCallbackPage({
 
     // Process the OAuth callback
     const result = await processOAuthCallback('facebook', code, state);
+    await setAuthCookies(result);
 
     // Create a redirect response
     const redirectUrl = result.redirectTo || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'

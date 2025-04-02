@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 
 // Provider configuration
 const providerConfig = {
@@ -42,4 +43,18 @@ export function getOAuthUrl(provider: string, callbackUrl: string) {
     authUrl.searchParams.set('state', state);
     authUrl.searchParams.set('response_type', 'code');
     return authUrl.toString();
+}
+
+export async function setAuthCookies(result: any) {
+    if (result.cookies) {
+        const cookieStore = await cookies()
+        const secure = process.env.NODE_ENV === 'production' ? 'Secure;' : '';
+        const domain = process.env.NEXT_PUBLIC_APP_URL ? new URL(process.env.NEXT_PUBLIC_APP_URL).hostname : 'localhost';
+        const cookieOptions: any = { secure, path: '/', domain: domain, sameSite: 'lax', httpOnly: secure, maxAge: 60 * 60 * 24 * 7 };
+        cookieStore.set('token', result.cookies.token, cookieOptions);
+        cookieStore.set('user', result.cookies.user, cookieOptions);
+        if (result.cookies.refreshToken) {
+            cookieStore.set('refreshToken', result.cookies.refreshToken, cookieOptions);
+        }
+    }
 }

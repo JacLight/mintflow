@@ -35,7 +35,7 @@ export async function createApp(): Promise<express.Express> {
     app.use('/api/auth', authRouter);
 
     // Protected routes - require authentication
-    app.use('/api/nodes', authMiddleware, nodeRouter);
+    app.use('/api/nodes', nodeRouter);
     app.use('/api/tenants', authMiddleware, tenantRouter);
     app.use('/api/users', authMiddleware, userRouter);
     app.use('/api/flows', authMiddleware, flowRouter);

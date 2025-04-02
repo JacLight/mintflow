@@ -38,9 +38,6 @@
     "@mintflow/langchain": {
       "root": "packages/plugins/langchain"
     },
-    "@mintflow/llm": {
-      "root": "packages/plugins/llm"
-    },
     "@mintflow/mail": {
       "root": "packages/plugins/mail"
     },
