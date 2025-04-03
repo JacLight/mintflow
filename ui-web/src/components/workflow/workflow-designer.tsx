@@ -183,15 +183,36 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                     }
                 },
                 getNodes: () => reactFlowInstance.getNodes(),
-                getEdges: () => reactFlowInstance.getEdges()
+                getEdges: () => reactFlowInstance.getEdges(),
+                // Add methods for importing workflow data
+                setNodes: (nodes: Node[]) => {
+                    setNodes(nodes);
+                },
+                setEdges: (edges: Edge[]) => {
+                    // Ensure all edges have the custom type
+                    const edgesWithCustomType = edges.map((edge: Edge) => ({
+                        ...edge,
+                        type: edge.type || 'custom'
+                    }));
+                    setEdges(edgesWithCustomType);
+                },
+                clear: () => {
+                    setNodes([]);
+                    setEdges([]);
+                }
             };
 
             // Register the workflow instance
             WorkflowService.registerWorkflowInstance(workflowInstance);
+            
+            // Expose the workflow instance to the window object for the import wizard
+            window['workflowInstance'] = workflowInstance;
 
             return () => {
                 // Unregister the workflow instance when the component unmounts
                 WorkflowService.registerWorkflowInstance(null);
+                // Remove from window object
+                delete window['workflowInstance'];
             };
         }
     }, [reactFlowInstance]);
@@ -280,7 +301,16 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
     }, [reactFlowInstance]);
 
     const handleImportWorkflow = useCallback(() => {
-        useDataImportStore.getState().setStateItem({ isClose: !useDataImportStore.getState().isClose })
+        // Reset the data import store state
+        useDataImportStore.getState().setStateItem({ 
+            isClose: false,
+            activeStep: 0,
+            dataSource: undefined,
+            error: undefined,
+            done: false,
+            jsonData: undefined,
+            uploadReport: undefined
+        });
     }, []);
 
     // Handle when a node is dropped on the canvas

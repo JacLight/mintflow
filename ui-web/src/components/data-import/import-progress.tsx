@@ -3,7 +3,7 @@ import { IconRenderer } from '../ui/icon-renderer';
 
 const dataImportSteps = [
   { id: 'source', name: 'Select Data source', href: '#' },
-  { id: 'finish', name: 'Finish', href: '#' },
+  { id: 'validate', name: 'Validate & Import', href: '#' },
 ];
 
 export const ImportProgress = ({ activeStep }) => {

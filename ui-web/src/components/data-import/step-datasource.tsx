@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isJSON, useDataImportStore } from './data-import-store';
 import { useShallow } from 'zustand/shallow';
 import { safeParseJSON } from '@/lib-client/helpers';
@@ -6,13 +6,12 @@ import { CustomFileUpload } from '../ui/common-file-upload';
 import MonacoCodeEditor from '../ui/monaco';
 
 const sources = [
-  { label: '', value: '' },
   { label: 'File Upload', value: 'file' },
   { label: 'Paste JSON or CSV', value: 'text' },
 ];
 
 export const DataImportDataSourceView = () => {
-  const { activeStep, dataSource, setStateItem, error } = useDataImportStore(useShallow(state => ({
+  const { activeStep, dataSource = { source: 'text', data: null }, setStateItem, error } = useDataImportStore(useShallow(state => ({
     activeStep: state.activeStep,
     dataSource: state.dataSource,
     setStateItem: state.setStateItem,
@@ -29,21 +28,8 @@ export const DataImportDataSourceView = () => {
     setStateItem({ dataSource: { source: 'file', file }, error: null });
   };
 
-  const handleSave = (id, data: string) => {
-    try {
-      if (isJSON(data)) {
-        const { json: jsonData, err } = safeParseJSON(data);
-        if (!Array.isArray(jsonData)) {
-          setStateItem({ error: 'Invalid JSON, Paste only JSON Array' });
-          return;
-        }
-        setStateItem({ dataSource: { source: 'text', data: data, format: 'json' }, jsonData: jsonData, error: null });
-        return;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    setStateItem({ error: 'Invalid Text, Paste only CSV or JSON' });
+  const onChange = (data: string) => {
+    setStateItem({ dataSource: { source: 'text', data: data, format: 'json' }, error: null });
   };
 
   const handelSourceChange = e => {
@@ -65,7 +51,7 @@ export const DataImportDataSourceView = () => {
       </div>
       <div className="px-4 pb-4 h-[] ">
         {dataSource?.source === 'file' && <CustomFileUpload onFileUpload={handleFilePicked} />}
-        {dataSource?.source === 'text' && <MonacoCodeEditor save={handleSave} mode={'json'} width={100} height={550} value={dataSource?.data} showAppBar={false} name={''} />}
+        {dataSource?.source === 'text' && <MonacoCodeEditor onChange={onChange} mode={'json'} width={100} height={550} value={dataSource?.data} showAppBar={false} name={''} />}
       </div>
     </div>
   );
