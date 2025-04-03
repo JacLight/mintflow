@@ -88,11 +88,11 @@ async function tryWithFallback<T>(
 const aiPlugin = {
     id: "ai",
     name: "AI Plugin",
-    icon: "GiBrain",
+    icon: "Brain",
     description: "A plugin to interact with various AI models through APIs and Ollama",
     documentation: "https://docs.example.com/aiPlugin",
     groups: ["ai"],
-    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
+    tags: ["ai", "nlp", "ml", "gpt", "chatbot", "image", "text", "embedding"],
     version: '1.0.0',
     // Input schema definition
     inputSchema: {

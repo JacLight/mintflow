@@ -4,16 +4,41 @@ import React, { useState, useEffect, useRef } from 'react';
 import { minimizedWindowsManager } from './minimized-windows';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 
+const calculatePosition = (position, size) => {
+    const { x, y } = position;
+
+    if (x === 'center') {
+        return { x: (window.innerWidth - size.width) / 2, y };
+    }
+    if (y === 'center') {
+        return { x, y: (window.innerHeight - size.height) / 2 };
+    }
+    if (x === 'right') {
+        return { x: window.innerWidth - size.width, y };
+    }
+    if (y === 'bottom') {
+        return { x, y: window.innerHeight - size.height };
+    }
+    if (x === 'left') {
+        return { x: 0, y };
+    }
+    if (y === 'top') {
+        return { x, y: 0 };
+    }
+    return { x, y };
+}
+
 const ViewManager = ({
     id,
     children,
     title = '',
-    defaultPosition = { x: 20, y: 20 },
-    defaultSize = { width: 400, height: 300 },
+    defaultPosition = { x: 'center', y: 'center' },
+    defaultSize = { width: 800, height: 600 },
     onClose = () => { },
     isResizable = true,
     style = {},
     compact = false,
+    dockWidth = 500,
     isModal = false,
     canDock = true,
     docked = false,
@@ -24,9 +49,9 @@ const ViewManager = ({
 
     const [position, setPosition] = useState(getStoredValue('position', defaultPosition));
     const [size, setSize] = useState(getStoredValue('size', defaultSize));
-    const [windowState, setWindowState] = useState('normal');
+    const [windowState, setWindowState] = useState(getStoredValue('windowState', docked ? 'docked' : 'normal'));
     const [stateHistory, setStateHistory] = useState({
-        normal: { position: defaultPosition, size: defaultSize }
+        normal: { position: calculatePosition(defaultPosition, defaultSize), size: defaultSize }
     });
     const [isDragging, setIsDragging] = useState(false);
     const [isResizing, setIsResizing] = useState(false);
@@ -73,9 +98,17 @@ const ViewManager = ({
 
     // Save state to localStorage
     useEffect(() => {
-        if (id && windowState === 'normal') {
-            localStorage.setItem(`float-box-${id}-position`, JSON.stringify(position));
-            localStorage.setItem(`float-box-${id}-size`, JSON.stringify(size));
+        if (id) {
+            // Save position and size only when in normal state
+            if (windowState === 'normal') {
+                localStorage.setItem(`float-box-${id}-position`, JSON.stringify(position));
+                localStorage.setItem(`float-box-${id}-size`, JSON.stringify(size));
+            }
+
+            // Save window state for normal and docked states, but not for minimized
+            if (windowState !== 'minimized') {
+                localStorage.setItem(`float-box-${id}-windowState`, JSON.stringify(windowState));
+            }
         }
     }, [id, position, size, windowState]);
 
@@ -111,6 +144,9 @@ const ViewManager = ({
                     y: e.clientY - dragOffset.y
                 };
                 setPosition(constrainToViewport(newPosition, size));
+
+                // Prevent default to avoid text selection during drag
+                e.preventDefault();
             }
 
             if (isResizing && windowState === 'normal') {
@@ -119,6 +155,9 @@ const ViewManager = ({
                 const newHeight = Math.max(100, Math.min(window.innerHeight, e.clientY - box.top));
                 setSize({ width: newWidth, height: newHeight });
                 setPosition(prev => constrainToViewport(prev, { width: newWidth, height: newHeight }));
+
+                // Prevent default to avoid text selection during resize
+                e.preventDefault();
             }
         };
 
@@ -129,11 +168,46 @@ const ViewManager = ({
                     normal: { position, size }
                 }));
             }
+
+            // Remove overlay if it exists
+            const overlay = document.getElementById('view-manager-drag-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
+            }
+
             setIsDragging(false);
             setIsResizing(false);
+
+            // Re-enable pointer events on iframes
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+                iframe.style.pointerEvents = 'auto';
+            });
         };
 
         if (isDragging || isResizing) {
+            // Create a full-screen overlay to capture all mouse events
+            if (!document.getElementById('view-manager-drag-overlay')) {
+                const overlay = document.createElement('div');
+                overlay.id = 'view-manager-drag-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.zIndex = '9999';
+                overlay.style.cursor = isDragging ? 'move' : 'se-resize';
+                // Make it transparent to mouse events but still capture them
+                overlay.style.backgroundColor = 'transparent';
+                document.body.appendChild(overlay);
+            }
+
+            // Disable pointer events on iframes to prevent them from capturing mouse events
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+                iframe.style.pointerEvents = 'none';
+            });
+
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
         }
@@ -141,12 +215,29 @@ const ViewManager = ({
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
+
+            // Clean up overlay if component unmounts during drag/resize
+            const overlay = document.getElementById('view-manager-drag-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
+            }
+
+            // Re-enable pointer events on iframes if component unmounts during drag/resize
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+                iframe.style.pointerEvents = 'auto';
+            });
         };
     }, [isDragging, isResizing, dragOffset, windowState, position, size]);
 
     const handleMouseDown = (e) => {
         if ((e.target === dragRef.current || e.target.parentElement === dragRef.current) &&
             windowState === 'normal' && !isModal) {
+            // Prevent default to avoid text selection and other browser behaviors
+            e.preventDefault();
+            // Stop propagation to prevent other elements from capturing the event
+            e.stopPropagation();
+
             setIsDragging(true);
             const box = boxRef.current.getBoundingClientRect();
             setDragOffset({
@@ -158,7 +249,11 @@ const ViewManager = ({
 
     const handleResizeMouseDown = (e) => {
         if (isResizable && windowState === 'normal' && !isModal) {
+            // Prevent default to avoid text selection and other browser behaviors
+            e.preventDefault();
+            // Stop propagation to prevent other elements from capturing the event
             e.stopPropagation();
+
             setIsResizing(true);
         }
     };
@@ -174,13 +269,23 @@ const ViewManager = ({
         const normalState = stateHistory.normal;
         setPosition(normalState.position);
         setSize(normalState.size);
-        setWindowState('normal');
-        setIsMenuOpen(false);
 
-        // Remove from minimized windows manager
-        if (id && windowState === 'minimized') {
-            minimizedWindowsManager.removeWindow(id);
+        // If we're restoring from a minimized state, we need to restore to the previously saved state
+        // or default to 'normal' if no previous state was saved
+        if (windowState === 'minimized') {
+            const savedState = getStoredValue('windowState', 'normal');
+            // Only restore to 'normal' or 'docked' states, not 'maximized' or 'minimized'
+            setWindowState(savedState === 'normal' || savedState === 'docked' ? savedState : 'normal');
+
+            // Remove from minimized windows manager
+            if (id) {
+                minimizedWindowsManager.removeWindow(id);
+            }
+        } else {
+            setWindowState('normal');
         }
+
+        setIsMenuOpen(false);
     };
 
     const toggleMinimize = () => {
@@ -209,7 +314,15 @@ const ViewManager = ({
             saveCurrentState();
             setWindowState('maximized');
         } else {
-            restoreToNormal();
+            // When un-maximizing, restore to the previously saved state (normal or docked)
+            const savedState = getStoredValue('windowState', 'normal');
+            const normalState = stateHistory.normal;
+
+            setPosition(normalState.position);
+            setSize(normalState.size);
+
+            // Only restore to 'normal' or 'docked' states
+            setWindowState(savedState === 'normal' || savedState === 'docked' ? savedState : 'normal');
         }
         setIsMenuOpen(false);
     };
@@ -219,7 +332,11 @@ const ViewManager = ({
             saveCurrentState();
             setWindowState('docked');
         } else {
-            restoreToNormal();
+            // When un-docking, restore to normal state
+            const normalState = stateHistory.normal;
+            setPosition(normalState.position);
+            setSize(normalState.size);
+            setWindowState('normal');
         }
         setIsMenuOpen(false);
     };
@@ -269,12 +386,13 @@ const ViewManager = ({
                     zIndex: 1000
                 };
             case 'docked':
+                const removeHeight = 75;
                 return {
                     position: 'absolute',
                     top: '0',
                     right: 0,
-                    width: '500px',
-                    height: '100%',
+                    width: dockWidth + 'px',
+                    height: `calc(100% - ${removeHeight}px)`,
                     zIndex: 1000
                 };
             default:

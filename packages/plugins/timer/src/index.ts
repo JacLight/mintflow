@@ -4,10 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 const timerPlugin = {
     name: "Timer",
-    icon: "",
+    icon: "Timer",
     description: "Description for timer",
     groups: ["utility"],
-    tags: ["utility","tool","helper","function","operation"],
+    tags: ["utility", "tool", "helper", "function", "operation"],
     version: '1.0.0',
     id: "timer",
     runner: "node",

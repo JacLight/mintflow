@@ -1,6 +1,22 @@
 import { twMerge } from 'tailwind-merge';
 
 
+
+export const safeParseJSON = (jsonString, isArray = false): { json: any; err?} => {
+  if (isEmpty(jsonString)) {
+    return { json: isArray ? [] : {} };
+  }
+  let json: any;
+  let err;
+  try {
+    json = JSON.parse(jsonString);
+  } catch (_error: any) {
+    console.error(_error);
+    err = _error.message;
+  }
+  return { json, err };
+};
+
 /**
  * Generate a UUID
  * @returns A UUID string

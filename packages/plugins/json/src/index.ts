@@ -3,10 +3,10 @@ import { convertJsonToText } from './actions/convert-json-to-text.js';
 
 const jsonPlugin = {
     name: 'json',
-    icon: '📄',
+    icon: 'FileJson',
     description: 'Convert between JSON and text formats',
     groups: ["utility"],
-    tags: ["utility","tool","helper","function","operation"],
+    tags: ["utility", "tool", "helper", "function", "operation"],
     version: '1.0.0',
     id: 'json',
     runner: 'node',

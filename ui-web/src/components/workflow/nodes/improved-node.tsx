@@ -105,10 +105,10 @@ export const ImprovedNode = memo(({
     };
 
     // Handle node settings
-    const handleSettings = () => {
-        alert('Settings dialog would appear here');
-        setShowMenu(false);
-    };
+    // const handleSettings = () => {
+    //     alert('Settings dialog would appear here');
+    //     setShowMenu(false);
+    // };
 
     // Handle node deletion
     const handleDelete = () => {
@@ -135,7 +135,7 @@ export const ImprovedNode = memo(({
                 <div className="flex flex-col gap-2 relative">
                     {/* Top right icons - with responsive sizing */}
                     <div className="absolute top-0 right-0 flex space-x-1 scale-[0.85] origin-top-right">
-                        <button
+                        {/* <button
                             className="p-1 hover:bg-gray-100 rounded-full"
                             aria-label="Settings"
                             title="Settings"
@@ -144,7 +144,7 @@ export const ImprovedNode = memo(({
                             <span className="h-3.5 w-3.5 text-gray-500">
                                 <Settings className="h-3.5 w-3.5" />
                             </span>
-                        </button>
+                        </button> */}
                         <button
                             className="p-1 hover:bg-gray-100 rounded-full"
                             aria-label="Duplicate"
@@ -174,13 +174,13 @@ export const ImprovedNode = memo(({
                             className="absolute top-6 right-0 z-10 bg-white rounded-md shadow-lg border p-2 min-w-48"
                         >
                             <div className="text-xs font-medium px-2 py-1 text-gray-500 mb-2 border-b pb-2">Node Options</div>
-                            <button
+                            {/* <button
                                 className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded flex items-center"
                                 onClick={handleSettings}
                             >
                                 <span className="mr-3 h-4 w-4 text-gray-600"><Settings className="h-4 w-4" /></span>
                                 Settings
-                            </button>
+                            </button> */}
                             <button
                                 className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded flex items-center"
                                 onClick={handleClone}

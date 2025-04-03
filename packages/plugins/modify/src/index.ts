@@ -29,10 +29,10 @@ const processTemplate = (template: string, data: any) => {
 
 const modifyPlugin = {
     name: "Modify",
-    icon: "",
+    icon: "Edit",
     description: "Description for modify",
     groups: ["utility"],
-    tags: ["utility","tool","helper","function","operation"],
+    tags: ["utility", "tool", "helper", "function", "operation"],
     version: '1.0.0',
     id: "modify",
     runner: "node",

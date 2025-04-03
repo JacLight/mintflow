@@ -20,10 +20,12 @@ import {
     useOnSelectionChange
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Save, Upload, Download } from 'lucide-react';
+import { Save, Upload, Download, FolderOpen } from 'lucide-react';
 
 import { ComponentPanel } from './component-panel';
 import { getNodeTypes, getEdgeTypes, getNodeDefaultData } from './node-registry';
+import DataImportApp from '../data-import';
+import { useDataImportStore } from '../data-import/data-import-store';
 
 // Get node and edge types from the registry
 // You can filter which nodes to include by passing an array of types
@@ -278,6 +280,10 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
         linkElement.click();
     }, [reactFlowInstance]);
 
+    const handleImportWorkflow = useCallback(() => {
+        useDataImportStore.getState().setStateItem({ isClose: !useDataImportStore.getState().isClose })
+    }, []);
+
     // Handle when a node is dropped on the canvas
     const onDrop = useCallback(
         (event: DragEvent<HTMLDivElement>) => {
@@ -346,25 +352,33 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                 <Background />
                 <Controls />
                 <MiniMap />
-                <Panel position="top-left" className="bg-background border rounded-md shadow-md">
-                    <div className="p-2 text-sm font-medium">Workflow Designer - New Flow</div>
-                </Panel>
-                <Panel position="top-right" className="bg-background border rounded-md shadow-md flex gap-2">
+                <Panel position="top-left" className="bg-background border rounded-md shadow-md flex">
                     <button
                         onClick={handleSaveWorkflow}
                         className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
                         title="Save workflow"
                     >
                         <Save className="h-4 w-4" />
-                        <span>Save</span>
+                        <span className="text-sm font-medium">Workflow Designer - New Flow</span>
                     </button>
+                    <div className='border-r border-r-gray-300'></div>
                     <button
                         onClick={() => handleShowLoadDialog(!showLoadDialog)}
+                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+                        title="Save workflow"
+                    >
+                        <FolderOpen className="h-4 w-4" />
+                        <span>Open</span>
+                    </button>
+                </Panel>
+                <Panel position="top-right" className="bg-background border rounded-md shadow-md flex gap-2">
+                    <button
+                        onClick={handleImportWorkflow}
                         className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
                         title="Load workflow"
                     >
                         <Upload className="h-4 w-4" />
-                        <span>Load</span>
+                        <span>Import</span>
                     </button>
                     <button
                         onClick={handleExportWorkflow}
@@ -385,6 +399,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                 onRowClick={handleFlowSelect}
                 onClose={() => handleShowLoadDialog(false)}
             />
+            <DataImportApp />
         </div>
     );
 }

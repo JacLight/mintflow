@@ -5,7 +5,7 @@ const arrayPlugin: PluginDescriptor = {
     name: "Array Plugin",
     id: "array",
     runner: "node",
-    icon: "TbMathFunction",
+    icon: "Function",
     description: "A plugin to perform array operations",
     documentation: "https://docs.example.com/arrayPlugin",
     type: 'node',
@@ -19,5 +19,3 @@ const arrayPlugin: PluginDescriptor = {
 };
 
 export default arrayPlugin;
-
-

@@ -44,10 +44,10 @@ const githubClient = new GithubClient();
 
 const githubPlugin = {
     name: "GitHub",
-    icon: "",
+    icon: "Github",
     description: "Interact with GitHub repositories, issues, and more",
     groups: ["development"],
-    tags: ["development","code","programming","debugging","testing"],
+    tags: ["development", "code", "programming", "debugging", "testing"],
     version: '1.0.0',
     id: "github",
     runner: "node",

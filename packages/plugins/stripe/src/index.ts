@@ -18,10 +18,10 @@ import {
 
 const stripePlugin = {
     name: "Stripe",
-    icon: "",
+    icon: "CreditCard",
     description: "Payment processing platform for online businesses",
     groups: ["payment"],
-    tags: ["payment","finance","money","transaction","billing"],
+    tags: ["payment", "finance", "money", "transaction", "billing"],
     version: '1.0.0',
     id: "stripe",
     runner: "node",

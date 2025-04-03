@@ -7,10 +7,10 @@ import { mimeTypes } from './mime-types.js';
 
 const filePlugin = {
     name: "File",
-    icon: "",
+    icon: "File",
     description: "Read, create, and manipulate files with various encodings and formats",
     groups: ["file"],
-    tags: ["file","document","storage","media","content"],
+    tags: ["file", "document", "storage", "media", "content"],
     version: '1.0.0',
     id: "file",
     runner: "node",

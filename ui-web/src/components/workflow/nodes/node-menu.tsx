@@ -10,10 +10,10 @@ export const NodeMenu: React.FC<any> = (props: { id }) => {
     const reactFlowInstance = useReactFlow();
 
     // Handle node settings
-    const handleSettings = () => {
-        alert('Settings dialog would appear here');
-        setShowMenu(false);
-    };
+    // const handleSettings = () => {
+    //     alert('Settings dialog would appear here');
+    //     setShowMenu(false);
+    // };
 
     // Handle node deletion
     const handleDelete = () => {
@@ -54,13 +54,13 @@ export const NodeMenu: React.FC<any> = (props: { id }) => {
                     className="absolute top-6 -left-10 z-10 bg-white rounded-md shadow-lg border p-2 min-w-48"
                 >
                     <div className="text-xs font-medium px-2 py-1 text-gray-500 mb-2 border-b pb-2">Node Options</div>
-                    <button
+                    {/* <button
                         className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded flex items-center"
                         onClick={handleSettings}
                     >
                         <span className="mr-3 h-4 w-4 text-gray-600"><IconRenderer icon='Settings' className="h-4 w-4" /></span>
                         Settings
-                    </button>
+                    </button> */}
                     <button
                         className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded flex items-center"
                         onClick={handleClone}

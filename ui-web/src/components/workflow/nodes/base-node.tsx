@@ -209,10 +209,10 @@ export const BaseNode = memo(({
   };
 
   // Handle node settings
-  const handleSettings = () => {
-    alert('Settings dialog would appear here');
-    setShowMenu(false);
-  };
+  // const handleSettings = () => {
+  //   alert('Settings dialog would appear here');
+  //   setShowMenu(false);
+  // };
 
 
   return (
@@ -242,7 +242,7 @@ export const BaseNode = memo(({
                 <IconRenderer icon={isExpanded ? 'ChevronUp' : 'ChevronDown'} className="h-3.5 w-3.5" />
               </span>
             </button>
-            <button
+            {/* <button
               className="p-1 hover:bg-gray-100 rounded-full"
               aria-label="Settings"
               title="Settings"
@@ -251,7 +251,7 @@ export const BaseNode = memo(({
               <span className="h-3.5 w-3.5 text-gray-500">
                 <Settings className="h-3.5 w-3.5" />
               </span>
-            </button>
+            </button> */}
             <button
               className="p-1 hover:bg-gray-100 rounded-full"
               aria-label="Duplicate"

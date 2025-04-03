@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const fetchPlugin = {
     name: "Fetch",
-    icon: "",
+    icon: "Globe",
     description: "Description for fetch",
     groups: ["integration"],
-    tags: ["integration","connector","api","service","platform"],
+    tags: ["integration", "connector", "api", "service", "platform"],
     version: '1.0.0',
     id: "fetch",
     runner: "node",
