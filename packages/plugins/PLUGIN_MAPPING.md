@@ -428,6 +428,8 @@ These plugins are unique to MintFlow and don't have a direct reference plugin co
 | array | Provides array manipulation functions like map, filter, reduce, and more. |
 | exec | Executes shell commands and scripts. |
 | inject | Injects data into the workflow context. |
+| mcp-client | Provides a client for connecting to Model Context Protocol (MCP) servers, using their tools, and accessing their resources. |
+| mcp-server | Provides functionality to convert any node to a Model Context Protocol (MCP) server, enabling seamless integration with AI assistants. |
 | paypal | Provides integration with PayPal API for processing payments, handling refunds, and managing recurring billing. |
 | stripe | Provides integration with Stripe API for payment processing, subscription management, and product/price management. |
 | langchain | Provides integration with LangChain for building LLM applications. |
