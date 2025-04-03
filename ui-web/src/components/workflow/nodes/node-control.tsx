@@ -3,11 +3,8 @@
 import React, { useState } from 'react';
 import { ButtonDelete } from '@/components/ui/button-delete';
 import { useReactFlow } from '@xyflow/react';
-import { getResponseErrorMessage } from '@/lib-client/helpers';
-import { useSiteStore } from '@/context/site-store';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 import { Check, Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Image, Loader, AlertCircle, AlertTriangle } from 'lucide-react';
-import { runNode } from '@/lib/node-service';
 
 const availableNodeTypes = [
     { id: 'info', label: 'Info Node', icon: <Info className="h-4 w-4" /> },
@@ -17,7 +14,7 @@ const availableNodeTypes = [
     { id: 'image', label: 'Image', icon: <Image className="h-4 w-4" /> },
 ];
 
-export const NodeControl: React.FC<any> = ({ input, selected, id, setIsRunning, setRunStatus, setRunOutput, setLastRunTimestamp }) => {
+export const NodeControl: React.FC<any> = ({  selected, id, onRunNode,}) => {
     const reactFlowInstance = useReactFlow();
     const [showAddMenu, setShowAddMenu] = useState(false);
 
@@ -28,56 +25,6 @@ export const NodeControl: React.FC<any> = ({ input, selected, id, setIsRunning, 
     // Handle node deletion
     const handleDelete = () => {
         reactFlowInstance.deleteElements({ nodes: [{ id }] });
-    };
-
-
-    const handlePlay = async () => {
-        try {
-            // Get the node type from the id or data
-            const nodeType = id.split('-')[0]; // Assuming id format is like "inject-123456"
-            const plugin = nodeType;
-            const action = input?.action || nodeType; // Default action is same as plugin name
-
-            // Get input values - this would need to be expanded based on your actual input handling
-            console.log(`Running node ${id} (plugin: ${plugin}, action: ${action})`);
-
-            setIsRunning(true);
-            setRunStatus('idle'); // Reset status when starting a new run
-
-            // Prepare data for the API call
-            const data = {
-                nodeId: id,
-                plugin,
-                action,
-                input
-            };
-
-            // Call the API to run the node
-            const result = await runNode(data);
-
-            console.log('Node run result:', result);
-            setRunOutput(result);
-
-            // Set the run status based on the result
-            if (result && result.error) {
-                setRunStatus('error');
-            } else {
-                setRunStatus('success');
-            }
-
-            // Set timestamp for the run
-            setLastRunTimestamp(new Date().toISOString());
-
-            // Automatically show output for immediate feedback
-        } catch (error) {
-            const msg = getResponseErrorMessage(error);
-            useSiteStore().ui.getState().showNotice(msg, 'error');
-            console.error(error);
-            setRunStatus('error');
-            setLastRunTimestamp(new Date().toISOString());
-        } finally {
-            setIsRunning(false);
-        }
     };
 
     // Handle adding a new connected node
@@ -153,7 +100,7 @@ export const NodeControl: React.FC<any> = ({ input, selected, id, setIsRunning, 
                     className="p-1 hover:bg-gray-100 rounded-full"
                     aria-label="Run"
                     title="Run"
-                    onClick={handlePlay}
+                    onClick={onRunNode}
                 >
                     <span className="h-3.5 w-3.5 text-gray-500">
                         <IconRenderer icon='Play' className="h-3.5 w-3.5" />

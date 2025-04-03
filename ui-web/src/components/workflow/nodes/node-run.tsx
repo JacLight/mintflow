@@ -1,19 +1,34 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
+import DataViewer from '@/components/data-viewer';
+import { runNode } from '@/lib/node-service';
+import { getResponseErrorMessage } from '@/lib-client/helpers';
+import { useSiteStore } from '@/context/site-store';
 interface NodeRunProps {
-    output: any;
-    error?: any;
-    isRunning: boolean;
-    runStatus: any;
-    data?: any;
-    lastRunTimestamp: any
+    id: string;
+    input: any;
+    nodeInfo: any;
+    setRunStatus?: any;
+    setIsRunning?: any;
+    runTimestamp?: number;
+    runStatus?: string;
 }
 
-export const NodeRun: React.FC<NodeRunProps> = ({ output, data, error, isRunning, runStatus, lastRunTimestamp }) => {
-    const [activeTab, setActiveTab] = useState<'summary' | 'output' | 'raw'>('summary');
+
+export const NodeRun: React.FC<NodeRunProps> = ({ id, input, runStatus, nodeInfo, runTimestamp, setIsRunning, setRunStatus }) => {
+    const [activeTab, setActiveTab] = useState<'summary' | 'output' | 'raw' | 'view'>('summary');
     const [showRunDetails, setShowRunDetails] = useState(false);
+    const [output, setRunOutput] = useState<any>(null);
+    const [lastRunTimestamp, setLastRunTimestamp] = useState<number>(0);
+
+    useEffect(() => {
+        if (runTimestamp > lastRunTimestamp) {
+            handlePlay();
+        }
+
+    }, [runTimestamp]);
 
     // Determine if the run was successful
     const isSuccess = !output?.error;
@@ -22,6 +37,52 @@ export const NodeRun: React.FC<NodeRunProps> = ({ output, data, error, isRunning
     const executionTime = output?.executionTime || output?.metadata?.executionTime;
 
     // Format the output for display
+
+    const handlePlay = async () => {
+        try {
+            // Get the node type from the id or data
+            const nodeType = id.split('-')[0]; // Assuming id format is like "inject-123456"
+            const plugin = nodeType;
+            const action = input?.action || nodeType; // Default action is same as plugin name
+
+            // Get input values - this would need to be expanded based on your actual input handling
+            console.log(`Running node ${id} (plugin: ${plugin}, action: ${action})`);
+
+            setIsRunning(true);
+            setRunStatus('idle'); // Reset status when starting a new run
+
+            // Prepare data for the API call
+            const data = {
+                nodeId: id,
+                plugin,
+                action,
+                input
+            };
+
+            // Call the API to run the node
+            setRunStatus('running');
+            const result = await runNode(data);
+
+            console.log('Node run result:', result);
+            setRunOutput(result);
+
+            // Set the run status based on the result
+            if (result && result.error) {
+                setRunStatus('error');
+            } else {
+                setRunStatus('success');
+            }
+        } catch (error) {
+            const msg = getResponseErrorMessage(error);
+            useSiteStore().ui.getState().showNotice(msg, 'error');
+            console.error(error);
+            setRunStatus('error');
+        } finally {
+            setLastRunTimestamp(Date.now());
+            setIsRunning(false);
+        }
+    };
+
     const formatOutput = (data: any) => {
         if (!data) return 'No output data';
 
@@ -107,9 +168,25 @@ export const NodeRun: React.FC<NodeRunProps> = ({ output, data, error, isRunning
                             >
                                 Raw
                             </button>
+                            <button
+                                className={`px-4 py-2 ${activeTab === 'view' ? 'border-b-2 border-purple-500 font-medium' : 'text-gray-500'}`}
+                                onClick={() => setActiveTab('view')}
+                            >
+                                View
+                            </button>
                         </div>
 
                         <div className="flex-1 overflow-auto p-4">
+                            {activeTab === 'view' && (
+                                <div className="h-full">
+                                    <DataViewer
+                                        data={isSuccess ? output : output?.result || output}
+                                        showViewerSelector={true}
+                                        showRawToggle={true}
+                                    />
+                                </div>
+                            )}
+
                             {activeTab === 'summary' && (
                                 <div className="space-y-4">
                                     {/* Status card */}

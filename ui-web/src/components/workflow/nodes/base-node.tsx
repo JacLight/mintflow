@@ -71,9 +71,8 @@ export const BaseNode = memo(({
   const reactFlowInstance = useReactFlow();
   // State for node running and status
   const [isRunning, setIsRunning] = useState(false);
-  const [runOutput, setRunOutput] = useState<any>(null);
   const [runStatus, setRunStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [lastRunTimestamp, setLastRunTimestamp] = useState<string | null>(null);
+  const [runTimestamp, setRunTimestamp] = useState<number | null>(null);
 
 
   // Extract connection state from data prop
@@ -247,7 +246,7 @@ export const BaseNode = memo(({
               </span>
             </button>
             {/* Status indicator */}
-            <NodeRun data={data} isRunning={isRunning} output={runOutput} runStatus={runStatus} lastRunTimestamp={lastRunTimestamp} />
+            <NodeRun id={id} input={data?.formData} runStatus={runStatus} nodeInfo={nodeInfo} runTimestamp={runTimestamp} setIsRunning={setIsRunning} setRunStatus={setRunStatus} />
             <NodeMenu id={id} />
           </div>
 
@@ -265,7 +264,7 @@ export const BaseNode = memo(({
           <div className={classNames(isExpanded ? 'w-[350px]' : 'w-64', 'max-h-[800px] overflow-auto')}>
             {children}
           </div>
-          <NodeControl selected={selected} input={data?.formData} id={id} setIsRunning={setIsRunning} setRunStatus={setRunStatus} setRunOutput={setRunOutput} setLastRunTimestamp={setLastRunTimestamp} />
+          <NodeControl selected={selected} onRunNode={() => setRunTimestamp(Date.now())}  id={id} />
         </div>
 
         {/* Output handle (source) */}
