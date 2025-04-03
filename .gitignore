@@ -57,3 +57,5 @@ vitest.config.*.timestamp*
 .env
 .env.*
 **/packages/*/.env
+**/ui-web/*/.env
+**/env.local
