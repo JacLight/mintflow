@@ -18,7 +18,7 @@ export type DynamicNodeData = BaseNodeData & {
 // Dynamic node component with form based on schema
 export const DynamicNode = memo((props: NodeProps) => {
     const { data, id, ...rest } = props;
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(true);
     const [localFormData, setLocalFormData] = useState<any>(data?.formData || {});
     const reactFlowInstance = useReactFlow();
 

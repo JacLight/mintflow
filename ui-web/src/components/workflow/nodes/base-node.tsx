@@ -285,13 +285,18 @@ export const BaseNode = memo(({
         </div>
 
         {/* Output handle (source) */}
-        <GlowingHandle
+        <Handle
+          type="source"
+          position={calculatedSourcePosition as Position}
+          className="!h-3 !w-3 !bg-primary"
+        />
+
+        {/* <GlowingHandle
           type="source"
           position={calculatedSourcePosition}
           isConnectable={true}
           id={id}
-        // className="!h-3 !w-3 !bg-primary"
-        />
+        /> */}
 
         <NodeEdges processedInputs={processedInputs} processedOutputs={processedOutputs} id={id} connectionState={connectionState} data={data} />
 
