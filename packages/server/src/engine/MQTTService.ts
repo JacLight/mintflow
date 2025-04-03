@@ -17,7 +17,7 @@ export class MQTTService {
     private activeSubscriptions = new Map<string, Set<string>>();
 
     private constructor() {
-        this.initializeClient();
+        // this.initializeClient();
     }
 
     private initializeClient(): void {

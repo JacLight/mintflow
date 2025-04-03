@@ -23,9 +23,11 @@ import '@xyflow/react/dist/style.css';
 import { Save, Upload, Download, FolderOpen } from 'lucide-react';
 
 import { ComponentPanel } from './component-panel';
-import { getNodeTypes, getEdgeTypes, getNodeDefaultData } from './node-registry';
+import { getNodeTypes, getEdgeTypes } from './node-registry';
 import DataImportApp from '../data-import';
 import { useDataImportStore } from '../data-import/data-import-store';
+import { getRandomString } from '@/lib-client/helpers';
+import { useSiteStore } from '@/context/site-store';
 
 // Get node and edge types from the registry
 // You can filter which nodes to include by passing an array of types
@@ -165,14 +167,11 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             const workflowInstance = {
                 addNode: (type: string, nodeId: string, position = { x: 250, y: 250 }) => {
                     try {
-                        const nodeInfo = componentTypes.find((c: any) => c.id.toLowerCase() === nodeId.toLowerCase());
-                        const nodeData = getNodeDefaultData(type, nodeId);
-
                         const newNode: Node = {
-                            id: nodeId,
+                            id: `${nodeId}-${getRandomString(5)}`,
                             type,
                             position,
-                            data: { nodeId, ...nodeData, nodeInfo }
+                            data: { nodeId }
                         };
 
                         // Add the new node to the flow
@@ -295,7 +294,6 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             const type = event.dataTransfer.getData('application/reactflow/type');
             const name = event.dataTransfer.getData('application/reactflow/name');
             const nodeId = event.dataTransfer.getData('application/reactflow/id');
-            const nodeInfo = componentTypes.find((c: any) => c.id.toLowerCase() === nodeId.toLowerCase());
 
             // Get position where the node was dropped
             const position = reactFlowInstance.screenToFlowPosition({
@@ -303,14 +301,11 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                 y: event.clientY - reactFlowBounds.top
             });
 
-            // Create a new node with data from the node registry
-            const nodeData = getNodeDefaultData(type, nodeId);
-
             const newNode: Node = {
-                id: nodeId,
+                id: `${nodeId}-${getRandomString(5)}`,
                 type,
                 position,
-                data: { nodeId, ...nodeData, nodeInfo }
+                data: { nodeId }
             };
 
             // Add the new node to the flow
@@ -406,6 +401,11 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
 
 // Main workflow designer component with split layout
 export function WorkflowDesigner({ componentTypes, componentGroups }: { componentTypes: any, componentGroups: any }) {
+
+    useEffect(() => {
+        useSiteStore().ui.getState().setStateItem({componentTypes, componentGroups});
+    }, []);
+
     return (
         <ReactFlowProvider>
             <div className="flex flex-col h-full w-full relative">

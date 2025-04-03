@@ -4,8 +4,11 @@ import { memo, useState, useCallback } from 'react';
 import { NodeProps, Position, useReactFlow } from '@xyflow/react';
 import { BaseNode, BaseNodeData } from './base-node';
 import { AppmintForm } from 'appmint-form';
-import { deepCopy, isEmpty, isNotEmpty } from '@/lib-client/helpers';
-import { getNodeSchema } from '../node-registry';
+import { isEmpty, isNotEmpty } from '@/lib-client/helpers';
+import { useSiteStore } from '@/context/site-store';
+import ViewManager from '@/components/common/view-manager';
+import { IconRenderer } from '@/components/ui/icon-renderer';
+import { set } from 'date-fns';
 
 // Extended data type for dynamic nodes
 export type DynamicNodeData = BaseNodeData & {
@@ -21,6 +24,7 @@ export const DynamicNode = memo((props: NodeProps) => {
     const [expanded, setExpanded] = useState(true);
     const [localFormData, setLocalFormData] = useState<any>(data?.formData || {});
     const reactFlowInstance = useReactFlow();
+    const [bigForm, setBigForm] = useState(false);
 
     console.log('DynamicNode', data);
 
@@ -29,6 +33,7 @@ export const DynamicNode = memo((props: NodeProps) => {
         e.preventDefault();
         e.stopPropagation();
         setExpanded(!expanded);
+        setBigForm(false);
     };
 
     // Update form data in the node data
@@ -51,45 +56,47 @@ export const DynamicNode = memo((props: NodeProps) => {
         }
     }, [id, reactFlowInstance]);
 
-    let schema = getNodeSchema(data)
-    cleanSchema(schema);
-    schema = (isEmpty(schema.properties)) ? null : schema;
+    let nodeInfo = useSiteStore().ui.getState().getNodeInfo(data?.nodeId as string) || data?.schema;
+    const schema = cleanSchema(nodeInfo?.inputSchema || data?.schema);
+
+    const getForm = () => {
+        if (isEmpty(schema) || !expanded) return null;
+        const form = (<div className="relative p-2">
+            <button onClick={() => setBigForm(!bigForm)} className="z-50 absolute top-2 right-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400">
+                <IconRenderer icon={bigForm ? 'Minimize' :'Maximize' }/>
+            </button>
+            <AppmintForm
+                schema={schema}
+                data={localFormData}
+                rules={[]}
+                datatype={'node-form'}
+                id={`form-${data.nodeId || id || 'default'}`}
+                theme={theme}
+                onChange={updateFormData}
+            />
+            {/* <div className="mt-2 rounded bg-muted p-2">
+                <div className="text-xs font-medium mb-1">Current Form Data:</div>
+                <pre className="text-[10px] overflow-auto max-h-32">
+                    {JSON.stringify(localFormData, null, 2)}
+                </pre>
+            </div> */}
+        </div>)
+        return bigForm ? <ViewManager onClose={() => setBigForm(false)} id={`form-${data.nodeId}`}>{form}</ViewManager> : <div className="text-xs text-muted-foreground max-h-[600px] overflow-auto">{form}</div>;
+    }
+
     return (
         <BaseNode
             {...rest}
             id={id}
             data={data}
+            nodeInfo={nodeInfo}
             sourcePosition={Position.Bottom}
             targetPosition={Position.Top}
             isExpanded={expanded}
             toggleExpand={toggleExpand}
         >
             <div className="flex flex-col">
-
-
-                {/* Form content (expanded) */}
-                {expanded && (schema) && (
-                    <div className="mt-2 space-y-2 border-t pt-2">
-                        <div className="text-xs text-muted-foreground max-h-[600px] overflow-auto">
-                            <AppmintForm
-                                schema={schema}
-                                data={localFormData}
-                                rules={[]}
-                                datatype={'node-form'}
-                                id={`form-${data.nodeId || id || 'default'}`}
-                                theme={theme}
-                                onChange={updateFormData}
-                            />
-
-                            {/* <div className="mt-2 rounded bg-muted p-2">
-                                <div className="text-xs font-medium mb-1">Current Form Data:</div>
-                                <pre className="text-[10px] overflow-auto max-h-32">
-                                    {JSON.stringify(localFormData, null, 2)}
-                                </pre>
-                            </div> */}
-                        </div>
-                    </div>
-                )}
+                {getForm()}
             </div>
         </BaseNode>
     );
@@ -119,6 +126,7 @@ const cleanSchema = (schema: any) => {
             }
         });
     }
+    return schema;
 }
 
 DynamicNode.displayName = 'DynamicNode';

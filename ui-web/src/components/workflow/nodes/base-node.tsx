@@ -3,9 +3,7 @@
 import { memo, useState, useRef, useEffect, useMemo } from 'react';
 import { Handle, Position, NodeProps, useReactFlow } from '@xyflow/react';
 import { IconRenderer } from '@/components/ui/icon-renderer';
-import { Box, Info, Zap, Settings, Copy, MoreHorizontal, Play, Plus, Trash, Loader } from 'lucide-react';
 import { ConnectionState, NodePosition } from '../types';
-import GlowingHandle from './glowing-handle';
 import { classNames } from '@/lib-client/helpers';
 import { NodeEdges } from './node-edges';
 import { NodeControl } from './node-control';
@@ -44,26 +42,7 @@ export type BaseNodeData = {
   }>;
 };
 
-// Available node types for the add menu
 
-
-// Helper function to get icon component
-const getIconComponent = (iconName: string) => {
-  switch (iconName) {
-    case 'Box': return <Box className="h-4 w-4" />;
-    case 'Info': return <Info className="h-4 w-4" />;
-    case 'Zap': return <Zap className="h-4 w-4" />;
-    case 'Settings': return <Settings className="h-4 w-4" />;
-    case 'Copy': return <Copy className="h-4 w-4" />;
-    case 'MoreHorizontal': return <MoreHorizontal className="h-4 w-4" />;
-    case 'Play': return <Play className="h-4 w-4" />;
-    case 'Plus': return <Plus className="h-4 w-4" />;
-    case 'Trash': return <Trash className="h-4 w-4" />;
-    default: return null;
-  }
-};
-
-// Base node component with common styling and functionality
 export const BaseNode = memo(({
   id,
   data,
@@ -73,12 +52,14 @@ export const BaseNode = memo(({
   isExpanded = false,
   className = '',
   children,
+  nodeInfo,
   toggleExpand
 }: NodeProps & { toggleExpand: any, isExpanded?: boolean, className?: string } & {
   data: BaseNodeData & { connectionState?: ConnectionState }
   sourcePosition?: Position;
   targetPosition?: Position;
   children?: React.ReactNode;
+  nodeInfo: any
   className?: string;
   toggleExpand: any;
   isExpanded?: boolean;
@@ -215,6 +196,9 @@ export const BaseNode = memo(({
   // };
 
 
+  const icon = nodeInfo?.icon || data?.icon;
+  const label = nodeInfo?.name || data?.label;
+
   return (
     <div
       className={classNames(`rounded-md border border-gray-200 bg-background shadow-md transition-all`, selected ? 'ring-2 ring-purple-700' : '', className)}
@@ -259,7 +243,7 @@ export const BaseNode = memo(({
               onClick={handleClone}
             >
               <span className="h-3.5 w-3.5 text-gray-500">
-                <Copy className="h-3.5 w-3.5" />
+                <IconRenderer icon='Copy' className="h-3.5 w-3.5" />
               </span>
             </button>
             {/* Status indicator */}
@@ -270,12 +254,12 @@ export const BaseNode = memo(({
 
           {/* Node label with icon and status indicator */}
           <div className="text-sm font-medium flex items-center min-h-[24px] overflow-hidden mt-1">
-            {data.icon && (
+            {icon && (
               <span className="mr-2 flex-shrink-0">
-                {typeof data.icon === 'string' ? getIconComponent(data.icon) : data.icon}
+                 <IconRenderer icon={icon} />
               </span>
             )}
-            <span className="truncate">{data.label}</span>
+            <span className="truncate">{label}</span>
           </div>
 
           <div className={classNames(isExpanded ? 'w-[350px]' : 'w-64', 'max-h-[800px] overflow-auto')}>
@@ -303,7 +287,7 @@ export const BaseNode = memo(({
         {/* Run button with loading state */}
         {isRunning && (
           <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
-            <Loader className="h-6 w-6 text-purple-600 animate-spin" />
+            <IconRenderer icon='Loader' className="h-6 w-6 text-purple-600 animate-spin" />
           </div>
         )}
       </div>

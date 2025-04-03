@@ -69,6 +69,9 @@ interface UIState {
     quickViewProps: { id?: string, type?: string, data?: any, schema?: any, rules?: any };
     showNotice: (message: string, type: string) => void;
     notifications?: { id: string; title: string; message: string; type: string; status: string }[];
+    componentTypes?: any[];
+    componentGroups?: any[];
+    getNodeInfo: (id: string) => any;
 }
 
 export const useUIStore = create<UIState>()(
@@ -88,6 +91,10 @@ export const useUIStore = create<UIState>()(
                 const notification = { id: getRandomString(6), title: '', message, type, status: 'new' };
                 set({ notifications: [...(get().notifications || []), notification] });
             },
+            getNodeInfo: (nodeId: string) => {
+                const componentTypes = get().componentTypes || [];
+                return componentTypes.find((c: any) => c.id.toLowerCase() === nodeId?.toLowerCase());
+            }
         }),
         {
             name: 'ui-storage', // unique name for localStorage

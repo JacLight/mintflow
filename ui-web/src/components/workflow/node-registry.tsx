@@ -188,27 +188,7 @@ export const getComponentTypes = (includeTypes?: string[]) => {
         }));
 };
 
-// Helper function to get default data for a node type
-export const getNodeDefaultData = (type: string, name: string) => {
-    console.log('getNodeDefaultData called with type:', type, 'name:', name);
-    const nodeDefinition = NODE_REGISTRY.find(node => node.type === type);
-    if (nodeDefinition) {
-        const data = nodeDefinition.createDefaultData(name);
-        console.log('getNodeDefaultData returning:', data);
-        return data;
-    }
-    // Fallback if node type not found
-    console.log('getNodeDefaultData fallback for type:', type);
-    return { label: name };
-};
-
-export const getNodeSchema = (nodeData) => {
-    console.log(`getNodeSchema called with action: ${nodeData.action} type ${nodeData.type}`);
-    const baseSchema = nodeData?.nodeInfo?.inputSchema || nodeData.schema
-    const { formData } = nodeData;
-    return enrishNodeSchema(baseSchema, formData);
-};
-
-const enrishNodeSchema = (schema, formData) => {
+export const enrishNodeSchema = (nodeId, schema, formData) => {
+    console.log(`enrishNodeSchema: ${nodeId}`);
     return schema;
 }
