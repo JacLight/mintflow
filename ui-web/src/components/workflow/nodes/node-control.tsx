@@ -34,7 +34,7 @@ export const NodeControl: React.FC<any> = ({  selected, id, onRunNode,}) => {
             // Calculate position for new node
             const newNodePosition = {
                 x: currentNode.position.x,
-                y: currentNode.position.y + 150
+                y: currentNode.position.y + 250
             };
 
             // Create new node
@@ -76,15 +76,15 @@ export const NodeControl: React.FC<any> = ({  selected, id, onRunNode,}) => {
 
                     // Add edges to connect current -> new -> existing
                     reactFlowInstance.addEdges([
-                        { id: `e-${id}-${newNodeId}`, source: id, target: newNodeId },
-                        { id: `e-${newNodeId}-${existingTargetId}`, source: newNodeId, target: existingTargetId }
+                        { id: `e-${id}-${newNodeId}`, source: id, target: newNodeId, type:'custom' },
+                        { id: `e-${newNodeId}-${existingTargetId}`, source: newNodeId, target: existingTargetId, type:'custom' }
                     ]);
                 }
             } else {
                 // Just add the new node and connect it
                 reactFlowInstance.addNodes(newNode);
                 reactFlowInstance.addEdges([
-                    { id: `e-${id}-${newNodeId}`, source: id, target: newNodeId }
+                    { id: `e-${id}-${newNodeId}`, source: id, target: newNodeId, type:'custom' }
                 ]);
             }
 

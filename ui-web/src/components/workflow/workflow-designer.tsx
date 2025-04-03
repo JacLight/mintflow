@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useCallback, useRef, DragEvent, useEffect } from 'react';
+import { useState, useCallback, useRef, DragEvent, useEffect, memo } from 'react';
 import { DataList } from "../common/data-list";
+import ErrorBoundary from './error-boundary';
 import { ConsolePanel } from '../console';
 import WorkflowService from '@/lib/workflow-service';
 import {
@@ -29,9 +30,32 @@ import { useDataImportStore } from '../data-import/data-import-store';
 import { getRandomString } from '@/lib-client/helpers';
 import { useSiteStore } from '@/context/site-store';
 
+// Wrap each node type with an error boundary
+// This ensures that if a single node crashes, it doesn't bring down the entire workflow
+const wrapNodeTypesWithErrorBoundary = (originalNodeTypes: Record<string, React.ComponentType<any>>) => {
+    const wrappedNodeTypes: Record<string, React.ComponentType<any>> = {};
+    
+    Object.entries(originalNodeTypes).forEach(([nodeType, Component]) => {
+        wrappedNodeTypes[nodeType] = memo((props) => (
+            <ErrorBoundary fallback={
+                <div className="p-3 bg-red-50 border border-red-300 rounded shadow-sm min-w-[150px] min-h-[50px]">
+                    <div className="text-red-600 font-medium text-sm">Error in {nodeType} node</div>
+                    <div className="text-xs text-red-500 mt-1">This node encountered an error</div>
+                </div>
+            }>
+                <Component {...props} />
+            </ErrorBoundary>
+        ));
+    });
+    
+    return wrappedNodeTypes;
+};
+
 // Get node and edge types from the registry
 // You can filter which nodes to include by passing an array of types
-const nodeTypes = getNodeTypes(['info', 'dynamic', 'app-view', 'form', 'improved', 'action', 'condition', 'switch', 'image']);
+const originalNodeTypes = getNodeTypes(['info', 'dynamic', 'app-view', 'form', 'improved', 'action', 'condition', 'switch', 'image']);
+// Wrap each node type with an error boundary
+const nodeTypes = wrapNodeTypesWithErrorBoundary(originalNodeTypes);
 const edgeTypes = getEdgeTypes(['custom']);
 
 export interface WorkflowData {
@@ -243,28 +267,48 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
 
     return (
         <div className="h-full w-full" ref={reactFlowWrapper}>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={(changes) => {
-                    setNodes((nds) => {
-                        return applyNodeChanges(changes, nds);
-                    });
-                }}
-                onEdgesChange={(changes) => {
-                    setEdges((eds) => {
-                        return applyEdgeChanges(changes, eds);
-                    });
-                }}
-                onConnect={(connection) => {
-                    setEdges((eds) => addEdge({ ...connection, type: 'custom' }, eds));
-                }}
-                nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
-                onDrop={onDrop}
-                onDragOver={onDragOver}
-            // fitView
-            >
+            <ErrorBoundary fallback={
+                <div className="flex items-center justify-center h-full w-full bg-gray-50">
+                    <div className="p-6 max-w-md bg-white rounded-lg border border-gray-200 shadow-md">
+                        <h3 className="text-xl font-bold text-red-600 mb-4">Workflow Error</h3>
+                        <p className="mb-4">There was an error rendering the workflow. This could be due to invalid workflow data or a component error.</p>
+                        <div className="flex gap-2">
+                            <button 
+                                onClick={() => {
+                                    setNodes([]);
+                                    setEdges([]);
+                                    window.location.reload();
+                                }}
+                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                            >
+                                Reset Workflow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }>
+                <ReactFlow
+                    nodes={nodes}
+                    edges={edges}
+                    onNodesChange={(changes) => {
+                        setNodes((nds) => {
+                            return applyNodeChanges(changes, nds);
+                        });
+                    }}
+                    onEdgesChange={(changes) => {
+                        setEdges((eds) => {
+                            return applyEdgeChanges(changes, eds);
+                        });
+                    }}
+                    onConnect={(connection) => {
+                        setEdges((eds) => addEdge({ ...connection, type: 'custom' }, eds));
+                    }}
+                    nodeTypes={nodeTypes}
+                    edgeTypes={edgeTypes}
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
+                // fitView
+                >
                 <Background />
                 <Controls />
                 <MiniMap />
@@ -307,7 +351,8 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                 </Panel>
 
 
-            </ReactFlow>
+                </ReactFlow>
+            </ErrorBoundary>
             {/* Load Flow Dialog */}
             <DataList
                 show={showLoadDialog}
@@ -328,16 +373,18 @@ export function WorkflowDesigner({ componentTypes, componentGroups }: { componen
     }, []);
 
     return (
-        <ReactFlowProvider>
-            <div className="flex flex-col h-full w-full relative">
-                <div className="flex flex-1 min-h-0">
-                    <ComponentPanel componentTypes={componentTypes} componentGroups={componentGroups} />
-                    <div className="flex-1">
-                        <FlowCanvas componentTypes={componentTypes} />
+        <ErrorBoundary>
+            <ReactFlowProvider>
+                <div className="flex flex-col h-full w-full relative">
+                    <div className="flex flex-1 min-h-0">
+                        <ComponentPanel componentTypes={componentTypes} componentGroups={componentGroups} />
+                        <div className="flex-1">
+                            <FlowCanvas componentTypes={componentTypes} />
+                        </div>
                     </div>
+                    <ConsolePanel />
                 </div>
-                <ConsolePanel />
-            </div>
-        </ReactFlowProvider>
+            </ReactFlowProvider>
+        </ErrorBoundary>
     );
 }

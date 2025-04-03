@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { minimizedWindowsManager } from './minimized-windows';
 import { IconRenderer } from '@/components/ui/icon-renderer';
+import { classNames } from '@/lib-client/helpers';
 
 const calculatePosition = (position, size) => {
     const { x, y } = position;
@@ -32,7 +33,7 @@ const calculatePosition = (position, size) => {
 const ViewManager = ({
     id,
     children,
-    title = '',
+    title,
     defaultPosition = { x: 'center', y: 'center' },
     defaultSize = { width: 800, height: 600 },
     onClose = () => { },
@@ -44,7 +45,8 @@ const ViewManager = ({
     canDock = true,
     docked = false,
     closeOnOutsideClick = false,
-    usePortal = false
+    usePortal = false,
+    className = '',
 }) => {
     // No need for external store references
 
@@ -70,7 +72,7 @@ const ViewManager = ({
         if (usePortal && typeof document !== 'undefined') {
             // Check if portal container already exists
             let container = document.getElementById('view-manager-portal-container');
-            
+
             if (!container) {
                 // Create portal container if it doesn't exist
                 container = document.createElement('div');
@@ -85,9 +87,9 @@ const ViewManager = ({
                 container.style.zIndex = '1000';
                 document.body.appendChild(container);
             }
-            
+
             portalContainerRef.current = container as HTMLDivElement;
-            
+
             return () => {
                 // Only remove the container if this is the last portal using it
                 if (container && container.childElementCount <= 1) {
@@ -554,7 +556,7 @@ const ViewManager = ({
                 )}
 
                 {/* Content area */}
-                <div className={`flex-1 overflow-auto relative ${compact ? 'pt-2' : ''}`}>
+                <div className={classNames(`flex-1 overflow-auto relative`, compact ? 'pt-2' : '', className)}>
                     {children}
                 </div>
 

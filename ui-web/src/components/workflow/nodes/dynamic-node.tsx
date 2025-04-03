@@ -61,9 +61,9 @@ export const DynamicNode = memo((props: NodeProps) => {
 
     const getForm = () => {
         if (isEmpty(schema) || !expanded) return null;
-        const form = (<div className="relative p-2">
+        const form = (<div className="relative p-3">
             <button onClick={() => setBigForm(!bigForm)} className="z-50 absolute top-2 right-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400">
-                <IconRenderer icon={bigForm ? 'Minimize' :'Maximize' }/>
+                <IconRenderer icon={bigForm ? 'Minimize' : 'Maximize'} />
             </button>
             <AppmintForm
                 schema={schema}
@@ -81,11 +81,11 @@ export const DynamicNode = memo((props: NodeProps) => {
                 </pre>
             </div> */}
         </div>)
-        return bigForm ? <ViewManager usePortal={true} onClose={() => setBigForm(false)} id={`form-${data.nodeId}`}>{form}</ViewManager> : <div className="text-xs text-muted-foreground max-h-[600px] overflow-auto">{form}</div>;
+        return bigForm ? <ViewManager title={<div className='flex gap-2 items-center'><IconRenderer icon={nodeInfo?.icon} /><span>{id}</span></div>} className='p-3' defaultPosition={{ x: 'center', y: 'center' }} usePortal={true} onClose={() => setBigForm(false)} id={`form-${data.nodeId}`}>{form}</ViewManager> : form;
     }
 
     return (
-            <BaseNode
+        <BaseNode
             {...rest}
             id={id}
             data={{
