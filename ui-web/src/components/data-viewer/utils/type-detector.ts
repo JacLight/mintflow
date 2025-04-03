@@ -226,10 +226,142 @@ const isBase64 = (str: string): boolean => {
  * Try to determine the MIME type from a base64 string
  */
 const getMimeTypeFromBase64 = (base64Str: string): string | null => {
-  if (!base64Str.startsWith('data:')) return null;
+  if (!base64Str.startsWith('data:')) {
+    // Try to detect audio format from base64 patterns
+    if (detectAudioFormatFromBase64(base64Str)) {
+      return detectAudioFormatFromBase64(base64Str);
+    }
+    return null;
+  }
   
   const match = base64Str.match(/^data:([^;]+);base64,/);
   return match ? match[1] : null;
+};
+
+/**
+ * Magic number signatures for common file formats
+ */
+const SIGNATURES = {
+  // Audio formats
+  mp3: [0x49, 0x44, 0x33], // ID3
+  mp3_2: [0xFF, 0xFB], // MPEG ADTS
+  wav: [0x52, 0x49, 0x46, 0x46], // "RIFF"
+  ogg: [0x4F, 0x67, 0x67, 0x53], // "OggS"
+  flac: [0x66, 0x4C, 0x61, 0x43], // "fLaC"
+  aac: [0xFF, 0xF1], // AAC ADTS
+  
+  // Video formats
+  mp4: [0x66, 0x74, 0x79, 0x70], // "ftyp"
+  webm: [0x1A, 0x45, 0xDF, 0xA3], // EBML
+  
+  // Image formats
+  png: [0x89, 0x50, 0x4E, 0x47], // PNG
+  jpg: [0xFF, 0xD8, 0xFF], // JPEG
+  gif: [0x47, 0x49, 0x46, 0x38], // "GIF8"
+  
+  // Document formats
+  pdf: [0x25, 0x50, 0x44, 0x46] // "%PDF"
+};
+
+/**
+ * Detect audio format from base64 string patterns
+ */
+const detectAudioFormatFromBase64 = (base64Str: string): string | null => {
+  // MP3 patterns in base64
+  if (base64Str.startsWith('//uQZAAA') || 
+      base64Str.startsWith('//uSZAAA') ||
+      base64Str.startsWith('//OkxAA') ||
+      base64Str.startsWith('//OkxA') ||  // Microsoft speech pattern
+      base64Str.startsWith('SUQz')) {
+    return 'audio/mp3';
+  }
+  
+  // WAV patterns in base64
+  if (base64Str.startsWith('UklGR') || 
+      base64Str.startsWith('UklG')) {
+    return 'audio/wav';
+  }
+  
+  // OGG patterns in base64
+  if (base64Str.startsWith('T2dnUw') || 
+      base64Str.startsWith('T2dn')) {
+    return 'audio/ogg';
+  }
+  
+  // AAC patterns in base64
+  if (base64Str.startsWith('/+M') || 
+      base64Str.startsWith('AAAA')) {
+    return 'audio/aac';
+  }
+  
+  return null;
+};
+
+/**
+ * Convert a binary array to a Uint8Array for signature checking
+ */
+const toBinaryArray = (data: any): Uint8Array | null => {
+  if (data instanceof Uint8Array) {
+    return data;
+  }
+  
+  if (data instanceof ArrayBuffer) {
+    return new Uint8Array(data);
+  }
+  
+  if (typeof Buffer !== 'undefined' && data instanceof Buffer) {
+    return new Uint8Array(data);
+  }
+  
+  if (Array.isArray(data) && data.every(item => typeof item === 'number')) {
+    return new Uint8Array(data);
+  }
+  
+  if (data.type === 'Buffer' && Array.isArray(data.data)) {
+    return new Uint8Array(data.data);
+  }
+  
+  return null;
+};
+
+/**
+ * Check if binary data matches a signature
+ */
+const matchSignature = (data: Uint8Array, signature: number[]): boolean => {
+  if (data.length < signature.length) return false;
+  
+  for (let i = 0; i < signature.length; i++) {
+    if (data[i] !== signature[i]) return false;
+  }
+  
+  return true;
+};
+
+/**
+ * Detect MIME type from binary data using signatures
+ */
+const detectMimeTypeFromBinary = (data: any): string | null => {
+  const binaryData = toBinaryArray(data);
+  if (!binaryData) return null;
+  
+  // Check against known signatures
+  if (matchSignature(binaryData, SIGNATURES.mp3)) return 'audio/mp3';
+  if (matchSignature(binaryData, SIGNATURES.mp3_2)) return 'audio/mp3';
+  if (matchSignature(binaryData, SIGNATURES.wav)) return 'audio/wav';
+  if (matchSignature(binaryData, SIGNATURES.ogg)) return 'audio/ogg';
+  if (matchSignature(binaryData, SIGNATURES.flac)) return 'audio/flac';
+  if (matchSignature(binaryData, SIGNATURES.aac)) return 'audio/aac';
+  
+  if (matchSignature(binaryData, SIGNATURES.mp4)) return 'video/mp4';
+  if (matchSignature(binaryData, SIGNATURES.webm)) return 'video/webm';
+  
+  if (matchSignature(binaryData, SIGNATURES.png)) return 'image/png';
+  if (matchSignature(binaryData, SIGNATURES.jpg)) return 'image/jpeg';
+  if (matchSignature(binaryData, SIGNATURES.gif)) return 'image/gif';
+  
+  if (matchSignature(binaryData, SIGNATURES.pdf)) return 'application/pdf';
+  
+  return null;
 };
 
 /**
@@ -273,6 +405,10 @@ export const detectContentType = (data: any): ViewerType => {
       if (data.startsWith('data:image/')) return 'image';
       if (data.startsWith('data:audio/')) return 'audio';
       if (data.startsWith('data:video/')) return 'video';
+      
+      // Check for audio patterns in base64 data without data URL prefix
+      const audioFormat = detectAudioFormatFromBase64(data);
+      if (audioFormat) return 'audio';
     }
     
     // STEP 3: Analyze content structure
@@ -303,12 +439,29 @@ export const detectContentType = (data: any): ViewerType => {
       (typeof Buffer !== 'undefined' && data instanceof Buffer) ||
       (typeof Blob !== 'undefined' && data instanceof Blob) ||
       data.type === 'Buffer' || 
-      data.byteLength !== undefined
+      data.byteLength !== undefined ||
+      (data instanceof Uint8Array) ||
+      (data instanceof Int8Array) ||
+      (data instanceof Uint16Array) ||
+      (data instanceof Int16Array) ||
+      (data instanceof Uint32Array) ||
+      (data instanceof Int32Array) ||
+      (data instanceof Float32Array) ||
+      (data instanceof Float64Array)
     ) {
       // Try to determine binary type from metadata or context
       if (data.type === 'image' || data.contentType?.includes('image/')) return 'image';
       if (data.type === 'audio' || data.contentType?.includes('audio/')) return 'audio';
       if (data.type === 'video' || data.contentType?.includes('video/')) return 'video';
+      
+      // Try to detect MIME type from binary data
+      const mimeType = detectMimeTypeFromBinary(data);
+      if (mimeType) {
+        if (mimeType.startsWith('image/')) return 'image';
+        if (mimeType.startsWith('audio/')) return 'audio';
+        if (mimeType.startsWith('video/')) return 'video';
+        if (mimeType === 'application/pdf') return 'website'; // PDFs can be viewed in website viewer
+      }
       
       // Default binary data to image as a best guess
       return 'image';
@@ -325,19 +478,24 @@ export const detectContentType = (data: any): ViewerType => {
     else if (data.response !== undefined) content = data.response;
     else if (data.output !== undefined) content = data.output;
     else if (data.data !== undefined) content = data.data;
+    else if (data.message !== undefined) content = data.message;
+    else if (data.body !== undefined) content = data.body;
+    else if (data.payload !== undefined) content = data.payload;
     
     // Extract metadata if available
     if (data.metadata) metadata = data.metadata;
     else if (data.info) metadata = data.info;
     else if (data.details) metadata = data.details;
+    else if (data.meta) metadata = data.meta;
+    else if (data.headers) metadata = data.headers;
     
     // STEP 3: Check metadata for explicit type hints
     if (metadata && typeof metadata === 'object') {
       const meta = metadata as any;
       
       // Check for content type or MIME type
-      if (meta.contentType || meta.mimeType) {
-        const typeStr = (meta.contentType || meta.mimeType).toLowerCase();
+      if (meta.contentType || meta.mimeType || meta['content-type'] || meta.mime) {
+        const typeStr = (meta.contentType || meta.mimeType || meta['content-type'] || meta.mime).toLowerCase();
         
         if (typeStr.includes('image/')) return 'image';
         if (typeStr.includes('audio/')) return 'audio';
@@ -348,8 +506,8 @@ export const detectContentType = (data: any): ViewerType => {
       }
       
       // Check for explicit type field
-      if (meta.type) {
-        const typeStr = meta.type.toLowerCase();
+      if (meta.type || meta.format || meta.mediaType) {
+        const typeStr = (meta.type || meta.format || meta.mediaType).toLowerCase();
         
         if (typeStr === 'image') return 'image';
         if (typeStr === 'audio') return 'audio';
@@ -361,8 +519,8 @@ export const detectContentType = (data: any): ViewerType => {
     }
     
     // STEP 4: Check if the object itself has type indicators
-    if (data.type) {
-      const typeStr = data.type.toLowerCase();
+    if (data.type || data.format || data.mediaType) {
+      const typeStr = (data.type || data.format || data.mediaType).toLowerCase();
       
       if (typeStr === 'image') return 'image';
       if (typeStr === 'audio') return 'audio';
@@ -370,6 +528,18 @@ export const detectContentType = (data: any): ViewerType => {
       if (typeStr === 'html' || typeStr === 'website') return 'website';
       if (typeStr === 'markdown' || typeStr === 'md') return 'markdown';
       if (typeStr === 'json') return 'json';
+    }
+    
+    // Check for MIME type in the object
+    if (data.mimeType || data.contentType || data['content-type'] || data.mime) {
+      const mimeStr = (data.mimeType || data.contentType || data['content-type'] || data.mime).toLowerCase();
+      
+      if (mimeStr.startsWith('image/')) return 'image';
+      if (mimeStr.startsWith('audio/')) return 'audio';
+      if (mimeStr.startsWith('video/')) return 'video';
+      if (mimeStr === 'text/html') return 'website';
+      if (mimeStr === 'text/markdown') return 'markdown';
+      if (mimeStr === 'application/json') return 'json';
     }
     
     // STEP 5: Check for URL fields that might contain media
@@ -391,11 +561,71 @@ export const detectContentType = (data: any): ViewerType => {
       }
     }
     
-    // STEP 6: If content is a string, recursively check it
+    if (typeof data.uri === 'string') {
+      if (isUrl(data.uri)) {
+        if (isImageUrl(data.uri)) return 'image';
+        if (isAudioUrl(data.uri)) return 'audio';
+        if (isVideoUrl(data.uri)) return 'video';
+        return 'website'; // Default URL to website
+      }
+    }
+    
+    if (typeof data.href === 'string') {
+      if (isUrl(data.href)) {
+        if (isImageUrl(data.href)) return 'image';
+        if (isAudioUrl(data.href)) return 'audio';
+        if (isVideoUrl(data.href)) return 'video';
+        return 'website'; // Default URL to website
+      }
+    }
+    
+    // STEP 6: Check for media-specific fields
+    if (data.image !== undefined) return 'image';
+    if (data.audio !== undefined) return 'audio';
+    if (data.video !== undefined) return 'video';
+    if (data.html !== undefined) return 'website';
+    if (data.markdown !== undefined || data.md !== undefined) return 'markdown';
+    
+    // STEP 6.5: Check for specific API response structures
+    // Microsoft Speech API response structure
+    if (data.audioData && typeof data.audioData === 'string' && 
+        data.mimeType && data.mimeType.toLowerCase().includes('audio/')) {
+      return 'audio';
+    }
+    
+    // STEP 7: If content is a string, recursively check it
     if (typeof content === 'string' && content !== data) {
       const contentType = detectContentType(content);
       if (contentType !== 'text') {
         return contentType;
+      }
+    }
+    
+    // STEP 8: Check for binary data in nested fields
+    for (const key in data) {
+      if (data[key] instanceof ArrayBuffer || 
+          data[key] instanceof Uint8Array ||
+          (typeof Buffer !== 'undefined' && data[key] instanceof Buffer) ||
+          (typeof Blob !== 'undefined' && data[key] instanceof Blob)) {
+        
+        const mimeType = detectMimeTypeFromBinary(data[key]);
+        if (mimeType) {
+          if (mimeType.startsWith('image/')) return 'image';
+          if (mimeType.startsWith('audio/')) return 'audio';
+          if (mimeType.startsWith('video/')) return 'video';
+        }
+        
+        // Use field name as a hint
+        const fieldName = key.toLowerCase();
+        if (fieldName.includes('image') || fieldName.includes('picture') || fieldName.includes('photo')) {
+          return 'image';
+        }
+        if (fieldName.includes('audio') || fieldName.includes('sound') || fieldName.includes('voice') || fieldName.includes('speech')) {
+          return 'audio';
+        }
+        if (fieldName.includes('video') || fieldName.includes('movie') || fieldName.includes('clip')) {
+          return 'video';
+        }
       }
     }
     

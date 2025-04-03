@@ -81,14 +81,17 @@ export const DynamicNode = memo((props: NodeProps) => {
                 </pre>
             </div> */}
         </div>)
-        return bigForm ? <ViewManager onClose={() => setBigForm(false)} id={`form-${data.nodeId}`}>{form}</ViewManager> : <div className="text-xs text-muted-foreground max-h-[600px] overflow-auto">{form}</div>;
+        return bigForm ? <ViewManager usePortal={true} onClose={() => setBigForm(false)} id={`form-${data.nodeId}`}>{form}</ViewManager> : <div className="text-xs text-muted-foreground max-h-[600px] overflow-auto">{form}</div>;
     }
 
     return (
-        <BaseNode
+            <BaseNode
             {...rest}
             id={id}
-            data={data}
+            data={{
+                ...data,
+                label: data?.label || nodeInfo?.name || 'Node' // Ensure label is always provided
+            }}
             nodeInfo={nodeInfo}
             sourcePosition={Position.Bottom}
             targetPosition={Position.Top}

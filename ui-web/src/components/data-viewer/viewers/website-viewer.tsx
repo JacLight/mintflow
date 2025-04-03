@@ -21,27 +21,110 @@ const WebsiteViewer: React.FC<WebsiteViewerProps> = ({ data, onError }) => {
     
     if (typeof content === 'string') {
       // If it's a URL, return it
-      if (content.startsWith('http') || content.startsWith('https')) {
+      if (content.startsWith('http') || 
+          content.startsWith('https') || 
+          content.startsWith('file://') ||
+          content.match(/^www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/)) {
         return { html: content, isUrl: true };
+      }
+      
+      // If it's a data URL with HTML content
+      if (content.startsWith('data:text/html')) {
+        // Extract the HTML from the data URL
+        const htmlContent = decodeURIComponent(content.split(',')[1]);
+        return { html: htmlContent, isUrl: false };
       }
       
       // If it looks like HTML, return it
       if ((content.trim().startsWith('<') && content.includes('</')) ||
-          (content.includes('<html') && content.includes('</html>'))) {
+          (content.includes('<html') && content.includes('</html>')) ||
+          (content.includes('<body') && content.includes('</body>')) ||
+          (content.includes('<div') && content.includes('</div>')) ||
+          (content.includes('<p') && content.includes('</p>'))) {
         return { html: content, isUrl: false };
+      }
+      
+      // Check if it's base64 encoded HTML
+      if (content.match(/^[A-Za-z0-9+/=]+$/) && content.length > 24) {
+        try {
+          // Try to decode as base64
+          const decoded = atob(content);
+          // Check if the decoded content looks like HTML
+          if ((decoded.includes('<html') && decoded.includes('</html>')) ||
+              (decoded.includes('<body') && decoded.includes('</body>')) ||
+              (decoded.includes('<!DOCTYPE html>'))) {
+            return { html: decoded, isUrl: false };
+          }
+        } catch (e) {
+          // Not valid base64, continue
+        }
       }
     }
     
     // If it's an object, look for common HTML properties
     if (typeof content === 'object' && content !== null) {
+      // Check for URL properties
       if (content.url) return { html: content.url, isUrl: true };
       if (content.src) return { html: content.src, isUrl: true };
+      if (content.uri) return { html: content.uri, isUrl: true };
+      if (content.href) return { html: content.href, isUrl: true };
+      if (content.link) return { html: content.link, isUrl: true };
+      
+      // Check for HTML content properties
       if (content.html) return { html: content.html, isUrl: false };
+      if (content.htmlContent) return { html: content.htmlContent, isUrl: false };
+      if (content.markup) return { html: content.markup, isUrl: false };
+      if (content.webpage) return { html: content.webpage, isUrl: false };
+      
+      // Check for content in common fields
       if (content.content && typeof content.content === 'string') {
         if ((content.content.trim().startsWith('<') && content.content.includes('</')) ||
-            (content.content.includes('<html') && content.content.includes('</html>'))) {
+            (content.content.includes('<html') && content.content.includes('</html>')) ||
+            (content.content.includes('<body') && content.content.includes('</body>'))) {
           return { html: content.content, isUrl: false };
         }
+        
+        // Check if it might be a URL in the content field
+        if (content.content.startsWith('http') || 
+            content.content.startsWith('https') ||
+            content.content.match(/^www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/)) {
+          return { html: content.content, isUrl: true };
+        }
+      }
+      
+      // Check for data field
+      if (content.data) {
+        if (typeof content.data === 'string') {
+          if ((content.data.trim().startsWith('<') && content.data.includes('</')) ||
+              (content.data.includes('<html') && content.data.includes('</html>'))) {
+            return { html: content.data, isUrl: false };
+          }
+          
+          // Check if it might be a URL in the data field
+          if (content.data.startsWith('http') || 
+              content.data.startsWith('https')) {
+            return { html: content.data, isUrl: true };
+          }
+        }
+        
+        // Recursively check data field
+        return extractHtmlContent(content.data);
+      }
+      
+      // Check for MIME type in the object
+      if ((content.mimeType === 'text/html' || 
+           content.contentType === 'text/html' || 
+           content['content-type'] === 'text/html') && 
+          content.body) {
+        return { html: content.body, isUrl: false };
+      }
+      
+      // Check for PDF content (which can be displayed in an iframe)
+      if ((content.mimeType === 'application/pdf' || 
+           content.contentType === 'application/pdf' || 
+           content['content-type'] === 'application/pdf') && 
+          content.url) {
+        return { html: content.url, isUrl: true };
       }
     }
     

@@ -29,33 +29,135 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ data, onError }) => {
       // If it's already a URL or data URL, return it
       if (content.startsWith('http') || 
           content.startsWith('data:audio/') || 
-          content.match(/\.(mp3|wav|ogg|m4a)$/i)) {
+          content.match(/\.(mp3|wav|ogg|m4a|flac|aac|wma|aiff)$/i)) {
         return content;
       }
       
       // Check if it's a base64 string without the data URL prefix
       if (content.match(/^[A-Za-z0-9+/=]+$/)) {
+        // Try to detect the audio format from the base64 pattern
+        if (content.startsWith('//uQZAAA') || 
+            content.startsWith('//uSZAAA') ||
+            content.startsWith('//OkxAA') ||
+            content.startsWith('//OkxA') ||  // Microsoft speech pattern
+            content.startsWith('SUQz')) {
+          return `data:audio/mp3;base64,${content}`;
+        }
+        
+        if (content.startsWith('UklGR') || 
+            content.startsWith('UklG')) {
+          return `data:audio/wav;base64,${content}`;
+        }
+        
+        if (content.startsWith('T2dnUw') || 
+            content.startsWith('T2dn')) {
+          return `data:audio/ogg;base64,${content}`;
+        }
+        
+        if (content.startsWith('/+M') || 
+            content.startsWith('AAAA')) {
+          return `data:audio/aac;base64,${content}`;
+        }
+        
+        // Default to MP3 if we can't determine the format
         return `data:audio/mp3;base64,${content}`;
       }
     }
     
     // If it's an object, look for common audio URL properties
     if (typeof content === 'object' && content !== null) {
+      // Check for direct URL properties
       if (content.url) return content.url;
       if (content.src) return content.src;
       if (content.source) return content.source;
+      if (content.uri) return content.uri;
+      if (content.href) return content.href;
+      
+      // Check for nested audio content
       if (content.audio) return extractAudioUrl(content.audio);
-      if (content.data && typeof content.data === 'string') {
-        if (content.data.startsWith('data:audio/')) {
-          return content.data;
+      
+      // Check for Microsoft Speech API response structure
+      if (content.audioData && typeof content.audioData === 'string' && 
+          content.mimeType && content.mimeType.toLowerCase().includes('audio/')) {
+        // Use the provided MIME type
+        const mimeType = content.mimeType.toLowerCase();
+        return `data:${mimeType};base64,${content.audioData}`;
+      }
+      
+      // Check for data fields
+      if (content.data) {
+        if (typeof content.data === 'string') {
+          if (content.data.startsWith('data:audio/')) {
+            return content.data;
+          }
+          if (content.data.match(/^[A-Za-z0-9+/=]+$/)) {
+            // Try to detect the format or default to MP3
+            const format = detectAudioFormatFromBase64(content.data) || 'audio/mp3';
+            return `data:${format};base64,${content.data}`;
+          }
         }
-        if (content.data.match(/^[A-Za-z0-9+/=]+$/)) {
-          return `data:audio/mp3;base64,${content.data}`;
+        return extractAudioUrl(content.data);
+      }
+      
+      // Check for binary data that might be audio
+      if (content instanceof ArrayBuffer || 
+          content instanceof Uint8Array ||
+          (typeof Buffer !== 'undefined' && content instanceof Buffer)) {
+        // Convert to base64
+        let base64;
+        if (typeof Buffer !== 'undefined' && content instanceof Buffer) {
+          // Node.js environment with Buffer
+          base64 = content.toString('base64');
+        } else {
+          // Browser environment or ArrayBuffer/Uint8Array
+          const bytes = new Uint8Array(
+            content instanceof Uint8Array ? content.buffer : content
+          );
+          let binary = '';
+          for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+          }
+          base64 = window.btoa(binary);
         }
+        
+        // Default to MP3 format
+        return `data:audio/mp3;base64,${base64}`;
       }
     }
     
     return '';
+  };
+  
+  // Helper function to detect audio format from base64 patterns
+  const detectAudioFormatFromBase64 = (base64Str: string): string | null => {
+    // MP3 patterns
+    if (base64Str.startsWith('//uQZAAA') || 
+        base64Str.startsWith('//uSZAAA') ||
+        base64Str.startsWith('//OkxAA') ||
+        base64Str.startsWith('//OkxA') ||  // Microsoft speech pattern
+        base64Str.startsWith('SUQz')) {
+      return 'audio/mp3';
+    }
+    
+    // WAV patterns
+    if (base64Str.startsWith('UklGR') || 
+        base64Str.startsWith('UklG')) {
+      return 'audio/wav';
+    }
+    
+    // OGG patterns
+    if (base64Str.startsWith('T2dnUw') || 
+        base64Str.startsWith('T2dn')) {
+      return 'audio/ogg';
+    }
+    
+    // AAC patterns
+    if (base64Str.startsWith('/+M') || 
+        base64Str.startsWith('AAAA')) {
+      return 'audio/aac';
+    }
+    
+    return null;
   };
   
   const content = extractContent(data);

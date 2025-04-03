@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { minimizedWindowsManager } from './minimized-windows';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 
@@ -62,6 +63,39 @@ const ViewManager = ({
     const dragRef: any = useRef(null);
     const resizeRef: any = useRef(null);
     const menuRef: any = useRef(null);
+    const portalContainerRef = useRef<HTMLDivElement | null>(null);
+
+    // Create portal container if it doesn't exist
+    useEffect(() => {
+        if (usePortal && typeof document !== 'undefined') {
+            // Check if portal container already exists
+            let container = document.getElementById('view-manager-portal-container');
+            
+            if (!container) {
+                // Create portal container if it doesn't exist
+                container = document.createElement('div');
+                container.id = 'view-manager-portal-container';
+                container.style.position = 'fixed';
+                container.style.top = '0';
+                container.style.left = '0';
+                container.style.width = '100%';
+                container.style.height = '100%';
+                // The container itself should be transparent to pointer events
+                container.style.pointerEvents = 'none';
+                container.style.zIndex = '1000';
+                document.body.appendChild(container);
+            }
+            
+            portalContainerRef.current = container as HTMLDivElement;
+            
+            return () => {
+                // Only remove the container if this is the last portal using it
+                if (container && container.childElementCount <= 1) {
+                    document.body.removeChild(container);
+                }
+            };
+        }
+    }, [usePortal]);
 
     // Handle outside clicks for modal and menu
     useEffect(() => {
@@ -483,8 +517,9 @@ const ViewManager = ({
         return null;
     }
 
-    return (
-        <>
+    // Create the component content
+    const content = (
+        <div style={{ pointerEvents: usePortal ? 'auto' : 'inherit' }}>
             {isModal && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50"
@@ -534,8 +569,16 @@ const ViewManager = ({
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
+
+    // Use portal if requested and available
+    if (usePortal && portalContainerRef.current && typeof document !== 'undefined') {
+        return createPortal(content, portalContainerRef.current);
+    }
+
+    // Otherwise render normally
+    return content;
 };
 
 export default ViewManager;

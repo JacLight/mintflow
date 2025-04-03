@@ -24,28 +24,130 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ data, onError }) => {
       // If it's already a URL or data URL, return it
       if (content.startsWith('http') || 
           content.startsWith('data:image/') || 
-          content.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i)) {
+          content.match(/\.(jpeg|jpg|gif|png|svg|webp|bmp|tiff|ico)$/i)) {
         return content;
       }
       
       // Check if it's a base64 string without the data URL prefix
       if (content.match(/^[A-Za-z0-9+/=]+$/)) {
+        // Try to detect the image format from the base64 pattern
+        if (content.startsWith('iVBORw0KGgo')) {
+          return `data:image/png;base64,${content}`;
+        }
+        
+        if (content.startsWith('/9j/') || content.startsWith('R0lGOD')) {
+          return `data:image/jpeg;base64,${content}`;
+        }
+        
+        if (content.startsWith('R0lGODlh') || content.startsWith('R0lGODdh')) {
+          return `data:image/gif;base64,${content}`;
+        }
+        
+        if (content.startsWith('UEs')) {
+          return `data:image/svg+xml;base64,${content}`;
+        }
+        
+        // Default to PNG if we can't determine the format
         return `data:image/png;base64,${content}`;
       }
     }
     
     // If it's an object, look for common image URL properties
     if (typeof content === 'object' && content !== null) {
+      // Check for direct URL properties
       if (content.url) return content.url;
       if (content.src) return content.src;
       if (content.source) return content.source;
+      if (content.uri) return content.uri;
+      if (content.href) return content.href;
+      if (content.imageUrl) return content.imageUrl;
+      
+      // Check for nested image content
       if (content.image) return extractImageUrl(content.image);
-      if (content.data && typeof content.data === 'string') {
-        if (content.data.startsWith('data:image/')) {
-          return content.data;
+      if (content.picture) return extractImageUrl(content.picture);
+      if (content.photo) return extractImageUrl(content.photo);
+      
+      // Check for data fields
+      if (content.data) {
+        if (typeof content.data === 'string') {
+          if (content.data.startsWith('data:image/')) {
+            return content.data;
+          }
+          if (content.data.match(/^[A-Za-z0-9+/=]+$/)) {
+            // Try to detect the format or default to PNG
+            if (content.data.startsWith('iVBORw0KGgo')) {
+              return `data:image/png;base64,${content.data}`;
+            }
+            
+            if (content.data.startsWith('/9j/')) {
+              return `data:image/jpeg;base64,${content.data}`;
+            }
+            
+            return `data:image/png;base64,${content.data}`;
+          }
         }
-        if (content.data.match(/^[A-Za-z0-9+/=]+$/)) {
-          return `data:image/png;base64,${content.data}`;
+        return extractImageUrl(content.data);
+      }
+      
+      // Check for binary data that might be an image
+      if (content instanceof ArrayBuffer || 
+          content instanceof Uint8Array ||
+          (typeof Buffer !== 'undefined' && content instanceof Buffer)) {
+        // Convert to base64
+        let base64;
+        if (typeof Buffer !== 'undefined' && content instanceof Buffer) {
+          // Node.js environment with Buffer
+          base64 = content.toString('base64');
+        } else {
+          // Browser environment or ArrayBuffer/Uint8Array
+          const bytes = new Uint8Array(
+            content instanceof Uint8Array ? content.buffer : content
+          );
+          let binary = '';
+          for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+          }
+          base64 = window.btoa(binary);
+        }
+        
+        // Check for image format signatures
+        const firstBytes = new Uint8Array(
+          content instanceof Uint8Array ? content.buffer.slice(0, 8) : 
+          content instanceof ArrayBuffer ? content.slice(0, 8) : 
+          new Uint8Array(8)
+        );
+        
+        // PNG signature check
+        if (firstBytes[0] === 0x89 && firstBytes[1] === 0x50 && 
+            firstBytes[2] === 0x4E && firstBytes[3] === 0x47) {
+          return `data:image/png;base64,${base64}`;
+        }
+        
+        // JPEG signature check
+        if (firstBytes[0] === 0xFF && firstBytes[1] === 0xD8 && 
+            firstBytes[2] === 0xFF) {
+          return `data:image/jpeg;base64,${base64}`;
+        }
+        
+        // GIF signature check
+        if (firstBytes[0] === 0x47 && firstBytes[1] === 0x49 && 
+            firstBytes[2] === 0x46 && firstBytes[3] === 0x38) {
+          return `data:image/gif;base64,${base64}`;
+        }
+        
+        // Default to PNG format
+        return `data:image/png;base64,${base64}`;
+      }
+      
+      // Check for MIME type in the object
+      if (content.mimeType || content.contentType || content['content-type'] || content.mime) {
+        const mimeStr = (content.mimeType || content.contentType || content['content-type'] || content.mime).toLowerCase();
+        
+        if (mimeStr.startsWith('image/')) {
+          // If we have a MIME type but no URL, try to find content to use
+          if (typeof content.content === 'string' && content.content.match(/^[A-Za-z0-9+/=]+$/)) {
+            return `data:${mimeStr};base64,${content.content}`;
+          }
         }
       }
     }
