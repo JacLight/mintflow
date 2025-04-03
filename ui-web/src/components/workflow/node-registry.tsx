@@ -201,3 +201,14 @@ export const getNodeDefaultData = (type: string, name: string) => {
     console.log('getNodeDefaultData fallback for type:', type);
     return { label: name };
 };
+
+export const getNodeSchema = (nodeData) => {
+    console.log(`getNodeSchema called with action: ${nodeData.action} type ${nodeData.type}`);
+    const baseSchema = nodeData?.nodeInfo?.inputSchema || nodeData.schema
+    const { formData } = nodeData;
+    return enrishNodeSchema(baseSchema, formData);
+};
+
+const enrishNodeSchema = (schema, formData) => {
+    return schema;
+}

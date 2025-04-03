@@ -144,6 +144,6 @@ export const runNode = async (req: Request, res: Response): Promise<any> => {
         return res.json(output);
     } catch (err: any) {
         logger.error('[nodeDefinitions] POST /nodes/:nodeId/run error', { error: err.message });
-        return res.status(500).json({ error: err.message });
+        return res.status(400).json({ error: err.message });
     }
 }

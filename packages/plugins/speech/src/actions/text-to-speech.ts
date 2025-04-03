@@ -6,21 +6,21 @@ export interface TextToSpeechInput {
   text: string;
   voice: string;
   provider: 'elevenlabs' | 'openai' | 'microsoft' | 'google';
-  
+
   // ElevenLabs specific parameters
   model?: string;
   stability?: number;
   similarityBoost?: number;
   style?: number;
   speakerBoost?: boolean;
-  
+
   // OpenAI specific parameters
   speed?: number;
-  
+
   // Microsoft specific parameters
   pitch?: string;
   rate?: string;
-  
+
   // Common parameters
   outputFormat?: 'mp3' | 'pcm' | 'wav' | 'flac' | 'ogg' | 'webm';
   language?: string;
@@ -70,7 +70,7 @@ export async function textToSpeechElevenLabs(input: Omit<TextToSpeechInput, 'pro
 
     // Combine the chunks into a single buffer
     const audioBuffer = Buffer.concat(chunks);
-    
+
     // Convert the buffer to a base64 encoded string
     const audioData = audioBuffer.toString('base64');
 
@@ -151,8 +151,8 @@ export async function textToSpeechOpenAI(input: Omit<TextToSpeechInput, 'provide
 export async function textToSpeechMicrosoft(input: Omit<TextToSpeechInput, 'provider'>): Promise<TextToSpeechOutput> {
   try {
     // Get the region from the API key (format: region:key)
-    const [region, key] = input.apiKey.includes(':') ? input.apiKey.split(':') : ['eastus', input.apiKey];
-    
+    const [region, key] = input.apiKey?.includes(':') ? input.apiKey?.split(':') : ['eastus', input.apiKey];
+
     // Get access token
     const tokenResponse = await axios.post(
       `https://${region}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
@@ -164,30 +164,30 @@ export async function textToSpeechMicrosoft(input: Omit<TextToSpeechInput, 'prov
         }
       }
     );
-    
+
     const accessToken = tokenResponse.data;
-    
+
     // Prepare SSML
     const language = input.language || 'en-US';
     const pitch = input.pitch || 'default';
     const rate = input.rate || 'default';
-    
+
     const ssml = `
       <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${language}">
-        <voice name="${input.voice}">
+         <voice xml:lang='en-US' xml:gender='Male' name='${input.voice || "en-US-AvaMultilingualNeural"}'>
           <prosody pitch="${pitch}" rate="${rate}">
             ${input.text}
           </prosody>
         </voice>
       </speak>
     `;
-    
+
     // Determine output format
     let outputFormat = 'audio-24khz-96kbitrate-mono-mp3';
     if (input.outputFormat === 'wav') outputFormat = 'riff-24khz-16bit-mono-pcm';
     if (input.outputFormat === 'ogg') outputFormat = 'ogg-24khz-16bit-mono-opus';
     if (input.outputFormat === 'webm') outputFormat = 'webm-24khz-16bit-mono-opus';
-    
+
     // Make the API request
     const response = await axios.post(
       `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`,
@@ -202,16 +202,16 @@ export async function textToSpeechMicrosoft(input: Omit<TextToSpeechInput, 'prov
         responseType: 'arraybuffer'
       }
     );
-    
+
     // Convert the audio buffer to a base64 encoded string
     const audioData = Buffer.from(response.data).toString('base64');
-    
+
     // Determine the MIME type based on the output format
     let mimeType = 'audio/mpeg';
     if (input.outputFormat === 'wav') mimeType = 'audio/wav';
     if (input.outputFormat === 'ogg') mimeType = 'audio/ogg';
     if (input.outputFormat === 'webm') mimeType = 'audio/webm';
-    
+
     return {
       audioData,
       mimeType,
@@ -236,17 +236,17 @@ export async function textToSpeechGoogle(input: Omit<TextToSpeechInput, 'provide
     // Prepare the request body
     const requestBody = {
       input: { text: input.text },
-      voice: { 
+      voice: {
         languageCode: input.language || 'en-US',
         name: input.voice
       },
       audioConfig: {
-        audioEncoding: input.outputFormat === 'mp3' ? 'MP3' : 
-                       input.outputFormat === 'wav' ? 'LINEAR16' : 
-                       input.outputFormat === 'ogg' ? 'OGG_OPUS' : 'MP3'
+        audioEncoding: input.outputFormat === 'mp3' ? 'MP3' :
+          input.outputFormat === 'wav' ? 'LINEAR16' :
+            input.outputFormat === 'ogg' ? 'OGG_OPUS' : 'MP3'
       }
     };
-    
+
     // Make the API request
     const response = await axios.post(
       `https://texttospeech.googleapis.com/v1/text:synthesize?key=${input.apiKey}`,
@@ -257,15 +257,15 @@ export async function textToSpeechGoogle(input: Omit<TextToSpeechInput, 'provide
         }
       }
     );
-    
+
     // The response contains base64 encoded audio data
     const audioData = response.data.audioContent;
-    
+
     // Determine the MIME type based on the output format
     let mimeType = 'audio/mpeg';
     if (input.outputFormat === 'wav') mimeType = 'audio/wav';
     if (input.outputFormat === 'ogg') mimeType = 'audio/ogg';
-    
+
     return {
       audioData,
       mimeType,
@@ -358,7 +358,7 @@ export async function getMicrosoftVoices(apiKey: string, language?: string): Pro
   try {
     // Get the region from the API key (format: region:key)
     const [region, key] = apiKey.includes(':') ? apiKey.split(':') : ['eastus', apiKey];
-    
+
     // Get access token
     const tokenResponse = await axios.post(
       `https://${region}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
@@ -370,9 +370,9 @@ export async function getMicrosoftVoices(apiKey: string, language?: string): Pro
         }
       }
     );
-    
+
     const accessToken = tokenResponse.data;
-    
+
     // Get voices
     const response = await axios.get(
       `https://${region}.tts.speech.microsoft.com/cognitiveservices/voices/list`,
@@ -382,13 +382,13 @@ export async function getMicrosoftVoices(apiKey: string, language?: string): Pro
         }
       }
     );
-    
+
     // Filter by language if specified
     let voices = response.data;
     if (language) {
       voices = voices.filter((voice: any) => voice.Locale.toLowerCase() === language.toLowerCase());
     }
-    
+
     return voices.map((voice: any) => ({
       id: voice.ShortName,
       name: voice.DisplayName,
@@ -417,15 +417,15 @@ export async function getGoogleVoices(apiKey: string, language?: string): Promis
     const response = await axios.get(
       `https://texttospeech.googleapis.com/v1/voices?key=${apiKey}`
     );
-    
+
     // Filter by language if specified
     let voices = response.data.voices;
     if (language) {
-      voices = voices.filter((voice: any) => 
+      voices = voices.filter((voice: any) =>
         voice.languageCodes.some((code: string) => code.toLowerCase() === language.toLowerCase())
       );
     }
-    
+
     return voices.map((voice: any) => ({
       id: voice.name,
       name: voice.name.split('-').pop(),

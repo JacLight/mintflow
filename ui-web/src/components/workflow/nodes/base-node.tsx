@@ -263,7 +263,7 @@ export const BaseNode = memo(({
               </span>
             </button>
             {/* Status indicator */}
-            <NodeRun isRunning={isRunning} output={runOutput} runStatus={runStatus} lastRunTimestamp={lastRunTimestamp} />
+            <NodeRun data={data} isRunning={isRunning} output={runOutput} runStatus={runStatus} lastRunTimestamp={lastRunTimestamp} />
             <NodeMenu id={id} />
           </div>
 
@@ -281,7 +281,7 @@ export const BaseNode = memo(({
           <div className={classNames(isExpanded ? 'w-[350px]' : 'w-64', 'max-h-[800px] overflow-auto')}>
             {children}
           </div>
-          <NodeControl selected={selected} id={id} setIsRunning={setIsRunning} setRunStatus={setRunStatus} setRunOutput={setRunOutput} setLastRunTimestamp={setLastRunTimestamp} />
+          <NodeControl selected={selected} input={data?.formData} id={id} setIsRunning={setIsRunning} setRunStatus={setRunStatus} setRunOutput={setRunOutput} setLastRunTimestamp={setLastRunTimestamp} />
         </div>
 
         {/* Output handle (source) */}

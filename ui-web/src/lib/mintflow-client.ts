@@ -146,15 +146,10 @@ export class MintflowClient {
                 url,
                 data,
             });
-
             return response.data;
         } catch (error: any) {
             console.error('Error running node:', error);
-            if (error.response) {
-                return error.response.data;
-            } else {
-                return { error: 'Network error' };
-            }
+            throw error;
         }
     }
 

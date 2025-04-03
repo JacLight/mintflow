@@ -7,10 +7,11 @@ interface NodeRunProps {
     error?: any;
     isRunning: boolean;
     runStatus: any;
+    data?: any;
     lastRunTimestamp: any
 }
 
-export const NodeRun: React.FC<NodeRunProps> = ({ output, error, isRunning, runStatus, lastRunTimestamp }) => {
+export const NodeRun: React.FC<NodeRunProps> = ({ output, data, error, isRunning, runStatus, lastRunTimestamp }) => {
     const [activeTab, setActiveTab] = useState<'summary' | 'output' | 'raw'>('summary');
     const [showRunDetails, setShowRunDetails] = useState(false);
 

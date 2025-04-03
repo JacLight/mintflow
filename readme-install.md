@@ -91,6 +91,7 @@ And join the Nx community:
 pnpm run --filter=@mintflow/array test
 pnpm run --filter=@mintflow/microsoft-office build
 pnpm run --filter=@mintflow/common build
+pnpm run --filter=@mintflow/speech build
 pnpm run --filter=@mintflow/array build
 pnpm run --filter=@mintflow/ui-web build
 pnpm run --filter=@mintflow/array test

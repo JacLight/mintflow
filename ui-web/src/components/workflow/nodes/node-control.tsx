@@ -17,7 +17,7 @@ const availableNodeTypes = [
     { id: 'image', label: 'Image', icon: <Image className="h-4 w-4" /> },
 ];
 
-export const NodeControl: React.FC<any> = ({ selected, id, setIsRunning, setRunStatus, setRunOutput, setLastRunTimestamp }) => {
+export const NodeControl: React.FC<any> = ({ input, selected, id, setIsRunning, setRunStatus, setRunOutput, setLastRunTimestamp }) => {
     const reactFlowInstance = useReactFlow();
     const [showAddMenu, setShowAddMenu] = useState(false);
 
@@ -36,15 +36,9 @@ export const NodeControl: React.FC<any> = ({ selected, id, setIsRunning, setRunS
             // Get the node type from the id or data
             const nodeType = id.split('-')[0]; // Assuming id format is like "inject-123456"
             const plugin = nodeType;
-            const action = nodeType; // Default action is same as plugin name
+            const action = input?.action || nodeType; // Default action is same as plugin name
 
             // Get input values - this would need to be expanded based on your actual input handling
-            const input = {
-                name: "full_name",
-                type: "string",
-                value: "jacob ajiboye"
-            };
-
             console.log(`Running node ${id} (plugin: ${plugin}, action: ${action})`);
 
             setIsRunning(true);

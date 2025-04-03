@@ -2,10 +2,10 @@
 
 import { memo, useState, useCallback } from 'react';
 import { NodeProps, Position, useReactFlow } from '@xyflow/react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import { BaseNode, BaseNodeData } from './base-node';
 import { AppmintForm } from 'appmint-form';
 import { deepCopy, isEmpty, isNotEmpty } from '@/lib-client/helpers';
+import { getNodeSchema } from '../node-registry';
 
 // Extended data type for dynamic nodes
 export type DynamicNodeData = BaseNodeData & {
@@ -17,12 +17,12 @@ export type DynamicNodeData = BaseNodeData & {
 
 // Dynamic node component with form based on schema
 export const DynamicNode = memo((props: NodeProps) => {
-    const { data: nodeData, id, ...rest } = props;
+    const { data, id, ...rest } = props;
     const [expanded, setExpanded] = useState(false);
-    const [localFormData, setLocalFormData] = useState<any>(nodeData || {});
+    const [localFormData, setLocalFormData] = useState<any>(data?.formData || {});
     const reactFlowInstance = useReactFlow();
 
-    console.log('DynamicNode', nodeData);
+    console.log('DynamicNode', data);
 
     // Toggle form expansion
     const toggleExpand = (e) => {
@@ -51,14 +51,14 @@ export const DynamicNode = memo((props: NodeProps) => {
         }
     }, [id, reactFlowInstance]);
 
-    let schema = deepCopy(nodeData?.nodeInfo?.inputSchema || nodeData.schema)
+    let schema = getNodeSchema(data)
     cleanSchema(schema);
     schema = (isEmpty(schema.properties)) ? null : schema;
     return (
         <BaseNode
             {...rest}
             id={id}
-            data={nodeData}
+            data={data}
             sourcePosition={Position.Bottom}
             targetPosition={Position.Top}
             isExpanded={expanded}
@@ -70,13 +70,13 @@ export const DynamicNode = memo((props: NodeProps) => {
                 {/* Form content (expanded) */}
                 {expanded && (schema) && (
                     <div className="mt-2 space-y-2 border-t pt-2">
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-muted-foreground max-h-[600px] overflow-auto">
                             <AppmintForm
                                 schema={schema}
                                 data={localFormData}
                                 rules={[]}
                                 datatype={'node-form'}
-                                id={`form-${nodeData.nodeId || id || 'default'}`}
+                                id={`form-${data.nodeId || id || 'default'}`}
                                 theme={theme}
                                 onChange={updateFormData}
                             />

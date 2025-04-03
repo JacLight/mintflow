@@ -19,8 +19,8 @@ const handler = async (request: any) => {
     } catch (error: any) {
         console.error('[API Proxy] Error:', error.message);
         return NextResponse.json(
-            { error: 'Proxy server error', message: error.message },
-            { status: 500 }
+            { error: error.message },
+            { status: error.response?.status || 500, headers: { 'Content-Type': 'application/json' } }
         );
     }
 };

@@ -8,6 +8,7 @@
 import { getMintflowClient } from './mintflow-client';
 import axios from 'axios';
 import { getProxiedUrl } from './proxy-utils';
+import { getResponseErrorMessage } from '@/lib-client/helpers';
 
 // Node type definition
 export interface Node {
@@ -70,17 +71,8 @@ function isCacheValid(): boolean {
 export async function runNode(
     data: any
 ): Promise<any> {
-    try {
-        const mintflowClient = getMintflowClient();
-        const response = await mintflowClient.runNode(data);
-        if (response.error) {
-            throw new Error(`Error running node: ${response.error}`);
-        }
-        return response;
-    } catch (error) {
-        console.error(`Error running node ${data.nodeId}:`, error);
-        throw error;
-    }
+    const mintflowClient = getMintflowClient();
+    return await mintflowClient.runNode(data);
 }
 
 

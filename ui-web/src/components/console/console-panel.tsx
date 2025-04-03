@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { TerminalComponent } from './terminal';
 import { LogViewer } from './log-viewer';
 import { ChevronDown, ChevronUp, Terminal, FileText, Activity, X } from 'lucide-react';
+import { getConsoleService } from '@/lib/console-service';
 
 type TabType = 'terminal' | 'logs' | 'system';
 
@@ -65,6 +66,9 @@ export const ConsolePanel: React.FC<ConsolePanelProps> = ({
     // Toggle console expansion
     const toggleExpanded = () => {
         setIsExpanded(!isExpanded);
+        if (!isExpanded) {
+            getConsoleService().disconnect();
+        }
     };
 
     return (

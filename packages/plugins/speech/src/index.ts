@@ -11,48 +11,51 @@ import {
 
 const speechPlugin = {
   name: "Speech",
-  icon: "FaMicrophone",
+  icon: "Speech",
   description: "Convert text to speech and speech to text using various AI services",
-    groups: ["ai"],
-    tags: ["ai","nlp","ml","gpt","chatbot","image","text","embedding"],
-    version: '1.0.0',
+  groups: ["ai"],
+  tags: ["ai", "nlp", "ml", "gpt", "chatbot", "image", "text", "embedding"],
+  version: '1.0.0',
   id: "speech",
   runner: "node",
   inputSchema: {
     type: "object",
     properties: {
-      // Common properties
-      text: { type: 'string' },
+      action: {
+        type: 'string',
+        enum: ['textToSpeech', 'getVoices', 'speechToText', 'getTranscriptionStatus'],
+        default: 'textToSpeech',
+        inputRequired: true
+      },
+      text: { type: 'string', 'x-control-variant': 'textarea' },
       voice: { type: 'string' },
       language: { type: 'string' },
-      outputFormat: { 
-        type: 'string', 
-        enum: ['mp3', 'pcm', 'wav', 'flac', 'ogg', 'webm'] 
+      outputFormat: {
+        type: 'string',
+        enum: ['mp3', 'pcm', 'wav', 'flac', 'ogg', 'webm']
       },
-      
-      // Provider selection
-      provider: { 
-        type: 'string', 
-        enum: ['elevenlabs', 'openai', 'microsoft', 'google'] 
+      provider: {
+        type: 'string',
+        enum: ['elevenlabs', 'openai', 'microsoft', 'google']
       },
-      
+
       // API keys for different providers
       apiKey: { type: 'string' },
-      
+
       // ElevenLabs specific properties
       model: { type: 'string' },
       stability: { type: 'number' },
       similarityBoost: { type: 'number' },
       style: { type: 'number' },
       speakerBoost: { type: 'boolean' },
-      
+
       // OpenAI specific properties
       speed: { type: 'number' },
-      
+
       // Microsoft specific properties
       pitch: { type: 'string' },
       rate: { type: 'string' },
-      
+
       // Speech-to-Text properties
       audioUrl: { type: 'string' },
       audioData: { type: 'string' },
@@ -70,8 +73,6 @@ const speechPlugin = {
       redactPIICategories: { type: 'array', items: { type: 'string' } },
       webhookUrl: { type: 'string' },
       waitUntilReady: { type: 'boolean' },
-      
-      // Transcription status check
       transcriptId: { type: 'string' }
     }
   },
@@ -79,7 +80,7 @@ const speechPlugin = {
   actions: [
     {
       name: 'textToSpeech',
-      execute: async function(input: TextToSpeechInput): Promise<TextToSpeechOutput> {
+      execute: async function (input: TextToSpeechInput): Promise<TextToSpeechOutput> {
         return textToSpeech({
           apiKey: input.apiKey,
           text: input.text,
@@ -100,13 +101,13 @@ const speechPlugin = {
     },
     {
       name: 'getVoices',
-      execute: async function(input: { provider: string, apiKey: string, language?: string }): Promise<any[]> {
+      execute: async function (input: { provider: string, apiKey: string, language?: string }): Promise<any[]> {
         return getVoices(input.provider, input.apiKey, input.language);
       }
     },
     {
       name: 'speechToText',
-      execute: async function(input: SpeechToTextInput): Promise<SpeechToTextOutput> {
+      execute: async function (input: SpeechToTextInput): Promise<SpeechToTextOutput> {
         return speechToText({
           apiKey: input.apiKey,
           audioUrl: input.audioUrl,
@@ -131,7 +132,7 @@ const speechPlugin = {
     },
     {
       name: 'getTranscriptionStatus',
-      execute: async function(input: { apiKey: string, transcriptId: string }): Promise<SpeechToTextOutput> {
+      execute: async function (input: { apiKey: string, transcriptId: string }): Promise<SpeechToTextOutput> {
         return getTranscriptionStatus(input.apiKey, input.transcriptId);
       }
     }
