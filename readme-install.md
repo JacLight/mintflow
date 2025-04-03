@@ -107,3 +107,5 @@ npm test -- -t "OutputParserPlugin"
 pnpm run --filter=@mintflow/common build
 
  cd packages/plugins/queue && npx jest --coverage
+
+pnpm nx run @mintflow/server:dev
