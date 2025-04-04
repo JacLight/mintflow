@@ -1,0 +1,59 @@
+{
+  "id": "soap-test-chain",
+  "name": "Test Chain for soap",
+  "nodes": [
+    {
+      "id": "soap-call_method-0",
+      "type": "soap",
+      "action": "call_method",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "soap-generate_template-1",
+      "type": "soap",
+      "action": "generate_template",
+      "data": {
+        "wsdl": "http://www.dneonline.com/calculator.asmx?WSDL",
+        "method": "Add",
+        "soapVersion": "1.1",
+        "includeComments": true,
+        "format": true
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "soap-parse_wsdl-2",
+      "type": "soap",
+      "action": "parse_wsdl",
+      "data": {
+        "wsdl": "http://www.dneonline.com/calculator.asmx?WSDL",
+        "includeTypes": false
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "soap-soap_to_rest-3",
+      "type": "soap",
+      "action": "soap_to_rest",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "soap": {}
+  }
+}

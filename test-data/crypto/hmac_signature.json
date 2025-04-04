@@ -1,0 +1,11 @@
+{
+  "input": {
+    "text": "Hello, world!",
+    "method": "sha256",
+    "secretKey": "my-secret-key",
+    "secretKeyEncoding": "utf-8"
+  },
+  "expected": {
+    "signature": "3c82b5a8a67c7f0f079d2ca5e8d1dc217ad2bd5f1a6e84d05d5ecf12cd19c7fe"
+  }
+}

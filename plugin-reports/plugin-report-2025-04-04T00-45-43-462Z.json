@@ -1,0 +1,2578 @@
+{
+  "activecampaign": {
+    "id": "activecampaign",
+    "actions": {},
+    "testData": null
+  },
+  "ai": {
+    "id": "ai",
+    "actions": {},
+    "testData": null
+  },
+  "airtable": {
+    "id": "airtable",
+    "actions": {},
+    "testData": null
+  },
+  "apollo": {
+    "id": "apollo",
+    "actions": {
+      "enrich_company": {
+        "file": "enrich-company.ts",
+        "inputSchema": {
+          "required": [
+            "domain"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { domain"
+            },
+            {
+              "name": "cacheResponse",
+              "default": "true"
+            }
+          ]
+        }
+      },
+      "match_person": {
+        "file": "match-person.ts",
+        "inputSchema": {
+          "required": [
+            "email"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { email"
+            },
+            {
+              "name": "cacheResponse",
+              "default": "true"
+            }
+          ]
+        }
+      }
+    },
+    "testData": null
+  },
+  "array": {
+    "id": "array",
+    "actions": {
+      "aggregate": {
+        "file": "aggregate.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": null,
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "batch": {
+        "file": "batch.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": null,
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "filter": {
+        "file": "filter.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "map": {
+        "file": "map.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": null,
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "reduce": {
+        "file": "reduce.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": null,
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "sort": {
+        "file": "sort.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": null,
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "asana": {
+    "error": "No actions found for plugin asana"
+  },
+  "assemblyai": {
+    "id": "assemblyai",
+    "actions": {},
+    "testData": null
+  },
+  "authorize": {
+    "error": "No actions found for plugin authorize"
+  },
+  "basecamp": {
+    "id": "basecamp",
+    "actions": {
+      "create-project": {
+        "file": "create-project.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "create-todo-item": {
+        "file": "create-todo-item.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "list-projects": {
+        "file": "list-projects.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "calcom": {
+    "error": "No actions found for plugin calcom"
+  },
+  "calendly": {
+    "id": "calendly",
+    "actions": {},
+    "testData": null
+  },
+  "clickup": {
+    "id": "clickup",
+    "actions": {},
+    "testData": null
+  },
+  "confluence": {
+    "id": "confluence",
+    "actions": {
+      "create_page_from_template": {
+        "file": "create-page-from-template.ts",
+        "inputSchema": {
+          "required": [
+            "username",
+            "password",
+            "confluenceDomain",
+            "spaceId",
+            "templateId",
+            "title",
+            "status"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "get_page_content": {
+        "file": "get-page-content.ts",
+        "inputSchema": {
+          "required": [
+            "username",
+            "password",
+            "confluenceDomain",
+            "pageId"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "convertkit": {
+    "id": "convertkit",
+    "actions": {
+      "list_fields": {
+        "file": "custom-fields.ts",
+        "inputSchema": {
+          "required": [
+            "apiSecret"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "list_forms": {
+        "file": "forms.ts",
+        "inputSchema": {
+          "required": [
+            "apiSecret"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "list_sequences": {
+        "file": "sequences.ts",
+        "inputSchema": {
+          "required": [
+            "apiSecret"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "get_subscriber_by_id": {
+        "file": "subscribers.ts",
+        "inputSchema": {
+          "required": [
+            "apiSecret",
+            "subscriberId"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "list_tags": {
+        "file": "tags.ts",
+        "inputSchema": {
+          "required": [
+            "apiSecret"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "create_webhook": {
+        "file": "webhooks.ts",
+        "inputSchema": {
+          "required": [
+            "apiSecret",
+            "targetUrl",
+            "event"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "crypto": {
+    "id": "crypto",
+    "actions": {
+      "generate_password": {
+        "file": "generate-password.ts",
+        "inputSchema": {
+          "required": [
+            "length"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { length",
+              "default": "16"
+            },
+            {
+              "name": "characterSet",
+              "default": "'alphanumeric'"
+            }
+          ]
+        }
+      },
+      "hash_text": {
+        "file": "hash-text.ts",
+        "inputSchema": {
+          "required": [
+            "text",
+            "method"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { text"
+            },
+            {
+              "name": "method"
+            }
+          ]
+        }
+      },
+      "hmac_signature": {
+        "file": "hmac-signature.ts",
+        "inputSchema": {
+          "required": [
+            "text",
+            "method",
+            "secretKey"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { text"
+            },
+            {
+              "name": "method"
+            },
+            {
+              "name": "secretKey"
+            },
+            {
+              "name": "secretKeyEncoding",
+              "default": "'utf-8'"
+            }
+          ]
+        }
+      }
+    },
+    "testData": null
+  },
+  "csv": {
+    "id": "csv",
+    "actions": {},
+    "testData": null
+  },
+  "data-bridge": {
+    "error": "No actions found for plugin data-bridge"
+  },
+  "delay": {
+    "error": "No actions found for plugin delay"
+  },
+  "discord": {
+    "id": "discord",
+    "actions": {},
+    "testData": null
+  },
+  "dropbox": {
+    "id": "dropbox",
+    "actions": {},
+    "testData": null
+  },
+  "exec": {
+    "id": "exec",
+    "actions": {},
+    "testData": null
+  },
+  "facebook": {
+    "id": "facebook",
+    "actions": {},
+    "testData": null
+  },
+  "fetch": {
+    "error": "No actions found for plugin fetch"
+  },
+  "figma": {
+    "id": "figma",
+    "actions": {},
+    "testData": null
+  },
+  "file": {
+    "id": "file",
+    "actions": {},
+    "testData": null
+  },
+  "freshbooks": {
+    "error": "No actions found for plugin freshbooks"
+  },
+  "freshdesk": {
+    "error": "No actions found for plugin freshdesk"
+  },
+  "github": {
+    "error": "No actions found for plugin github"
+  },
+  "google-ai": {
+    "id": "google-ai",
+    "actions": {},
+    "testData": null
+  },
+  "google-business": {
+    "id": "google-business",
+    "actions": {
+      "create_reply": {
+        "file": "create-reply.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "list_accounts": {
+        "file": "list-accounts.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "list_locations": {
+        "file": "list-locations.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "list_reviews": {
+        "file": "list-reviews.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "google-drive": {
+    "id": "google-drive",
+    "actions": {},
+    "testData": null
+  },
+  "google-search": {
+    "id": "google-search",
+    "actions": {
+      "list_sitemaps": {
+        "file": "list-sitemaps.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "list_sites": {
+        "file": "list-sites.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "search_analytics": {
+        "file": "search-analytics.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "submit_sitemap": {
+        "file": "submit-sitemap.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "url_inspection": {
+        "file": "url-inspection.ts",
+        "inputSchema": {
+          "required": [
+            "access_token"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "google-sheets": {
+    "id": "google-sheets",
+    "actions": {},
+    "testData": null
+  },
+  "google-workspace": {
+    "id": "google-workspace",
+    "actions": {},
+    "testData": null
+  },
+  "groq": {
+    "error": "No actions found for plugin groq"
+  },
+  "hubspot": {
+    "error": "No actions found for plugin hubspot"
+  },
+  "inject": {
+    "error": "No actions found for plugin inject"
+  },
+  "instagram": {
+    "id": "instagram",
+    "actions": {},
+    "testData": null
+  },
+  "intercom": {
+    "id": "intercom",
+    "actions": {},
+    "testData": null
+  },
+  "invoiceninja": {
+    "error": "No actions found for plugin invoiceninja"
+  },
+  "jira-cloud": {
+    "id": "jira-cloud",
+    "actions": {},
+    "testData": null
+  },
+  "jotform": {
+    "error": "No actions found for plugin jotform"
+  },
+  "json": {
+    "id": "json",
+    "actions": {
+      "convert_json_to_text": {
+        "file": "convert-json-to-text.ts",
+        "inputSchema": {
+          "required": [
+            "json"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "convert_text_to_json": {
+        "file": "convert-text-to-json.ts",
+        "inputSchema": {
+          "required": [
+            "text"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": {
+      "pluginId": "json",
+      "actions": {
+        "convert_text_to_json": {
+          "input": {
+            "text": "{\"name\": \"Test User\", \"email\": \"test@example.com\", \"age\": 30, \"isActive\": true}"
+          }
+        },
+        "convert_json_to_text": {
+          "input": {
+            "json": {
+              "name": "Test User",
+              "email": "test@example.com",
+              "age": 30,
+              "isActive": true
+            },
+            "pretty": true
+          }
+        }
+      }
+    }
+  },
+  "klaviyo": {
+    "id": "klaviyo",
+    "actions": {
+      "add_profiles_to_list": {
+        "file": "add-profiles-to-list.ts",
+        "inputSchema": {
+          "required": [
+            "email"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "get_campaigns": {
+        "file": "get-campaigns.ts",
+        "inputSchema": {
+          "required": [
+            "apiKey"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "get_lists": {
+        "file": "get-lists.ts",
+        "inputSchema": {
+          "required": [
+            "apiKey"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "identify_profile": {
+        "file": "identify-profile.ts",
+        "inputSchema": {
+          "required": [
+            "apiKey",
+            "email"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "remove_profile_from_list": {
+        "file": "remove-profile-from-list.ts",
+        "inputSchema": {
+          "required": [
+            "apiKey",
+            "listId",
+            "email"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "track_event": {
+        "file": "track-event.ts",
+        "inputSchema": {
+          "required": [
+            "apiKey",
+            "event",
+            "email"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "krisp-call": {
+    "id": "krisp-call",
+    "actions": {
+      "add-contact": {
+        "file": "add-contact.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "delete-contacts": {
+        "file": "delete-contacts.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "send-mms": {
+        "file": "send-mms.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "send-sms": {
+        "file": "send-sms.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "langchain": {
+    "id": "langchain",
+    "actions": {},
+    "testData": null
+  },
+  "langflow": {
+    "error": "No actions found for plugin langflow"
+  },
+  "linkedin": {
+    "id": "linkedin",
+    "actions": {},
+    "testData": null
+  },
+  "llm": {
+    "error": "Index file not found for plugin llm"
+  },
+  "mail": {
+    "error": "No actions found for plugin mail"
+  },
+  "mailchimp": {
+    "id": "mailchimp",
+    "actions": {},
+    "testData": null
+  },
+  "mastodon": {
+    "error": "No actions found for plugin mastodon"
+  },
+  "mattermost": {
+    "id": "mattermost",
+    "actions": {
+      "custom_api_call": {
+        "file": "custom-api-call.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "send_message": {
+        "file": "send-message.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "media-processor": {
+    "id": "media-processor",
+    "actions": {},
+    "testData": null
+  },
+  "medium": {
+    "error": "No actions found for plugin medium"
+  },
+  "microsoft-office": {
+    "error": "No actions found for plugin microsoft-office"
+  },
+  "milvus": {
+    "id": "milvus",
+    "actions": {
+      "create-collection": {
+        "file": "create-collection.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "delete-collection": {
+        "file": "delete-collection.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "get-collection-info": {
+        "file": "get-collection-info.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "insert-vectors": {
+        "file": "insert-vectors.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "list-collections": {
+        "file": "list-collections.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "search-vectors": {
+        "file": "search-vectors.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "modify": {
+    "error": "No actions found for plugin modify"
+  },
+  "monday": {
+    "error": "No actions found for plugin monday"
+  },
+  "mqtt": {
+    "error": "No actions found for plugin mqtt"
+  },
+  "mysql": {
+    "error": "No actions found for plugin mysql"
+  },
+  "notion": {
+    "id": "notion",
+    "actions": {},
+    "testData": null
+  },
+  "paypal": {
+    "error": "No actions found for plugin paypal"
+  },
+  "pdf": {
+    "id": "pdf",
+    "actions": {
+      "extract_text": {
+        "file": "extract-text.ts",
+        "inputSchema": {
+          "required": [
+            "file"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { file"
+            }
+          ]
+        }
+      },
+      "image_to_pdf": {
+        "file": "image-to-pdf.ts",
+        "inputSchema": {
+          "required": [
+            "image"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { image"
+            },
+            {
+              "name": "imageType",
+              "default": "'png'"
+            }
+          ]
+        }
+      },
+      "text_to_pdf": {
+        "file": "text-to-pdf.ts",
+        "inputSchema": {
+          "required": [
+            "text"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { text"
+            },
+            {
+              "name": "fontSize",
+              "default": "12"
+            },
+            {
+              "name": "fontType",
+              "default": "'Helvetica'"
+            }
+          ]
+        }
+      }
+    },
+    "testData": null
+  },
+  "perplexity-ai": {
+    "error": "No actions found for plugin perplexity-ai"
+  },
+  "photoroom": {
+    "id": "photoroom",
+    "actions": {
+      "remove-background": {
+        "file": "remove-background.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "pinecone": {
+    "id": "pinecone",
+    "actions": {},
+    "testData": null
+  },
+  "pinterest": {
+    "id": "pinterest",
+    "actions": {},
+    "testData": null
+  },
+  "pipedrive": {
+    "error": "No actions found for plugin pipedrive"
+  },
+  "postgres": {
+    "error": "No actions found for plugin postgres"
+  },
+  "qdrant": {
+    "id": "qdrant",
+    "actions": {},
+    "testData": null
+  },
+  "qrcode": {
+    "id": "qrcode",
+    "actions": {
+      "text_to_qrcode": {
+        "file": "text-to-qrcode.ts",
+        "inputSchema": {
+          "required": [
+            "text"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "queue": {
+    "error": "No actions found for plugin queue"
+  },
+  "quickbooks": {
+    "error": "No actions found for plugin quickbooks"
+  },
+  "quickbooks-migrate": {
+    "error": "Index file not found for plugin quickbooks-migrate"
+  },
+  "range": {
+    "error": "No actions found for plugin range"
+  },
+  "razorpay": {
+    "error": "No actions found for plugin razorpay"
+  },
+  "reddit": {
+    "error": "No actions found for plugin reddit"
+  },
+  "redis": {
+    "error": "No actions found for plugin redis"
+  },
+  "s3-storage": {
+    "id": "s3-storage",
+    "actions": {},
+    "testData": null
+  },
+  "salesforce": {
+    "id": "salesforce",
+    "actions": {},
+    "testData": null
+  },
+  "sendgrid": {
+    "id": "sendgrid",
+    "actions": {
+      "custom_api_call": {
+        "file": "custom-api-call.ts",
+        "inputSchema": {
+          "required": [
+            "method",
+            "path"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { method"
+            },
+            {
+              "name": "path"
+            },
+            {
+              "name": "body"
+            },
+            {
+              "name": "queryParams"
+            }
+          ]
+        }
+      },
+      "send_dynamic_template": {
+        "file": "send-dynamic-template.ts",
+        "inputSchema": {
+          "required": [
+            "apiKey",
+            "to",
+            "from",
+            "templateId",
+            "templateData"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "send_email": {
+        "file": "send-email.ts",
+        "inputSchema": {
+          "required": [
+            "apiKey",
+            "to",
+            "from",
+            "subject",
+            "contentType",
+            "content"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "shopify": {
+    "id": "shopify",
+    "actions": {},
+    "testData": null
+  },
+  "slack": {
+    "id": "slack",
+    "actions": {},
+    "testData": null
+  },
+  "snapchat": {
+    "id": "snapchat",
+    "actions": {},
+    "testData": null
+  },
+  "snowflake": {
+    "error": "No actions found for plugin snowflake"
+  },
+  "sns": {
+    "id": "sns",
+    "actions": {
+      "create_topic": {
+        "file": "create-topic.ts",
+        "inputSchema": {
+          "required": [
+            "accessKeyId",
+            "secretAccessKey",
+            "region",
+            "topicName"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { accessKeyId"
+            },
+            {
+              "name": "secretAccessKey"
+            },
+            {
+              "name": "region"
+            },
+            {
+              "name": "endpoint"
+            },
+            {
+              "name": "topicName"
+            },
+            {
+              "name": "displayName"
+            },
+            {
+              "name": "tags"
+            }
+          ]
+        }
+      },
+      "list_topics": {
+        "file": "list-topics.ts",
+        "inputSchema": {
+          "required": [
+            "accessKeyId",
+            "secretAccessKey",
+            "region"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { accessKeyId"
+            },
+            {
+              "name": "secretAccessKey"
+            },
+            {
+              "name": "region"
+            },
+            {
+              "name": "endpoint"
+            }
+          ]
+        }
+      },
+      "send_message": {
+        "file": "send-message.ts",
+        "inputSchema": {
+          "required": [
+            "accessKeyId",
+            "secretAccessKey",
+            "region",
+            "topicArn",
+            "message"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { accessKeyId"
+            },
+            {
+              "name": "secretAccessKey"
+            },
+            {
+              "name": "region"
+            },
+            {
+              "name": "endpoint"
+            },
+            {
+              "name": "topicArn"
+            },
+            {
+              "name": "message"
+            },
+            {
+              "name": "subject"
+            }
+          ]
+        }
+      }
+    },
+    "testData": null
+  },
+  "soap": {
+    "id": "soap",
+    "actions": {
+      "call_method": {
+        "file": "call-method.ts",
+        "inputSchema": {
+          "required": [
+            "wsdl",
+            "method"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n      const {\n        wsdl"
+            },
+            {
+              "name": "method"
+            },
+            {
+              "name": "parameters"
+            },
+            {
+              "name": "authType"
+            },
+            {
+              "name": "username"
+            },
+            {
+              "name": "password"
+            },
+            {
+              "name": "customHeader"
+            },
+            {
+              "name": "certificate"
+            },
+            {
+              "name": "privateKey"
+            },
+            {
+              "name": "soapVersion"
+            },
+            {
+              "name": "returnRaw"
+            },
+            {
+              "name": "endpoint"
+            },
+            {
+              "name": ""
+            }
+          ]
+        }
+      },
+      "generate_template": {
+        "file": "generate-template.ts",
+        "inputSchema": {
+          "required": [
+            "wsdl",
+            "method"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n      const { wsdl"
+            },
+            {
+              "name": "method"
+            },
+            {
+              "name": "soapVersion"
+            },
+            {
+              "name": "includeComments"
+            },
+            {
+              "name": "format"
+            }
+          ]
+        }
+      },
+      "parse_wsdl": {
+        "file": "parse-wsdl.ts",
+        "inputSchema": {
+          "required": [
+            "wsdl"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n      const { wsdl"
+            },
+            {
+              "name": "includeTypes"
+            }
+          ]
+        }
+      },
+      "soap_to_rest": {
+        "file": "soap-to-rest.ts",
+        "inputSchema": {
+          "required": [
+            "wsdl",
+            "mappings"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n      const {\n        wsdl"
+            },
+            {
+              "name": "mappings"
+            },
+            {
+              "name": "authType"
+            },
+            {
+              "name": "username"
+            },
+            {
+              "name": "password"
+            },
+            {
+              "name": "customHeader"
+            },
+            {
+              "name": "certificate"
+            },
+            {
+              "name": "privateKey"
+            },
+            {
+              "name": "soapVersion"
+            },
+            {
+              "name": "endpoint"
+            },
+            {
+              "name": "method"
+            },
+            {
+              "name": "path"
+            },
+            {
+              "name": "queryParams"
+            },
+            {
+              "name": "body"
+            },
+            {
+              "name": ""
+            }
+          ]
+        }
+      }
+    },
+    "testData": null
+  },
+  "speech": {
+    "id": "speech",
+    "actions": {
+      "Alloy": {
+        "file": "text-to-speech.ts",
+        "inputSchema": null,
+        "outputSchema": null,
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "sqs": {
+    "id": "sqs",
+    "actions": {
+      "create_queue": {
+        "file": "create-queue.ts",
+        "inputSchema": {
+          "required": [
+            "accessKeyId",
+            "secretAccessKey",
+            "region",
+            "queueName"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { \n                accessKeyId"
+            },
+            {
+              "name": "secretAccessKey"
+            },
+            {
+              "name": "region"
+            },
+            {
+              "name": "endpoint"
+            },
+            {
+              "name": "queueName"
+            },
+            {
+              "name": "isFifo"
+            },
+            {
+              "name": "delaySeconds"
+            },
+            {
+              "name": "messageRetentionPeriod"
+            },
+            {
+              "name": "visibilityTimeout"
+            },
+            {
+              "name": "maxMessageSize"
+            },
+            {
+              "name": "contentBasedDeduplication"
+            },
+            {
+              "name": "tags"
+            }
+          ]
+        }
+      },
+      "list_queues": {
+        "file": "list-queues.ts",
+        "inputSchema": {
+          "required": [
+            "accessKeyId",
+            "secretAccessKey",
+            "region"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { accessKeyId"
+            },
+            {
+              "name": "secretAccessKey"
+            },
+            {
+              "name": "region"
+            },
+            {
+              "name": "endpoint"
+            },
+            {
+              "name": "queueNamePrefix"
+            }
+          ]
+        }
+      },
+      "send_message": {
+        "file": "send-message.ts",
+        "inputSchema": {
+          "required": [
+            "accessKeyId",
+            "secretAccessKey",
+            "region",
+            "queueUrl",
+            "messageBody"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { accessKeyId"
+            },
+            {
+              "name": "secretAccessKey"
+            },
+            {
+              "name": "region"
+            },
+            {
+              "name": "endpoint"
+            },
+            {
+              "name": "queueUrl"
+            },
+            {
+              "name": "messageBody"
+            },
+            {
+              "name": "delaySeconds"
+            },
+            {
+              "name": "messageAttributes"
+            },
+            {
+              "name": "messageGroupId"
+            },
+            {
+              "name": "messageDeduplicationId"
+            }
+          ]
+        }
+      }
+    },
+    "testData": null
+  },
+  "square": {
+    "error": "No actions found for plugin square"
+  },
+  "stability-ai": {
+    "id": "stability-ai",
+    "actions": {
+      "text-to-image": {
+        "file": "text-to-image.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "stable-diffusion": {
+    "id": "stable-diffusion",
+    "actions": {
+      "text-to-image": {
+        "file": "text-to-image.ts",
+        "inputSchema": {
+          "required": [],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "start": {
+    "error": "No actions found for plugin start"
+  },
+  "stripe": {
+    "id": "stripe",
+    "actions": {},
+    "testData": null
+  },
+  "supabase": {
+    "error": "No actions found for plugin supabase"
+  },
+  "surveymonkey": {
+    "error": "No actions found for plugin surveymonkey"
+  },
+  "switch": {
+    "error": "No actions found for plugin switch"
+  },
+  "tally": {
+    "error": "No actions found for plugin tally"
+  },
+  "teams": {
+    "id": "teams",
+    "actions": {},
+    "testData": null
+  },
+  "telegram": {
+    "id": "telegram",
+    "actions": {
+      "create_invite_link": {
+        "file": "create-invite-link.ts",
+        "inputSchema": {
+          "required": [
+            "bot_token",
+            "chat_id"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "get_chat_member": {
+        "file": "get-chat-member.ts",
+        "inputSchema": {
+          "required": [
+            "bot_token",
+            "chat_id",
+            "user_id"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "send_media": {
+        "file": "send-media.ts",
+        "inputSchema": {
+          "required": [
+            "bot_token",
+            "chat_id",
+            "media_type"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "send_message": {
+        "file": "send-message.ts",
+        "inputSchema": {
+          "required": [
+            "bot_token",
+            "chat_id",
+            "message"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "text-parser": {
+    "id": "text-parser",
+    "actions": {
+      "concat": {
+        "file": "concat.ts",
+        "inputSchema": {
+          "required": [
+            "texts"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "default_value": {
+        "file": "default-value.ts",
+        "inputSchema": {
+          "required": [
+            "default"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "const { value"
+            },
+            {
+              "name": "default: defaultVal"
+            },
+            {
+              "name": "emptyValues",
+              "default": "[]"
+            },
+            {
+              "name": "treatZeroAsEmpty",
+              "default": "false"
+            },
+            {
+              "name": "treatFalseAsEmpty",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "find": {
+        "file": "find.ts",
+        "inputSchema": {
+          "required": [
+            "text",
+            "pattern"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "const { text"
+            },
+            {
+              "name": "pattern"
+            },
+            {
+              "name": "useRegex"
+            },
+            {
+              "name": "caseInsensitive"
+            },
+            {
+              "name": "findAll",
+              "default": "true"
+            },
+            {
+              "name": "includePosition",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "html_to_markdown": {
+        "file": "html-to-markdown.ts",
+        "inputSchema": {
+          "required": [
+            "html"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { html"
+            },
+            {
+              "name": "headingStyle",
+              "default": "\"atx\""
+            },
+            {
+              "name": "hr",
+              "default": "\"---\""
+            },
+            {
+              "name": "bulletListMarker",
+              "default": "\"-\""
+            },
+            {
+              "name": "codeBlockStyle",
+              "default": "\"fenced\""
+            },
+            {
+              "name": "emDelimiter",
+              "default": "\"*\""
+            },
+            {
+              "name": "strongDelimiter",
+              "default": "\"**\""
+            },
+            {
+              "name": "linkStyle",
+              "default": "\"inlined\""
+            },
+            {
+              "name": "linkReferenceStyle",
+              "default": "\"full\""
+            }
+          ]
+        }
+      },
+      "markdown_to_html": {
+        "file": "markdown-to-html.ts",
+        "inputSchema": {
+          "required": [
+            "markdown"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { markdown"
+            },
+            {
+              "name": "flavor",
+              "default": "\"github\""
+            },
+            {
+              "name": "headerLevelStart",
+              "default": "1"
+            },
+            {
+              "name": "tables",
+              "default": "true"
+            },
+            {
+              "name": "noHeaderId",
+              "default": "false"
+            },
+            {
+              "name": "simpleLineBreaks",
+              "default": "false"
+            },
+            {
+              "name": "openLinksInNewWindow",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "replace": {
+        "file": "replace.ts",
+        "inputSchema": {
+          "required": [
+            "text",
+            "search",
+            "replacement"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "const { text"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "replacement"
+            },
+            {
+              "name": "useRegex"
+            },
+            {
+              "name": "caseInsensitive"
+            },
+            {
+              "name": "replaceAll"
+            }
+          ]
+        }
+      },
+      "slugify": {
+        "file": "slugify.ts",
+        "inputSchema": {
+          "required": [
+            "text"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { text"
+            },
+            {
+              "name": "lowercase",
+              "default": "true"
+            },
+            {
+              "name": "replacement",
+              "default": "\"-\""
+            },
+            {
+              "name": "remove",
+              "default": "\"\""
+            },
+            {
+              "name": "strict",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "split": {
+        "file": "split.ts",
+        "inputSchema": {
+          "required": [
+            "text"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "const { text"
+            },
+            {
+              "name": "separator",
+              "default": "\""
+            },
+            {
+              "name": "\""
+            },
+            {
+              "name": "limit"
+            },
+            {
+              "name": "trim",
+              "default": "true"
+            }
+          ]
+        }
+      },
+      "strip_html": {
+        "file": "strip-html.ts",
+        "inputSchema": {
+          "required": [
+            "html"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "const { html"
+            },
+            {
+              "name": "preserveLineBreaks",
+              "default": "true"
+            },
+            {
+              "name": "preserveFormatting",
+              "default": "false"
+            },
+            {
+              "name": "collapseWhitespace",
+              "default": "true"
+            },
+            {
+              "name": "decodeEntities",
+              "default": "true"
+            }
+          ]
+        }
+      }
+    },
+    "testData": null
+  },
+  "tiktok": {
+    "id": "tiktok",
+    "actions": {},
+    "testData": null
+  },
+  "timer": {
+    "id": "timer",
+    "actions": {},
+    "testData": null
+  },
+  "translation": {
+    "id": "translation",
+    "actions": {},
+    "testData": null
+  },
+  "trello": {
+    "id": "trello",
+    "actions": {},
+    "testData": null
+  },
+  "twilio": {
+    "id": "twilio",
+    "actions": {
+      "setup": {
+        "file": "config.ts",
+        "inputSchema": null,
+        "outputSchema": null,
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "sendSms": {
+        "file": "sms.ts",
+        "inputSchema": null,
+        "outputSchema": null,
+        "executeFunction": {
+          "parameters": []
+        }
+      },
+      "makeCall": {
+        "file": "voice.ts",
+        "inputSchema": null,
+        "outputSchema": null,
+        "executeFunction": {
+          "parameters": []
+        }
+      }
+    },
+    "testData": null
+  },
+  "typeform": {
+    "id": "typeform",
+    "actions": {
+      "custom_api_call": {
+        "file": "custom-api-call.ts",
+        "inputSchema": {
+          "required": [
+            "method",
+            "path"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "webflow": {
+    "id": "webflow",
+    "actions": {},
+    "testData": null
+  },
+  "webhook": {
+    "error": "No actions found for plugin webhook"
+  },
+  "whatsapp": {
+    "id": "whatsapp",
+    "actions": {
+      "send_media": {
+        "file": "send-media.ts",
+        "inputSchema": {
+          "required": [
+            "accessToken",
+            "to",
+            "mediaType",
+            "mediaUrl"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "send_message": {
+        "file": "send-message.ts",
+        "inputSchema": {
+          "required": [
+            "accessToken",
+            "to",
+            "text"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "send_template": {
+        "file": "send-template.ts",
+        "inputSchema": {
+          "required": [
+            "accessToken",
+            "to",
+            "templateName",
+            "templateLanguage"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "woocommerce": {
+    "id": "woocommerce",
+    "actions": {
+      "create_coupon": {
+        "file": "create-coupon.ts",
+        "inputSchema": {
+          "required": [
+            "code"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "create_customer": {
+        "file": "create-customer.ts",
+        "inputSchema": {
+          "required": [
+            "email"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "create_product": {
+        "file": "create-product.ts",
+        "inputSchema": {
+          "required": [
+            "name"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "find_customer": {
+        "file": "find-customer.ts",
+        "inputSchema": {
+          "required": [
+            "id"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      },
+      "find_product": {
+        "file": "find-product.ts",
+        "inputSchema": {
+          "required": [
+            "id"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "wordpress": {
+    "id": "wordpress",
+    "actions": {
+      "create_page": {
+        "file": "create-page.ts",
+        "inputSchema": null,
+        "outputSchema": null,
+        "executeFunction": null
+      },
+      "create_post": {
+        "file": "create-post.ts",
+        "inputSchema": null,
+        "outputSchema": null,
+        "executeFunction": null
+      },
+      "get_post": {
+        "file": "get-post.ts",
+        "inputSchema": null,
+        "outputSchema": null,
+        "executeFunction": null
+      },
+      "update_post": {
+        "file": "update-post.ts",
+        "inputSchema": null,
+        "outputSchema": null,
+        "executeFunction": null
+      }
+    },
+    "testData": null
+  },
+  "xero": {
+    "error": "No actions found for plugin xero"
+  },
+  "xml": {
+    "id": "xml",
+    "actions": {
+      "convert_json_to_xml": {
+        "file": "convert-json-to-xml.ts",
+        "inputSchema": {
+          "required": [
+            "json"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { json"
+            },
+            {
+              "name": "rootName",
+              "default": "'root'"
+            },
+            {
+              "name": "format",
+              "default": "false"
+            },
+            {
+              "name": "ignoreAttributes",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "convert_xml_to_json": {
+        "file": "convert-xml-to-json.ts",
+        "inputSchema": {
+          "required": [
+            "xml"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { xml"
+            },
+            {
+              "name": "preserveOrder",
+              "default": "false"
+            },
+            {
+              "name": "ignoreAttributes",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "query_xml": {
+        "file": "query-xml.ts",
+        "inputSchema": {
+          "required": [
+            "xml",
+            "path"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { xml"
+            },
+            {
+              "name": "path"
+            },
+            {
+              "name": "ignoreAttributes",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "validate_xml": {
+        "file": "validate-xml.ts",
+        "inputSchema": {
+          "required": [
+            "xml"
+          ],
+          "properties": {}
+        },
+        "outputSchema": {
+          "properties": {}
+        },
+        "executeFunction": {
+          "parameters": [
+            {
+              "name": "try {\n            const { xml"
+            }
+          ]
+        }
+      }
+    },
+    "testData": null
+  },
+  "youtube": {
+    "id": "youtube",
+    "actions": {},
+    "testData": null
+  },
+  "zendesk": {
+    "id": "zendesk",
+    "actions": {},
+    "testData": null
+  },
+  "zoom": {
+    "id": "zoom",
+    "actions": {},
+    "testData": null
+  }
+}

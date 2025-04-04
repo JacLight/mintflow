@@ -52,7 +52,9 @@ export const convertJsonToText = {
     },
     execute: async (input: any, config: any, context: any): Promise<any> => {
         try {
-            const { json, pretty = false } = input.data;
+            // Get input parameters from the data object
+            const data = input.data || {};
+            const { json, pretty = false } = data;
 
             if (json === undefined || json === null) {
                 return {

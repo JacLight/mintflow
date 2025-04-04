@@ -1,0 +1,20 @@
+{
+  "id": "typeform-test-chain",
+  "name": "Test Chain for typeform",
+  "nodes": [
+    {
+      "id": "typeform-custom_api_call-0",
+      "type": "typeform",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "typeform": {}
+  }
+}

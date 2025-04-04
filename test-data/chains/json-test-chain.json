@@ -1,0 +1,30 @@
+{
+  "id": "json-test-chain",
+  "name": "Test Chain for json",
+  "nodes": [
+    {
+      "id": "json-convert_json_to_text-0",
+      "type": "json",
+      "action": "convert_json_to_text",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "json-convert_text_to_json-1",
+      "type": "json",
+      "action": "convert_text_to_json",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "json": {}
+  }
+}

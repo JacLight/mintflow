@@ -1,0 +1,12 @@
+{
+  "input": {
+    "text": "{\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}"
+  },
+  "expected": {
+    "result": {
+      "name": "John",
+      "age": 30,
+      "city": "New York"
+    }
+  }
+}

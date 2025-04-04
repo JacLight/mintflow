@@ -1,0 +1,20 @@
+{
+  "id": "speech-test-chain",
+  "name": "Test Chain for speech",
+  "nodes": [
+    {
+      "id": "speech-Alloy-0",
+      "type": "speech",
+      "action": "Alloy",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "speech": {}
+  }
+}

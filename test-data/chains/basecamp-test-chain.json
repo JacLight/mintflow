@@ -1,0 +1,40 @@
+{
+  "id": "basecamp-test-chain",
+  "name": "Test Chain for basecamp",
+  "nodes": [
+    {
+      "id": "basecamp-create-project-0",
+      "type": "basecamp",
+      "action": "create-project",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "basecamp-create-todo-item-1",
+      "type": "basecamp",
+      "action": "create-todo-item",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "basecamp-list-projects-2",
+      "type": "basecamp",
+      "action": "list-projects",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "basecamp": {}
+  }
+}

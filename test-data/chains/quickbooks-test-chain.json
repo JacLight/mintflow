@@ -1,0 +1,58 @@
+{
+  "id": "quickbooks-test-chain",
+  "name": "Test Chain for quickbooks",
+  "nodes": [
+    {
+      "id": "quickbooks-create_invoice-0",
+      "type": "quickbooks",
+      "action": "create_invoice",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "quickbooks-custom_api_call-1",
+      "type": "quickbooks",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "quickbooks-get_customer-2",
+      "type": "quickbooks",
+      "action": "get_customer",
+      "data": {
+        "customerId": "1",
+        "includeDetails": true
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "quickbooks-get_profit_loss_report-3",
+      "type": "quickbooks",
+      "action": "get_profit_loss_report",
+      "data": {
+        "startDate": "2023-01-01",
+        "endDate": "2023-12-31",
+        "accountingMethod": "Accrual",
+        "summarizeColumnsBy": "Month"
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "quickbooks": {}
+  }
+}

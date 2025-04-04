@@ -1,0 +1,36 @@
+{
+  "id": "apollo-test-chain",
+  "name": "Test Chain for apollo",
+  "nodes": [
+    {
+      "id": "apollo-enrich_company-0",
+      "type": "apollo",
+      "action": "enrich_company",
+      "data": {
+        "domain": "example.com",
+        "cacheResponse": true
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "apollo-match_person-1",
+      "type": "apollo",
+      "action": "match_person",
+      "data": {
+        "email": "john.doe@example.com",
+        "cacheResponse": true
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "apollo": {}
+  }
+}

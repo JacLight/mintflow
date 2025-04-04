@@ -1,0 +1,78 @@
+{
+  "id": "klaviyo-test-chain",
+  "name": "Test Chain for klaviyo",
+  "nodes": [
+    {
+      "id": "klaviyo-add_profiles_to_list-0",
+      "type": "klaviyo",
+      "action": "add_profiles_to_list",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "klaviyo-get_campaigns-1",
+      "type": "klaviyo",
+      "action": "get_campaigns",
+      "data": {
+        "apiKey": "pk_1234567890"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "klaviyo-get_lists-2",
+      "type": "klaviyo",
+      "action": "get_lists",
+      "data": {
+        "apiKey": "pk_1234567890"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "klaviyo-identify_profile-3",
+      "type": "klaviyo",
+      "action": "identify_profile",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "klaviyo-remove_profile_from_list-4",
+      "type": "klaviyo",
+      "action": "remove_profile_from_list",
+      "data": {
+        "apiKey": "pk_1234567890",
+        "listId": "abc123",
+        "email": "customer@example.com"
+      },
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    },
+    {
+      "id": "klaviyo-track_event-5",
+      "type": "klaviyo",
+      "action": "track_event",
+      "data": {},
+      "position": {
+        "x": 500,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "klaviyo": {}
+  }
+}

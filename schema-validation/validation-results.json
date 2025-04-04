@@ -1,0 +1,492 @@
+{
+  "activecampaign": {
+    "pluginId": "activecampaign",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "ai": {
+    "error": "Actions directory not found for plugin ai"
+  },
+  "airtable": {
+    "error": "Actions directory not found for plugin airtable"
+  },
+  "apollo": {
+    "pluginId": "apollo",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "array": {
+    "pluginId": "array",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "asana": {
+    "error": "Actions directory not found for plugin asana"
+  },
+  "assemblyai": {
+    "pluginId": "assemblyai",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "authorize": {
+    "error": "Actions directory not found for plugin authorize"
+  },
+  "basecamp": {
+    "pluginId": "basecamp",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "calcom": {
+    "pluginId": "calcom",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "calendly": {
+    "error": "Actions directory not found for plugin calendly"
+  },
+  "clickup": {
+    "pluginId": "clickup",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "confluence": {
+    "pluginId": "confluence",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "convertkit": {
+    "pluginId": "convertkit",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "crypto": {
+    "pluginId": "crypto",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "csv": {
+    "error": "Actions directory not found for plugin csv"
+  },
+  "data-bridge": {
+    "error": "Actions directory not found for plugin data-bridge"
+  },
+  "delay": {
+    "error": "Actions directory not found for plugin delay"
+  },
+  "discord": {
+    "error": "Actions directory not found for plugin discord"
+  },
+  "dropbox": {
+    "error": "Actions directory not found for plugin dropbox"
+  },
+  "exec": {
+    "error": "Actions directory not found for plugin exec"
+  },
+  "facebook": {
+    "error": "Actions directory not found for plugin facebook"
+  },
+  "fetch": {
+    "error": "Actions directory not found for plugin fetch"
+  },
+  "figma": {
+    "error": "Actions directory not found for plugin figma"
+  },
+  "file": {
+    "pluginId": "file",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "freshbooks": {
+    "pluginId": "freshbooks",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "freshdesk": {
+    "pluginId": "freshdesk",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "github": {
+    "error": "Actions directory not found for plugin github"
+  },
+  "google-ai": {
+    "error": "Actions directory not found for plugin google-ai"
+  },
+  "google-business": {
+    "pluginId": "google-business",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "google-drive": {
+    "error": "Actions directory not found for plugin google-drive"
+  },
+  "google-search": {
+    "pluginId": "google-search",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "google-sheets": {
+    "error": "Actions directory not found for plugin google-sheets"
+  },
+  "google-workspace": {
+    "pluginId": "google-workspace",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "groq": {
+    "pluginId": "groq",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "hubspot": {
+    "pluginId": "hubspot",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "inject": {
+    "error": "Actions directory not found for plugin inject"
+  },
+  "instagram": {
+    "error": "Actions directory not found for plugin instagram"
+  },
+  "intercom": {
+    "error": "Actions directory not found for plugin intercom"
+  },
+  "invoiceninja": {
+    "pluginId": "invoiceninja",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "jira-cloud": {
+    "error": "Actions directory not found for plugin jira-cloud"
+  },
+  "jotform": {
+    "pluginId": "jotform",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "json": {
+    "pluginId": "json",
+    "actions": {
+      "convert_json_to_text": {
+        "name": "convert_json_to_text",
+        "file": "convert-json-to-text.ts",
+        "issues": [
+          {
+            "type": "undefined_field",
+            "message": "Field 'json' in test data is not defined in schema"
+          },
+          {
+            "type": "undefined_field",
+            "message": "Field 'pretty' in test data is not defined in schema"
+          }
+        ]
+      },
+      "convert_text_to_json": {
+        "name": "convert_text_to_json",
+        "file": "convert-text-to-json.ts",
+        "issues": [
+          {
+            "type": "undefined_field",
+            "message": "Field 'text' in test data is not defined in schema"
+          }
+        ]
+      }
+    }
+  },
+  "klaviyo": {
+    "pluginId": "klaviyo",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "krisp-call": {
+    "pluginId": "krisp-call",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "langchain": {
+    "error": "Actions directory not found for plugin langchain"
+  },
+  "langflow": {
+    "error": "Actions directory not found for plugin langflow"
+  },
+  "linkedin": {
+    "pluginId": "linkedin",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "llm": {
+    "error": "Actions directory not found for plugin llm"
+  },
+  "mail": {
+    "error": "Actions directory not found for plugin mail"
+  },
+  "mailchimp": {
+    "error": "Actions directory not found for plugin mailchimp"
+  },
+  "mastodon": {
+    "pluginId": "mastodon",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "mattermost": {
+    "pluginId": "mattermost",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "media-processor": {
+    "error": "No action files found for plugin media-processor"
+  },
+  "medium": {
+    "pluginId": "medium",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "microsoft-office": {
+    "error": "Actions directory not found for plugin microsoft-office"
+  },
+  "milvus": {
+    "pluginId": "milvus",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "modify": {
+    "error": "Actions directory not found for plugin modify"
+  },
+  "monday": {
+    "error": "Actions directory not found for plugin monday"
+  },
+  "mqtt": {
+    "error": "Actions directory not found for plugin mqtt"
+  },
+  "mysql": {
+    "error": "Actions directory not found for plugin mysql"
+  },
+  "notion": {
+    "error": "Actions directory not found for plugin notion"
+  },
+  "paypal": {
+    "error": "Actions directory not found for plugin paypal"
+  },
+  "pdf": {
+    "pluginId": "pdf",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "perplexity-ai": {
+    "pluginId": "perplexity-ai",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "photoroom": {
+    "pluginId": "photoroom",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "pinecone": {
+    "error": "Actions directory not found for plugin pinecone"
+  },
+  "pinterest": {
+    "error": "Actions directory not found for plugin pinterest"
+  },
+  "pipedrive": {
+    "error": "Actions directory not found for plugin pipedrive"
+  },
+  "postgres": {
+    "error": "Actions directory not found for plugin postgres"
+  },
+  "qdrant": {
+    "error": "Actions directory not found for plugin qdrant"
+  },
+  "qrcode": {
+    "pluginId": "qrcode",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "queue": {
+    "error": "Actions directory not found for plugin queue"
+  },
+  "quickbooks": {
+    "pluginId": "quickbooks",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "quickbooks-migrate": {
+    "error": "Actions directory not found for plugin quickbooks-migrate"
+  },
+  "range": {
+    "error": "Actions directory not found for plugin range"
+  },
+  "razorpay": {
+    "pluginId": "razorpay",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "reddit": {
+    "pluginId": "reddit",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "redis": {
+    "error": "Actions directory not found for plugin redis"
+  },
+  "s3-storage": {
+    "error": "Actions directory not found for plugin s3-storage"
+  },
+  "salesforce": {
+    "error": "Actions directory not found for plugin salesforce"
+  },
+  "sendgrid": {
+    "pluginId": "sendgrid",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "shopify": {
+    "error": "Actions directory not found for plugin shopify"
+  },
+  "slack": {
+    "error": "Actions directory not found for plugin slack"
+  },
+  "snapchat": {
+    "error": "Actions directory not found for plugin snapchat"
+  },
+  "snowflake": {
+    "pluginId": "snowflake",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "sns": {
+    "pluginId": "sns",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "soap": {
+    "pluginId": "soap",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "speech": {
+    "pluginId": "speech",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "sqs": {
+    "pluginId": "sqs",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "square": {
+    "error": "Actions directory not found for plugin square"
+  },
+  "stability-ai": {
+    "pluginId": "stability-ai",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "stable-diffusion": {
+    "pluginId": "stable-diffusion",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "start": {
+    "error": "Actions directory not found for plugin start"
+  },
+  "stripe": {
+    "error": "Actions directory not found for plugin stripe"
+  },
+  "supabase": {
+    "error": "Actions directory not found for plugin supabase"
+  },
+  "surveymonkey": {
+    "pluginId": "surveymonkey",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "switch": {
+    "error": "Actions directory not found for plugin switch"
+  },
+  "tally": {
+    "error": "Actions directory not found for plugin tally"
+  },
+  "teams": {
+    "error": "Actions directory not found for plugin teams"
+  },
+  "telegram": {
+    "pluginId": "telegram",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "text-parser": {
+    "pluginId": "text-parser",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "tiktok": {
+    "error": "Actions directory not found for plugin tiktok"
+  },
+  "timer": {
+    "error": "Actions directory not found for plugin timer"
+  },
+  "translation": {
+    "pluginId": "translation",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "trello": {
+    "error": "Actions directory not found for plugin trello"
+  },
+  "twilio": {
+    "pluginId": "twilio",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "typeform": {
+    "pluginId": "typeform",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "webflow": {
+    "pluginId": "webflow",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "webhook": {
+    "pluginId": "webhook",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "whatsapp": {
+    "pluginId": "whatsapp",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "woocommerce": {
+    "pluginId": "woocommerce",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "wordpress": {
+    "pluginId": "wordpress",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "xero": {
+    "pluginId": "xero",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "xml": {
+    "pluginId": "xml",
+    "actions": {},
+    "warning": "No test data found for this plugin"
+  },
+  "youtube": {
+    "error": "Actions directory not found for plugin youtube"
+  },
+  "zendesk": {
+    "error": "Actions directory not found for plugin zendesk"
+  },
+  "zoom": {
+    "error": "Actions directory not found for plugin zoom"
+  }
+}

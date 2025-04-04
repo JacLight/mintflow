@@ -1,0 +1,66 @@
+{
+  "id": "freshbooks-test-chain",
+  "name": "Test Chain for freshbooks",
+  "nodes": [
+    {
+      "id": "freshbooks-create_invoice-0",
+      "type": "freshbooks",
+      "action": "create_invoice",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "freshbooks-custom_api_call-1",
+      "type": "freshbooks",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "freshbooks-get_client-2",
+      "type": "freshbooks",
+      "action": "get_client",
+      "data": {
+        "clientId": "123456"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "freshbooks-get_expense-3",
+      "type": "freshbooks",
+      "action": "get_expense",
+      "data": {
+        "expenseId": "123456"
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "freshbooks-get_time_entry-4",
+      "type": "freshbooks",
+      "action": "get_time_entry",
+      "data": {
+        "timeEntryId": "123456"
+      },
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "freshbooks": {}
+  }
+}

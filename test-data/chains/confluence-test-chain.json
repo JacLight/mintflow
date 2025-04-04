@@ -1,0 +1,37 @@
+{
+  "id": "confluence-test-chain",
+  "name": "Test Chain for confluence",
+  "nodes": [
+    {
+      "id": "confluence-create_page_from_template-0",
+      "type": "confluence",
+      "action": "create_page_from_template",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "confluence-get_page_content-1",
+      "type": "confluence",
+      "action": "get_page_content",
+      "data": {
+        "username": "user@example.com",
+        "password": "api-token",
+        "confluenceDomain": "https://your-domain.atlassian.net",
+        "pageId": "123456789",
+        "includeDescendants": true,
+        "maxDepth": 3
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "confluence": {}
+  }
+}

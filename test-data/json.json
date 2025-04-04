@@ -1,0 +1,21 @@
+{
+  "pluginId": "json",
+  "actions": {
+    "convert_text_to_json": {
+      "input": {
+        "text": "{\"name\": \"Test User\", \"email\": \"test@example.com\", \"age\": 30, \"isActive\": true}"
+      }
+    },
+    "convert_json_to_text": {
+      "input": {
+        "json": {
+          "name": "Test User",
+          "email": "test@example.com",
+          "age": 30,
+          "isActive": true
+        },
+        "pretty": true
+      }
+    }
+  }
+}

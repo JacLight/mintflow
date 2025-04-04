@@ -1,0 +1,6102 @@
+{
+  "summary": {
+    "total": 314,
+    "passed": 2,
+    "failed": 312
+  },
+  "plugins": {
+    "activecampaign": {
+      "id": "activecampaign",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "activecampaign",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for activecampaign:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:5:1]"
+        }
+      }
+    },
+    "ai": {
+      "id": "ai",
+      "actions": {
+        "TextGenInput": {
+          "name": "TextGenInput",
+          "nodeType": "ai",
+          "description": "TextGenInput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for ai:TextGenInput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:16:31]"
+        },
+        "EmbeddingInput": {
+          "name": "EmbeddingInput",
+          "nodeType": "ai",
+          "description": "EmbeddingInput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for ai:EmbeddingInput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:16:31]"
+        },
+        "ListModelsInput": {
+          "name": "ListModelsInput",
+          "nodeType": "ai",
+          "description": "ListModelsInput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for ai:ListModelsInput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:16:31]"
+        },
+        "TextGenerationResponse": {
+          "name": "TextGenerationResponse",
+          "nodeType": "ai",
+          "description": "TextGenerationResponse",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for ai:TextGenerationResponse"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:16:31]"
+        },
+        "EmbeddingResponse": {
+          "name": "EmbeddingResponse",
+          "nodeType": "ai",
+          "description": "EmbeddingResponse",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for ai:EmbeddingResponse"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:16:31]"
+        },
+        "StreamCallback": {
+          "name": "StreamCallback",
+          "nodeType": "ai",
+          "description": "StreamCallback",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for ai:StreamCallback"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:16:31]"
+        },
+        "Model": {
+          "name": "Model",
+          "nodeType": "ai",
+          "description": "Model",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for ai:Model"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:16:31]"
+        }
+      }
+    },
+    "airtable": {
+      "id": "airtable",
+      "actions": {
+        "AirtableClient": {
+          "name": "AirtableClient",
+          "nodeType": "airtable",
+          "description": "AirtableClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for airtable:AirtableClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:127:29]"
+        }
+      }
+    },
+    "apollo": {
+      "id": "apollo",
+      "actions": {
+        "matchPerson": {
+          "name": "matchPerson",
+          "nodeType": "apollo",
+          "description": "matchPerson",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for apollo:matchPerson"
+              }
+            }
+          },
+          "output": null,
+          "error": "matchPerson is not defined"
+        },
+        "enrichCompany": {
+          "name": "enrichCompany",
+          "nodeType": "apollo",
+          "description": "enrichCompany",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for apollo:enrichCompany"
+              }
+            }
+          },
+          "output": null,
+          "error": "matchPerson is not defined"
+        }
+      }
+    },
+    "array": {
+      "id": "array",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "array",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for array:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "assemblyai": {
+      "id": "assemblyai",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "assemblyai",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for assemblyai:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "basecamp": {
+      "id": "basecamp",
+      "actions": {
+        "listProjects": {
+          "name": "listProjects",
+          "nodeType": "basecamp",
+          "description": "listProjects",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for basecamp:listProjects"
+              }
+            }
+          },
+          "output": null,
+          "error": "listProjects is not defined"
+        },
+        "createProject": {
+          "name": "createProject",
+          "nodeType": "basecamp",
+          "description": "createProject",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for basecamp:createProject"
+              }
+            }
+          },
+          "output": null,
+          "error": "listProjects is not defined"
+        },
+        "createTodoItem": {
+          "name": "createTodoItem",
+          "nodeType": "basecamp",
+          "description": "createTodoItem",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for basecamp:createTodoItem"
+              }
+            }
+          },
+          "output": null,
+          "error": "listProjects is not defined"
+        }
+      }
+    },
+    "calendly": {
+      "id": "calendly",
+      "actions": {
+        "getUser": {
+          "name": "getUser",
+          "nodeType": "calendly",
+          "description": "getUser",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:getUser"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "listEvents": {
+          "name": "listEvents",
+          "nodeType": "calendly",
+          "description": "listEvents",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:listEvents"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "getEvent": {
+          "name": "getEvent",
+          "nodeType": "calendly",
+          "description": "getEvent",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:getEvent"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "listScheduledEvents": {
+          "name": "listScheduledEvents",
+          "nodeType": "calendly",
+          "description": "listScheduledEvents",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:listScheduledEvents"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "getScheduledEvent": {
+          "name": "getScheduledEvent",
+          "nodeType": "calendly",
+          "description": "getScheduledEvent",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:getScheduledEvent"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "listInvitees": {
+          "name": "listInvitees",
+          "nodeType": "calendly",
+          "description": "listInvitees",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:listInvitees"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "getInvitee": {
+          "name": "getInvitee",
+          "nodeType": "calendly",
+          "description": "getInvitee",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:getInvitee"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "cancelInvitee": {
+          "name": "cancelInvitee",
+          "nodeType": "calendly",
+          "description": "cancelInvitee",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:cancelInvitee"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "listWebhooks": {
+          "name": "listWebhooks",
+          "nodeType": "calendly",
+          "description": "listWebhooks",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:listWebhooks"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "createWebhook": {
+          "name": "createWebhook",
+          "nodeType": "calendly",
+          "description": "createWebhook",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:createWebhook"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        },
+        "deleteWebhook": {
+          "name": "deleteWebhook",
+          "nodeType": "calendly",
+          "description": "deleteWebhook",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for calendly:deleteWebhook"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:198:29]"
+        }
+      }
+    },
+    "clickup": {
+      "id": "clickup",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "clickup",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for clickup:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "confluence": {
+      "id": "confluence",
+      "actions": {
+        "getPageContent": {
+          "name": "getPageContent",
+          "nodeType": "confluence",
+          "description": "getPageContent",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for confluence:getPageContent"
+              }
+            }
+          },
+          "output": null,
+          "error": "getPageContent is not defined"
+        },
+        "createPageFromTemplate": {
+          "name": "createPageFromTemplate",
+          "nodeType": "confluence",
+          "description": "createPageFromTemplate",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for confluence:createPageFromTemplate"
+              }
+            }
+          },
+          "output": null,
+          "error": "getPageContent is not defined"
+        }
+      }
+    },
+    "convertkit": {
+      "id": "convertkit",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "convertkit",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for convertkit:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "crypto": {
+      "id": "crypto",
+      "actions": {
+        "hashText": {
+          "name": "hashText",
+          "nodeType": "crypto",
+          "description": "hashText",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for crypto:hashText"
+              }
+            }
+          },
+          "output": null,
+          "error": "hashText is not defined"
+        },
+        "hmacSignature": {
+          "name": "hmacSignature",
+          "nodeType": "crypto",
+          "description": "hmacSignature",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for crypto:hmacSignature"
+              }
+            }
+          },
+          "output": null,
+          "error": "hashText is not defined"
+        },
+        "generatePassword": {
+          "name": "generatePassword",
+          "nodeType": "crypto",
+          "description": "generatePassword",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for crypto:generatePassword"
+              }
+            }
+          },
+          "output": null,
+          "error": "hashText is not defined"
+        }
+      }
+    },
+    "csv": {
+      "id": "csv",
+      "actions": {
+        "csvToJson": {
+          "name": "csvToJson",
+          "nodeType": "csv",
+          "description": "csvToJson",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for csv:csvToJson"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:74:29]"
+        }
+      }
+    },
+    "discord": {
+      "id": "discord",
+      "actions": {
+        "discordSendMessage": {
+          "name": "discordSendMessage",
+          "nodeType": "discord",
+          "description": "discordSendMessage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:discordSendMessage"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "getGuilds": {
+          "name": "getGuilds",
+          "nodeType": "discord",
+          "description": "getGuilds",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:getGuilds"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "getChannels": {
+          "name": "getChannels",
+          "nodeType": "discord",
+          "description": "getChannels",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:getChannels"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "getRoles": {
+          "name": "getRoles",
+          "nodeType": "discord",
+          "description": "getRoles",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:getRoles"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "createChannel": {
+          "name": "createChannel",
+          "nodeType": "discord",
+          "description": "createChannel",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:createChannel"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "deleteChannel": {
+          "name": "deleteChannel",
+          "nodeType": "discord",
+          "description": "deleteChannel",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:deleteChannel"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "addRoleToMember": {
+          "name": "addRoleToMember",
+          "nodeType": "discord",
+          "description": "addRoleToMember",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:addRoleToMember"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "removeRoleFromMember": {
+          "name": "removeRoleFromMember",
+          "nodeType": "discord",
+          "description": "removeRoleFromMember",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:removeRoleFromMember"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "banMember": {
+          "name": "banMember",
+          "nodeType": "discord",
+          "description": "banMember",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:banMember"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "removeBan": {
+          "name": "removeBan",
+          "nodeType": "discord",
+          "description": "removeBan",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:removeBan"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "findMemberByUsername": {
+          "name": "findMemberByUsername",
+          "nodeType": "discord",
+          "description": "findMemberByUsername",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:findMemberByUsername"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "createRole": {
+          "name": "createRole",
+          "nodeType": "discord",
+          "description": "createRole",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:createRole"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        },
+        "deleteRole": {
+          "name": "deleteRole",
+          "nodeType": "discord",
+          "description": "deleteRole",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for discord:deleteRole"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:195:29]"
+        }
+      }
+    },
+    "dropbox": {
+      "id": "dropbox",
+      "actions": {
+        "uploadFile": {
+          "name": "uploadFile",
+          "nodeType": "dropbox",
+          "description": "uploadFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:uploadFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "listFolder": {
+          "name": "listFolder",
+          "nodeType": "dropbox",
+          "description": "listFolder",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:listFolder"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "search": {
+          "name": "search",
+          "nodeType": "dropbox",
+          "description": "search",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:search"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "createFolder": {
+          "name": "createFolder",
+          "nodeType": "dropbox",
+          "description": "createFolder",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:createFolder"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "deleteFile": {
+          "name": "deleteFile",
+          "nodeType": "dropbox",
+          "description": "deleteFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:deleteFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "deleteFolder": {
+          "name": "deleteFolder",
+          "nodeType": "dropbox",
+          "description": "deleteFolder",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:deleteFolder"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "moveFile": {
+          "name": "moveFile",
+          "nodeType": "dropbox",
+          "description": "moveFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:moveFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "moveFolder": {
+          "name": "moveFolder",
+          "nodeType": "dropbox",
+          "description": "moveFolder",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:moveFolder"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "copyFile": {
+          "name": "copyFile",
+          "nodeType": "dropbox",
+          "description": "copyFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:copyFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "copyFolder": {
+          "name": "copyFolder",
+          "nodeType": "dropbox",
+          "description": "copyFolder",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:copyFolder"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "getFileLink": {
+          "name": "getFileLink",
+          "nodeType": "dropbox",
+          "description": "getFileLink",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:getFileLink"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        },
+        "createTextFile": {
+          "name": "createTextFile",
+          "nodeType": "dropbox",
+          "description": "createTextFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for dropbox:createTextFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:207:29]"
+        }
+      }
+    },
+    "exec": {
+      "id": "exec",
+      "actions": {
+        "exec": {
+          "name": "exec",
+          "nodeType": "exec",
+          "description": "exec",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for exec:exec"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:38:29]"
+        }
+      }
+    },
+    "facebook": {
+      "id": "facebook",
+      "actions": {
+        "createPost": {
+          "name": "createPost",
+          "nodeType": "facebook",
+          "description": "createPost",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for facebook:createPost"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:112:29]"
+        },
+        "createPhotoPost": {
+          "name": "createPhotoPost",
+          "nodeType": "facebook",
+          "description": "createPhotoPost",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for facebook:createPhotoPost"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:112:29]"
+        },
+        "createVideoPost": {
+          "name": "createVideoPost",
+          "nodeType": "facebook",
+          "description": "createVideoPost",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for facebook:createVideoPost"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:112:29]"
+        },
+        "getPages": {
+          "name": "getPages",
+          "nodeType": "facebook",
+          "description": "getPages",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for facebook:getPages"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:112:29]"
+        }
+      }
+    },
+    "figma": {
+      "id": "figma",
+      "actions": {
+        "getFile": {
+          "name": "getFile",
+          "nodeType": "figma",
+          "description": "getFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getFileComments": {
+          "name": "getFileComments",
+          "nodeType": "figma",
+          "description": "getFileComments",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getFileComments"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "postFileComment": {
+          "name": "postFileComment",
+          "nodeType": "figma",
+          "description": "postFileComment",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:postFileComment"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getFileImages": {
+          "name": "getFileImages",
+          "nodeType": "figma",
+          "description": "getFileImages",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getFileImages"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getFileNodes": {
+          "name": "getFileNodes",
+          "nodeType": "figma",
+          "description": "getFileNodes",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getFileNodes"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getTeamProjects": {
+          "name": "getTeamProjects",
+          "nodeType": "figma",
+          "description": "getTeamProjects",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getTeamProjects"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getProjectFiles": {
+          "name": "getProjectFiles",
+          "nodeType": "figma",
+          "description": "getProjectFiles",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getProjectFiles"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getTeamComponents": {
+          "name": "getTeamComponents",
+          "nodeType": "figma",
+          "description": "getTeamComponents",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getTeamComponents"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getFileComponents": {
+          "name": "getFileComponents",
+          "nodeType": "figma",
+          "description": "getFileComponents",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getFileComponents"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getComponentSets": {
+          "name": "getComponentSets",
+          "nodeType": "figma",
+          "description": "getComponentSets",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getComponentSets"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "getStyles": {
+          "name": "getStyles",
+          "nodeType": "figma",
+          "description": "getStyles",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:getStyles"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "createWebhook": {
+          "name": "createWebhook",
+          "nodeType": "figma",
+          "description": "createWebhook",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:createWebhook"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        },
+        "deleteWebhook": {
+          "name": "deleteWebhook",
+          "nodeType": "figma",
+          "description": "deleteWebhook",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for figma:deleteWebhook"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:180:29]"
+        }
+      }
+    },
+    "file": {
+      "id": "file",
+      "actions": {
+        "readFile": {
+          "name": "readFile",
+          "nodeType": "file",
+          "description": "readFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for file:readFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:70:29]"
+        },
+        "fileOutputFormats": {
+          "name": "fileOutputFormats",
+          "nodeType": "file",
+          "description": "fileOutputFormats",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for file:fileOutputFormats"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:70:29]"
+        },
+        "createFile": {
+          "name": "createFile",
+          "nodeType": "file",
+          "description": "createFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for file:createFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:70:29]"
+        },
+        "changeFileEncoding": {
+          "name": "changeFileEncoding",
+          "nodeType": "file",
+          "description": "changeFileEncoding",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for file:changeFileEncoding"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:70:29]"
+        },
+        "checkFileType": {
+          "name": "checkFileType",
+          "nodeType": "file",
+          "description": "checkFileType",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for file:checkFileType"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:70:29]"
+        }
+      }
+    },
+    "google-ai": {
+      "id": "google-ai",
+      "actions": {
+        "GoogleGenerativeAI": {
+          "name": "GoogleGenerativeAI",
+          "nodeType": "google-ai",
+          "description": "GoogleGenerativeAI",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-ai:GoogleGenerativeAI"
+              }
+            }
+          },
+          "output": null,
+          "error": "Missing initializer in const declaration [<isolated-vm>:7:7]"
+        }
+      }
+    },
+    "google-business": {
+      "id": "google-business",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "google-business",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-business:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:5:1]"
+        }
+      }
+    },
+    "google-drive": {
+      "id": "google-drive",
+      "actions": {
+        "uploadFile": {
+          "name": "uploadFile",
+          "nodeType": "google-drive",
+          "description": "uploadFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:uploadFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "createFolder": {
+          "name": "createFolder",
+          "nodeType": "google-drive",
+          "description": "createFolder",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:createFolder"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "listFiles": {
+          "name": "listFiles",
+          "nodeType": "google-drive",
+          "description": "listFiles",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:listFiles"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "searchFiles": {
+          "name": "searchFiles",
+          "nodeType": "google-drive",
+          "description": "searchFiles",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:searchFiles"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "getFile": {
+          "name": "getFile",
+          "nodeType": "google-drive",
+          "description": "getFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:getFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "deleteFile": {
+          "name": "deleteFile",
+          "nodeType": "google-drive",
+          "description": "deleteFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:deleteFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "trashFile": {
+          "name": "trashFile",
+          "nodeType": "google-drive",
+          "description": "trashFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:trashFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "moveFile": {
+          "name": "moveFile",
+          "nodeType": "google-drive",
+          "description": "moveFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:moveFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "copyFile": {
+          "name": "copyFile",
+          "nodeType": "google-drive",
+          "description": "copyFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:copyFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "createTextFile": {
+          "name": "createTextFile",
+          "nodeType": "google-drive",
+          "description": "createTextFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:createTextFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "readFile": {
+          "name": "readFile",
+          "nodeType": "google-drive",
+          "description": "readFile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:readFile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "addPermission": {
+          "name": "addPermission",
+          "nodeType": "google-drive",
+          "description": "addPermission",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:addPermission"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "deletePermission": {
+          "name": "deletePermission",
+          "nodeType": "google-drive",
+          "description": "deletePermission",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:deletePermission"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "setPublicAccess": {
+          "name": "setPublicAccess",
+          "nodeType": "google-drive",
+          "description": "setPublicAccess",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:setPublicAccess"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        },
+        "saveFileAsPdf": {
+          "name": "saveFileAsPdf",
+          "nodeType": "google-drive",
+          "description": "saveFileAsPdf",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-drive:saveFileAsPdf"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:272:29]"
+        }
+      }
+    },
+    "google-search": {
+      "id": "google-search",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "google-search",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-search:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:5:1]"
+        }
+      }
+    },
+    "google-sheets": {
+      "id": "google-sheets",
+      "actions": {
+        "areSheetIdsValid": {
+          "name": "areSheetIdsValid",
+          "nodeType": "google-sheets",
+          "description": "areSheetIdsValid",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:areSheetIdsValid"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "clearSheet": {
+          "name": "clearSheet",
+          "nodeType": "google-sheets",
+          "description": "clearSheet",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:clearSheet"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "copyWorksheet": {
+          "name": "copyWorksheet",
+          "nodeType": "google-sheets",
+          "description": "copyWorksheet",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:copyWorksheet"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "createColumn": {
+          "name": "createColumn",
+          "nodeType": "google-sheets",
+          "description": "createColumn",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:createColumn"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "createSpreadsheet": {
+          "name": "createSpreadsheet",
+          "nodeType": "google-sheets",
+          "description": "createSpreadsheet",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:createSpreadsheet"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "createWorksheet": {
+          "name": "createWorksheet",
+          "nodeType": "google-sheets",
+          "description": "createWorksheet",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:createWorksheet"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "deleteRow": {
+          "name": "deleteRow",
+          "nodeType": "google-sheets",
+          "description": "deleteRow",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:deleteRow"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "findRowByNum": {
+          "name": "findRowByNum",
+          "nodeType": "google-sheets",
+          "description": "findRowByNum",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:findRowByNum"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "findRows": {
+          "name": "findRows",
+          "nodeType": "google-sheets",
+          "description": "findRows",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:findRows"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "findSpreadsheets": {
+          "name": "findSpreadsheets",
+          "nodeType": "google-sheets",
+          "description": "findSpreadsheets",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:findSpreadsheets"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "findWorksheet": {
+          "name": "findWorksheet",
+          "nodeType": "google-sheets",
+          "description": "findWorksheet",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:findWorksheet"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "getGoogleSheetRows": {
+          "name": "getGoogleSheetRows",
+          "nodeType": "google-sheets",
+          "description": "getGoogleSheetRows",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:getGoogleSheetRows"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "insertMultipleRows": {
+          "name": "insertMultipleRows",
+          "nodeType": "google-sheets",
+          "description": "insertMultipleRows",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:insertMultipleRows"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "insertRow": {
+          "name": "insertRow",
+          "nodeType": "google-sheets",
+          "description": "insertRow",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:insertRow"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "updateMultipleRows": {
+          "name": "updateMultipleRows",
+          "nodeType": "google-sheets",
+          "description": "updateMultipleRows",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:updateMultipleRows"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        },
+        "updateRow": {
+          "name": "updateRow",
+          "nodeType": "google-sheets",
+          "description": "updateRow",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-sheets:updateRow"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:266:29]"
+        }
+      }
+    },
+    "google-workspace": {
+      "id": "google-workspace",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "google-workspace",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for google-workspace:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:5:1]"
+        }
+      }
+    },
+    "instagram": {
+      "id": "instagram",
+      "actions": {
+        "getInstagramAccounts": {
+          "name": "getInstagramAccounts",
+          "nodeType": "instagram",
+          "description": "getInstagramAccounts",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for instagram:getInstagramAccounts"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:85:29]"
+        },
+        "uploadPhoto": {
+          "name": "uploadPhoto",
+          "nodeType": "instagram",
+          "description": "uploadPhoto",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for instagram:uploadPhoto"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:85:29]"
+        },
+        "uploadReel": {
+          "name": "uploadReel",
+          "nodeType": "instagram",
+          "description": "uploadReel",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for instagram:uploadReel"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:85:29]"
+        }
+      }
+    },
+    "intercom": {
+      "id": "intercom",
+      "actions": {
+        "IntercomClient": {
+          "name": "IntercomClient",
+          "nodeType": "intercom",
+          "description": "IntercomClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for intercom:IntercomClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:315:29]"
+        },
+        "IntercomAuth": {
+          "name": "IntercomAuth",
+          "nodeType": "intercom",
+          "description": "IntercomAuth",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for intercom:IntercomAuth"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:315:29]"
+        }
+      }
+    },
+    "jira-cloud": {
+      "id": "jira-cloud",
+      "actions": {
+        "JiraClient": {
+          "name": "JiraClient",
+          "nodeType": "jira-cloud",
+          "description": "JiraClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for jira-cloud:JiraClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:288:29]"
+        },
+        "JiraAuth": {
+          "name": "JiraAuth",
+          "nodeType": "jira-cloud",
+          "description": "JiraAuth",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for jira-cloud:JiraAuth"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:288:29]"
+        },
+        "JiraCreateIssueRequest": {
+          "name": "JiraCreateIssueRequest",
+          "nodeType": "jira-cloud",
+          "description": "JiraCreateIssueRequest",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for jira-cloud:JiraCreateIssueRequest"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:288:29]"
+        },
+        "JiraUpdateIssueRequest": {
+          "name": "JiraUpdateIssueRequest",
+          "nodeType": "jira-cloud",
+          "description": "JiraUpdateIssueRequest",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for jira-cloud:JiraUpdateIssueRequest"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:288:29]"
+        }
+      }
+    },
+    "json": {
+      "id": "json",
+      "actions": {
+        "convertTextToJson": {
+          "name": "convertTextToJson",
+          "nodeType": "json",
+          "description": "Convert Text to JSON",
+          "success": true,
+          "input": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "value": "{\"name\": \"Test User\", \"email\": \"test@example.com\", \"age\": 30, \"isActive\": true}"
+              }
+            }
+          },
+          "output": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "value": "Test User"
+                  },
+                  "email": {
+                    "type": "string",
+                    "value": "test@example.com"
+                  },
+                  "age": {
+                    "type": "number",
+                    "value": 30
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "value": true
+                  }
+                }
+              }
+            }
+          },
+          "error": null
+        },
+        "convertJsonToText": {
+          "name": "convertJsonToText",
+          "nodeType": "json",
+          "description": "Convert JSON to Text",
+          "success": true,
+          "input": {
+            "type": "object",
+            "properties": {
+              "json": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "value": "Test User"
+                  },
+                  "email": {
+                    "type": "string",
+                    "value": "test@example.com"
+                  },
+                  "age": {
+                    "type": "number",
+                    "value": 30
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "value": true
+                  }
+                }
+              },
+              "pretty": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          },
+          "output": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string",
+                "value": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"age\": 30,\n  \"isActive\": true\n}"
+              }
+            }
+          },
+          "error": null
+        }
+      }
+    },
+    "klaviyo": {
+      "id": "klaviyo",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "klaviyo",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for klaviyo:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "krisp-call": {
+      "id": "krisp-call",
+      "actions": {
+        "addContact": {
+          "name": "addContact",
+          "nodeType": "krisp-call",
+          "description": "addContact",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for krisp-call:addContact"
+              }
+            }
+          },
+          "output": null,
+          "error": "addContact is not defined"
+        },
+        "deleteContacts": {
+          "name": "deleteContacts",
+          "nodeType": "krisp-call",
+          "description": "deleteContacts",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for krisp-call:deleteContacts"
+              }
+            }
+          },
+          "output": null,
+          "error": "addContact is not defined"
+        },
+        "sendSms": {
+          "name": "sendSms",
+          "nodeType": "krisp-call",
+          "description": "sendSms",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for krisp-call:sendSms"
+              }
+            }
+          },
+          "output": null,
+          "error": "addContact is not defined"
+        },
+        "sendMms": {
+          "name": "sendMms",
+          "nodeType": "krisp-call",
+          "description": "sendMms",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for krisp-call:sendMms"
+              }
+            }
+          },
+          "output": null,
+          "error": "addContact is not defined"
+        }
+      }
+    },
+    "langchain": {
+      "id": "langchain",
+      "actions": {
+        "chatPlugin": {
+          "name": "chatPlugin",
+          "nodeType": "langchain",
+          "description": "chatPlugin",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for langchain:chatPlugin"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:29:1]"
+        }
+      }
+    },
+    "linkedin": {
+      "id": "linkedin",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "linkedin",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for linkedin:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "mailchimp": {
+      "id": "mailchimp",
+      "actions": {
+        "MailchimpClient": {
+          "name": "MailchimpClient",
+          "nodeType": "mailchimp",
+          "description": "MailchimpClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mailchimp:MailchimpClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:167:29]"
+        },
+        "MailchimpAuth": {
+          "name": "MailchimpAuth",
+          "nodeType": "mailchimp",
+          "description": "MailchimpAuth",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mailchimp:MailchimpAuth"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:167:29]"
+        },
+        "MailchimpSubscribeWebhookData": {
+          "name": "MailchimpSubscribeWebhookData",
+          "nodeType": "mailchimp",
+          "description": "MailchimpSubscribeWebhookData",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mailchimp:MailchimpSubscribeWebhookData"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:167:29]"
+        },
+        "MailchimpUnsubscribeWebhookData": {
+          "name": "MailchimpUnsubscribeWebhookData",
+          "nodeType": "mailchimp",
+          "description": "MailchimpUnsubscribeWebhookData",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mailchimp:MailchimpUnsubscribeWebhookData"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:167:29]"
+        },
+        "MailchimpWebhookRequest": {
+          "name": "MailchimpWebhookRequest",
+          "nodeType": "mailchimp",
+          "description": "MailchimpWebhookRequest",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mailchimp:MailchimpWebhookRequest"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:167:29]"
+        }
+      }
+    },
+    "mattermost": {
+      "id": "mattermost",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "mattermost",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mattermost:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "mcp-client": {
+      "id": "mcp-client",
+      "actions": {
+        "useTool": {
+          "name": "useTool",
+          "nodeType": "mcp-client",
+          "description": "useTool",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mcp-client:useTool"
+              }
+            }
+          },
+          "output": null,
+          "error": "Missing initializer in const declaration [<isolated-vm>:9:7]"
+        },
+        "accessResource": {
+          "name": "accessResource",
+          "nodeType": "mcp-client",
+          "description": "accessResource",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mcp-client:accessResource"
+              }
+            }
+          },
+          "output": null,
+          "error": "Missing initializer in const declaration [<isolated-vm>:9:7]"
+        },
+        "listServers": {
+          "name": "listServers",
+          "nodeType": "mcp-client",
+          "description": "listServers",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mcp-client:listServers"
+              }
+            }
+          },
+          "output": null,
+          "error": "Missing initializer in const declaration [<isolated-vm>:9:7]"
+        }
+      }
+    },
+    "mcp-server": {
+      "id": "mcp-server",
+      "actions": {
+        "createServer": {
+          "name": "createServer",
+          "nodeType": "mcp-server",
+          "description": "createServer",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mcp-server:createServer"
+              }
+            }
+          },
+          "output": null,
+          "error": "Missing initializer in const declaration [<isolated-vm>:9:7]"
+        },
+        "startServer": {
+          "name": "startServer",
+          "nodeType": "mcp-server",
+          "description": "startServer",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mcp-server:startServer"
+              }
+            }
+          },
+          "output": null,
+          "error": "Missing initializer in const declaration [<isolated-vm>:9:7]"
+        },
+        "stopServer": {
+          "name": "stopServer",
+          "nodeType": "mcp-server",
+          "description": "stopServer",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for mcp-server:stopServer"
+              }
+            }
+          },
+          "output": null,
+          "error": "Missing initializer in const declaration [<isolated-vm>:9:7]"
+        }
+      }
+    },
+    "media-processor": {
+      "id": "media-processor",
+      "actions": {
+        "textToQrcode": {
+          "name": "textToQrcode",
+          "nodeType": "media-processor",
+          "description": "textToQrcode",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:textToQrcode"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "textToBarcode": {
+          "name": "textToBarcode",
+          "nodeType": "media-processor",
+          "description": "textToBarcode",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:textToBarcode"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "resizeImage": {
+          "name": "resizeImage",
+          "nodeType": "media-processor",
+          "description": "resizeImage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:resizeImage"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "applyFilter": {
+          "name": "applyFilter",
+          "nodeType": "media-processor",
+          "description": "applyFilter",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:applyFilter"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "convertFormat": {
+          "name": "convertFormat",
+          "nodeType": "media-processor",
+          "description": "convertFormat",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:convertFormat"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "extractText": {
+          "name": "extractText",
+          "nodeType": "media-processor",
+          "description": "extractText",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:extractText"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "analyzeImage": {
+          "name": "analyzeImage",
+          "nodeType": "media-processor",
+          "description": "analyzeImage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:analyzeImage"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "addWatermark": {
+          "name": "addWatermark",
+          "nodeType": "media-processor",
+          "description": "addWatermark",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:addWatermark"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "compressImage": {
+          "name": "compressImage",
+          "nodeType": "media-processor",
+          "description": "compressImage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:compressImage"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        },
+        "extractMetadata": {
+          "name": "extractMetadata",
+          "nodeType": "media-processor",
+          "description": "extractMetadata",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for media-processor:extractMetadata"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        }
+      }
+    },
+    "milvus": {
+      "id": "milvus",
+      "actions": {
+        "createCollection": {
+          "name": "createCollection",
+          "nodeType": "milvus",
+          "description": "createCollection",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for milvus:createCollection"
+              }
+            }
+          },
+          "output": null,
+          "error": "listCollections is not defined"
+        },
+        "deleteCollection": {
+          "name": "deleteCollection",
+          "nodeType": "milvus",
+          "description": "deleteCollection",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for milvus:deleteCollection"
+              }
+            }
+          },
+          "output": null,
+          "error": "listCollections is not defined"
+        },
+        "listCollections": {
+          "name": "listCollections",
+          "nodeType": "milvus",
+          "description": "listCollections",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for milvus:listCollections"
+              }
+            }
+          },
+          "output": null,
+          "error": "listCollections is not defined"
+        },
+        "getCollectionInfo": {
+          "name": "getCollectionInfo",
+          "nodeType": "milvus",
+          "description": "getCollectionInfo",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for milvus:getCollectionInfo"
+              }
+            }
+          },
+          "output": null,
+          "error": "listCollections is not defined"
+        },
+        "insertVectors": {
+          "name": "insertVectors",
+          "nodeType": "milvus",
+          "description": "insertVectors",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for milvus:insertVectors"
+              }
+            }
+          },
+          "output": null,
+          "error": "listCollections is not defined"
+        },
+        "searchVectors": {
+          "name": "searchVectors",
+          "nodeType": "milvus",
+          "description": "searchVectors",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for milvus:searchVectors"
+              }
+            }
+          },
+          "output": null,
+          "error": "listCollections is not defined"
+        }
+      }
+    },
+    "notion": {
+      "id": "notion",
+      "actions": {
+        "createDatabaseItem": {
+          "name": "createDatabaseItem",
+          "nodeType": "notion",
+          "description": "createDatabaseItem",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for notion:createDatabaseItem"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:225:29]"
+        },
+        "updateDatabaseItem": {
+          "name": "updateDatabaseItem",
+          "nodeType": "notion",
+          "description": "updateDatabaseItem",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for notion:updateDatabaseItem"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:225:29]"
+        },
+        "findDatabaseItems": {
+          "name": "findDatabaseItems",
+          "nodeType": "notion",
+          "description": "findDatabaseItems",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for notion:findDatabaseItems"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:225:29]"
+        },
+        "createPage": {
+          "name": "createPage",
+          "nodeType": "notion",
+          "description": "createPage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for notion:createPage"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:225:29]"
+        },
+        "appendToPage": {
+          "name": "appendToPage",
+          "nodeType": "notion",
+          "description": "appendToPage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for notion:appendToPage"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:225:29]"
+        },
+        "getChildren": {
+          "name": "getChildren",
+          "nodeType": "notion",
+          "description": "getChildren",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for notion:getChildren"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:225:29]"
+        },
+        "getDatabases": {
+          "name": "getDatabases",
+          "nodeType": "notion",
+          "description": "getDatabases",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for notion:getDatabases"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:225:29]"
+        },
+        "getPages": {
+          "name": "getPages",
+          "nodeType": "notion",
+          "description": "getPages",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for notion:getPages"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:225:29]"
+        }
+      }
+    },
+    "pdf": {
+      "id": "pdf",
+      "actions": {
+        "extractText": {
+          "name": "extractText",
+          "nodeType": "pdf",
+          "description": "extractText",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pdf:extractText"
+              }
+            }
+          },
+          "output": null,
+          "error": "extractText is not defined"
+        },
+        "textToPdf": {
+          "name": "textToPdf",
+          "nodeType": "pdf",
+          "description": "textToPdf",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pdf:textToPdf"
+              }
+            }
+          },
+          "output": null,
+          "error": "extractText is not defined"
+        },
+        "imageToPdf": {
+          "name": "imageToPdf",
+          "nodeType": "pdf",
+          "description": "imageToPdf",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pdf:imageToPdf"
+              }
+            }
+          },
+          "output": null,
+          "error": "extractText is not defined"
+        }
+      }
+    },
+    "photoroom": {
+      "id": "photoroom",
+      "actions": {
+        "removeBackground": {
+          "name": "removeBackground",
+          "nodeType": "photoroom",
+          "description": "removeBackground",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for photoroom:removeBackground"
+              }
+            }
+          },
+          "output": null,
+          "error": "removeBackground is not defined"
+        }
+      }
+    },
+    "pinecone": {
+      "id": "pinecone",
+      "actions": {
+        "Pinecone": {
+          "name": "Pinecone",
+          "nodeType": "pinecone",
+          "description": "Pinecone",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pinecone:Pinecone"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected identifier 'PineconeConfig' [<isolated-vm>:6:11]"
+        }
+      }
+    },
+    "pinterest": {
+      "id": "pinterest",
+      "actions": {
+        "createPin": {
+          "name": "createPin",
+          "nodeType": "pinterest",
+          "description": "createPin",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pinterest:createPin"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:155:29]"
+        },
+        "createBoard": {
+          "name": "createBoard",
+          "nodeType": "pinterest",
+          "description": "createBoard",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pinterest:createBoard"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:155:29]"
+        },
+        "getBoardPins": {
+          "name": "getBoardPins",
+          "nodeType": "pinterest",
+          "description": "getBoardPins",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pinterest:getBoardPins"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:155:29]"
+        },
+        "getUserBoards": {
+          "name": "getUserBoards",
+          "nodeType": "pinterest",
+          "description": "getUserBoards",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pinterest:getUserBoards"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:155:29]"
+        },
+        "getUserProfile": {
+          "name": "getUserProfile",
+          "nodeType": "pinterest",
+          "description": "getUserProfile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pinterest:getUserProfile"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:155:29]"
+        },
+        "searchPins": {
+          "name": "searchPins",
+          "nodeType": "pinterest",
+          "description": "searchPins",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for pinterest:searchPins"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:155:29]"
+        }
+      }
+    },
+    "qdrant": {
+      "id": "qdrant",
+      "actions": {
+        "QdrantClient": {
+          "name": "QdrantClient",
+          "nodeType": "qdrant",
+          "description": "QdrantClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for qdrant:QdrantClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected identifier 'QdrantConfig' [<isolated-vm>:8:11]"
+        }
+      }
+    },
+    "qrcode": {
+      "id": "qrcode",
+      "actions": {
+        "textToQrcode": {
+          "name": "textToQrcode",
+          "nodeType": "qrcode",
+          "description": "textToQrcode",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for qrcode:textToQrcode"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToQrcode is not defined"
+        }
+      }
+    },
+    "s3-storage": {
+      "id": "s3-storage",
+      "actions": {
+        "S3": {
+          "name": "S3",
+          "nodeType": "s3-storage",
+          "description": "S3",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for s3-storage:S3"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:8:20]"
+        },
+        "GetObjectCommand": {
+          "name": "GetObjectCommand",
+          "nodeType": "s3-storage",
+          "description": "GetObjectCommand",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for s3-storage:GetObjectCommand"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:8:20]"
+        },
+        "PutObjectCommand": {
+          "name": "PutObjectCommand",
+          "nodeType": "s3-storage",
+          "description": "PutObjectCommand",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for s3-storage:PutObjectCommand"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:8:20]"
+        },
+        "ObjectCannedACL": {
+          "name": "ObjectCannedACL",
+          "nodeType": "s3-storage",
+          "description": "ObjectCannedACL",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for s3-storage:ObjectCannedACL"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:8:20]"
+        },
+        "createS3Client": {
+          "name": "createS3Client",
+          "nodeType": "s3-storage",
+          "description": "createS3Client",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for s3-storage:createS3Client"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:8:20]"
+        },
+        "S3Config": {
+          "name": "S3Config",
+          "nodeType": "s3-storage",
+          "description": "S3Config",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for s3-storage:S3Config"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:8:20]"
+        }
+      }
+    },
+    "salesforce": {
+      "id": "salesforce",
+      "actions": {
+        "SalesforceClient": {
+          "name": "SalesforceClient",
+          "nodeType": "salesforce",
+          "description": "SalesforceClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for salesforce:SalesforceClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:140:29]"
+        },
+        "SalesforceAuth": {
+          "name": "SalesforceAuth",
+          "nodeType": "salesforce",
+          "description": "SalesforceAuth",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for salesforce:SalesforceAuth"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:140:29]"
+        }
+      }
+    },
+    "sendgrid": {
+      "id": "sendgrid",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "sendgrid",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for sendgrid:index"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "apiKey": {
+                    "type": "string",
+                    "value": "YOUR_SENDGRID_API_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "shopify": {
+      "id": "shopify",
+      "actions": {
+        "ShopifyClient": {
+          "name": "ShopifyClient",
+          "nodeType": "shopify",
+          "description": "ShopifyClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for shopify:ShopifyClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:367:29]"
+        },
+        "ShopifyAuth": {
+          "name": "ShopifyAuth",
+          "nodeType": "shopify",
+          "description": "ShopifyAuth",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for shopify:ShopifyAuth"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:367:29]"
+        }
+      }
+    },
+    "slack": {
+      "id": "slack",
+      "actions": {
+        "WebClient": {
+          "name": "WebClient",
+          "nodeType": "slack",
+          "description": "WebClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:WebClient"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "slackSendMessage": {
+          "name": "slackSendMessage",
+          "nodeType": "slack",
+          "description": "slackSendMessage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:slackSendMessage"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "processMessageTimestamp": {
+          "name": "processMessageTimestamp",
+          "nodeType": "slack",
+          "description": "processMessageTimestamp",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:processMessageTimestamp"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "searchMessages": {
+          "name": "searchMessages",
+          "nodeType": "slack",
+          "description": "searchMessages",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:searchMessages"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "getChannelHistory": {
+          "name": "getChannelHistory",
+          "nodeType": "slack",
+          "description": "getChannelHistory",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:getChannelHistory"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "findUserByEmail": {
+          "name": "findUserByEmail",
+          "nodeType": "slack",
+          "description": "findUserByEmail",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:findUserByEmail"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "findUserByHandle": {
+          "name": "findUserByHandle",
+          "nodeType": "slack",
+          "description": "findUserByHandle",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:findUserByHandle"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "updateMessage": {
+          "name": "updateMessage",
+          "nodeType": "slack",
+          "description": "updateMessage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:updateMessage"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "createChannel": {
+          "name": "createChannel",
+          "nodeType": "slack",
+          "description": "createChannel",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:createChannel"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "updateUserProfile": {
+          "name": "updateUserProfile",
+          "nodeType": "slack",
+          "description": "updateUserProfile",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:updateUserProfile"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "setUserStatus": {
+          "name": "setUserStatus",
+          "nodeType": "slack",
+          "description": "setUserStatus",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:setUserStatus"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "addReactionToMessage": {
+          "name": "addReactionToMessage",
+          "nodeType": "slack",
+          "description": "addReactionToMessage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:addReactionToMessage"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        },
+        "markdownToSlackFormat": {
+          "name": "markdownToSlackFormat",
+          "nodeType": "slack",
+          "description": "markdownToSlackFormat",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for slack:markdownToSlackFormat"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "value": "YOUR_SLACK_BOT_TOKEN"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:240:29]"
+        }
+      }
+    },
+    "snapchat": {
+      "id": "snapchat",
+      "actions": {
+        "createAd": {
+          "name": "createAd",
+          "nodeType": "snapchat",
+          "description": "createAd",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for snapchat:createAd"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:221:29]"
+        },
+        "createCampaign": {
+          "name": "createCampaign",
+          "nodeType": "snapchat",
+          "description": "createCampaign",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for snapchat:createCampaign"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:221:29]"
+        },
+        "createCreative": {
+          "name": "createCreative",
+          "nodeType": "snapchat",
+          "description": "createCreative",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for snapchat:createCreative"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:221:29]"
+        },
+        "getAds": {
+          "name": "getAds",
+          "nodeType": "snapchat",
+          "description": "getAds",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for snapchat:getAds"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:221:29]"
+        },
+        "getCampaigns": {
+          "name": "getCampaigns",
+          "nodeType": "snapchat",
+          "description": "getCampaigns",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for snapchat:getCampaigns"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:221:29]"
+        },
+        "getAdAccounts": {
+          "name": "getAdAccounts",
+          "nodeType": "snapchat",
+          "description": "getAdAccounts",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for snapchat:getAdAccounts"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:221:29]"
+        }
+      }
+    },
+    "sns": {
+      "id": "sns",
+      "actions": {
+        "sendMessage": {
+          "name": "sendMessage",
+          "nodeType": "sns",
+          "description": "sendMessage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for sns:sendMessage"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessage is not defined"
+        },
+        "listTopics": {
+          "name": "listTopics",
+          "nodeType": "sns",
+          "description": "listTopics",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for sns:listTopics"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessage is not defined"
+        },
+        "createTopic": {
+          "name": "createTopic",
+          "nodeType": "sns",
+          "description": "createTopic",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for sns:createTopic"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessage is not defined"
+        }
+      }
+    },
+    "soap": {
+      "id": "soap",
+      "actions": {
+        "callMethod": {
+          "name": "callMethod",
+          "nodeType": "soap",
+          "description": "callMethod",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for soap:callMethod"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:87:29]"
+        },
+        "soapToRest": {
+          "name": "soapToRest",
+          "nodeType": "soap",
+          "description": "soapToRest",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for soap:soapToRest"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:87:29]"
+        },
+        "parseWsdl": {
+          "name": "parseWsdl",
+          "nodeType": "soap",
+          "description": "parseWsdl",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for soap:parseWsdl"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:87:29]"
+        },
+        "generateTemplate": {
+          "name": "generateTemplate",
+          "nodeType": "soap",
+          "description": "generateTemplate",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for soap:generateTemplate"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:87:29]"
+        }
+      }
+    },
+    "speech": {
+      "id": "speech",
+      "actions": {
+        "textToSpeech": {
+          "name": "textToSpeech",
+          "nodeType": "speech",
+          "description": "textToSpeech",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for speech:textToSpeech"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:77:37]"
+        },
+        "getVoices": {
+          "name": "getVoices",
+          "nodeType": "speech",
+          "description": "getVoices",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for speech:getVoices"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:77:37]"
+        },
+        "TextToSpeechInput": {
+          "name": "TextToSpeechInput",
+          "nodeType": "speech",
+          "description": "TextToSpeechInput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for speech:TextToSpeechInput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:77:37]"
+        },
+        "TextToSpeechOutput": {
+          "name": "TextToSpeechOutput",
+          "nodeType": "speech",
+          "description": "TextToSpeechOutput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for speech:TextToSpeechOutput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:77:37]"
+        }
+      }
+    },
+    "sqs": {
+      "id": "sqs",
+      "actions": {
+        "sendMessage": {
+          "name": "sendMessage",
+          "nodeType": "sqs",
+          "description": "sendMessage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for sqs:sendMessage"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessage is not defined"
+        },
+        "listQueues": {
+          "name": "listQueues",
+          "nodeType": "sqs",
+          "description": "listQueues",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for sqs:listQueues"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessage is not defined"
+        },
+        "createQueue": {
+          "name": "createQueue",
+          "nodeType": "sqs",
+          "description": "createQueue",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for sqs:createQueue"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessage is not defined"
+        }
+      }
+    },
+    "stability-ai": {
+      "id": "stability-ai",
+      "actions": {
+        "textToImage": {
+          "name": "textToImage",
+          "nodeType": "stability-ai",
+          "description": "textToImage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stability-ai:textToImage"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:75:32]"
+        }
+      }
+    },
+    "stable-diffusion": {
+      "id": "stable-diffusion",
+      "actions": {
+        "textToImage": {
+          "name": "textToImage",
+          "nodeType": "stable-diffusion",
+          "description": "textToImage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stable-diffusion:textToImage"
+              }
+            }
+          },
+          "output": null,
+          "error": "textToImage is not defined"
+        }
+      }
+    },
+    "stripe": {
+      "id": "stripe",
+      "actions": {
+        "createCustomer": {
+          "name": "createCustomer",
+          "nodeType": "stripe",
+          "description": "createCustomer",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:createCustomer"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "createPaymentIntent": {
+          "name": "createPaymentIntent",
+          "nodeType": "stripe",
+          "description": "createPaymentIntent",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:createPaymentIntent"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "createSubscription": {
+          "name": "createSubscription",
+          "nodeType": "stripe",
+          "description": "createSubscription",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:createSubscription"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "createProduct": {
+          "name": "createProduct",
+          "nodeType": "stripe",
+          "description": "createProduct",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:createProduct"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "createPrice": {
+          "name": "createPrice",
+          "nodeType": "stripe",
+          "description": "createPrice",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:createPrice"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "getCustomer": {
+          "name": "getCustomer",
+          "nodeType": "stripe",
+          "description": "getCustomer",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:getCustomer"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "getPaymentIntent": {
+          "name": "getPaymentIntent",
+          "nodeType": "stripe",
+          "description": "getPaymentIntent",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:getPaymentIntent"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "getSubscription": {
+          "name": "getSubscription",
+          "nodeType": "stripe",
+          "description": "getSubscription",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:getSubscription"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "getProduct": {
+          "name": "getProduct",
+          "nodeType": "stripe",
+          "description": "getProduct",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:getProduct"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "getPrice": {
+          "name": "getPrice",
+          "nodeType": "stripe",
+          "description": "getPrice",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:getPrice"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "listCustomers": {
+          "name": "listCustomers",
+          "nodeType": "stripe",
+          "description": "listCustomers",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:listCustomers"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "listPaymentIntents": {
+          "name": "listPaymentIntents",
+          "nodeType": "stripe",
+          "description": "listPaymentIntents",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:listPaymentIntents"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "listSubscriptions": {
+          "name": "listSubscriptions",
+          "nodeType": "stripe",
+          "description": "listSubscriptions",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:listSubscriptions"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "listProducts": {
+          "name": "listProducts",
+          "nodeType": "stripe",
+          "description": "listProducts",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:listProducts"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        },
+        "listPrices": {
+          "name": "listPrices",
+          "nodeType": "stripe",
+          "description": "listPrices",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for stripe:listPrices"
+              },
+              "credentials": {
+                "type": "object",
+                "properties": {
+                  "secretKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_SECRET_KEY"
+                  },
+                  "publishableKey": {
+                    "type": "string",
+                    "value": "YOUR_STRIPE_PUBLISHABLE_KEY"
+                  }
+                }
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:281:29]"
+        }
+      }
+    },
+    "teams": {
+      "id": "teams",
+      "actions": {
+        "createChannel": {
+          "name": "createChannel",
+          "nodeType": "teams",
+          "description": "createChannel",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for teams:createChannel"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:144:29]"
+        },
+        "sendChannelMessage": {
+          "name": "sendChannelMessage",
+          "nodeType": "teams",
+          "description": "sendChannelMessage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for teams:sendChannelMessage"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:144:29]"
+        },
+        "sendChatMessage": {
+          "name": "sendChatMessage",
+          "nodeType": "teams",
+          "description": "sendChatMessage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for teams:sendChatMessage"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:144:29]"
+        },
+        "listTeams": {
+          "name": "listTeams",
+          "nodeType": "teams",
+          "description": "listTeams",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for teams:listTeams"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:144:29]"
+        },
+        "listChannels": {
+          "name": "listChannels",
+          "nodeType": "teams",
+          "description": "listChannels",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for teams:listChannels"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:144:29]"
+        },
+        "listChats": {
+          "name": "listChats",
+          "nodeType": "teams",
+          "description": "listChats",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for teams:listChats"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:144:29]"
+        },
+        "CHAT_TYPE": {
+          "name": "CHAT_TYPE",
+          "nodeType": "teams",
+          "description": "CHAT_TYPE",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for teams:CHAT_TYPE"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:144:29]"
+        }
+      }
+    },
+    "telegram": {
+      "id": "telegram",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "telegram",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for telegram:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "text-parser": {
+      "id": "text-parser",
+      "actions": {
+        "concat": {
+          "name": "concat",
+          "nodeType": "text-parser",
+          "description": "concat",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:concat"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        },
+        "replace": {
+          "name": "replace",
+          "nodeType": "text-parser",
+          "description": "replace",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:replace"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        },
+        "split": {
+          "name": "split",
+          "nodeType": "text-parser",
+          "description": "split",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:split"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        },
+        "find": {
+          "name": "find",
+          "nodeType": "text-parser",
+          "description": "find",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:find"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        },
+        "markdownToHtml": {
+          "name": "markdownToHtml",
+          "nodeType": "text-parser",
+          "description": "markdownToHtml",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:markdownToHtml"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        },
+        "htmlToMarkdown": {
+          "name": "htmlToMarkdown",
+          "nodeType": "text-parser",
+          "description": "htmlToMarkdown",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:htmlToMarkdown"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        },
+        "stripHtml": {
+          "name": "stripHtml",
+          "nodeType": "text-parser",
+          "description": "stripHtml",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:stripHtml"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        },
+        "slugify": {
+          "name": "slugify",
+          "nodeType": "text-parser",
+          "description": "slugify",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:slugify"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        },
+        "defaultValue": {
+          "name": "defaultValue",
+          "nodeType": "text-parser",
+          "description": "defaultValue",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for text-parser:defaultValue"
+              }
+            }
+          },
+          "output": null,
+          "error": "concat is not defined"
+        }
+      }
+    },
+    "tiktok": {
+      "id": "tiktok",
+      "actions": {
+        "getUserVideos": {
+          "name": "getUserVideos",
+          "nodeType": "tiktok",
+          "description": "getUserVideos",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for tiktok:getUserVideos"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:145:29]"
+        },
+        "getVideoDetails": {
+          "name": "getVideoDetails",
+          "nodeType": "tiktok",
+          "description": "getVideoDetails",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for tiktok:getVideoDetails"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:145:29]"
+        },
+        "getUserDetails": {
+          "name": "getUserDetails",
+          "nodeType": "tiktok",
+          "description": "getUserDetails",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for tiktok:getUserDetails"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:145:29]"
+        },
+        "uploadVideo": {
+          "name": "uploadVideo",
+          "nodeType": "tiktok",
+          "description": "uploadVideo",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for tiktok:uploadVideo"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:145:29]"
+        }
+      }
+    },
+    "timer": {
+      "id": "timer",
+      "actions": {
+        "scheduleTask": {
+          "name": "scheduleTask",
+          "nodeType": "timer",
+          "description": "scheduleTask",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for timer:scheduleTask"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:64:29]"
+        },
+        "getTasks": {
+          "name": "getTasks",
+          "nodeType": "timer",
+          "description": "getTasks",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for timer:getTasks"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:64:29]"
+        }
+      }
+    },
+    "translation": {
+      "id": "translation",
+      "actions": {
+        "translateText": {
+          "name": "translateText",
+          "nodeType": "translation",
+          "description": "translateText",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for translation:translateText"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:46:36]"
+        },
+        "detectLanguage": {
+          "name": "detectLanguage",
+          "nodeType": "translation",
+          "description": "detectLanguage",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for translation:detectLanguage"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:46:36]"
+        },
+        "TranslateTextInput": {
+          "name": "TranslateTextInput",
+          "nodeType": "translation",
+          "description": "TranslateTextInput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for translation:TranslateTextInput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:46:36]"
+        },
+        "TranslateTextOutput": {
+          "name": "TranslateTextOutput",
+          "nodeType": "translation",
+          "description": "TranslateTextOutput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for translation:TranslateTextOutput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:46:36]"
+        },
+        "DetectLanguageInput": {
+          "name": "DetectLanguageInput",
+          "nodeType": "translation",
+          "description": "DetectLanguageInput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for translation:DetectLanguageInput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:46:36]"
+        },
+        "DetectLanguageOutput": {
+          "name": "DetectLanguageOutput",
+          "nodeType": "translation",
+          "description": "DetectLanguageOutput",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for translation:DetectLanguageOutput"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token ':' [<isolated-vm>:46:36]"
+        }
+      }
+    },
+    "trello": {
+      "id": "trello",
+      "actions": {
+        "TrelloClient": {
+          "name": "TrelloClient",
+          "nodeType": "trello",
+          "description": "TrelloClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for trello:TrelloClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:300:29]"
+        },
+        "TrelloAuth": {
+          "name": "TrelloAuth",
+          "nodeType": "trello",
+          "description": "TrelloAuth",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for trello:TrelloAuth"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:300:29]"
+        },
+        "TrelloWebhook": {
+          "name": "TrelloWebhook",
+          "nodeType": "trello",
+          "description": "TrelloWebhook",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for trello:TrelloWebhook"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:300:29]"
+        },
+        "TrelloWebhookPayload": {
+          "name": "TrelloWebhookPayload",
+          "nodeType": "trello",
+          "description": "TrelloWebhookPayload",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for trello:TrelloWebhookPayload"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:300:29]"
+        }
+      }
+    },
+    "twilio": {
+      "id": "twilio",
+      "actions": {
+        "smsActions": {
+          "name": "smsActions",
+          "nodeType": "twilio",
+          "description": "smsActions",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for twilio:smsActions"
+              }
+            }
+          },
+          "output": null,
+          "error": "twilioSchemas is not defined"
+        },
+        "voiceActions": {
+          "name": "voiceActions",
+          "nodeType": "twilio",
+          "description": "voiceActions",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for twilio:voiceActions"
+              }
+            }
+          },
+          "output": null,
+          "error": "twilioSchemas is not defined"
+        },
+        "configActions": {
+          "name": "configActions",
+          "nodeType": "twilio",
+          "description": "configActions",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for twilio:configActions"
+              }
+            }
+          },
+          "output": null,
+          "error": "twilioSchemas is not defined"
+        }
+      }
+    },
+    "typeform": {
+      "id": "typeform",
+      "actions": {
+        "customApiCall": {
+          "name": "customApiCall",
+          "nodeType": "typeform",
+          "description": "customApiCall",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for typeform:customApiCall"
+              }
+            }
+          },
+          "output": null,
+          "error": "typeformNewSubmission is not defined"
+        }
+      }
+    },
+    "webflow": {
+      "id": "webflow",
+      "actions": {
+        "index": {
+          "name": "index",
+          "nodeType": "webflow",
+          "description": "index",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for webflow:index"
+              }
+            }
+          },
+          "output": null,
+          "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+        }
+      }
+    },
+    "whatsapp": {
+      "id": "whatsapp",
+      "actions": {
+        "sendMessageAction": {
+          "name": "sendMessageAction",
+          "nodeType": "whatsapp",
+          "description": "sendMessageAction",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for whatsapp:sendMessageAction"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessageAction is not defined"
+        },
+        "sendMediaAction": {
+          "name": "sendMediaAction",
+          "nodeType": "whatsapp",
+          "description": "sendMediaAction",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for whatsapp:sendMediaAction"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessageAction is not defined"
+        },
+        "sendTemplateAction": {
+          "name": "sendTemplateAction",
+          "nodeType": "whatsapp",
+          "description": "sendTemplateAction",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for whatsapp:sendTemplateAction"
+              }
+            }
+          },
+          "output": null,
+          "error": "sendMessageAction is not defined"
+        }
+      }
+    },
+    "woocommerce": {
+      "id": "woocommerce",
+      "actions": {
+        "wooCreateCustomer": {
+          "name": "wooCreateCustomer",
+          "nodeType": "woocommerce",
+          "description": "wooCreateCustomer",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for woocommerce:wooCreateCustomer"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:47:27]"
+        },
+        "wooFindCustomer": {
+          "name": "wooFindCustomer",
+          "nodeType": "woocommerce",
+          "description": "wooFindCustomer",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for woocommerce:wooFindCustomer"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:47:27]"
+        },
+        "wooCreateProduct": {
+          "name": "wooCreateProduct",
+          "nodeType": "woocommerce",
+          "description": "wooCreateProduct",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for woocommerce:wooCreateProduct"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:47:27]"
+        },
+        "wooFindProduct": {
+          "name": "wooFindProduct",
+          "nodeType": "woocommerce",
+          "description": "wooFindProduct",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for woocommerce:wooFindProduct"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:47:27]"
+        },
+        "wooCreateCoupon": {
+          "name": "wooCreateCoupon",
+          "nodeType": "woocommerce",
+          "description": "wooCreateCoupon",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for woocommerce:wooCreateCoupon"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:47:27]"
+        }
+      }
+    },
+    "wordpress": {
+      "id": "wordpress",
+      "actions": {
+        "createPostAction": {
+          "name": "createPostAction",
+          "nodeType": "wordpress",
+          "description": "createPostAction",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for wordpress:createPostAction"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token 'export' [<isolated-vm>:32:1]"
+        },
+        "getPostAction": {
+          "name": "getPostAction",
+          "nodeType": "wordpress",
+          "description": "getPostAction",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for wordpress:getPostAction"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token 'export' [<isolated-vm>:32:1]"
+        },
+        "updatePostAction": {
+          "name": "updatePostAction",
+          "nodeType": "wordpress",
+          "description": "updatePostAction",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for wordpress:updatePostAction"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token 'export' [<isolated-vm>:32:1]"
+        },
+        "createPageAction": {
+          "name": "createPageAction",
+          "nodeType": "wordpress",
+          "description": "createPageAction",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for wordpress:createPageAction"
+              }
+            }
+          },
+          "output": null,
+          "error": "Unexpected token 'export' [<isolated-vm>:32:1]"
+        }
+      }
+    },
+    "xml": {
+      "id": "xml",
+      "actions": {
+        "convertXmlToJson": {
+          "name": "convertXmlToJson",
+          "nodeType": "xml",
+          "description": "convertXmlToJson",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for xml:convertXmlToJson"
+              }
+            }
+          },
+          "output": null,
+          "error": "convertXmlToJson is not defined"
+        },
+        "convertJsonToXml": {
+          "name": "convertJsonToXml",
+          "nodeType": "xml",
+          "description": "convertJsonToXml",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for xml:convertJsonToXml"
+              }
+            }
+          },
+          "output": null,
+          "error": "convertXmlToJson is not defined"
+        },
+        "validateXml": {
+          "name": "validateXml",
+          "nodeType": "xml",
+          "description": "validateXml",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for xml:validateXml"
+              }
+            }
+          },
+          "output": null,
+          "error": "convertXmlToJson is not defined"
+        },
+        "queryXml": {
+          "name": "queryXml",
+          "nodeType": "xml",
+          "description": "queryXml",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for xml:queryXml"
+              }
+            }
+          },
+          "output": null,
+          "error": "convertXmlToJson is not defined"
+        }
+      }
+    },
+    "youtube": {
+      "id": "youtube",
+      "actions": {
+        "searchVideos": {
+          "name": "searchVideos",
+          "nodeType": "youtube",
+          "description": "searchVideos",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for youtube:searchVideos"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:120:29]"
+        },
+        "getChannelVideos": {
+          "name": "getChannelVideos",
+          "nodeType": "youtube",
+          "description": "getChannelVideos",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for youtube:getChannelVideos"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:120:29]"
+        },
+        "getVideoDetails": {
+          "name": "getVideoDetails",
+          "nodeType": "youtube",
+          "description": "getVideoDetails",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for youtube:getVideoDetails"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:120:29]"
+        },
+        "getChannelDetails": {
+          "name": "getChannelDetails",
+          "nodeType": "youtube",
+          "description": "getChannelDetails",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for youtube:getChannelDetails"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:120:29]"
+        },
+        "subscribeToChannel": {
+          "name": "subscribeToChannel",
+          "nodeType": "youtube",
+          "description": "subscribeToChannel",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for youtube:subscribeToChannel"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:120:29]"
+        },
+        "checkSubscription": {
+          "name": "checkSubscription",
+          "nodeType": "youtube",
+          "description": "checkSubscription",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for youtube:checkSubscription"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:120:29]"
+        }
+      }
+    },
+    "zendesk": {
+      "id": "zendesk",
+      "actions": {
+        "ZendeskClient": {
+          "name": "ZendeskClient",
+          "nodeType": "zendesk",
+          "description": "ZendeskClient",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for zendesk:ZendeskClient"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:245:29]"
+        },
+        "ZendeskAuth": {
+          "name": "ZendeskAuth",
+          "nodeType": "zendesk",
+          "description": "ZendeskAuth",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for zendesk:ZendeskAuth"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:245:29]"
+        }
+      }
+    },
+    "zoom": {
+      "id": "zoom",
+      "actions": {
+        "createMeeting": {
+          "name": "createMeeting",
+          "nodeType": "zoom",
+          "description": "createMeeting",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for zoom:createMeeting"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:347:29]"
+        },
+        "getMeeting": {
+          "name": "getMeeting",
+          "nodeType": "zoom",
+          "description": "getMeeting",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for zoom:getMeeting"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:347:29]"
+        },
+        "updateMeeting": {
+          "name": "updateMeeting",
+          "nodeType": "zoom",
+          "description": "updateMeeting",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for zoom:updateMeeting"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:347:29]"
+        },
+        "deleteMeeting": {
+          "name": "deleteMeeting",
+          "nodeType": "zoom",
+          "description": "deleteMeeting",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for zoom:deleteMeeting"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:347:29]"
+        },
+        "listMeetings": {
+          "name": "listMeetings",
+          "nodeType": "zoom",
+          "description": "listMeetings",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for zoom:listMeetings"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:347:29]"
+        },
+        "createMeetingRegistrant": {
+          "name": "createMeetingRegistrant",
+          "nodeType": "zoom",
+          "description": "createMeetingRegistrant",
+          "success": false,
+          "input": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "value": "Default test data for zoom:createMeetingRegistrant"
+              }
+            }
+          },
+          "output": null,
+          "error": "missing ) after argument list [<isolated-vm>:347:29]"
+        }
+      }
+    }
+  }
+}

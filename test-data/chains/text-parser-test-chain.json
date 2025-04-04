@@ -1,0 +1,140 @@
+{
+  "id": "text-parser-test-chain",
+  "name": "Test Chain for text-parser",
+  "nodes": [
+    {
+      "id": "text-parser-concat-0",
+      "type": "text-parser",
+      "action": "concat",
+      "data": {
+        "texts": [
+          "Hello",
+          "World"
+        ],
+        "separator": " "
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "text-parser-default_value-1",
+      "type": "text-parser",
+      "action": "default_value",
+      "data": {
+        "value": "",
+        "default": "Default Value",
+        "emptyValues": [
+          "N/A",
+          "None"
+        ],
+        "treatZeroAsEmpty": false
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "text-parser-find-2",
+      "type": "text-parser",
+      "action": "find",
+      "data": {
+        "text": "Hello world! Hello universe!",
+        "pattern": "Hello",
+        "findAll": true
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "text-parser-html_to_markdown-3",
+      "type": "text-parser",
+      "action": "html_to_markdown",
+      "data": {
+        "html": "<h1>Hello World</h1><p>This is <strong>bold</strong> and this is <em>italic</em>.</p>"
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "text-parser-markdown_to_html-4",
+      "type": "text-parser",
+      "action": "markdown_to_html",
+      "data": {
+        "markdown": "# Hello World\n\nThis is **bold** and this is *italic*.",
+        "flavor": "github"
+      },
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    },
+    {
+      "id": "text-parser-replace-5",
+      "type": "text-parser",
+      "action": "replace",
+      "data": {
+        "text": "Hello world! Hello universe!",
+        "search": "Hello",
+        "replacement": "Hi",
+        "replaceAll": true
+      },
+      "position": {
+        "x": 500,
+        "y": 100
+      }
+    },
+    {
+      "id": "text-parser-slugify-6",
+      "type": "text-parser",
+      "action": "slugify",
+      "data": {
+        "text": "Hello World! This is a test.",
+        "lowercase": true,
+        "replacement": "-"
+      },
+      "position": {
+        "x": 600,
+        "y": 100
+      }
+    },
+    {
+      "id": "text-parser-split-7",
+      "type": "text-parser",
+      "action": "split",
+      "data": {
+        "text": "apple,banana,cherry",
+        "separator": ",",
+        "trim": true
+      },
+      "position": {
+        "x": 700,
+        "y": 100
+      }
+    },
+    {
+      "id": "text-parser-strip_html-8",
+      "type": "text-parser",
+      "action": "strip_html",
+      "data": {
+        "html": "<h1>Hello World</h1><p>This is <strong>bold</strong> and this is <em>italic</em>.</p>",
+        "preserveLineBreaks": true,
+        "preserveFormatting": false
+      },
+      "position": {
+        "x": 800,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "text-parser": {}
+  }
+}

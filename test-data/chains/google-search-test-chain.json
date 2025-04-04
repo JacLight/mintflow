@@ -1,0 +1,60 @@
+{
+  "id": "google-search-test-chain",
+  "name": "Test Chain for google-search",
+  "nodes": [
+    {
+      "id": "google-search-list_sitemaps-0",
+      "type": "google-search",
+      "action": "list_sitemaps",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "google-search-list_sites-1",
+      "type": "google-search",
+      "action": "list_sites",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "google-search-search_analytics-2",
+      "type": "google-search",
+      "action": "search_analytics",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "google-search-submit_sitemap-3",
+      "type": "google-search",
+      "action": "submit_sitemap",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "google-search-url_inspection-4",
+      "type": "google-search",
+      "action": "url_inspection",
+      "data": {},
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "google-search": {}
+  }
+}

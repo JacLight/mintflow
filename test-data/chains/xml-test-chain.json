@@ -1,0 +1,59 @@
+{
+  "id": "xml-test-chain",
+  "name": "Test Chain for xml",
+  "nodes": [
+    {
+      "id": "xml-convert_json_to_xml-0",
+      "type": "xml",
+      "action": "convert_json_to_xml",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "xml-convert_xml_to_json-1",
+      "type": "xml",
+      "action": "convert_xml_to_json",
+      "data": {
+        "xml": "<root><person><name>John</name><age>30</age></person></root>",
+        "preserveOrder": false,
+        "ignoreAttributes": false
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "xml-query_xml-2",
+      "type": "xml",
+      "action": "query_xml",
+      "data": {
+        "xml": "<root><person><name>John</name><age>30</age></person><person><name>Jane</name><age>25</age></person></root>",
+        "path": "root.person"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "xml-validate_xml-3",
+      "type": "xml",
+      "action": "validate_xml",
+      "data": {
+        "xml": "<root><person><name>John</name><age>30</age></person></root>"
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "xml": {}
+  }
+}

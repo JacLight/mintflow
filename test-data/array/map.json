@@ -1,0 +1,24 @@
+{
+  "input": {
+    "array": [
+      {"id": 1, "name": "John", "age": 25},
+      {"id": 2, "name": "Jane", "age": 30},
+      {"id": 3, "name": "Bob", "age": 20}
+    ],
+    "mappings": [
+      {
+        "newField": "fullName",
+        "pattern": "{{name}} ({{age}})"
+      },
+      {
+        "newField": "isAdult",
+        "pattern": "{{age >= 18}}"
+      }
+    ]
+  },
+  "expected": [
+    {"fullName": "John (25)", "isAdult": true},
+    {"fullName": "Jane (30)", "isAdult": true},
+    {"fullName": "Bob (20)", "isAdult": true}
+  ]
+}

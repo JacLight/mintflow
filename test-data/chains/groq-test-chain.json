@@ -1,0 +1,50 @@
+{
+  "id": "groq-test-chain",
+  "name": "Test Chain for groq",
+  "nodes": [
+    {
+      "id": "groq-ask_ai-0",
+      "type": "groq",
+      "action": "ask_ai",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "groq-custom_api_call-1",
+      "type": "groq",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "groq-transcribe_audio-2",
+      "type": "groq",
+      "action": "transcribe_audio",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "groq-translate_audio-3",
+      "type": "groq",
+      "action": "translate_audio",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "groq": {}
+  }
+}

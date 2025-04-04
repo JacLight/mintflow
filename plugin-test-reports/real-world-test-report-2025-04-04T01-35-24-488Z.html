@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real-World Plugin Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2, h3 { color: #333; }
+    .summary { background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    .plugin { margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
+    .plugin-header { display: flex; justify-content: space-between; align-items: center; }
+    .passed { color: #5cb85c; }
+    .failed { color: #d9534f; }
+    .skipped { color: #f0ad4e; }
+    .mode { margin: 10px 0; padding: 10px; background-color: #f9f9f9; border-radius: 3px; }
+    .error { color: #d9534f; font-weight: bold; }
+    pre { background-color: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; max-height: 300px; }
+    .progress-bar { 
+      height: 20px; 
+      background-color: #f5f5f5; 
+      border-radius: 5px; 
+      margin-bottom: 10px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      background-color: #5cb85c;
+      width: 0%;
+    }
+    .navigation {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .navigation ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      columns: 3;
+    }
+    .navigation li {
+      margin-bottom: 5px;
+    }
+    .navigation a {
+      text-decoration: none;
+      color: #333;
+    }
+    .navigation a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+      .navigation ul {
+        columns: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Real-World Plugin Test Report</h1>
+  <p>Generated on: 4/3/2025, 8:35:24 PM</p>
+  
+  <div class="summary">
+    <h2>Summary</h2>
+    <div class="progress-bar">
+      <div class="progress-bar-fill"></div>
+    </div>
+    <p>Pass Rate: 0%</p>
+    <p>Total Plugins: 1</p>
+    <p>Passed: <span class="passed">0</span></p>
+    <p>Failed: <span class="failed">1</span></p>
+    <p>Skipped: <span class="skipped">0</span></p>
+  </div>
+  
+  <div class="navigation">
+    <h2>Plugin Navigation</h2>
+    <ul>
+      <li><a href="#plugin-array">array - <span class="failed">FAILED</span></a></li>
+    </ul>
+  </div>
+  
+  <h2>Plugin Details</h2>
+  
+  
+      <div id="plugin-array" class="plugin">
+        <div class="plugin-header">
+          <h3>array - <span class="failed">FAILED</span></h3>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: aggregate, batch, filter, map, reduce, sort</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json --mode=direct --plugin=array
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json --mode=node-runner --plugin=array
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+</body>
+</html>
+  

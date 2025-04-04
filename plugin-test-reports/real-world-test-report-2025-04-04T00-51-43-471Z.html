@@ -1,0 +1,4209 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real-World Plugin Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2, h3 { color: #333; }
+    .summary { background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    .plugin { margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
+    .plugin-header { display: flex; justify-content: space-between; align-items: center; }
+    .passed { color: #5cb85c; }
+    .failed { color: #d9534f; }
+    .skipped { color: #f0ad4e; }
+    .mode { margin: 10px 0; padding: 10px; background-color: #f9f9f9; border-radius: 3px; }
+    .error { color: #d9534f; font-weight: bold; }
+    pre { background-color: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; max-height: 300px; }
+    .progress-bar { 
+      height: 20px; 
+      background-color: #f5f5f5; 
+      border-radius: 5px; 
+      margin-bottom: 10px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      background-color: #5cb85c;
+      width: 0%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Real-World Plugin Test Report</h1>
+  <p>Generated on: 4/3/2025, 7:51:43 PM</p>
+  
+  <div class="summary">
+    <h2>Summary</h2>
+    <div class="progress-bar">
+      <div class="progress-bar-fill"></div>
+    </div>
+    <p>Pass Rate: 0%</p>
+    <p>Total Plugins: 118</p>
+    <p>Passed: <span class="passed">0</span></p>
+    <p>Failed: <span class="failed">46</span></p>
+    <p>Skipped: <span class="skipped">72</span></p>
+  </div>
+  
+  <h2>Plugin Details</h2>
+  
+  
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>activecampaign</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>ai</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>airtable</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>apollo</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: enrich_company, match_person</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/apollo-test-chain.json --mode=direct --plugin=apollo
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/apollo-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/apollo-test-chain.json --mode=node-runner --plugin=apollo
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/apollo-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>array</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: aggregate, batch, filter, map, reduce, sort</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json --mode=direct --plugin=array
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json --mode=node-runner --plugin=array
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>asana</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>assemblyai</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>authorize</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>basecamp</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create-project, create-todo-item, list-projects</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/basecamp-test-chain.json --mode=direct --plugin=basecamp
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/basecamp-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/basecamp-test-chain.json --mode=node-runner --plugin=basecamp
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/basecamp-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>calcom</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call, get_booking, get_event_type, list_bookings, list_event_types</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/calcom-test-chain.json --mode=direct --plugin=calcom
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/calcom-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/calcom-test-chain.json --mode=node-runner --plugin=calcom
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/calcom-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>calendly</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>clickup</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>confluence</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_page_from_template, get_page_content</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/confluence-test-chain.json --mode=direct --plugin=confluence
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/confluence-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/confluence-test-chain.json --mode=node-runner --plugin=confluence
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/confluence-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>convertkit</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: list_fields, list_forms, list_sequences, get_subscriber_by_id, list_tags, create_webhook</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/convertkit-test-chain.json --mode=direct --plugin=convertkit
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/convertkit-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/convertkit-test-chain.json --mode=node-runner --plugin=convertkit
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/convertkit-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>crypto</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: generate_password, hash_text, hmac_signature</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/crypto-test-chain.json --mode=direct --plugin=crypto
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/crypto-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/crypto-test-chain.json --mode=node-runner --plugin=crypto
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/crypto-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>csv</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>data-bridge</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>delay</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>discord</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>dropbox</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>exec</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>facebook</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>fetch</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>figma</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>file</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>freshbooks</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_invoice, custom_api_call, get_client, get_expense, get_time_entry</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/freshbooks-test-chain.json --mode=direct --plugin=freshbooks
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/freshbooks-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/freshbooks-test-chain.json --mode=node-runner --plugin=freshbooks
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/freshbooks-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>freshdesk</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_ticket, custom_api_call, get_contact, get_ticket</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/freshdesk-test-chain.json --mode=direct --plugin=freshdesk
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/freshdesk-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/freshdesk-test-chain.json --mode=node-runner --plugin=freshdesk
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/freshdesk-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>github</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>google-ai</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>google-business</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_reply, list_accounts, list_locations, list_reviews</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/google-business-test-chain.json --mode=direct --plugin=google-business
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/google-business-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/google-business-test-chain.json --mode=node-runner --plugin=google-business
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/google-business-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>google-drive</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>google-search</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: list_sitemaps, list_sites, search_analytics, submit_sitemap, url_inspection</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/google-search-test-chain.json --mode=direct --plugin=google-search
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/google-search-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/google-search-test-chain.json --mode=node-runner --plugin=google-search
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/google-search-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>google-sheets</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>google-workspace</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>groq</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: ask_ai, custom_api_call, transcribe_audio, translate_audio</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/groq-test-chain.json --mode=direct --plugin=groq
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/groq-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/groq-test-chain.json --mode=node-runner --plugin=groq
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/groq-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>hubspot</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>inject</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>instagram</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>intercom</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>invoiceninja</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_invoice, custom_api_call, get_client, get_payment</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/invoiceninja-test-chain.json --mode=direct --plugin=invoiceninja
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/invoiceninja-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/invoiceninja-test-chain.json --mode=node-runner --plugin=invoiceninja
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/invoiceninja-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>jira-cloud</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>jotform</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/jotform-test-chain.json --mode=direct --plugin=jotform
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/jotform-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/jotform-test-chain.json --mode=node-runner --plugin=jotform
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/jotform-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>json</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: convert_json_to_text, convert_text_to_json</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/json-test-chain.json --mode=direct --plugin=json
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/json-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/json-test-chain.json --mode=node-runner --plugin=json
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/json-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>klaviyo</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: add_profiles_to_list, get_campaigns, get_lists, identify_profile, remove_profile_from_list, track_event</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/klaviyo-test-chain.json --mode=direct --plugin=klaviyo
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/klaviyo-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/klaviyo-test-chain.json --mode=node-runner --plugin=klaviyo
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/klaviyo-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>krisp-call</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: add-contact, delete-contacts, send-mms, send-sms</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/krisp-call-test-chain.json --mode=direct --plugin=krisp-call
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/krisp-call-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/krisp-call-test-chain.json --mode=node-runner --plugin=krisp-call
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/krisp-call-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>langchain</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>langflow</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>linkedin</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>llm</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>mail</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>mailchimp</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>mastodon</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call, get_account, post_status</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/mastodon-test-chain.json --mode=direct --plugin=mastodon
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/mastodon-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/mastodon-test-chain.json --mode=node-runner --plugin=mastodon
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/mastodon-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>mattermost</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call, send_message</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/mattermost-test-chain.json --mode=direct --plugin=mattermost
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/mattermost-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/mattermost-test-chain.json --mode=node-runner --plugin=mattermost
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/mattermost-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>media-processor</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>medium</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_post, custom_api_call, get_user</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/medium-test-chain.json --mode=direct --plugin=medium
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/medium-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/medium-test-chain.json --mode=node-runner --plugin=medium
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/medium-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>microsoft-office</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>milvus</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create-collection, delete-collection, get-collection-info, insert-vectors, list-collections, search-vectors</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/milvus-test-chain.json --mode=direct --plugin=milvus
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/milvus-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/milvus-test-chain.json --mode=node-runner --plugin=milvus
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/milvus-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>modify</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>monday</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>mqtt</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>mysql</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>notion</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>paypal</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>pdf</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: extract_text, image_to_pdf, text_to_pdf</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/pdf-test-chain.json --mode=direct --plugin=pdf
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/pdf-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/pdf-test-chain.json --mode=node-runner --plugin=pdf
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/pdf-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>perplexity-ai</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: ask_ai</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/perplexity-ai-test-chain.json --mode=direct --plugin=perplexity-ai
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/perplexity-ai-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/perplexity-ai-test-chain.json --mode=node-runner --plugin=perplexity-ai
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/perplexity-ai-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>photoroom</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: remove-background</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/photoroom-test-chain.json --mode=direct --plugin=photoroom
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/photoroom-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/photoroom-test-chain.json --mode=node-runner --plugin=photoroom
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/photoroom-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>pinecone</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>pinterest</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>pipedrive</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>postgres</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>qdrant</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>qrcode</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: text_to_qrcode</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/qrcode-test-chain.json --mode=direct --plugin=qrcode
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/qrcode-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/qrcode-test-chain.json --mode=node-runner --plugin=qrcode
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/qrcode-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>queue</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>quickbooks</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_invoice, custom_api_call, get_customer, get_profit_loss_report</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/quickbooks-test-chain.json --mode=direct --plugin=quickbooks
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/quickbooks-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/quickbooks-test-chain.json --mode=node-runner --plugin=quickbooks
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/quickbooks-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>quickbooks-migrate</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>range</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>razorpay</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_payment_link, custom_api_call</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/razorpay-test-chain.json --mode=direct --plugin=razorpay
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/razorpay-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/razorpay-test-chain.json --mode=node-runner --plugin=razorpay
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/razorpay-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>reddit</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call, get_subreddit, submit_post</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/reddit-test-chain.json --mode=direct --plugin=reddit
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/reddit-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/reddit-test-chain.json --mode=node-runner --plugin=reddit
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/reddit-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>redis</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>s3-storage</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>salesforce</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>sendgrid</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call, send_dynamic_template, send_email</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/sendgrid-test-chain.json --mode=direct --plugin=sendgrid
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/sendgrid-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/sendgrid-test-chain.json --mode=node-runner --plugin=sendgrid
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/sendgrid-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>shopify</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>slack</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>snapchat</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>snowflake</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call, describe_table, execute_query, list_databases, list_schemas, list_tables</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/snowflake-test-chain.json --mode=direct --plugin=snowflake
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/snowflake-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/snowflake-test-chain.json --mode=node-runner --plugin=snowflake
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/snowflake-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>sns</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_topic, list_topics, send_message</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/sns-test-chain.json --mode=direct --plugin=sns
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/sns-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/sns-test-chain.json --mode=node-runner --plugin=sns
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/sns-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>soap</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: call_method, generate_template, parse_wsdl, soap_to_rest</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/soap-test-chain.json --mode=direct --plugin=soap
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/soap-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/soap-test-chain.json --mode=node-runner --plugin=soap
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/soap-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>speech</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: Alloy</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/speech-test-chain.json --mode=direct --plugin=speech
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/speech-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/speech-test-chain.json --mode=node-runner --plugin=speech
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/speech-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>sqs</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_queue, list_queues, send_message</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/sqs-test-chain.json --mode=direct --plugin=sqs
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/sqs-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/sqs-test-chain.json --mode=node-runner --plugin=sqs
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/sqs-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>square</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>stability-ai</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: text-to-image</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/stability-ai-test-chain.json --mode=direct --plugin=stability-ai
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/stability-ai-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/stability-ai-test-chain.json --mode=node-runner --plugin=stability-ai
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/stability-ai-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>stable-diffusion</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: text-to-image</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/stable-diffusion-test-chain.json --mode=direct --plugin=stable-diffusion
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/stable-diffusion-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/stable-diffusion-test-chain.json --mode=node-runner --plugin=stable-diffusion
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/stable-diffusion-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>start</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>stripe</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>supabase</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>surveymonkey</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/surveymonkey-test-chain.json --mode=direct --plugin=surveymonkey
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/surveymonkey-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/surveymonkey-test-chain.json --mode=node-runner --plugin=surveymonkey
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/surveymonkey-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>switch</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>tally</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>teams</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>telegram</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_invite_link, get_chat_member, send_media, send_message</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/telegram-test-chain.json --mode=direct --plugin=telegram
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/telegram-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/telegram-test-chain.json --mode=node-runner --plugin=telegram
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/telegram-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>text-parser</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: concat, default_value, find, html_to_markdown, markdown_to_html, replace, slugify, split, strip_html</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/text-parser-test-chain.json --mode=direct --plugin=text-parser
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/text-parser-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/text-parser-test-chain.json --mode=node-runner --plugin=text-parser
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/text-parser-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>tiktok</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>timer</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>translation</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>trello</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>twilio</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: setup, sendSms, makeCall</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/twilio-test-chain.json --mode=direct --plugin=twilio
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/twilio-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/twilio-test-chain.json --mode=node-runner --plugin=twilio
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/twilio-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>typeform</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: custom_api_call</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/typeform-test-chain.json --mode=direct --plugin=typeform
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/typeform-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/typeform-test-chain.json --mode=node-runner --plugin=typeform
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/typeform-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>webflow</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>webhook</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>whatsapp</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: send_media, send_message, send_template</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/whatsapp-test-chain.json --mode=direct --plugin=whatsapp
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/whatsapp-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/whatsapp-test-chain.json --mode=node-runner --plugin=whatsapp
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/whatsapp-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>woocommerce</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_coupon, create_customer, create_product, find_customer, find_product</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/woocommerce-test-chain.json --mode=direct --plugin=woocommerce
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/woocommerce-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/woocommerce-test-chain.json --mode=node-runner --plugin=woocommerce
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/woocommerce-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>wordpress</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_page, create_post, get_post, update_post</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/wordpress-test-chain.json --mode=direct --plugin=wordpress
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/wordpress-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/wordpress-test-chain.json --mode=node-runner --plugin=wordpress
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/wordpress-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>xero</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: create_invoice, custom_api_call, get_contact, get_profit_loss_report</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/xero-test-chain.json --mode=direct --plugin=xero
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/xero-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/xero-test-chain.json --mode=node-runner --plugin=xero
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/xero-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>xml</h3>
+          <span class="failed">FAILED</span>
+        </div>
+        
+        
+        
+        
+          <p>Actions tested: convert_json_to_xml, convert_xml_to_json, query_xml, validate_xml</p>
+        
+        
+        
+          <h4>Test Modes</h4>
+          
+            <div class="mode">
+              <h5>direct mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/xml-test-chain.json --mode=direct --plugin=xml
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/xml-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+            <div class="mode">
+              <h5>node-runner mode: <span class="failed">FAILED</span></h5>
+              
+              
+                <p class="error">Error: Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/xml-test-chain.json --mode=node-runner --plugin=xml
+Error testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/xml-test-chain.json
+    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)
+    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)
+    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+</p>
+              
+              
+              
+                <h6>Output:</h6>
+                <pre>Testing plugin chains...
+</pre>
+              
+            </div>
+          
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>youtube</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>zendesk</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+      <div class="plugin">
+        <div class="plugin-header">
+          <h3>zoom</h3>
+          <span class="skipped">SKIPPED</span>
+        </div>
+        
+        
+        
+        
+        
+        
+      </div>
+    
+</body>
+</html>
+  

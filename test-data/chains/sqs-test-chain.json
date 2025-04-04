@@ -1,0 +1,52 @@
+{
+  "id": "sqs-test-chain",
+  "name": "Test Chain for sqs",
+  "nodes": [
+    {
+      "id": "sqs-create_queue-0",
+      "type": "sqs",
+      "action": "create_queue",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "sqs-list_queues-1",
+      "type": "sqs",
+      "action": "list_queues",
+      "data": {
+        "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "secretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        "region": "us-east-1",
+        "queueNamePrefix": "MyQueue"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "sqs-send_message-2",
+      "type": "sqs",
+      "action": "send_message",
+      "data": {
+        "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "secretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        "region": "us-east-1",
+        "queueUrl": "https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue",
+        "messageBody": "Hello from MintFlow!",
+        "delaySeconds": 0
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "sqs": {}
+  }
+}

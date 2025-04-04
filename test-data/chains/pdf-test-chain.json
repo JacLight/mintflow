@@ -1,0 +1,49 @@
+{
+  "id": "pdf-test-chain",
+  "name": "Test Chain for pdf",
+  "nodes": [
+    {
+      "id": "pdf-extract_text-0",
+      "type": "pdf",
+      "action": "extract_text",
+      "data": {
+        "file": "JVBERi0xLjMKJcTl8uXrp..."
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "pdf-image_to_pdf-1",
+      "type": "pdf",
+      "action": "image_to_pdf",
+      "data": {
+        "image": "iVBORw0KGgoAAAANSUhEUgAA...",
+        "imageType": "png"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "pdf-text_to_pdf-2",
+      "type": "pdf",
+      "action": "text_to_pdf",
+      "data": {
+        "text": "This is a sample text that will be converted to PDF.",
+        "fontSize": 12,
+        "fontType": "Helvetica"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "pdf": {}
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "mastodon-test-chain",
+  "name": "Test Chain for mastodon",
+  "nodes": [
+    {
+      "id": "mastodon-custom_api_call-0",
+      "type": "mastodon",
+      "action": "custom_api_call",
+      "data": {
+        "endpoint": "/accounts/verify_credentials",
+        "method": "GET"
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "mastodon-get_account-1",
+      "type": "mastodon",
+      "action": "get_account",
+      "data": {
+        "accountId": "123456789"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "mastodon-post_status-2",
+      "type": "mastodon",
+      "action": "post_status",
+      "data": {
+        "status": "Hello, Mastodon!",
+        "visibility": "public"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "mastodon": {}
+  }
+}

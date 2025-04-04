@@ -1,0 +1,50 @@
+{
+  "id": "google-business-test-chain",
+  "name": "Test Chain for google-business",
+  "nodes": [
+    {
+      "id": "google-business-create_reply-0",
+      "type": "google-business",
+      "action": "create_reply",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "google-business-list_accounts-1",
+      "type": "google-business",
+      "action": "list_accounts",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "google-business-list_locations-2",
+      "type": "google-business",
+      "action": "list_locations",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "google-business-list_reviews-3",
+      "type": "google-business",
+      "action": "list_reviews",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "google-business": {}
+  }
+}

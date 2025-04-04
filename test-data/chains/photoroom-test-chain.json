@@ -1,0 +1,20 @@
+{
+  "id": "photoroom-test-chain",
+  "name": "Test Chain for photoroom",
+  "nodes": [
+    {
+      "id": "photoroom-remove-background-0",
+      "type": "photoroom",
+      "action": "remove-background",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "photoroom": {}
+  }
+}

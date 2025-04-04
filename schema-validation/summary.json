@@ -1,0 +1,9 @@
+{
+  "totalPlugins": 118,
+  "pluginsWithIssues": 63,
+  "totalIssues": 65,
+  "issuesByType": {
+    "error": 62,
+    "undefined_field": 3
+  }
+}

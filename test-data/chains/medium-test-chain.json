@@ -1,0 +1,52 @@
+{
+  "id": "medium-test-chain",
+  "name": "Test Chain for medium",
+  "nodes": [
+    {
+      "id": "medium-create_post-0",
+      "type": "medium",
+      "action": "create_post",
+      "data": {
+        "title": "My First Post",
+        "content": "# Hello World\n\nThis is my first post on Medium!",
+        "contentFormat": "markdown",
+        "tags": [
+          "test",
+          "first-post"
+        ],
+        "publishStatus": "draft"
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "medium-custom_api_call-1",
+      "type": "medium",
+      "action": "custom_api_call",
+      "data": {
+        "endpoint": "/me",
+        "method": "GET"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "medium-get_user-2",
+      "type": "medium",
+      "action": "get_user",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "medium": {}
+  }
+}

@@ -1,0 +1,279 @@
+{
+  "timestamp": "2025-04-04T01:42:07.852Z",
+  "summary": {
+    "total": 6,
+    "passed": 0,
+    "failed": 6,
+    "skipped": 0
+  },
+  "plugins": {
+    "array": {
+      "id": "array",
+      "status": "failed",
+      "actions": {
+        "aggregate": {
+          "status": "failed",
+          "input": {
+            "array": [
+              {
+                "id": 1,
+                "category": "A",
+                "value": 10
+              },
+              {
+                "id": 2,
+                "category": "B",
+                "value": 20
+              },
+              {
+                "id": 3,
+                "category": "A",
+                "value": 30
+              },
+              {
+                "id": 4,
+                "category": "B",
+                "value": 40
+              },
+              {
+                "id": 5,
+                "category": "C",
+                "value": 50
+              }
+            ],
+            "groupBy": [
+              "category"
+            ],
+            "aggregations": [
+              {
+                "field": "value",
+                "operation": "sum",
+                "alias": "total"
+              }
+            ]
+          },
+          "expected": [
+            {
+              "category": "A",
+              "total": 40
+            },
+            {
+              "category": "B",
+              "total": 60
+            },
+            {
+              "category": "C",
+              "total": 50
+            }
+          ],
+          "error": "Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\nnode:internal/modules/esm/resolve:275\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:275:11)\n    at moduleResolve (node:internal/modules/esm/resolve:932:10)\n    at defaultResolve (node:internal/modules/esm/resolve:1056:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'\n}\n\nNode.js v22.13.1\n"
+        },
+        "batch": {
+          "status": "failed",
+          "input": {
+            "array": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10
+            ],
+            "groupBy": "count",
+            "threshold": 3
+          },
+          "expected": [
+            [
+              1,
+              2,
+              3
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              7,
+              8,
+              9
+            ],
+            [
+              10
+            ]
+          ],
+          "error": "Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\nnode:internal/modules/esm/resolve:275\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:275:11)\n    at moduleResolve (node:internal/modules/esm/resolve:932:10)\n    at defaultResolve (node:internal/modules/esm/resolve:1056:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'\n}\n\nNode.js v22.13.1\n"
+        },
+        "filter": {
+          "status": "failed",
+          "input": {
+            "array": [
+              {
+                "id": 1,
+                "name": "John",
+                "age": 25
+              },
+              {
+                "id": 2,
+                "name": "Jane",
+                "age": 30
+              },
+              {
+                "id": 3,
+                "name": "Bob",
+                "age": 20
+              },
+              {
+                "id": 4,
+                "name": "Alice",
+                "age": 35
+              }
+            ],
+            "join": "and",
+            "filters": [
+              {
+                "source": "data",
+                "field": "age",
+                "operation": "gt",
+                "value": "25"
+              }
+            ]
+          },
+          "expected": [
+            {
+              "id": 2,
+              "name": "Jane",
+              "age": 30
+            },
+            {
+              "id": 4,
+              "name": "Alice",
+              "age": 35
+            }
+          ],
+          "error": "Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\nnode:internal/modules/esm/resolve:275\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:275:11)\n    at moduleResolve (node:internal/modules/esm/resolve:932:10)\n    at defaultResolve (node:internal/modules/esm/resolve:1056:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'\n}\n\nNode.js v22.13.1\n"
+        },
+        "map": {
+          "status": "failed",
+          "input": {
+            "array": [
+              {
+                "id": 1,
+                "name": "John",
+                "age": 25
+              },
+              {
+                "id": 2,
+                "name": "Jane",
+                "age": 30
+              },
+              {
+                "id": 3,
+                "name": "Bob",
+                "age": 20
+              }
+            ],
+            "mappings": [
+              {
+                "newField": "fullName",
+                "pattern": "{{name}} ({{age}})"
+              },
+              {
+                "newField": "isAdult",
+                "pattern": "{{age >= 18}}"
+              }
+            ]
+          },
+          "expected": [
+            {
+              "fullName": "John (25)",
+              "isAdult": true
+            },
+            {
+              "fullName": "Jane (30)",
+              "isAdult": true
+            },
+            {
+              "fullName": "Bob (20)",
+              "isAdult": true
+            }
+          ],
+          "error": "Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\nnode:internal/modules/esm/resolve:275\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:275:11)\n    at moduleResolve (node:internal/modules/esm/resolve:932:10)\n    at defaultResolve (node:internal/modules/esm/resolve:1056:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'\n}\n\nNode.js v22.13.1\n"
+        },
+        "reduce": {
+          "status": "failed",
+          "input": {
+            "array": [
+              {
+                "id": 1,
+                "name": "John",
+                "age": 25
+              },
+              {
+                "id": 2,
+                "name": "Jane",
+                "age": 30
+              },
+              {
+                "id": 3,
+                "name": "Bob",
+                "age": 20
+              }
+            ],
+            "accumulator": "0",
+            "field": "age",
+            "operation": "sum"
+          },
+          "expected": 75,
+          "error": "Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\nnode:internal/modules/esm/resolve:275\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:275:11)\n    at moduleResolve (node:internal/modules/esm/resolve:932:10)\n    at defaultResolve (node:internal/modules/esm/resolve:1056:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'\n}\n\nNode.js v22.13.1\n"
+        },
+        "sort": {
+          "status": "failed",
+          "input": {
+            "array": [
+              {
+                "id": 1,
+                "name": "John",
+                "age": 25
+              },
+              {
+                "id": 2,
+                "name": "Jane",
+                "age": 30
+              },
+              {
+                "id": 3,
+                "name": "Bob",
+                "age": 20
+              }
+            ],
+            "field1": "age",
+            "direction1": "asc"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "name": "Bob",
+              "age": 20
+            },
+            {
+              "id": 1,
+              "name": "John",
+              "age": 25
+            },
+            {
+              "id": 2,
+              "name": "Jane",
+              "age": 30
+            }
+          ],
+          "error": "Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\nnode:internal/modules/esm/resolve:275\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:275:11)\n    at moduleResolve (node:internal/modules/esm/resolve:932:10)\n    at defaultResolve (node:internal/modules/esm/resolve:1056:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'\n}\n\nNode.js v22.13.1\n"
+        }
+      }
+    }
+  }
+}

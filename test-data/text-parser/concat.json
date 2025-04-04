@@ -1,0 +1,7 @@
+{
+  "input": {
+    "texts": ["Hello", "World"],
+    "separator": " "
+  },
+  "expected": "Hello World"
+}

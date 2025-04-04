@@ -1,0 +1,56 @@
+{
+  "id": "invoiceninja-test-chain",
+  "name": "Test Chain for invoiceninja",
+  "nodes": [
+    {
+      "id": "invoiceninja-create_invoice-0",
+      "type": "invoiceninja",
+      "action": "create_invoice",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "invoiceninja-custom_api_call-1",
+      "type": "invoiceninja",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "invoiceninja-get_client-2",
+      "type": "invoiceninja",
+      "action": "get_client",
+      "data": {
+        "clientId": "1",
+        "includeContacts": true
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "invoiceninja-get_payment-3",
+      "type": "invoiceninja",
+      "action": "get_payment",
+      "data": {
+        "paymentId": "1",
+        "includeInvoices": true
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "invoiceninja": {}
+  }
+}

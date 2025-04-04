@@ -1,0 +1,62 @@
+{
+  "id": "xero-test-chain",
+  "name": "Test Chain for xero",
+  "nodes": [
+    {
+      "id": "xero-create_invoice-0",
+      "type": "xero",
+      "action": "create_invoice",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "xero-custom_api_call-1",
+      "type": "xero",
+      "action": "custom_api_call",
+      "data": {
+        "endpoint": "getContacts",
+        "method": "GET"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "xero-get_contact-2",
+      "type": "xero",
+      "action": "get_contact",
+      "data": {
+        "contactId": "00000000-0000-0000-0000-000000000000"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "xero-get_profit_loss_report-3",
+      "type": "xero",
+      "action": "get_profit_loss_report",
+      "data": {
+        "fromDate": "2023-01-01",
+        "toDate": "2023-12-31",
+        "periods": 12,
+        "timeframe": "MONTH",
+        "standardLayout": true,
+        "paymentsOnly": false
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "xero": {}
+  }
+}

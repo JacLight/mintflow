@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-04-04T01:39:13.928Z",
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0
+  },
+  "plugins": {
+    "array": {
+      "id": "array",
+      "status": "failed",
+      "actions": [
+        "aggregate",
+        "batch",
+        "filter",
+        "map",
+        "reduce",
+        "sort"
+      ],
+      "modes": {
+        "direct": {
+          "status": "failed",
+          "output": "Starting MintFlow Plugin Testing CLI...\nCommand: test-direct\nOptions: { plugin: 'array' }\nStarting plugin tests in direct mode...\nDiscovering plugins...\nDiscovered 1 plugins to test\nPlugins: array\nRunning direct tests using sandbox...\nTesting plugin: array\n  Testing action: index\n[INFO] Running code with isolate-vm { functionName: 'main' }\n\nTest Results:\nTotal: 1, Passed: 0, Failed: 1\n\nFailed Tests:\n- array:index - Cannot use import statement outside a module [<isolated-vm>:4:11]\n\nDetailed report saved to test-reports/test-results-direct-2025-04-04T01-39-14-060Z.json\n",
+          "error": "spawnSync /bin/sh ETIMEDOUT"
+        },
+        "node-runner": {
+          "status": "failed",
+          "output": "Starting MintFlow Plugin Testing CLI...\nCommand: test-node-runner\nOptions: { plugin: 'array' }\nStarting plugin tests in direct mode...\nDiscovering plugins...\nDiscovered 1 plugins to test\nPlugins: array\nRunning direct tests using sandbox...\nTesting plugin: array\n  Testing action: index\n[INFO] Running code with isolate-vm { functionName: 'main' }\n\nTest Results:\nTotal: 1, Passed: 0, Failed: 1\n\nFailed Tests:\n- array:index - Cannot use import statement outside a module [<isolated-vm>:4:11]\n\nDetailed report saved to test-reports/test-results-direct-2025-04-04T01-39-44-158Z.json\n",
+          "error": "spawnSync /bin/sh ETIMEDOUT"
+        }
+      }
+    }
+  }
+}

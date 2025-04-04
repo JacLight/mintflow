@@ -1,0 +1,224 @@
+{
+  "id": "array-test-chain",
+  "name": "Test Chain for array",
+  "nodes": [
+    {
+      "id": "array-aggregate-0",
+      "type": "array",
+      "action": "aggregate",
+      "data": {
+        "array": [
+          {
+            "id": 1,
+            "category": "A",
+            "value": 10
+          },
+          {
+            "id": 2,
+            "category": "B",
+            "value": 20
+          },
+          {
+            "id": 3,
+            "category": "A",
+            "value": 30
+          },
+          {
+            "id": 4,
+            "category": "B",
+            "value": 40
+          },
+          {
+            "id": 5,
+            "category": "C",
+            "value": 50
+          }
+        ],
+        "groupBy": [
+          "category"
+        ],
+        "aggregations": [
+          {
+            "field": "value",
+            "operation": "sum",
+            "alias": "total"
+          }
+        ]
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "array-batch-1",
+      "type": "array",
+      "action": "batch",
+      "data": {
+        "array": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "groupBy": "count",
+        "threshold": 3
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "array-filter-2",
+      "type": "array",
+      "action": "filter",
+      "data": {
+        "array": [
+          {
+            "id": 1,
+            "name": "John",
+            "age": 25
+          },
+          {
+            "id": 2,
+            "name": "Jane",
+            "age": 30
+          },
+          {
+            "id": 3,
+            "name": "Bob",
+            "age": 20
+          },
+          {
+            "id": 4,
+            "name": "Alice",
+            "age": 35
+          }
+        ],
+        "join": "and",
+        "filters": [
+          {
+            "source": "data",
+            "field": "age",
+            "operation": "gt",
+            "value": "25"
+          }
+        ]
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "array-map-3",
+      "type": "array",
+      "action": "map",
+      "data": {
+        "array": [
+          {
+            "id": 1,
+            "name": "John",
+            "age": 25
+          },
+          {
+            "id": 2,
+            "name": "Jane",
+            "age": 30
+          },
+          {
+            "id": 3,
+            "name": "Bob",
+            "age": 20
+          }
+        ],
+        "mappings": [
+          {
+            "newField": "fullName",
+            "pattern": "{{name}} ({{age}})"
+          },
+          {
+            "newField": "isAdult",
+            "pattern": "{{age >= 18}}"
+          }
+        ]
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "array-reduce-4",
+      "type": "array",
+      "action": "reduce",
+      "data": {
+        "array": [
+          {
+            "id": 1,
+            "name": "John",
+            "age": 25
+          },
+          {
+            "id": 2,
+            "name": "Jane",
+            "age": 30
+          },
+          {
+            "id": 3,
+            "name": "Bob",
+            "age": 20
+          }
+        ],
+        "accumulator": "0",
+        "field": "age",
+        "operation": "sum"
+      },
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    },
+    {
+      "id": "array-sort-5",
+      "type": "array",
+      "action": "sort",
+      "data": {
+        "array": [
+          {
+            "id": 1,
+            "name": "John",
+            "age": 25
+          },
+          {
+            "id": 2,
+            "name": "Jane",
+            "age": 30
+          },
+          {
+            "id": 3,
+            "name": "Bob",
+            "age": 20
+          }
+        ],
+        "field1": "age",
+        "direction1": "asc"
+      },
+      "position": {
+        "x": 500,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "array": {}
+  }
+}

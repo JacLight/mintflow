@@ -1,0 +1,72 @@
+{
+  "id": "telegram-test-chain",
+  "name": "Test Chain for telegram",
+  "nodes": [
+    {
+      "id": "telegram-create_invite_link-0",
+      "type": "telegram",
+      "action": "create_invite_link",
+      "data": {
+        "bot_token": "123456789:ABCdefGhIJKlmnOPQRstUVwxYZ",
+        "chat_id": "-100123456789",
+        "name": "MintFlow Invite",
+        "expire_date": "2023-12-31T23:59:59Z",
+        "member_limit": 10
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "telegram-get_chat_member-1",
+      "type": "telegram",
+      "action": "get_chat_member",
+      "data": {
+        "bot_token": "123456789:ABCdefGhIJKlmnOPQRstUVwxYZ",
+        "chat_id": "-100123456789",
+        "user_id": "987654321"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "telegram-send_media-2",
+      "type": "telegram",
+      "action": "send_media",
+      "data": {
+        "bot_token": "123456789:ABCdefGhIJKlmnOPQRstUVwxYZ",
+        "chat_id": "123456789",
+        "media_type": "photo",
+        "media_url": "https://example.com/image.jpg",
+        "caption": "Check out this image!",
+        "format": "MarkdownV2"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "telegram-send_message-3",
+      "type": "telegram",
+      "action": "send_message",
+      "data": {
+        "bot_token": "123456789:ABCdefGhIJKlmnOPQRstUVwxYZ",
+        "chat_id": "123456789",
+        "message": "Hello from MintFlow!",
+        "format": "MarkdownV2"
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "telegram": {}
+  }
+}

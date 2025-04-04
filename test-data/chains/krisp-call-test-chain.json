@@ -1,0 +1,50 @@
+{
+  "id": "krisp-call-test-chain",
+  "name": "Test Chain for krisp-call",
+  "nodes": [
+    {
+      "id": "krisp-call-add-contact-0",
+      "type": "krisp-call",
+      "action": "add-contact",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "krisp-call-delete-contacts-1",
+      "type": "krisp-call",
+      "action": "delete-contacts",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "krisp-call-send-mms-2",
+      "type": "krisp-call",
+      "action": "send-mms",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "krisp-call-send-sms-3",
+      "type": "krisp-call",
+      "action": "send-sms",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "krisp-call": {}
+  }
+}

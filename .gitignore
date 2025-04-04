@@ -59,3 +59,4 @@ vitest.config.*.timestamp*
 **/packages/*/.env
 **/ui-web/*/.env
 **/env.local
+test-data/credentials.json

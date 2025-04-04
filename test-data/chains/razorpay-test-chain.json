@@ -1,0 +1,43 @@
+{
+  "id": "razorpay-test-chain",
+  "name": "Test Chain for razorpay",
+  "nodes": [
+    {
+      "id": "razorpay-create_payment_link-0",
+      "type": "razorpay",
+      "action": "create_payment_link",
+      "data": {
+        "amount": 1000,
+        "currency": "INR",
+        "reference_id": "order_123",
+        "description": "Payment for Order #123",
+        "customer_name": "John Doe",
+        "customer_contact": "+919876543210",
+        "notify_sms": true,
+        "customer_email": "john@example.com",
+        "notify_email": true,
+        "metafield_notes": "Premium Plan",
+        "callback_url": "https://example.com/callback",
+        "callback_method": "GET"
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "razorpay-custom_api_call-1",
+      "type": "razorpay",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "razorpay": {}
+  }
+}

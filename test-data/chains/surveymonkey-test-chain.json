@@ -1,0 +1,20 @@
+{
+  "id": "surveymonkey-test-chain",
+  "name": "Test Chain for surveymonkey",
+  "nodes": [
+    {
+      "id": "surveymonkey-custom_api_call-0",
+      "type": "surveymonkey",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "surveymonkey": {}
+  }
+}

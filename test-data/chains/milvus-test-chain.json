@@ -1,0 +1,70 @@
+{
+  "id": "milvus-test-chain",
+  "name": "Test Chain for milvus",
+  "nodes": [
+    {
+      "id": "milvus-create-collection-0",
+      "type": "milvus",
+      "action": "create-collection",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "milvus-delete-collection-1",
+      "type": "milvus",
+      "action": "delete-collection",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "milvus-get-collection-info-2",
+      "type": "milvus",
+      "action": "get-collection-info",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "milvus-insert-vectors-3",
+      "type": "milvus",
+      "action": "insert-vectors",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "milvus-list-collections-4",
+      "type": "milvus",
+      "action": "list-collections",
+      "data": {},
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    },
+    {
+      "id": "milvus-search-vectors-5",
+      "type": "milvus",
+      "action": "search-vectors",
+      "data": {},
+      "position": {
+        "x": 500,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "milvus": {}
+  }
+}

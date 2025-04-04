@@ -1,0 +1,9 @@
+{
+  "input": {
+    "text": "Hello world! Hello universe!",
+    "search": "Hello",
+    "replacement": "Hi",
+    "replaceAll": true
+  },
+  "expected": "Hi world! Hi universe!"
+}

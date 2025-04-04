@@ -1,0 +1,50 @@
+{
+  "id": "wordpress-test-chain",
+  "name": "Test Chain for wordpress",
+  "nodes": [
+    {
+      "id": "wordpress-create_page-0",
+      "type": "wordpress",
+      "action": "create_page",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "wordpress-create_post-1",
+      "type": "wordpress",
+      "action": "create_post",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "wordpress-get_post-2",
+      "type": "wordpress",
+      "action": "get_post",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "wordpress-update_post-3",
+      "type": "wordpress",
+      "action": "update_post",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "wordpress": {}
+  }
+}

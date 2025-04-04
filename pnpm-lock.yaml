@@ -7,6 +7,16 @@ settings:
 importers:
 
   .:
+    dependencies:
+      axios:
+        specifier: ^1.8.4
+        version: 1.8.4(debug@4.4.0)
+      bull:
+        specifier: ^4.16.5
+        version: 4.16.5
+      isolated-vm:
+        specifier: ^5.0.3
+        version: 5.0.3
     devDependencies:
       '@eslint/js':
         specifier: ^9.8.0
@@ -132,7 +142,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -154,7 +164,7 @@ importers:
         version: 0.2.1
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       nanoid:
         specifier: ^5.0.6
         version: 5.1.2
@@ -179,7 +189,7 @@ importers:
         version: 0.12.2(encoding@0.1.13)
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -207,7 +217,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -268,7 +278,7 @@ importers:
         version: 3.1.3
       axios:
         specifier: ^1.7.9
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -305,7 +315,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.4
+        version: 1.8.4(debug@4.4.0)
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -324,7 +334,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       zod:
         specifier: ^3.22.4
         version: 3.24.2
@@ -346,7 +356,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -368,7 +378,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -390,7 +400,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       xml2js:
         specifier: ^0.6.2
         version: 0.6.2
@@ -418,7 +428,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -542,7 +552,7 @@ importers:
         version: 0.14.4
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -579,7 +589,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -620,7 +630,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       nanoid:
         specifier: ^5.0.6
         version: 5.1.2
@@ -664,7 +674,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -689,7 +699,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -714,7 +724,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -742,7 +752,7 @@ importers:
         version: 0.2.1
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       nanoid:
         specifier: ^5.0.6
         version: 5.1.2
@@ -767,7 +777,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       dayjs:
         specifier: ^1.11.10
         version: 1.11.13
@@ -792,7 +802,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -826,7 +836,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       googleapis:
         specifier: ^128.0.0
         version: 128.0.0(encoding@0.1.13)
@@ -870,7 +880,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -889,7 +899,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -917,7 +927,7 @@ importers:
         version: 10.2.1(encoding@0.1.13)
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -954,7 +964,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -973,7 +983,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       intercom-client:
         specifier: ^4.0.0
         version: 4.0.0
@@ -998,7 +1008,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -1023,7 +1033,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -1051,7 +1061,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1085,7 +1095,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1104,7 +1114,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1187,7 +1197,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.2
-        version: 1.8.4
+        version: 1.8.4(debug@4.4.0)
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -1215,7 +1225,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -1286,7 +1296,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       crypto:
         specifier: ^1.0.1
         version: 1.0.1
@@ -1311,7 +1321,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -1336,7 +1346,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1418,7 +1428,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -1449,7 +1459,7 @@ importers:
         version: 2.40.0
       axios:
         specifier: ^1.8.4
-        version: 1.8.4
+        version: 1.8.4(debug@4.4.0)
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1468,7 +1478,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.4
+        version: 1.8.4(debug@4.4.0)
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1502,7 +1512,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       dayjs:
         specifier: ^1.11.10
         version: 1.11.13
@@ -1593,7 +1603,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1640,7 +1650,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       zod:
         specifier: ^3.22.4
         version: 3.24.2
@@ -1665,7 +1675,7 @@ importers:
         version: 2.5.2
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.2
         version: 4.0.2
@@ -1709,7 +1719,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1728,7 +1738,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.2
         version: 4.0.2
@@ -1856,7 +1866,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -1899,7 +1909,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -1918,7 +1928,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -1968,7 +1978,7 @@ importers:
         version: 3.758.0
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -1993,7 +2003,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2018,7 +2028,7 @@ importers:
         version: 7.7.0
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2040,7 +2050,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2087,7 +2097,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2106,7 +2116,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.8.4
-        version: 1.8.4
+        version: 1.8.4(debug@4.4.0)
       snowflake-sdk:
         specifier: ^1.15.0
         version: 1.15.0(asn1.js@5.4.1)(encoding@0.1.13)
@@ -2156,7 +2166,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.2
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       express:
         specifier: ^4.18.2
         version: 4.21.2
@@ -2205,7 +2215,7 @@ importers:
         version: 3.1.3
       axios:
         specifier: ^1.7.9
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       elevenlabs:
         specifier: ^1.52.0
         version: 1.52.0(encoding@0.1.13)
@@ -2249,7 +2259,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       crypto:
         specifier: ^1.0.1
         version: 1.0.1
@@ -2293,7 +2303,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.4
+        version: 1.8.4(debug@4.4.0)
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2327,7 +2337,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2368,7 +2378,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2430,7 +2440,7 @@ importers:
         version: 2.40.0
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2449,7 +2459,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -2505,7 +2515,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2549,7 +2559,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.7.9
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2568,7 +2578,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2621,7 +2631,7 @@ importers:
         version: 29.5.14
       axios:
         specifier: ^1.8.1
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@22.13.13)(typescript@5.7.3))
@@ -2639,7 +2649,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.2
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2683,7 +2693,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2705,7 +2715,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.2
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2724,7 +2734,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.2
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       dayjs:
         specifier: ^1.11.10
         version: 1.11.13
@@ -2752,7 +2762,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
       form-data:
         specifier: ^4.0.0
         version: 4.0.2
@@ -2799,7 +2809,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2818,7 +2828,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -2840,7 +2850,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.7
-        version: 1.8.1(debug@4.4.0)
+        version: 1.8.1
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
@@ -14632,7 +14642,7 @@ snapshots:
       '@slack/types': 2.14.0
       '@types/node': 20.17.19
       '@types/retry': 0.12.0
-      axios: 1.8.4
+      axios: 1.8.4(debug@4.4.0)
       eventemitter3: 5.0.1
       form-data: 4.0.2
       is-electron: 2.2.2
@@ -15444,7 +15454,7 @@ snapshots:
 
   '@types/axios@0.14.4':
     dependencies:
-      axios: 1.8.1(debug@4.4.0)
+      axios: 1.8.4(debug@4.4.0)
     transitivePeerDependencies:
       - debug
 
@@ -15924,7 +15934,7 @@ snapshots:
       pathe: 1.1.2
       picocolors: 1.1.1
       sirv: 2.0.4
-      vitest: 1.6.1(@types/node@22.13.13)(@vitest/ui@1.6.1)(lightningcss@1.29.2)
+      vitest: 1.6.1(@types/node@18.16.9)(@vitest/ui@1.6.1)(lightningcss@1.29.2)
 
   '@vitest/utils@0.34.6':
     dependencies:
@@ -16121,13 +16131,13 @@ snapshots:
 
   axios-mock-adapter@1.22.0(axios@1.8.1):
     dependencies:
-      axios: 1.8.1(debug@4.4.0)
+      axios: 1.8.1
       fast-deep-equal: 3.1.3
       is-buffer: 2.0.5
 
   axios-mock-adapter@1.22.0(axios@1.8.4):
     dependencies:
-      axios: 1.8.4
+      axios: 1.8.4(debug@4.4.0)
       fast-deep-equal: 3.1.3
       is-buffer: 2.0.5
 
@@ -16139,19 +16149,19 @@ snapshots:
 
   axios-mock-adapter@2.1.0(axios@1.8.1):
     dependencies:
-      axios: 1.8.1(debug@4.4.0)
+      axios: 1.8.1
       fast-deep-equal: 3.1.3
       is-buffer: 2.0.5
 
   axios-mock-adapter@2.1.0(axios@1.8.4):
     dependencies:
-      axios: 1.8.4
+      axios: 1.8.4(debug@4.4.0)
       fast-deep-equal: 3.1.3
       is-buffer: 2.0.5
 
   axios-ntlm@1.4.3(debug@4.4.0):
     dependencies:
-      axios: 1.8.1(debug@4.4.0)
+      axios: 1.8.4(debug@4.4.0)
       des.js: 1.1.0
       dev-null: 0.1.1
       js-md4: 0.3.2
@@ -16178,7 +16188,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.8.1(debug@4.4.0):
+  axios@1.8.1:
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.0)
       form-data: 4.0.2
@@ -16186,7 +16196,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.8.4:
+  axios@1.8.4(debug@4.4.0):
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.0)
       form-data: 4.0.2
@@ -18002,7 +18012,7 @@ snapshots:
   intuit-oauth@4.2.0:
     dependencies:
       atob: 2.1.2
-      axios: 1.8.1(debug@4.4.0)
+      axios: 1.8.4(debug@4.4.0)
       csrf: 3.1.0
       jsonwebtoken: 9.0.2
       query-string: 6.14.1
@@ -19557,7 +19567,7 @@ snapshots:
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.2
       '@zkochan/js-yaml': 0.0.7
-      axios: 1.8.4
+      axios: 1.8.4(debug@4.4.0)
       chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
@@ -20558,7 +20568,7 @@ snapshots:
       asn1.js: 5.4.1
       asn1.js-rfc2560: 5.0.1(asn1.js@5.4.1)
       asn1.js-rfc5280: 3.0.0
-      axios: 1.8.4
+      axios: 1.8.4(debug@4.4.0)
       big-integer: 1.6.52
       bignumber.js: 9.1.2
       binascii: 0.0.2
@@ -20589,7 +20599,7 @@ snapshots:
 
   soap@1.1.8:
     dependencies:
-      axios: 1.8.1(debug@4.4.0)
+      axios: 1.8.4(debug@4.4.0)
       axios-ntlm: 1.4.3(debug@4.4.0)
       debug: 4.4.0(supports-color@5.5.0)
       formidable: 3.5.2
@@ -21170,7 +21180,7 @@ snapshots:
 
   twilio@5.4.5:
     dependencies:
-      axios: 1.7.9
+      axios: 1.8.4(debug@4.4.0)
       dayjs: 1.11.13
       https-proxy-agent: 5.0.1
       jsonwebtoken: 9.0.2

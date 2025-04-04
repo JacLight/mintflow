@@ -1,0 +1,60 @@
+{
+  "id": "woocommerce-test-chain",
+  "name": "Test Chain for woocommerce",
+  "nodes": [
+    {
+      "id": "woocommerce-create_coupon-0",
+      "type": "woocommerce",
+      "action": "create_coupon",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "woocommerce-create_customer-1",
+      "type": "woocommerce",
+      "action": "create_customer",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "woocommerce-create_product-2",
+      "type": "woocommerce",
+      "action": "create_product",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "woocommerce-find_customer-3",
+      "type": "woocommerce",
+      "action": "find_customer",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "woocommerce-find_product-4",
+      "type": "woocommerce",
+      "action": "find_product",
+      "data": {},
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "woocommerce": {}
+  }
+}

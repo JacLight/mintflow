@@ -1,0 +1,44 @@
+{
+  "total": 2,
+  "passed": 2,
+  "failed": 0,
+  "tests": [
+    {
+      "pluginId": "json",
+      "actionName": "convertTextToJson",
+      "nodeType": "json",
+      "action": "Convert Text to JSON",
+      "success": true,
+      "input": {
+        "text": "{\"name\": \"Test User\", \"email\": \"test@example.com\", \"age\": 30, \"isActive\": true}"
+      },
+      "output": {
+        "result": {
+          "name": "Test User",
+          "email": "test@example.com",
+          "age": 30,
+          "isActive": true
+        }
+      }
+    },
+    {
+      "pluginId": "json",
+      "actionName": "convertJsonToText",
+      "nodeType": "json",
+      "action": "Convert JSON to Text",
+      "success": true,
+      "input": {
+        "json": {
+          "name": "Test User",
+          "email": "test@example.com",
+          "age": 30,
+          "isActive": true
+        },
+        "pretty": true
+      },
+      "output": {
+        "result": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"age\": 30,\n  \"isActive\": true\n}"
+      }
+    }
+  ]
+}

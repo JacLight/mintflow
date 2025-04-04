@@ -1,0 +1,40 @@
+{
+  "id": "whatsapp-test-chain",
+  "name": "Test Chain for whatsapp",
+  "nodes": [
+    {
+      "id": "whatsapp-send_media-0",
+      "type": "whatsapp",
+      "action": "send_media",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "whatsapp-send_message-1",
+      "type": "whatsapp",
+      "action": "send_message",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "whatsapp-send_template-2",
+      "type": "whatsapp",
+      "action": "send_template",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "whatsapp": {}
+  }
+}

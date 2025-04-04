@@ -1,0 +1,20 @@
+{
+  "id": "stability-ai-test-chain",
+  "name": "Test Chain for stability-ai",
+  "nodes": [
+    {
+      "id": "stability-ai-text-to-image-0",
+      "type": "stability-ai",
+      "action": "text-to-image",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "stability-ai": {}
+  }
+}

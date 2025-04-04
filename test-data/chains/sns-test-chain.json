@@ -1,0 +1,51 @@
+{
+  "id": "sns-test-chain",
+  "name": "Test Chain for sns",
+  "nodes": [
+    {
+      "id": "sns-create_topic-0",
+      "type": "sns",
+      "action": "create_topic",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "sns-list_topics-1",
+      "type": "sns",
+      "action": "list_topics",
+      "data": {
+        "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "secretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        "region": "us-east-1"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "sns-send_message-2",
+      "type": "sns",
+      "action": "send_message",
+      "data": {
+        "accessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "secretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        "region": "us-east-1",
+        "topicArn": "arn:aws:sns:us-east-1:123456789012:MyTopic",
+        "message": "Hello from MintFlow!",
+        "subject": "Test Message"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "sns": {}
+  }
+}

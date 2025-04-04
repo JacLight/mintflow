@@ -1,0 +1,60 @@
+{
+  "id": "calcom-test-chain",
+  "name": "Test Chain for calcom",
+  "nodes": [
+    {
+      "id": "calcom-custom_api_call-0",
+      "type": "calcom",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "calcom-get_booking-1",
+      "type": "calcom",
+      "action": "get_booking",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "calcom-get_event_type-2",
+      "type": "calcom",
+      "action": "get_event_type",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "calcom-list_bookings-3",
+      "type": "calcom",
+      "action": "list_bookings",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "calcom-list_event_types-4",
+      "type": "calcom",
+      "action": "list_event_types",
+      "data": {},
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "calcom": {}
+  }
+}

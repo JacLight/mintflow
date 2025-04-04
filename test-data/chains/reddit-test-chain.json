@@ -1,0 +1,50 @@
+{
+  "id": "reddit-test-chain",
+  "name": "Test Chain for reddit",
+  "nodes": [
+    {
+      "id": "reddit-custom_api_call-0",
+      "type": "reddit",
+      "action": "custom_api_call",
+      "data": {
+        "endpoint": "/r/programming/about",
+        "method": "GET"
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "reddit-get_subreddit-1",
+      "type": "reddit",
+      "action": "get_subreddit",
+      "data": {
+        "subreddit": "programming"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "reddit-submit_post-2",
+      "type": "reddit",
+      "action": "submit_post",
+      "data": {
+        "subreddit": "test",
+        "title": "Test Post",
+        "content": "This is a test post",
+        "kind": "self"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "reddit": {}
+  }
+}

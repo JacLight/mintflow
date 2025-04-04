@@ -1,0 +1,40 @@
+{
+  "id": "twilio-test-chain",
+  "name": "Test Chain for twilio",
+  "nodes": [
+    {
+      "id": "twilio-setup-0",
+      "type": "twilio",
+      "action": "setup",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "twilio-sendSms-1",
+      "type": "twilio",
+      "action": "sendSms",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "twilio-makeCall-2",
+      "type": "twilio",
+      "action": "makeCall",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "twilio": {}
+  }
+}

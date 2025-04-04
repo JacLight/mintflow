@@ -1,0 +1,20 @@
+{
+  "id": "stable-diffusion-test-chain",
+  "name": "Test Chain for stable-diffusion",
+  "nodes": [
+    {
+      "id": "stable-diffusion-text-to-image-0",
+      "type": "stable-diffusion",
+      "action": "text-to-image",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "stable-diffusion": {}
+  }
+}

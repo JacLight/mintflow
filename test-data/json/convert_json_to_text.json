@@ -1,0 +1,13 @@
+{
+  "input": {
+    "json": {
+      "name": "John",
+      "age": 30,
+      "city": "New York"
+    },
+    "pretty": true
+  },
+  "expected": {
+    "text": "{\n  \"name\": \"John\",\n  \"age\": 30,\n  \"city\": \"New York\"\n}"
+  }
+}

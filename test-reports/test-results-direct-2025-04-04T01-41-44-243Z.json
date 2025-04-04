@@ -1,0 +1,18 @@
+{
+  "total": 1,
+  "passed": 0,
+  "failed": 1,
+  "tests": [
+    {
+      "pluginId": "array",
+      "actionName": "index",
+      "nodeType": "array",
+      "action": "index",
+      "success": false,
+      "input": {
+        "data": "Default test data for array:index"
+      },
+      "error": "Cannot use import statement outside a module [<isolated-vm>:4:11]"
+    }
+  ]
+}

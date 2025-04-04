@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Plugin Data Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2, h3 { color: #333; }
+    .summary { background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    .plugin { margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
+    .plugin-header { display: flex; justify-content: space-between; align-items: center; }
+    .passed { color: #5cb85c; }
+    .failed { color: #d9534f; }
+    .skipped { color: #f0ad4e; }
+    .action { margin: 10px 0; padding: 10px; background-color: #f9f9f9; border-radius: 3px; }
+    .action-header { display: flex; justify-content: space-between; align-items: center; }
+    .error { color: #d9534f; font-weight: bold; }
+    pre { background-color: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; max-height: 300px; }
+    .progress-bar { 
+      height: 20px; 
+      background-color: #f5f5f5; 
+      border-radius: 5px; 
+      margin-bottom: 10px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      background-color: #5cb85c;
+      width: 0%;
+    }
+    .navigation {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .navigation ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      columns: 3;
+    }
+    .navigation li {
+      margin-bottom: 5px;
+    }
+    .navigation a {
+      text-decoration: none;
+      color: #333;
+    }
+    .navigation a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+      .navigation ul {
+        columns: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Plugin Data Test Report</h1>
+  <p>Generated on: 4/3/2025, 8:42:07 PM</p>
+  
+  <div class="summary">
+    <h2>Summary</h2>
+    <div class="progress-bar">
+      <div class="progress-bar-fill"></div>
+    </div>
+    <p>Pass Rate: 0%</p>
+    <p>Total Tests: 6</p>
+    <p>Passed: <span class="passed">0</span></p>
+    <p>Failed: <span class="failed">6</span></p>
+    <p>Skipped: <span class="skipped">0</span></p>
+  </div>
+  
+  <div class="navigation">
+    <h2>Plugin Navigation</h2>
+    <ul>
+      <li><a href="#plugin-array">array - <span class="failed">FAILED</span></a></li>
+    </ul>
+  </div>
+  
+  <h2>Plugin Details</h2>
+  
+  
+      <div id="plugin-array" class="plugin">
+        <div class="plugin-header">
+          <h3>array - <span class="failed">FAILED</span></h3>
+        </div>
+        
+        <h4>Actions</h4>
+        
+          <div class="action">
+            <div class="action-header">
+              <h5>aggregate - <span class="failed">FAILED</span></h5>
+            </div>
+            
+            <p class="error">Error: Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'
+}
+
+Node.js v22.13.1
+</p>
+            
+            <h6>Input:</h6>
+            <pre>{
+  "array": [
+    {
+      "id": 1,
+      "category": "A",
+      "value": 10
+    },
+    {
+      "id": 2,
+      "category": "B",
+      "value": 20
+    },
+    {
+      "id": 3,
+      "category": "A",
+      "value": 30
+    },
+    {
+      "id": 4,
+      "category": "B",
+      "value": 40
+    },
+    {
+      "id": 5,
+      "category": "C",
+      "value": 50
+    }
+  ],
+  "groupBy": [
+    "category"
+  ],
+  "aggregations": [
+    {
+      "field": "value",
+      "operation": "sum",
+      "alias": "total"
+    }
+  ]
+}</pre>
+            
+            <h6>Expected Output:</h6>
+            <pre>[
+  {
+    "category": "A",
+    "total": 40
+  },
+  {
+    "category": "B",
+    "total": 60
+  },
+  {
+    "category": "C",
+    "total": 50
+  }
+]</pre>
+            
+            
+          </div>
+        
+          <div class="action">
+            <div class="action-header">
+              <h5>batch - <span class="failed">FAILED</span></h5>
+            </div>
+            
+            <p class="error">Error: Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'
+}
+
+Node.js v22.13.1
+</p>
+            
+            <h6>Input:</h6>
+            <pre>{
+  "array": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "groupBy": "count",
+  "threshold": 3
+}</pre>
+            
+            <h6>Expected Output:</h6>
+            <pre>[
+  [
+    1,
+    2,
+    3
+  ],
+  [
+    4,
+    5,
+    6
+  ],
+  [
+    7,
+    8,
+    9
+  ],
+  [
+    10
+  ]
+]</pre>
+            
+            
+          </div>
+        
+          <div class="action">
+            <div class="action-header">
+              <h5>filter - <span class="failed">FAILED</span></h5>
+            </div>
+            
+            <p class="error">Error: Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'
+}
+
+Node.js v22.13.1
+</p>
+            
+            <h6>Input:</h6>
+            <pre>{
+  "array": [
+    {
+      "id": 1,
+      "name": "John",
+      "age": 25
+    },
+    {
+      "id": 2,
+      "name": "Jane",
+      "age": 30
+    },
+    {
+      "id": 3,
+      "name": "Bob",
+      "age": 20
+    },
+    {
+      "id": 4,
+      "name": "Alice",
+      "age": 35
+    }
+  ],
+  "join": "and",
+  "filters": [
+    {
+      "source": "data",
+      "field": "age",
+      "operation": "gt",
+      "value": "25"
+    }
+  ]
+}</pre>
+            
+            <h6>Expected Output:</h6>
+            <pre>[
+  {
+    "id": 2,
+    "name": "Jane",
+    "age": 30
+  },
+  {
+    "id": 4,
+    "name": "Alice",
+    "age": 35
+  }
+]</pre>
+            
+            
+          </div>
+        
+          <div class="action">
+            <div class="action-header">
+              <h5>map - <span class="failed">FAILED</span></h5>
+            </div>
+            
+            <p class="error">Error: Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'
+}
+
+Node.js v22.13.1
+</p>
+            
+            <h6>Input:</h6>
+            <pre>{
+  "array": [
+    {
+      "id": 1,
+      "name": "John",
+      "age": 25
+    },
+    {
+      "id": 2,
+      "name": "Jane",
+      "age": 30
+    },
+    {
+      "id": 3,
+      "name": "Bob",
+      "age": 20
+    }
+  ],
+  "mappings": [
+    {
+      "newField": "fullName",
+      "pattern": "{{name}} ({{age}})"
+    },
+    {
+      "newField": "isAdult",
+      "pattern": "{{age >= 18}}"
+    }
+  ]
+}</pre>
+            
+            <h6>Expected Output:</h6>
+            <pre>[
+  {
+    "fullName": "John (25)",
+    "isAdult": true
+  },
+  {
+    "fullName": "Jane (30)",
+    "isAdult": true
+  },
+  {
+    "fullName": "Bob (20)",
+    "isAdult": true
+  }
+]</pre>
+            
+            
+          </div>
+        
+          <div class="action">
+            <div class="action-header">
+              <h5>reduce - <span class="failed">FAILED</span></h5>
+            </div>
+            
+            <p class="error">Error: Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'
+}
+
+Node.js v22.13.1
+</p>
+            
+            <h6>Input:</h6>
+            <pre>{
+  "array": [
+    {
+      "id": 1,
+      "name": "John",
+      "age": 25
+    },
+    {
+      "id": 2,
+      "name": "Jane",
+      "age": 30
+    },
+    {
+      "id": 3,
+      "name": "Bob",
+      "age": 20
+    }
+  ],
+  "accumulator": "0",
+  "field": "age",
+  "operation": "sum"
+}</pre>
+            
+            <h6>Expected Output:</h6>
+            <pre>75</pre>
+            
+            
+          </div>
+        
+          <div class="action">
+            <div class="action-header">
+              <h5>sort - <span class="failed">FAILED</span></h5>
+            </div>
+            
+            <p class="error">Error: Error executing action: Command failed: node --experimental-modules /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/imzee/projects/mintflow/packages/plugins/array/src/index.js' imported from /Users/imzee/projects/mintflow/scripts/temp-execute-action.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/imzee/projects/mintflow/packages/plugins/array/src/index.js'
+}
+
+Node.js v22.13.1
+</p>
+            
+            <h6>Input:</h6>
+            <pre>{
+  "array": [
+    {
+      "id": 1,
+      "name": "John",
+      "age": 25
+    },
+    {
+      "id": 2,
+      "name": "Jane",
+      "age": 30
+    },
+    {
+      "id": 3,
+      "name": "Bob",
+      "age": 20
+    }
+  ],
+  "field1": "age",
+  "direction1": "asc"
+}</pre>
+            
+            <h6>Expected Output:</h6>
+            <pre>[
+  {
+    "id": 3,
+    "name": "Bob",
+    "age": 20
+  },
+  {
+    "id": 1,
+    "name": "John",
+    "age": 25
+  },
+  {
+    "id": 2,
+    "name": "Jane",
+    "age": 30
+  }
+]</pre>
+            
+            
+          </div>
+        
+      </div>
+    
+</body>
+</html>
+  

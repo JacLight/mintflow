@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-04-04T01:35:24.488Z",
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0
+  },
+  "plugins": {
+    "array": {
+      "id": "array",
+      "status": "failed",
+      "actions": [
+        "aggregate",
+        "batch",
+        "filter",
+        "map",
+        "reduce",
+        "sort"
+      ],
+      "modes": {
+        "direct": {
+          "status": "failed",
+          "output": "Testing plugin chains...\n",
+          "error": "Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json --mode=direct --plugin=array\nError testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json\n    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)\n    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)\n    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)\n    at Module._compile (node:internal/modules/cjs/loader:1562:14)\n    at Object..js (node:internal/modules/cjs/loader:1699:10)\n    at Module.load (node:internal/modules/cjs/loader:1313:32)\n    at Function._load (node:internal/modules/cjs/loader:1123:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\n"
+        },
+        "node-runner": {
+          "status": "failed",
+          "output": "Testing plugin chains...\n",
+          "error": "Command failed: node scripts/test-plugin-chains.js --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json --mode=node-runner --plugin=array\nError testing plugin chains: Error: Chain configuration not found: --chain=/Users/imzee/projects/mintflow/test-data/chains/array-test-chain.json\n    at discoverChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:119:13)\n    at testPluginChains (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:23:18)\n    at Object.<anonymous> (/Users/imzee/projects/mintflow/scripts/test-plugin-chains.js:373:3)\n    at Module._compile (node:internal/modules/cjs/loader:1562:14)\n    at Object..js (node:internal/modules/cjs/loader:1699:10)\n    at Module.load (node:internal/modules/cjs/loader:1313:32)\n    at Function._load (node:internal/modules/cjs/loader:1123:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\n"
+        }
+      }
+    }
+  }
+}

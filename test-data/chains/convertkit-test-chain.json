@@ -1,0 +1,86 @@
+{
+  "id": "convertkit-test-chain",
+  "name": "Test Chain for convertkit",
+  "nodes": [
+    {
+      "id": "convertkit-list_fields-0",
+      "type": "convertkit",
+      "action": "list_fields",
+      "data": {
+        "apiSecret": "your-api-secret"
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "convertkit-list_forms-1",
+      "type": "convertkit",
+      "action": "list_forms",
+      "data": {
+        "apiSecret": "your-api-secret"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "convertkit-list_sequences-2",
+      "type": "convertkit",
+      "action": "list_sequences",
+      "data": {
+        "apiSecret": "your-api-secret"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "convertkit-get_subscriber_by_id-3",
+      "type": "convertkit",
+      "action": "get_subscriber_by_id",
+      "data": {
+        "apiSecret": "your-api-secret",
+        "subscriberId": "123456"
+      },
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "convertkit-list_tags-4",
+      "type": "convertkit",
+      "action": "list_tags",
+      "data": {
+        "apiSecret": "your-api-secret"
+      },
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    },
+    {
+      "id": "convertkit-create_webhook-5",
+      "type": "convertkit",
+      "action": "create_webhook",
+      "data": {
+        "apiSecret": "your-api-secret",
+        "targetUrl": "https://example.com/webhook",
+        "event": "subscriber.tag_add",
+        "tagId": "123"
+      },
+      "position": {
+        "x": 500,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "convertkit": {}
+  }
+}

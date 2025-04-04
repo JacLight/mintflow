@@ -1,0 +1,26 @@
+{
+  "id": "qrcode-test-chain",
+  "name": "Test Chain for qrcode",
+  "nodes": [
+    {
+      "id": "qrcode-text_to_qrcode-0",
+      "type": "qrcode",
+      "action": "text_to_qrcode",
+      "data": {
+        "text": "https://mintflow.com",
+        "outputFormat": "base64",
+        "errorCorrectionLevel": "M",
+        "margin": 4,
+        "scale": 4
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "qrcode": {}
+  }
+}

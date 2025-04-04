@@ -1,0 +1,52 @@
+{
+  "id": "sendgrid-test-chain",
+  "name": "Test Chain for sendgrid",
+  "nodes": [
+    {
+      "id": "sendgrid-custom_api_call-0",
+      "type": "sendgrid",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "sendgrid-send_dynamic_template-1",
+      "type": "sendgrid",
+      "action": "send_dynamic_template",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "sendgrid-send_email-2",
+      "type": "sendgrid",
+      "action": "send_email",
+      "data": {
+        "apiKey": "SG.your-api-key",
+        "to": [
+          "recipient@example.com"
+        ],
+        "from": "sender@example.com",
+        "fromName": "Sender Name",
+        "subject": "Hello from SendGrid",
+        "contentType": "html",
+        "content": "<p>This is a test email from SendGrid</p>"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "sendgrid": {
+      "apiKey": "YOUR_SENDGRID_API_KEY"
+    }
+  }
+}

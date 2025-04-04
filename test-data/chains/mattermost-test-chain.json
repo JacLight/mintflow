@@ -1,0 +1,35 @@
+{
+  "id": "mattermost-test-chain",
+  "name": "Test Chain for mattermost",
+  "nodes": [
+    {
+      "id": "mattermost-custom_api_call-0",
+      "type": "mattermost",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "mattermost-send_message-1",
+      "type": "mattermost",
+      "action": "send_message",
+      "data": {
+        "workspace_url": "https://example.mattermost.com",
+        "token": "your-bot-token",
+        "channel_id": "channel-id",
+        "text": "Hello from MintFlow!"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "mattermost": {}
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "input": {
+    "array": [
+      {"id": 1, "category": "A", "value": 10},
+      {"id": 2, "category": "B", "value": 20},
+      {"id": 3, "category": "A", "value": 30},
+      {"id": 4, "category": "B", "value": 40},
+      {"id": 5, "category": "C", "value": 50}
+    ],
+    "groupBy": ["category"],
+    "aggregations": [
+      {
+        "field": "value",
+        "operation": "sum",
+        "alias": "total"
+      }
+    ]
+  },
+  "expected": [
+    {"category": "A", "total": 40},
+    {"category": "B", "total": 60},
+    {"category": "C", "total": 50}
+  ]
+}

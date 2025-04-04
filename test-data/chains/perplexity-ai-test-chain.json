@@ -1,0 +1,20 @@
+{
+  "id": "perplexity-ai-test-chain",
+  "name": "Test Chain for perplexity-ai",
+  "nodes": [
+    {
+      "id": "perplexity-ai-ask_ai-0",
+      "type": "perplexity-ai",
+      "action": "ask_ai",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "perplexity-ai": {}
+  }
+}

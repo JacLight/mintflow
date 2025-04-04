@@ -1,0 +1,70 @@
+{
+  "id": "snowflake-test-chain",
+  "name": "Test Chain for snowflake",
+  "nodes": [
+    {
+      "id": "snowflake-custom_api_call-0",
+      "type": "snowflake",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "snowflake-describe_table-1",
+      "type": "snowflake",
+      "action": "describe_table",
+      "data": {},
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "snowflake-execute_query-2",
+      "type": "snowflake",
+      "action": "execute_query",
+      "data": {},
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "snowflake-list_databases-3",
+      "type": "snowflake",
+      "action": "list_databases",
+      "data": {},
+      "position": {
+        "x": 300,
+        "y": 100
+      }
+    },
+    {
+      "id": "snowflake-list_schemas-4",
+      "type": "snowflake",
+      "action": "list_schemas",
+      "data": {},
+      "position": {
+        "x": 400,
+        "y": 100
+      }
+    },
+    {
+      "id": "snowflake-list_tables-5",
+      "type": "snowflake",
+      "action": "list_tables",
+      "data": {},
+      "position": {
+        "x": 500,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "snowflake": {}
+  }
+}

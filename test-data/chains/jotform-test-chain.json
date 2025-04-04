@@ -1,0 +1,20 @@
+{
+  "id": "jotform-test-chain",
+  "name": "Test Chain for jotform",
+  "nodes": [
+    {
+      "id": "jotform-custom_api_call-0",
+      "type": "jotform",
+      "action": "custom_api_call",
+      "data": {},
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "jotform": {}
+  }
+}

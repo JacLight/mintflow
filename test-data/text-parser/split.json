@@ -1,0 +1,8 @@
+{
+  "input": {
+    "text": "apple,banana,cherry",
+    "separator": ",",
+    "trim": true
+  },
+  "expected": ["apple", "banana", "cherry"]
+}

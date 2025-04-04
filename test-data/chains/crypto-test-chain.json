@@ -1,0 +1,51 @@
+{
+  "id": "crypto-test-chain",
+  "name": "Test Chain for crypto",
+  "nodes": [
+    {
+      "id": "crypto-generate_password-0",
+      "type": "crypto",
+      "action": "generate_password",
+      "data": {
+        "length": 16,
+        "characterSet": "alphanumeric"
+      },
+      "position": {
+        "x": 0,
+        "y": 100
+      }
+    },
+    {
+      "id": "crypto-hash_text-1",
+      "type": "crypto",
+      "action": "hash_text",
+      "data": {
+        "text": "Hello, world!",
+        "method": "sha256"
+      },
+      "position": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    {
+      "id": "crypto-hmac_signature-2",
+      "type": "crypto",
+      "action": "hmac_signature",
+      "data": {
+        "text": "Hello, world!",
+        "method": "sha256",
+        "secretKey": "my-secret-key",
+        "secretKeyEncoding": "utf-8"
+      },
+      "position": {
+        "x": 200,
+        "y": 100
+      }
+    }
+  ],
+  "edges": [],
+  "credentials": {
+    "crypto": {}
+  }
+}
