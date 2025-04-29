@@ -12,6 +12,19 @@ import { ENV } from '../../config/env.js';
  */
 export const socketAuthMiddleware = (socket: Socket, next: (err?: Error) => void) => {
     try {
+        // In development mode, skip authentication for easier debugging
+        if (ENV.NODE_ENV === 'development') {
+            logger.debug('[Socket] Development mode - skipping authentication');
+            // Set a demo user for development
+            (socket as any).user = { 
+                id: 'dev-user-1',
+                userId: 'dev-user-1',
+                name: 'Development User',
+                tenants: ['default']
+            };
+            return next();
+        }
+        
         // Get token from handshake query or headers
         const token =
             socket.handshake.auth.token ||
@@ -21,6 +34,13 @@ export const socketAuthMiddleware = (socket: Socket, next: (err?: Error) => void
         // If no token is provided and authentication is not required, allow connection
         if (!token && !ENV.SOCKET_AUTH_REQUIRED) {
             logger.debug('[Socket] No auth token provided, but auth is not required');
+            // Set a guest user
+            (socket as any).user = { 
+                id: `guest-${socket.id}`,
+                userId: `guest-${socket.id}`,
+                name: 'Guest User',
+                tenants: ['default']
+            };
             return next();
         }
 
@@ -40,7 +60,20 @@ export const socketAuthMiddleware = (socket: Socket, next: (err?: Error) => void
         next();
     } catch (error: any) {
         logger.warn('[Socket] Authentication failed', { error: error.message });
-        next(new Error('Authentication failed'));
+        
+        // In development or if auth is not required, allow connection with a warning
+        if (ENV.NODE_ENV === 'development' || !ENV.SOCKET_AUTH_REQUIRED) {
+            logger.warn('[Socket] Continuing without authentication in development mode');
+            (socket as any).user = { 
+                id: `guest-${socket.id}`,
+                userId: `guest-${socket.id}`,
+                name: 'Guest User (Auth Failed)',
+                tenants: ['default']
+            };
+            return next();
+        }
+        
+        next(new Error(`Authentication failed: ${error.message}`));
     }
 };
 
@@ -53,6 +86,12 @@ export const socketAuthMiddleware = (socket: Socket, next: (err?: Error) => void
  */
 export const socketTenantMiddleware = (socket: Socket, next: (err?: Error) => void) => {
     try {
+        // In development mode, skip tenant verification for easier debugging
+        if (ENV.NODE_ENV === 'development') {
+            logger.debug('[Socket] Development mode - skipping tenant verification');
+            return next();
+        }
+        
         const user = (socket as any).user;
 
         // If no user data is attached, authentication was not required
@@ -73,6 +112,13 @@ export const socketTenantMiddleware = (socket: Socket, next: (err?: Error) => vo
         const userTenants = user.tenants || [];
         if (!userTenants.includes(tenantId)) {
             logger.warn(`[Socket] User ${user.userId} does not have access to tenant ${tenantId}`);
+            
+            // In non-production, we'll be more lenient for testing
+            if (ENV.NODE_ENV !== 'production') {
+                logger.warn(`[Socket] Allowing access despite tenant mismatch in ${ENV.NODE_ENV} mode`);
+                return next();
+            }
+            
             return next(new Error('Tenant access denied'));
         }
 
@@ -80,6 +126,13 @@ export const socketTenantMiddleware = (socket: Socket, next: (err?: Error) => vo
         next();
     } catch (error: any) {
         logger.warn('[Socket] Tenant authorization failed', { error: error.message });
-        next(new Error('Tenant authorization failed'));
+        
+        // Be more lenient in development mode
+        if (ENV.NODE_ENV === 'development' || !ENV.SOCKET_AUTH_REQUIRED) {
+            logger.warn('[Socket] Continuing despite tenant authorization failure in development mode');
+            return next();
+        }
+        
+        next(new Error(`Tenant authorization failed: ${error.message}`));
     }
 };

@@ -23,10 +23,13 @@ export class SocketManager {
         this.io = new SocketIOServer(server, {
             path: options?.path || ENV.SOCKET_PATH,
             cors: options?.cors || {
-                origin: ENV.SOCKET_CORS_ORIGIN,
-                methods: ENV.SOCKET_CORS_METHODS.split(','),
-                credentials: ENV.SOCKET_CORS_CREDENTIALS
-            }
+                origin: ['http://localhost:3000', 'http://192.168.1.161:3000'],
+                methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+                allowedHeaders: ['Content-Type', 'Authorization'],
+                credentials: true
+            },
+            allowEIO3: true,
+            transports: ['websocket', 'polling']
         });
 
         // Set up Redis adapter for multi-node support if enabled

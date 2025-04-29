@@ -60,8 +60,14 @@ const AIChat = () => {
 
         socket.on('connect_error', (err) => {
             console.error('Connection error:', err);
+            console.error('Error details:', {
+                message: err.message,
+                type: err.type,
+                description: err.description,
+                stack: err.stack
+            });
             setIsConnected(false);
-            setError('Failed to connect to the assistant. Please try again later.');
+            setError(`Failed to connect: ${err.message}. Check console for details.`);
         });
 
         socket.on('disconnect', () => {
@@ -210,10 +216,25 @@ const AIChat = () => {
         try {
             // Initialize socket connection
             const socketUrl = process.env.NEXT_PUBLIC_SOCKET_IP || 'http://localhost:7001';
+            console.log('Attempting to connect to socket URL:', socketUrl);
 
             // Connect to the AI namespace with the correct Socket.IO path
             const socket = io(`${socketUrl}/ai`, {
-                path: '/socket.io' // This should match SOCKET_PATH in server's .env
+                path: '/socket.io', // This should match SOCKET_PATH in server's .env
+                withCredentials: true,
+                transports: ['websocket', 'polling'],
+                reconnectionAttempts: 5,
+                reconnectionDelay: 1000,
+                timeout: 20000
+            });
+            
+            // Add extra debug events
+            socket.on('reconnect_attempt', (attemptNumber) => {
+                console.log('Socket reconnect attempt:', attemptNumber);
+            });
+            
+            socket.on('connect_timeout', () => {
+                console.log('Socket connection timeout');
             });
 
             socketRef.current = socket;

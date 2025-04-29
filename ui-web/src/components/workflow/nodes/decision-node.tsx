@@ -78,30 +78,5 @@ export const DynamicNode = memo((props: NodeProps) => {
 });
 
 
-const cleanSchema = (schema: any) => {
-    if (isNotEmpty(schema?.properties)) {
-        Object.keys(schema?.properties).forEach((key) => {
-            if (schema?.properties[key]?.type === 'object') {
-                if (!Object.keys(schema?.properties[key]?.properties).length) {
-                    delete schema?.properties[key];
-                } else {
-                    cleanSchema(schema?.properties[key]);
-                }
-            }
-        });
-    }
-    if (isNotEmpty(schema?.items?.properties)) {
-        Object.keys(schema?.items?.properties).forEach((key) => {
-            if (schema?.items?.properties[key]?.type === 'object') {
-                if (!Object.keys(schema?.items?.properties[key]?.properties).length) {
-                    delete schema?.items?.properties[key];
-                } else {
-                    cleanSchema(schema?.items?.properties[key]);
-                }
-            }
-        });
-    }
-}
-
 DynamicNode.displayName = 'DynamicNode';
 
