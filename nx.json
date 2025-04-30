@@ -292,6 +292,102 @@
     },
     "@mintflow/wordpress": {
       "root": "packages/plugins/wordpress"
+    },
+    "@mintflow/basecamp": {
+      "root": "packages/plugins/basecamp"
+    },
+    "@mintflow/calcom": {
+      "root": "packages/plugins/calcom"
+    },
+    "@mintflow/freshbooks": {
+      "root": "packages/plugins/freshbooks"
+    },
+    "@mintflow/freshdesk": {
+      "root": "packages/plugins/freshdesk"
+    },
+    "@mintflow/gmail": {
+      "root": "packages/plugins/gmail"
+    },
+    "@mintflow/groq": {
+      "root": "packages/plugins/groq"
+    },
+    "@mintflow/invoiceninja": {
+      "root": "packages/plugins/invoiceninja"
+    },
+    "@mintflow/jotform": {
+      "root": "packages/plugins/jotform"
+    },
+    "@mintflow/krisp-call": {
+      "root": "packages/plugins/krisp-call"
+    },
+    "@mintflow/langflow": {
+      "root": "packages/plugins/langflow"
+    },
+    "@mintflow/llm": {
+      "root": "packages/plugins/llm"
+    },
+    "@mintflow/manual-trigger": {
+      "root": "packages/plugins/manual-trigger"
+    },
+    "@mintflow/mastodon": {
+      "root": "packages/plugins/mastodon"
+    },
+    "@mintflow/mattermost": {
+      "root": "packages/plugins/mattermost"
+    },
+    "@mintflow/mcp-client": {
+      "root": "packages/plugins/mcp-client"
+    },
+    "@mintflow/mcp-server": {
+      "root": "packages/plugins/mcp-server"
+    },
+    "@mintflow/medium": {
+      "root": "packages/plugins/medium"
+    },
+    "@mintflow/microsoft-office": {
+      "root": "packages/plugins/microsoft-office"
+    },
+    "@mintflow/milvus": {
+      "root": "packages/plugins/milvus"
+    },
+    "@mintflow/perplexity-ai": {
+      "root": "packages/plugins/perplexity-ai"
+    },
+    "@mintflow/photoroom": {
+      "root": "packages/plugins/photoroom"
+    },
+    "@mintflow/quickbooks": {
+      "root": "packages/plugins/quickbooks"
+    },
+    "@mintflow/quickbooks-migrate": {
+      "root": "packages/plugins/quickbooks-migrate"
+    },
+    "@mintflow/razorpay": {
+      "root": "packages/plugins/razorpay"
+    },
+    "@mintflow/reddit": {
+      "root": "packages/plugins/reddit"
+    },
+    "@mintflow/snowflake": {
+      "root": "packages/plugins/snowflake"
+    },
+    "@mintflow/square": {
+      "root": "packages/plugins/square"
+    },
+    "@mintflow/stability-ai": {
+      "root": "packages/plugins/stability-ai"
+    },
+    "@mintflow/stable-diffusion": {
+      "root": "packages/plugins/stable-diffusion"
+    },
+    "@mintflow/surveymonkey": {
+      "root": "packages/plugins/surveymonkey"
+    },
+    "@mintflow/tally": {
+      "root": "packages/plugins/tally"
+    },
+    "@mintflow/xero": {
+      "root": "packages/plugins/xero"
     }
   },
   "namedInputs": {
