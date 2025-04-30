@@ -258,7 +258,7 @@ export function ComponentPanel({
     const nextGroupLabel = groupState === GroupState.Collapse ? "Expand" : groupState === GroupState.Expand ? "Ungroup" : "Collapse";
 
     return (
-        <div className="flex flex-col border-r absolute top-[60px] left-[16px] bg-white shadow-md rounded-md z-50 transition-all duration-300 ease-in-out w-64">
+        <div className="flex flex-col border-r absolute top-[60px] left-[16px] bg-white shadow-md rounded-md z-30 transition-all duration-300 ease-in-out w-64">
             <div className="p-3">
                 <div className='flex items-center justify-between'>
                     <h2 className="font-semibold">Components</h2>

@@ -28,12 +28,12 @@ export const getNodes = async (req: Request, res: Response): Promise<any> => {
                         name: action.name,
                         description: action.description,
                         inputSchema: action.inputSchema,
-                        outputSchema: action.outputSchema,
-                        entry: action.entry,
-                        exampleInput: action.exampleInput,
-                        exampleOutput: action.exampleOutput,
-                        method: action.method,
-                        documentation: action.documentation,
+                        // outputSchema: action.outputSchema,
+                        // entry: action.entry,
+                        // exampleInput: action.exampleInput,
+                        // exampleOutput: action.exampleOutput,
+                        // method: action.method,
+                        // documentation: action.documentation,
                     }))
                 };
             }

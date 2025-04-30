@@ -3,7 +3,6 @@
 import nodemailer from 'nodemailer';
 import { simpleParser } from 'mailparser';
 import { ImapFlow } from 'imapflow';
-import { group } from 'console';
 
 interface ServerConfig {
   id: string;
@@ -78,6 +77,34 @@ const mailPlugin = {
     },
   },
   actions: [
+    {
+      'name': 'connect',
+      'description': 'Connect to the mail server',
+      execute: async (input: ServerConfig) => {
+        const { host, port, user, pass, ssl, tls } = input;
+
+        const client = new ImapFlow({
+          host: host,
+          port: parseInt(port),
+          secure: ssl === 'true',
+          auth: {
+            user: user,
+            pass: pass,
+          },
+          tls: tls === 'true' ? { rejectUnauthorized: false } : undefined,
+        });
+
+        try {
+          await client.connect();
+          console.log('Connected to mail server');
+          await client.logout();
+          return { success: true };
+        } catch (error) {
+          console.error('Error connecting to mail server: %s', error);
+          return { success: false, error: (error as Error).message };
+        }
+      }
+    }, 
     {
       name: 'sendMail',
       execute: async (input: MailInput) => {

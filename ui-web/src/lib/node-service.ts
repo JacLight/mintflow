@@ -262,7 +262,8 @@ export const COMPONENT_PANEL_FIELDS = [
     'groups',
     'description',
     'inputSchema',
-    'icon'
+    'icon',
+    'actions',
 ];
 
 /**

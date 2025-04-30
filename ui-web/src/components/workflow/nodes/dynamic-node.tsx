@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState, useCallback } from 'react';
+import { memo, useState, useCallback, use, useEffect } from 'react';
 import { NodeProps, Position, useReactFlow } from '@xyflow/react';
 import { BaseNode, BaseNodeData } from './base-node';
 import { AppmintForm } from 'appmint-form';
@@ -9,6 +9,7 @@ import { useSiteStore } from '@/context/site-store';
 import ViewManager from '@/components/common/view-manager';
 import { IconRenderer } from '@/components/ui/icon-renderer';
 import { set } from 'date-fns';
+import ModernDropdown from '@/components/common/modern-dropdown';
 
 // Extended data type for dynamic nodes
 export type DynamicNodeData = BaseNodeData & {
@@ -25,6 +26,8 @@ export const DynamicNode = memo((props: NodeProps) => {
     const [localFormData, setLocalFormData] = useState<any>(data?.formData || {});
     const reactFlowInstance = useReactFlow();
     const [bigForm, setBigForm] = useState(false);
+    let nodeInfo = useSiteStore().ui.getState().getNodeInfo(data?.nodeId as string) || data?.schema;
+    const [action, setAction] = useState(data?.action ||nodeInfo?.actions[0]?.name);
 
     console.log('DynamicNode', data);
 
@@ -56,7 +59,25 @@ export const DynamicNode = memo((props: NodeProps) => {
         }
     }, [id, reactFlowInstance]);
 
-    let nodeInfo = useSiteStore().ui.getState().getNodeInfo(data?.nodeId as string) || data?.schema;
+    const updateNodeAction = useCallback((action) => {
+        setAction(action);
+
+        // Update the node data in the React Flow instance
+        const node = reactFlowInstance.getNode(id);
+        if (node) {
+            const updatedNode = {
+                ...node,
+                data: {
+                    ...node.data,
+                    action: action
+                }
+            };
+            reactFlowInstance.setNodes((nodes) =>
+                nodes.map((n) => (n.id === id ? updatedNode : n))
+            );
+        }
+    }, [id, reactFlowInstance]);
+
     const schema = nodeInfo?.inputSchema || data?.schema
 
     const getForm = () => {
@@ -84,6 +105,15 @@ export const DynamicNode = memo((props: NodeProps) => {
         return bigForm ? <ViewManager title={<div className='flex gap-2 items-center'><IconRenderer icon={nodeInfo?.icon} /><span>{id}</span></div>} className='p-3' defaultPosition={{ x: 'center', y: 'center' }} usePortal={true} onClose={() => setBigForm(false)} id={`form-${data.nodeId}`}>{form}</ViewManager> : form;
     }
 
+    const getAction = () => {
+
+        return (
+            <div className="flex items-center justify-between p-2">
+                <ModernDropdown options={nodeInfo.actions} onChange={(selected) => updateNodeAction(selected.name)} value={action} className='w-full'/>
+            </div>
+        );
+    }
+
     return (
         <BaseNode
             {...rest}
@@ -99,6 +129,7 @@ export const DynamicNode = memo((props: NodeProps) => {
             toggleExpand={toggleExpand}
         >
             <div className="flex flex-col">
+                {getAction()}
                 {getForm()}
             </div>
         </BaseNode>
