@@ -16,7 +16,7 @@
   "dependencies": {
     "@ai-sdk/fireworks": "^0.1.10",
     "@ai-sdk/openai": "^1.1.12",
-    "@appmint/form": "^0.3.4",
+    "@appmint/form": "^0.3.5",
     "@codemirror/lang-python": "^6.1.7",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@monaco-editor/react": "^4.7.0",

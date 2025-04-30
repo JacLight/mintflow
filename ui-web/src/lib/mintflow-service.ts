@@ -2,7 +2,7 @@ import { useSiteStore } from '@/context/site-store';
 import { getAppEngineClient } from './appmint-client';
 import { appmintEndpoints } from './appmint-endpoints';
 import { BaseModel, BaseModelDTO } from './models/base.model';
-import { createNewFlowBaseData } from './models/flow-model';
+import { createNewFlowBaseData, MintflowModel } from './models/flow-model';
 import { getResponseErrorMessage } from '@/lib-client/helpers';
 
 /**
@@ -19,27 +19,35 @@ export class MintflowService {
      * @param flowData Flow data to save
      * @returns Promise with the saved flow
      */
-    async saveFlow(name: string, title: string, description: string, flowData: any): Promise<BaseModel<any>> {
-        // Create a new flow base data
+    async saveNewFlow(name: string, title: string, description: string, flowData: any): Promise<BaseModel<any>> {
         const newFlow = createNewFlowBaseData(name, title, description);
-
-        // Add the flow data
         newFlow.data.flow = flowData;
-
-        try {
-            // Save the flow
-            const response = await this.appEngineClient.processRequest(
-                appmintEndpoints.create.method,
-                appmintEndpoints.create.path,
-                { data: newFlow }
-            );
-
-            return response;
-        } catch (error) {
-            console.error('Error saving flow:', error);
-            throw error;
-        }
+       return await this.saveBaseFlow(newFlow);
     }
+
+        /**
+     * Save a new mintflow
+     * @param baseFlowData Name of the flow
+     */
+        async saveBaseFlow( baseFlowData: BaseModel<MintflowModel>): Promise<BaseModel<any>> {
+            let path;
+            if (baseFlowData.sk) {
+                path = appmintEndpoints.update.path + '/' + baseFlowData.sk;
+            }else{
+                path = appmintEndpoints.create.path;
+            }
+            try {
+                const response = await this.appEngineClient.processRequest(
+                    appmintEndpoints.create.method,
+                    path,
+                    { data: baseFlowData }
+                );
+                return response;
+            } catch (error) {
+                console.error('Error saving flow:', error);
+                throw error;
+            }
+        }
 
     /**
      * Update an existing mintflow

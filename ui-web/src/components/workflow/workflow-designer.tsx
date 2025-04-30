@@ -32,6 +32,8 @@ import { useSiteStore } from '@/context/site-store';
 import { CanvasAddNode } from './nodes/node-add';
 import DataFlowView from './data-flow-view';
 import { DataForm } from '../common/data-form';
+import { MintflowSchema } from '@/lib/models/flow-model';
+import { BaseModel } from '@/lib/models/base.model';
 
 // Wrap each node type with an error boundary
 // This ensures that if a single node crashes, it doesn't bring down the entire workflow
@@ -157,9 +159,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
         // For demo purposes, we'll save to localStorage
         // In a real app, you would send this to your server API
         localStorage.setItem('savedWorkflow', JSON.stringify(flowData));
-
-        console.log('Workflow saved:', flowData);
-        alert('Workflow saved successfully!');
+        setShowForm(!showForm);
     }, [reactFlowInstance]);
 
     // Show load dialog
@@ -188,6 +188,15 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             } else {
                 alert('Selected flow does not contain valid workflow data');
             }
+        } catch (error) {
+            console.error('Error loading workflow:', error);
+            alert('Error loading workflow data');
+        }
+    }, [setNodes, setEdges]);
+
+    const handleFormEvent = useCallback((event: string, data: any) => {
+        try {
+           
         } catch (error) {
             console.error('Error loading workflow:', error);
             alert('Error loading workflow data');
@@ -389,9 +398,11 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             />
             <DataForm
                 show={showForm}
+                schema={MintflowSchema()}
+                data={{} as BaseModel<any>}
                 datatype={'mintflow'}
-                title='Mintflows'
-                onRowClick={handleFlowSelect}
+                title={`Save Flow ${''}`}
+                onFormEvent={handleFormEvent}
                 onClose={() => handleShowLoadDialog(false)}
             />
             <DataImportApp />

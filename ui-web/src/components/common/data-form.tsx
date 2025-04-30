@@ -2,78 +2,84 @@
 
 import React, { useState } from 'react';
 import ViewManager from './view-manager';
-import { AppmintForm } from 'appmint-form';
+import { AppmintForm, validateForm } from 'appmint-form';
 import { BaseModel } from '../../lib/models/base.model';
 import { getMintflowService } from '../../lib/mintflow-service';
+import { deepCopy } from '@/lib-client/helpers';
+import { useSiteStore } from '@/context/site-store';
 
 interface DataFormProps {
   schema: any;
   data: BaseModel<any>;
   onSave?: (savedData: BaseModel<any>) => void;
   onError?: (error: any) => void;
-  show?:boolean
+  show?: boolean;
+  datatype?: string;
+  title?: string;
+  onFormEvent?: (event: string, data: any) => void;
+  onClose?: () => void;
 }
 
 export const DataForm: React.FC<DataFormProps> = ({
   schema,
+  datatype,
   data,
   onSave,
   onError,
-  show = false
+  show = false,
+  onFormEvent = () => {},
+  onClose = () => {}
 }) => {
-  const [formData, setFormData] = useState<any>(data?.data || {});
-  const [isSaving, setIsSaving] = useState<boolean>(false);
-  const mintflowService = getMintflowService();
+  const [baseData, setBaseData] = useState<any>(data || {});
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const onChange = (
-    path: string,
-    value: any,
-    updatedData: any,
-    file: any,
-    error: any
-  ) => {
-    console.log('onChange', path, value, updatedData, file, error);
-    setFormData(updatedData);
+  const onChange = (path, value, data) => {
+    setError(null);
+    const newBaseData: BaseModel<any> = deepCopy(baseData);
+    newBaseData.data = {
+      ...newBaseData.data,
+      [path]: value
+    };
+    setBaseData(newBaseData);
+    if (onFormEvent) {
+      onFormEvent('change', baseData);
+    }
   };
 
   const handleSave = async () => {
-    if (isSaving) return;
+    if (isLoading) return;
 
-    setIsSaving(true);
+    setError({});
+    const newErrors = validateForm(baseData?.data, schema);
+    if (!newErrors.valid) {
+      useSiteStore().ui.getState().showNotice(newErrors?.message, 'error');
+      setError(newErrors);
+      console.error(newErrors);
+      return;
+    }
+    let newBaseData: BaseModel<any> = deepCopy(baseData);
+    newBaseData = { ...data, data: { ...data.data, ...newBaseData.data } };
+    setLoading(true);
     try {
-      let result;
-
-      if (data.isNew) {
-        // Create new flow
-        result = await mintflowService.saveFlow(
-          formData.name,
-          formData.title,
-          formData.description,
-          formData.flow
-        );
-      } else {
-        // Update existing flow
-        result = await mintflowService.updateFlow(data.sk, formData.flow);
-      }
-
-      setIsSaving(false);
+      const mintflowService = getMintflowService();
+      const result = await mintflowService.saveBaseFlow(baseData);
       if (onSave) {
         onSave(result);
       }
     } catch (error) {
-      setIsSaving(false);
       console.error('Error saving flow:', error);
       if (onError) {
         onError(error);
       }
+    } finally {
+      setLoading(false);
     }
   };
-
 
   if (!show) {
     return null;
   }
-
 
   const title =
     data?.data?.title ||
@@ -86,7 +92,7 @@ export const DataForm: React.FC<DataFormProps> = ({
     'New ' + data?.datatype;
   return (
     <ViewManager id={data.sk} title={title}>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full p-4">
         <AppmintForm
           datatype={data.datatype}
           schema={schema}
@@ -99,9 +105,9 @@ export const DataForm: React.FC<DataFormProps> = ({
           <button
             className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50"
             onClick={handleSave}
-            disabled={isSaving}
+            disabled={isLoading}
           >
-            {isSaving ? 'Saving...' : data.isNew ? 'Create' : 'Update'}
+            {isLoading ? 'Saving...' : data.isNew ? 'Create' : 'Update'}
           </button>
         </div>
       </div>

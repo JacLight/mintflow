@@ -128,9 +128,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appmint/form@npm:^0.3.4":
-  version: 0.3.4
-  resolution: "@appmint/form@npm:0.3.4"
+"@appmint/form@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "@appmint/form@npm:0.3.5"
   dependencies:
     "@radix-ui/react-select": "npm:^2.1.6"
     "@tailwindcss/vite": "npm:^4.0.9"
@@ -153,7 +153,7 @@ __metadata:
     zustand: "npm:5.0.2"
   peerDependencies:
     react: ">=18"
-  checksum: 10c0/c32d3ea5b2942b0a3403cdcd1f8b907f77816cb91a27e57ef833b37edde4a9ff7d053065128df437109d917f9affec463689587faea887e4c372a37181b8d218
+  checksum: 10c0/a13e40e94b88e8ae477f05e4766e38cf90f859416df2c756c2ecb86eca04dc0719c22965758b19ddf6cf5f5274cf9ede00d8df47602a999ded1f84a5dbe26fe0
   languageName: node
   linkType: hard
 
@@ -549,7 +549,7 @@ __metadata:
   dependencies:
     "@ai-sdk/fireworks": "npm:^0.1.10"
     "@ai-sdk/openai": "npm:^1.1.12"
-    "@appmint/form": "npm:^0.3.4"
+    "@appmint/form": "npm:^0.3.5"
     "@codemirror/lang-python": "npm:^6.1.7"
     "@codemirror/theme-one-dark": "npm:^6.1.2"
     "@monaco-editor/react": "npm:^4.7.0"
@@ -1668,8 +1668,8 @@ __metadata:
   linkType: hard
 
 "appmint-form@file:../../appmint-form::locator=%40mintflow%2Fui-web%40workspace%3A.":
-  version: 0.3.4
-  resolution: "appmint-form@file:../../appmint-form#../../appmint-form::hash=ef3c9e&locator=%40mintflow%2Fui-web%40workspace%3A."
+  version: 0.3.5
+  resolution: "appmint-form@file:../../appmint-form#../../appmint-form::hash=1151f3&locator=%40mintflow%2Fui-web%40workspace%3A."
   dependencies:
     "@radix-ui/react-select": "npm:^2.1.6"
     "@tailwindcss/vite": "npm:^4.0.9"
@@ -1692,7 +1692,7 @@ __metadata:
     zustand: "npm:5.0.2"
   peerDependencies:
     react: ">=18"
-  checksum: 10c0/287d965b8c9d61a0a51a4338da48fc18e8b6447c45a2a4e9cd44e9b6baf765807abb4015d38348973076bab422938abd0998a6c3716a20ab3e5636929358da62
+  checksum: 10c0/dc191d970cc167122669f74acd25451246082fdfb28754a43a5cabdfed1ebdabf61fb18cdec59fcfad36f9d5e72590696f591bee47144d6ef0afd1f2141388d2
   languageName: node
   linkType: hard
 

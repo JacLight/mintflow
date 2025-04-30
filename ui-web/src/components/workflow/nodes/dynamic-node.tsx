@@ -106,10 +106,9 @@ export const DynamicNode = memo((props: NodeProps) => {
     }
 
     const getAction = () => {
-
         return (
             <div className="flex items-center justify-between p-2">
-                <ModernDropdown options={nodeInfo.actions} onChange={(selected) => updateNodeAction(selected.name)} value={action} className='w-full'/>
+                <ModernDropdown id={`node-${id}`} options={nodeInfo.actions} onChange={(selected) => updateNodeAction(selected.name)} value={action} className='w-full'/>
             </div>
         );
     }

@@ -47,7 +47,8 @@ export const MintflowSchema = () => {
                 hidden: true,
             },
             flow: {
-                type: 'object'
+                type: 'object',
+                hidden: true,
             },
             status: {
                 type: 'string',

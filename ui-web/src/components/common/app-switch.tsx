@@ -27,6 +27,6 @@ export default function BusinessAppSwitch() {
     }
 
     return (
-        <ModernDropdown options={appNames} value={currentApp} onChange={handleAppChange}/>
+        <ModernDropdown id='app-switch' options={appNames} value={currentApp} onChange={handleAppChange}/>
     )
 }
