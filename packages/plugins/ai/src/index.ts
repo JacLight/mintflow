@@ -107,7 +107,6 @@ const aiPlugin = {
   inputSchema: {
     type: 'object',
     properties: {
-      config: { type: 'object' },
       provider: {
         type: 'string',
         options: aiProviders.map((provider) => ({
@@ -124,8 +123,8 @@ const aiPlugin = {
       },
       prompt: { type: 'string' , 'x-control-variant': 'textarea'},
       temperature: { type: 'number', min: 0, max: 1 },
-      maxTokens: { type: 'number' },
-      stream: { type: 'boolean' },
+      maxTokens: { type: 'number', group: 'stream' },
+      stream: { type: 'boolean', group: 'stream' },
       vectorStorage: { type: 'string', nodeType: 'input' },
     },
   },

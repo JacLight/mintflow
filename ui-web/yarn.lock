@@ -128,9 +128,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appmint/form@npm:^0.3.3":
-  version: 0.3.3
-  resolution: "@appmint/form@npm:0.3.3"
+"@appmint/form@npm:^0.3.4":
+  version: 0.3.4
+  resolution: "@appmint/form@npm:0.3.4"
   dependencies:
     "@radix-ui/react-select": "npm:^2.1.6"
     "@tailwindcss/vite": "npm:^4.0.9"
@@ -141,6 +141,7 @@ __metadata:
     color: "npm:^5.0.0"
     colord: "npm:^2.9.3"
     deep-object-diff: "npm:^1.1.9"
+    generate-schema: "npm:^2.6.0"
     immer: "npm:^10.1.1"
     lucide-react: "npm:^0.476.0"
     object-path: "npm:^0.11.8"
@@ -152,7 +153,7 @@ __metadata:
     zustand: "npm:5.0.2"
   peerDependencies:
     react: ">=18"
-  checksum: 10c0/f9125f6e8c401dc1406fb86d3f10d8b7e63645ecde4c6f825c9e15a3b585dba9ffb104aaf6dabf2afef20da27eb44179345d5fa7ff10ea170ba7ee51a09409bf
+  checksum: 10c0/c32d3ea5b2942b0a3403cdcd1f8b907f77816cb91a27e57ef833b37edde4a9ff7d053065128df437109d917f9affec463689587faea887e4c372a37181b8d218
   languageName: node
   linkType: hard
 
@@ -548,7 +549,7 @@ __metadata:
   dependencies:
     "@ai-sdk/fireworks": "npm:^0.1.10"
     "@ai-sdk/openai": "npm:^1.1.12"
-    "@appmint/form": "npm:^0.3.3"
+    "@appmint/form": "npm:^0.3.4"
     "@codemirror/lang-python": "npm:^6.1.7"
     "@codemirror/theme-one-dark": "npm:^6.1.2"
     "@monaco-editor/react": "npm:^4.7.0"
@@ -1666,8 +1667,8 @@ __metadata:
   linkType: hard
 
 "appmint-form@file:../../appmint-form::locator=%40mintflow%2Fui-web%40workspace%3A.":
-  version: 0.3.3
-  resolution: "appmint-form@file:../../appmint-form#../../appmint-form::hash=1b6e35&locator=%40mintflow%2Fui-web%40workspace%3A."
+  version: 0.3.4
+  resolution: "appmint-form@file:../../appmint-form#../../appmint-form::hash=ef3c9e&locator=%40mintflow%2Fui-web%40workspace%3A."
   dependencies:
     "@radix-ui/react-select": "npm:^2.1.6"
     "@tailwindcss/vite": "npm:^4.0.9"
@@ -1678,6 +1679,7 @@ __metadata:
     color: "npm:^5.0.0"
     colord: "npm:^2.9.3"
     deep-object-diff: "npm:^1.1.9"
+    generate-schema: "npm:^2.6.0"
     immer: "npm:^10.1.1"
     lucide-react: "npm:^0.476.0"
     object-path: "npm:^0.11.8"
@@ -1689,7 +1691,7 @@ __metadata:
     zustand: "npm:5.0.2"
   peerDependencies:
     react: ">=18"
-  checksum: 10c0/5d38098f2c8ec5f9dcfff4119bdcaf8d9a13c76f40c4338d03d43bec971a80a417d3e8f9dca1451a0ba59e760723b331794d33c08581077e8e21928e719ced1f
+  checksum: 10c0/287d965b8c9d61a0a51a4338da48fc18e8b6447c45a2a4e9cd44e9b6baf765807abb4015d38348973076bab422938abd0998a6c3716a20ab3e5636929358da62
   languageName: node
   linkType: hard
 
@@ -2021,6 +2023,13 @@ __metadata:
   version: 2.0.3
   resolution: "comma-separated-tokens@npm:2.0.3"
   checksum: 10c0/91f90f1aae320f1755d6957ef0b864fe4f54737f3313bd95e0802686ee2ca38bff1dd381964d00ae5db42912dd1f4ae5c2709644e82706ffc6f6842a813cdd67
+  languageName: node
+  linkType: hard
+
+"commander@npm:^2.9.0":
+  version: 2.20.3
+  resolution: "commander@npm:2.20.3"
+  checksum: 10c0/74c781a5248c2402a0a3e966a0a2bba3c054aad144f5c023364be83265e796b20565aa9feff624132ff629aa64e16999fa40a743c10c12f7c61e96a794b99288
   languageName: node
   linkType: hard
 
@@ -2578,6 +2587,18 @@ __metadata:
   version: 1.1.2
   resolution: "function-bind@npm:1.1.2"
   checksum: 10c0/d8680ee1e5fcd4c197e4ac33b2b4dce03c71f4d91717292785703db200f5c21f977c568d28061226f9b5900cbcd2c84463646134fd5337e7925e0942bc3f46d5
+  languageName: node
+  linkType: hard
+
+"generate-schema@npm:^2.6.0":
+  version: 2.6.0
+  resolution: "generate-schema@npm:2.6.0"
+  dependencies:
+    commander: "npm:^2.9.0"
+    type-of-is: "npm:^3.4.0"
+  bin:
+    generate-schema: ./bin/generate-schema
+  checksum: 10c0/b0de6b5fbd47314aac4644f0c97ef91288f0ee0b6d4bd94a51a17454a034c5f48545617bf4edf03285448aebe72d2ad4d6b83ccb2fc17c02e3bf64675bc3acd2
   languageName: node
   linkType: hard
 
@@ -5050,6 +5071,13 @@ __metadata:
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
+  languageName: node
+  linkType: hard
+
+"type-of-is@npm:^3.4.0":
+  version: 3.5.1
+  resolution: "type-of-is@npm:3.5.1"
+  checksum: 10c0/6b558b9c3ae9ec310e9242b39b3a28430fd99637949f119669f156e3c08f32b3a58fca4f3e711133e268e35e2e0f297c174b9176daa76d5a7f45e6dc7fc120a2
   languageName: node
   linkType: hard
 

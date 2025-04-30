@@ -21,7 +21,7 @@ import {
     useOnSelectionChange
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Save, Upload, Download, FolderOpen } from 'lucide-react';
+import { Save, Upload, Download, FolderOpen, Activity } from 'lucide-react';
 
 import { ComponentPanel } from './component-panel';
 import { getNodeTypes, getEdgeTypes } from './node-registry';
@@ -29,6 +29,8 @@ import DataImportApp from '../data-import';
 import { useDataImportStore } from '../data-import/data-import-store';
 import { getRandomString } from '@/lib-client/helpers';
 import { useSiteStore } from '@/context/site-store';
+import { CanvasAddNode } from './nodes/node-add';
+import DataFlowView from './data-flow-view';
 
 // Wrap each node type with an error boundary
 // This ensures that if a single node crashes, it doesn't bring down the entire workflow
@@ -72,6 +74,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
     const [edges, setEdges] = useState<Edge[]>([]);
     const [selectedElements, setSelectedElements] = useState<{ nodes: Node[], edges: Edge[] }>({ nodes: [], edges: [] });
     const [showLoadDialog, setShowLoadDialog] = useState<boolean>(false);
+    const [showDataFlowView, setShowDataFlowView] = useState<boolean>(false);
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const reactFlowInstance = useReactFlow();
 
@@ -312,6 +315,9 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                 <Background />
                 <Controls />
                 <MiniMap />
+                
+                {/* Show add component in the middle when canvas is empty */}
+                {nodes.length === 0 && <CanvasAddNode />}
                 <Panel position="top-left" className="bg-background border rounded-md shadow-md flex">
                     <button
                         onClick={handleSaveWorkflow}
@@ -348,11 +354,29 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
                         <Download className="h-4 w-4" />
                         <span>Export</span>
                     </button>
+                    <button
+                        onClick={() => setShowDataFlowView(true)}
+                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+                        title="View data flow between nodes"
+                        disabled={nodes.length === 0}
+                    >
+                        <Activity className="h-4 w-4" />
+                        <span>Data Flow</span>
+                    </button>
                 </Panel>
 
 
                 </ReactFlow>
             </ErrorBoundary>
+            
+            {/* Data Flow View */}
+            {showDataFlowView && (
+                <DataFlowView
+                    isVisible={showDataFlowView}
+                    onClose={() => setShowDataFlowView(false)}
+                />
+            )}
+            
             {/* Load Flow Dialog */}
             <DataList
                 show={showLoadDialog}

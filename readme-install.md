@@ -93,6 +93,7 @@ pnpm run --filter=@mintflow/microsoft-office build
 pnpm run --filter=@mintflow/common build
 pnpm run --filter=@mintflow/speech build
 pnpm run --filter=@mintflow/ai build
+pnpm run --filter=@mintflow/mail build
 pnpm run --filter=@mintflow/array build
 pnpm run --filter=@mintflow/ui-web build
 pnpm run --filter=@mintflow/array test
