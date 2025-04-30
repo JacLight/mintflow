@@ -9,6 +9,7 @@ import {
     ComponentGroup as NodeComponentGroup,
     getNodesWithGroups
 } from '@/lib/node-service';
+import { localStorageUtils } from '@/lib-client/localstorage';
 
 // Component types that can be dragged onto the canvas
 type ComponentType = {
@@ -54,8 +55,15 @@ function DraggableComponent({ type, id, name, description, icon }: ComponentType
 }
 
 // Component group with collapsible list of components
-function ComponentGroupSection({ name, components, searchTerm }: ComponentGroup & { searchTerm: string }) {
+function ComponentGroupSection({ name, components, searchTerm, expandState }: ComponentGroup & { searchTerm: string,expandState?: number }) {
     const [isExpanded, setIsExpanded] = useState(true);
+
+    useEffect(() => {
+        console.log('expandState', expandState);
+        if (typeof expandState === 'number') {
+            setIsExpanded(expandState >= 1);
+        }
+    },[expandState])
 
     // Filter components based on search term
     const filteredComponents = searchTerm
@@ -96,6 +104,12 @@ function ComponentGroupSection({ name, components, searchTerm }: ComponentGroup 
 }
 
 // Component panel with draggable components
+enum GroupState {
+    Collapse = 0,
+    Expand = 1,
+    UnGroup = 2,
+}
+
 export function ComponentPanel({
     componentTypes: propComponentTypes,
     componentGroups: propComponentGroups
@@ -110,11 +124,21 @@ export function ComponentPanel({
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortAscending, setSortAscending] = useState(true);
-    const [showGroups, setShowGroups] = useState(true);
+    const [groupState, setGroupState] = useState<GroupState>(1);
 
     // Use React's useEffect to load components when the component mounts
     // This is the standard React pattern for data fetching
     // Empty dependency array means this effect runs once when the component mounts
+
+    useEffect(() => {
+        const savedGroupState = localStorageUtils.get('component-panel-group-state');
+        if (savedGroupState) {
+            setGroupState(savedGroupState);
+        } else {
+            setGroupState(0);
+        }
+    }, []);
+ 
     useEffect(() => {
         // If props were provided, we don't need to fetch
         if (propComponentTypes && propComponentGroups) {
@@ -224,11 +248,14 @@ export function ComponentPanel({
 
     // Toggle between grouped and flat view
     const toggleGroupView = () => {
-        setShowGroups(!showGroups);
+        const nextGroupState = groupState === GroupState.Collapse ? GroupState.Expand : groupState === GroupState.Expand ? GroupState.UnGroup : GroupState.Collapse;
+        setGroupState(nextGroupState);
+        localStorageUtils.set('component-panel-group-state', nextGroupState);
     };
 
     // Get the filtered and sorted groups
     const filteredGroups = getFilteredAndSortedGroups();
+    const nextGroupLabel = groupState === GroupState.Collapse ? "Expand" : groupState === GroupState.Expand ? "Ungroup" : "Collapse";
 
     return (
         <div className="flex flex-col border-r absolute top-[60px] left-[16px] bg-white shadow-md rounded-md z-50 transition-all duration-300 ease-in-out w-64">
@@ -288,16 +315,16 @@ export function ComponentPanel({
                                 onClick={toggleGroupView}
                                 className={classNames(
                                     "p-1 border rounded-md hover:bg-muted focus:outline-none focus:ring-1 focus:ring-blue-500",
-                                    showGroups ? "bg-muted" : ""
+                                    groupState === GroupState.UnGroup ? "bg-muted" : ""
                                 )}
-                                aria-label={showGroups ? "Show flat list" : "Show grouped list"}
-                                title={showGroups ? "Show flat list" : "Show grouped list"}
+                                aria-label={`Show ${nextGroupLabel}`}
+                                title={`Show ${nextGroupLabel}`}
                             >
                                 <IconRenderer icon="Layers" className="h-4 w-4" />
                             </button>
                         </div>
                         <div className="p-3">
-                            {showGroups ? (
+                            {groupState !== GroupState.UnGroup ? (
                                 // Grouped view
                                 filteredGroups.length === 0 ? (
                                     <div className="text-center py-4 text-sm text-gray-500">No components available</div>
@@ -308,6 +335,7 @@ export function ComponentPanel({
                                             name={group.name}
                                             components={group.components}
                                             searchTerm={searchTerm}
+                                            expandState={groupState}
                                         />
                                     ))
                                 )
