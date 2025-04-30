@@ -626,11 +626,8 @@ const DataFlowView: React.FC<DataFlowViewProps> = ({ isVisible, onClose }) => {
             <div className="text-xs text-gray-500">{node.id}</div>
           </div>
           <div className="flex items-center gap-2">
-            {/* Status indicator */}
-
             <NodeControl
               node={node}
-              index={index}
               isRunning={runningNodes[node.id] || false}
               toggleNodeDisabled={toggleNodeDisabled}
               runNode={runNode}
@@ -702,7 +699,7 @@ const DataFlowView: React.FC<DataFlowViewProps> = ({ isVisible, onClose }) => {
   // Component for node controls (disable/enable and run)
   const NodeControl: React.FC<{
     node: NodeData;
-    index: number;
+    index?: number;
     isRunning: boolean;
     toggleNodeDisabled: (nodeId: string) => void;
     runNode: (nodeId: string, inputData: any) => void;
@@ -712,7 +709,9 @@ const DataFlowView: React.FC<DataFlowViewProps> = ({ isVisible, onClose }) => {
         key={node.id}
         className="flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
       >
-        <span className="text-xs font-medium">{index + 1}.</span>
+        {typeof index === 'number' && (
+          <span className="text-xs font-medium">{index + 1}.</span>
+        )}
         <span className="text-xs truncate max-w-[100px]">
           {node.data?.nodeInfo?.name || node.label}
         </span>

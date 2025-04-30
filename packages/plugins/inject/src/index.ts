@@ -4,6 +4,7 @@ const injectAction = {
     description: "Injects a variable into the workflow that can be referenced later. The injected data is dynamically structured.",
     id: "inject",
     runner: "node",
+    groups:['input'],
     inputSchema: {
         type: "object",
         properties: {

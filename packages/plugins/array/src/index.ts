@@ -5,6 +5,7 @@ const arrayPlugin: PluginDescriptor = {
     name: "Array Plugin",
     id: "array",
     runner: "node",
+    groups: [ "function"],
     icon: "Function",
     description: "A plugin to perform array operations",
     documentation: "https://docs.example.com/arrayPlugin",

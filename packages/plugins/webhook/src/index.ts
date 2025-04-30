@@ -12,7 +12,7 @@ const webhookInputSchema = z.object({
     status: z.number().optional(),
     headers: z.record(z.string()).optional(),
     body: z.any().optional(),
-    
+
     // Catch hook params
     authType: z.nativeEnum(AuthType).optional(),
     username: z.string().optional(),
@@ -30,42 +30,42 @@ const webhookOutputSchema = z.object({
 
 // Main plugin definition
 const webhookPlugin = {
-  name: "webhook",
-  icon: "🔗",
-  description: "Receive and respond to HTTP webhooks",
-    groups: ["integration"],
-    tags: ["integration","connector","api","service","platform"],
-    version: '1.0.0',
-  id: "webhook",
-  runner: "node",
+  name: 'webhook',
+  icon: '🔗',
+  description: 'Receive and respond to HTTP webhooks',
+  groups: ['trigger', 'input', 'output'],
+  tags: ['integration', 'connector', 'api', 'service', 'platform'],
+  version: '1.0.0',
+  id: 'webhook',
+  runner: 'node',
   inputSchema: webhookInputSchema.shape,
   outputSchema: webhookOutputSchema.shape,
   exampleInput: {
-    action: "returnResponse",
+    action: 'returnResponse',
     params: {
       responseType: ResponseType.JSON,
       status: 200,
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
       body: {
-        message: "Success"
-      }
-    }
+        message: 'Success',
+      },
+    },
   },
   exampleOutput: {
     result: {
       status: 200,
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
       body: {
-        message: "Success"
-      }
-    }
+        message: 'Success',
+      },
+    },
   },
-  documentation: "https://docs.mintflow.com/plugins/webhook",
-  method: "exec",
+  documentation: 'https://docs.mintflow.com/plugins/webhook',
+  method: 'exec',
   exec: async (input: any) => {
     const { action, params, payload } = input;
 
@@ -73,15 +73,15 @@ const webhookPlugin = {
       case 'returnResponse':
         const response = await returnResponse(params);
         return { result: response };
-      
+
       case 'catchHook':
         const hookResult = await catchHook(params, payload);
         return { result: hookResult };
-      
+
       default:
         throw new Error(`Unsupported action: ${action}`);
     }
-  }
+  },
 };
 
 export default webhookPlugin;

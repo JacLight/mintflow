@@ -11,7 +11,7 @@ const translationPlugin = {
   name: "Translation",
   icon: "FaLanguage",
   description: "Translate text between languages and detect languages using various translation services",
-    groups: ["utility"],
+  groups:["utility","tool","helper","function","operation"],
     tags: ["utility","tool","helper","function","operation"],
     version: '1.0.0',
   id: "translation",

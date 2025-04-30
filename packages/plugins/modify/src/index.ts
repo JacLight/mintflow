@@ -31,7 +31,7 @@ const modifyPlugin = {
     name: "Modify",
     icon: "Edit",
     description: "Description for modify",
-    groups: ["utility"],
+    groups: ["function"],
     tags: ["utility", "tool", "helper", "function", "operation"],
     version: '1.0.0',
     id: "modify",

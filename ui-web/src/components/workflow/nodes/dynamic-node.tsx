@@ -71,7 +71,7 @@ export const DynamicNode = memo((props: NodeProps) => {
                 rules={[]}
                 datatype={'node-form'}
                 id={`form-${data.nodeId || id || 'default'}`}
-                theme={theme}
+                theme={'settings'}
                 onChange={updateFormData}
             />
             {/* <div className="mt-2 rounded bg-muted p-2">

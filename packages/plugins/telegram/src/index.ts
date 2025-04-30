@@ -7,6 +7,8 @@ const telegramPlugin: PluginDescriptor = {
     description: "Integrate with Telegram Bot API to send messages, media, and receive updates",
     id: "telegram",
     runner: "node",
+    groups: ["social", "communication"],
+    tags: ["integration", "connector", "api", "service", "platform"],
     type: 'node',
     documentation: "https://core.telegram.org/bots/api",
     actions: [

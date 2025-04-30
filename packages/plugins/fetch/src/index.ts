@@ -3,8 +3,8 @@ import axios from 'axios';
 const fetchPlugin = {
     name: "Fetch",
     icon: "Globe",
-    description: "Description for fetch",
-    groups: ["integration"],
+    description: "Fetch data from a URL using various HTTP methods. Supports JSON and text formats.",
+    groups: ["input", "output","integration"],
     tags: ["integration", "connector", "api", "service", "platform"],
     version: '1.0.0',
     id: "fetch",

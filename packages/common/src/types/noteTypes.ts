@@ -28,6 +28,8 @@ export interface PluginDescriptor {
     type: string;
     documentation: string;
     inputSchema?: object | string;
+    groups?: string[];
+    tags?: string[];
     outputSchema?: object | string;
     exampleInput?: any;
     exampleOutput?: any;
