@@ -31,6 +31,7 @@ import { getRandomString } from '@/lib-client/helpers';
 import { useSiteStore } from '@/context/site-store';
 import { CanvasAddNode } from './nodes/node-add';
 import DataFlowView from './data-flow-view';
+import { DataForm } from '../common/data-form';
 
 // Wrap each node type with an error boundary
 // This ensures that if a single node crashes, it doesn't bring down the entire workflow
@@ -74,6 +75,7 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
     const [edges, setEdges] = useState<Edge[]>([]);
     const [selectedElements, setSelectedElements] = useState<{ nodes: Node[], edges: Edge[] }>({ nodes: [], edges: [] });
     const [showLoadDialog, setShowLoadDialog] = useState<boolean>(false);
+    const [showForm, setShowForm] = useState<boolean>(false);
     const [showDataFlowView, setShowDataFlowView] = useState<boolean>(false);
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const reactFlowInstance = useReactFlow();
@@ -381,6 +383,14 @@ function FlowCanvas({ componentTypes }: { componentTypes: any }) {
             <DataList
                 show={showLoadDialog}
                 datatype={'mintflow'}
+                title='Mintflows'
+                onRowClick={handleFlowSelect}
+                onClose={() => handleShowLoadDialog(false)}
+            />
+            <DataForm
+                show={showForm}
+                datatype={'mintflow'}
+                title='Mintflows'
                 onRowClick={handleFlowSelect}
                 onClose={() => handleShowLoadDialog(false)}
             />

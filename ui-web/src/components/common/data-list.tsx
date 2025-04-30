@@ -14,6 +14,7 @@ interface DataListProps {
   show?: boolean;
   onRowClick?: (event: string, rowId: string, row: any) => void;
   onClose?: () => void;
+  title?:string;
 }
 
 export const DataList: React.FC<DataListProps> = ({
@@ -21,6 +22,7 @@ export const DataList: React.FC<DataListProps> = ({
   onRowClick,
   show,
   onClose,
+  title = ''
 }) => {
   const [dataDTO, setDataDTO] = useState<BaseModelDTO<any> | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -87,9 +89,9 @@ export const DataList: React.FC<DataListProps> = ({
 
   const schema = MintflowSchema();
   return (
-    <ViewManager id={dataDTO?.datatype || 'mintflow'} onClose={onClose}>
+    <ViewManager id={dataDTO?.datatype || 'mintflow'} onClose={onClose} title={title}>
       <AppmintTable
-        datatype="mintflow"
+        datatype={datatype}
         schema={schema || MintflowSchema()}
         data={dataDTO?.data || []}
         onTableEvent={onTableEvent}

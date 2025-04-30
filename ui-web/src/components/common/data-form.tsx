@@ -1,27 +1,40 @@
 'use client';
 
-import React, { useState } from "react";
-import ViewManager from "./view-manager";
-import { AppmintForm } from "appmint-form";
-import { BaseModel } from "../../lib/models/base.model";
-import { getMintflowService } from "../../lib/mintflow-service";
+import React, { useState } from 'react';
+import ViewManager from './view-manager';
+import { AppmintForm } from 'appmint-form';
+import { BaseModel } from '../../lib/models/base.model';
+import { getMintflowService } from '../../lib/mintflow-service';
 
 interface DataFormProps {
   schema: any;
   data: BaseModel<any>;
   onSave?: (savedData: BaseModel<any>) => void;
   onError?: (error: any) => void;
+  show?:boolean
 }
 
-export const DataForm: React.FC<DataFormProps> = ({ schema, data, onSave, onError }) => {
-  const [formData, setFormData] = useState<any>(data.data || {});
+export const DataForm: React.FC<DataFormProps> = ({
+  schema,
+  data,
+  onSave,
+  onError,
+  show = false
+}) => {
+  const [formData, setFormData] = useState<any>(data?.data || {});
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const mintflowService = getMintflowService();
 
-  const onChange = (path: string, value: any, updatedData: any, file: any, error: any) => {
+  const onChange = (
+    path: string,
+    value: any,
+    updatedData: any,
+    file: any,
+    error: any
+  ) => {
     console.log('onChange', path, value, updatedData, file, error);
     setFormData(updatedData);
-  }
+  };
 
   const handleSave = async () => {
     if (isSaving) return;
@@ -40,10 +53,7 @@ export const DataForm: React.FC<DataFormProps> = ({ schema, data, onSave, onErro
         );
       } else {
         // Update existing flow
-        result = await mintflowService.updateFlow(
-          data.sk,
-          formData.flow
-        );
+        result = await mintflowService.updateFlow(data.sk, formData.flow);
       }
 
       setIsSaving(false);
@@ -57,10 +67,25 @@ export const DataForm: React.FC<DataFormProps> = ({ schema, data, onSave, onErro
         onError(error);
       }
     }
+  };
+
+
+  if (!show) {
+    return null;
   }
 
+
+  const title =
+    data?.data?.title ||
+    data?.data?.label ||
+    data?.data?.name ||
+    data?.data?.username ||
+    data?.data?.email ||
+    data?.name ||
+    data?.sk ||
+    'New ' + data?.datatype;
   return (
-    <ViewManager id={data.sk}>
+    <ViewManager id={data.sk} title={title}>
       <div className="flex flex-col h-full">
         <AppmintForm
           datatype={data.datatype}
@@ -76,7 +101,7 @@ export const DataForm: React.FC<DataFormProps> = ({ schema, data, onSave, onErro
             onClick={handleSave}
             disabled={isSaving}
           >
-            {isSaving ? 'Saving...' : (data.isNew ? 'Create' : 'Update')}
+            {isSaving ? 'Saving...' : data.isNew ? 'Create' : 'Update'}
           </button>
         </div>
       </div>
