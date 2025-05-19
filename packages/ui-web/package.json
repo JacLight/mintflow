@@ -17,7 +17,7 @@
   "dependencies": {
     "@ai-sdk/fireworks": "^0.1.10",
     "@ai-sdk/openai": "^1.1.12",
-    "@appmint/form": "^0.3.5",
+    "@appmint/form": "^0.3.91",
     "@codemirror/lang-python": "^6.1.7",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@monaco-editor/react": "^4.7.0",
@@ -29,7 +29,6 @@
     "@xyflow/react": "^12.4.4",
     "ai": "^4.1.41",
     "animate.css": "^4.1.1",
-    "appmint-form": "file:../../appmint-form",
     "autoprefixer": "^10.4.20",
     "axios": "^1.8.0",
     "bcrypt-ts": "^5.0.3",
@@ -86,6 +85,5 @@
   },
   "devDependencies": {
     "@types/react-dom": "^19.0.4"
-  },
-  "packageManager": "yarn@4.7.0"
+  }
 }

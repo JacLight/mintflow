@@ -3,7 +3,7 @@
 import { memo, useState, useCallback } from 'react';
 import { NodeProps, Position, useReactFlow } from '@xyflow/react';
 import { BaseNode, BaseNodeData } from './base-node';
-import { AppmintForm } from 'appmint-form';
+import { AppmintForm } from '@appmint/form';
 import { isEmpty } from '@/lib-client/helpers';
 import { useSiteStore } from '@/context/site-store';
 import ViewManager from '@/components/common/view-manager';

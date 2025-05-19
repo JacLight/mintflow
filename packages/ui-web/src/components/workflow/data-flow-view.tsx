@@ -7,7 +7,7 @@ import DataViewer from '../data-viewer/data-viewer';
 import { IconRenderer } from '../ui/icon-renderer';
 import { classNames } from '@/lib-client/helpers';
 import { useSiteStore } from '@/context/site-store';
-import { AppmintForm } from 'appmint-form';
+import { AppmintForm } from '@appmint/form';
 
 interface NodeData {
   id: string;

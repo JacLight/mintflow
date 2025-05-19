@@ -7,7 +7,7 @@ import { getMintflowService } from "../../lib/mintflow-service";
 import { MintflowSchema } from "../../lib/models/flow-model";
 import { getResponseErrorMessage } from "@/lib-client/helpers";
 import { useSiteStore } from "@/context/site-store";
-import { AppmintTable } from "appmint-form";
+import { AppmintTable } from "@appmint/form";
 
 interface DataListProps {
   datatype?: string;

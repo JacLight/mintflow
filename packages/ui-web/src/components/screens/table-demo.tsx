@@ -1,5 +1,5 @@
 'use client';
-import { AppmintTable } from 'appmint-form';
+import { AppmintTable } from '@appmint/form';
 import React, { useState, useEffect } from 'react';
 
 const data = [

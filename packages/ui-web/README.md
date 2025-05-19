@@ -63,7 +63,4 @@ pnpm dev
 
 You should now be able to access the application at <http://localhost:3600>.
 
-rm -rf node_modules/.yarn-state.yml
 rm -rf .next
-yarn cache clean
-yarn install

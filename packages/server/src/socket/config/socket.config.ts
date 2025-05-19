@@ -17,7 +17,7 @@ export const createRedisAdapter = () => {
 
         const pubClient = new Redis({
             host: ENV.REDIS_HOST,
-            port: parseInt(ENV.REDIS_PORT || '6379'),
+            port: ENV.REDIS_PORT ? Number(ENV.REDIS_PORT) : 6379,
             password: ENV.REDIS_PASSWORD,
             retryStrategy: (times) => {
                 const delay = Math.min(times * 50, 2000);

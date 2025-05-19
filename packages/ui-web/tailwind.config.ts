@@ -3,7 +3,7 @@ import { Config } from "tailwindcss";
 const config: Config = {
     content: [
         "./src/**/*.{js,ts,jsx,tsx}",
-        "node_modules/appmint-form/src/**/*.{js,ts,jsx,tsx}", // 🔥 Include appmint-form components
+        "node_modules/appmint-form/src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
         extend: {},

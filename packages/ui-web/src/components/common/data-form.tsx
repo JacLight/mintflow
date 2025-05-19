@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import ViewManager from './view-manager';
-import { AppmintForm, validateForm } from 'appmint-form';
+import { AppmintForm, validateForm } from '@appmint/form';
 import { BaseModel } from '../../lib/models/base.model';
 import { getMintflowService } from '../../lib/mintflow-service';
 import { deepCopy } from '@/lib-client/helpers';
