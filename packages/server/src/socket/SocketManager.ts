@@ -23,7 +23,7 @@ export class SocketManager {
         this.io = new SocketIOServer(server, {
             path: options?.path || ENV.SOCKET_PATH,
             cors: options?.cors || {
-                origin: ['http://localhost:3000', 'http://192.168.1.161:3000'],
+                origin: ['http://localhost:3001', 'http://192.168.1.230:3001'],
                 methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
                 allowedHeaders: ['Content-Type', 'Authorization'],
                 credentials: true

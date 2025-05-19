@@ -27,7 +27,7 @@ npm install mintflow
 
 # Using Docker
 docker pull mintflow/mintflow
-docker run -p 3000:3000 mintflow/mintflow
+docker run -p 3000:3600 mintflow/mintflow
 ```
 
 ### Quick Start
@@ -38,7 +38,7 @@ docker run -p 3000:3000 mintflow/mintflow
 mintflow start
 ```
 
-2. Open your browser and navigate to `http://localhost:3000`
+2. Open your browser and navigate to `http://localhost:3600`
 
 3. Create your first workflow using the visual editor or chat interface:
 
@@ -144,7 +144,7 @@ This setup provides **KeyDB, Weaviate, PostgreSQL, and MongoDB** using Docker Co
 3. **Start the Services**
 
    ```sh
-   docker-compose up -d
+   docker compose up -d
    ```
 
 4. **Verify Running Containers**
@@ -167,7 +167,7 @@ This setup provides **KeyDB, Weaviate, PostgreSQL, and MongoDB** using Docker Co
 |------------|-----------------------------------|-------|
 | **KeyDB**  | High-performance Redis alternative | `6379` |
 | **PostgreSQL** | Relational database | `5432` |
-| **Weaviate** | Vector search database | `8080` |
+| **QDrant** | Vector search database | `6333` |
 | **MongoDB** | NoSQL database | `27017` |
 
 ---

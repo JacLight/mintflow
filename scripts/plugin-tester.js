@@ -7,7 +7,7 @@ const { runIsolatedCode } = require('../packages/node_runner/src/sandbox');
 const CONFIG = {
   REDIS_HOST: process.env.REDIS_HOST || 'localhost',
   REDIS_PORT: parseInt(process.env.REDIS_PORT || '6379', 10),
-  FLOWENGINE_URL: process.env.FLOWENGINE_URL || 'http://localhost:3000/flowengine',
+  FLOWENGINE_URL: process.env.FLOWENGINE_URL || 'http://localhost:3600/flowengine',
   NODE_RUNNER_API: process.env.NODE_RUNNER_API || 'http://localhost:3001/api',
   TENANT_ID: process.env.TENANT_ID || 'test-tenant',
   TEST_MODE: process.env.TEST_MODE || 'direct' // 'direct' or 'node-runner'

@@ -37,4 +37,4 @@ After linking the project, you can start the development server by running:
 pnpm dev
 ```
 
-The chatbot template will be available at `http://localhost:3000`.
+The chatbot template will be available at `http://localhost:3600`.

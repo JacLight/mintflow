@@ -131,7 +131,7 @@ export async function processOAuthCallback(
                 client_id: config.clientId,
                 client_secret: config.clientSecret,
                 code,
-                redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/${provider}/callback`,
+                redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3600'}/auth/${provider}/callback`,
                 grant_type: 'authorization_code',
             }),
         });

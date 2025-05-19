@@ -1,0 +1,26 @@
+# Docker build for Node server
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and TypeScript configurations
+COPY package.json tsconfig.base.json ./
+COPY packages/server/package.json ./packages/server/
+COPY packages/server/tsconfig.json ./packages/server/
+COPY packages/common/package.json ./packages/common/
+COPY packages/common/tsconfig.json ./packages/common/
+
+# Install dependencies
+WORKDIR /app/packages/server
+RUN npm install
+
+# Copy source code
+COPY packages/common/src /app/packages/common/src
+COPY packages/server/src /app/packages/server/src
+
+# Build the application
+RUN npm run build
+
+EXPOSE 7001
+CMD ["node", "dist/index.js"]

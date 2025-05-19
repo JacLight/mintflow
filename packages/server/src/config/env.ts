@@ -33,7 +33,7 @@ export const ENV = {
     REDIS_DB: parseInt(process.env.REDIS_DB || '0', 10),
 
     // 🧠 Vector Database Configuration
-    VECTOR_DB_PROVIDER: process.env.VECTOR_DB_PROVIDER || 'weaviate',
+    VECTOR_DB_PROVIDER: process.env.VECTOR_DB_PROVIDER || 'qdrant',
 
     // Weaviate Configuration
     WEAVIATE_HOST: process.env.WEAVIATE_HOST || 'http://localhost:8080',

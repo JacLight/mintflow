@@ -8,9 +8,11 @@ export class VectorDBService {
 
     static async getInstance(): Promise<IVectorDB> {
         if (!VectorDBService.provider) {
-            if (ENV.VECTOR_DB_PROVIDER === 'pinecone') {
+            if (ENV.VECTOR_DB_PROVIDER === 'qdrant') {
                 VectorDBService.provider = await PineconeService.getInstance();
-            } else {
+            } else if (ENV.VECTOR_DB_PROVIDER === 'pinecone') {
+                VectorDBService.provider = await PineconeService.getInstance();
+            }else {
                 VectorDBService.provider = await WeaviateService.getInstance();
             }
         }

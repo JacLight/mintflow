@@ -34,12 +34,14 @@ export const DataForm: React.FC<DataFormProps> = ({
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  console.log('DataForm');
+
   const onChange = (path, value, data) => {
     setError(null);
     const newBaseData: BaseModel<any> = deepCopy(baseData);
     newBaseData.data = {
       ...newBaseData.data,
-      [path]: value
+     ...data
     };
     setBaseData(newBaseData);
     if (onFormEvent) {

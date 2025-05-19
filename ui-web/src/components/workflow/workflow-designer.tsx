@@ -1,24 +1,31 @@
 'use client';
 
-import { useState, useCallback, useRef, DragEvent, useEffect, memo } from 'react';
-import { DataList } from "../common/data-list";
+import {
+  useState,
+  useCallback,
+  useRef,
+  DragEvent,
+  useEffect,
+  memo
+} from 'react';
+import { DataList } from '../common/data-list';
 import ErrorBoundary from './error-boundary';
 import { ConsolePanel } from '../console';
 import WorkflowService from '@/lib/workflow-service';
 import {
-    ReactFlow,
-    Background,
-    Controls,
-    MiniMap,
-    ReactFlowProvider,
-    Node,
-    Edge,
-    useReactFlow,
-    Panel,
-    applyNodeChanges,
-    applyEdgeChanges,
-    addEdge,
-    useOnSelectionChange
+  ReactFlow,
+  Background,
+  Controls,
+  MiniMap,
+  ReactFlowProvider,
+  Node,
+  Edge,
+  useReactFlow,
+  Panel,
+  applyNodeChanges,
+  applyEdgeChanges,
+  addEdge,
+  useOnSelectionChange
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Save, Upload, Download, FolderOpen, Activity } from 'lucide-react';
@@ -37,399 +44,455 @@ import { BaseModel } from '@/lib/models/base.model';
 
 // Wrap each node type with an error boundary
 // This ensures that if a single node crashes, it doesn't bring down the entire workflow
-const wrapNodeTypesWithErrorBoundary = (originalNodeTypes: Record<string, React.ComponentType<any>>) => {
-    const wrappedNodeTypes: Record<string, React.ComponentType<any>> = {};
-    
-    Object.entries(originalNodeTypes).forEach(([nodeType, Component]) => {
-        wrappedNodeTypes[nodeType] = memo((props) => (
-            <ErrorBoundary fallback={
-                <div className="p-3 bg-red-50 border border-red-300 rounded shadow-sm min-w-[150px] min-h-[50px]">
-                    <div className="text-red-600 font-medium text-sm">Error in {nodeType} node</div>
-                    <div className="text-xs text-red-500 mt-1">This node encountered an error</div>
-                </div>
-            }>
-                <Component {...props} />
-            </ErrorBoundary>
-        ));
-    });
-    
-    return wrappedNodeTypes;
+const wrapNodeTypesWithErrorBoundary = (
+  originalNodeTypes: Record<string, React.ComponentType<any>>
+) => {
+  const wrappedNodeTypes: Record<string, React.ComponentType<any>> = {};
+
+  Object.entries(originalNodeTypes).forEach(([nodeType, Component]) => {
+    wrappedNodeTypes[nodeType] = memo((props) => (
+      <ErrorBoundary
+        fallback={
+          <div className="p-3 bg-red-50 border border-red-300 rounded shadow-sm min-w-[150px] min-h-[50px]">
+            <div className="text-red-600 font-medium text-sm">
+              Error in {nodeType} node
+            </div>
+            <div className="text-xs text-red-500 mt-1">
+              This node encountered an error
+            </div>
+          </div>
+        }
+      >
+        <Component {...props} />
+      </ErrorBoundary>
+    ));
+  });
+
+  return wrappedNodeTypes;
 };
 
 // Get node and edge types from the registry
 // You can filter which nodes to include by passing an array of types
-const originalNodeTypes = getNodeTypes(['info', 'dynamic', 'app-view', 'form', 'improved', 'action', 'condition', 'switch', 'image']);
+const originalNodeTypes = getNodeTypes([
+  'info',
+  'dynamic',
+  'app-view',
+  'form',
+  'improved',
+  'action',
+  'condition',
+  'switch',
+  'image'
+]);
 // Wrap each node type with an error boundary
 const nodeTypes = wrapNodeTypesWithErrorBoundary(originalNodeTypes);
 const edgeTypes = getEdgeTypes(['custom']);
 
 export interface WorkflowData {
-    nodes: Node[];
-    edges: Edge[];
-    name?: string;
-    description?: string;
-    lastSaved?: string;
+  nodes: Node[];
+  edges: Edge[];
+  name?: string;
+  description?: string;
+  lastSaved?: string;
 }
 
 // Component for the flow canvas with drag and drop functionality
 function FlowCanvas({ componentTypes }: { componentTypes: any }) {
-    const [nodes, setNodes] = useState<Node[]>([]);
-    const [edges, setEdges] = useState<Edge[]>([]);
-    const [selectedElements, setSelectedElements] = useState<{ nodes: Node[], edges: Edge[] }>({ nodes: [], edges: [] });
-    const [showLoadDialog, setShowLoadDialog] = useState<boolean>(false);
-    const [showForm, setShowForm] = useState<boolean>(false);
-    const [showDataFlowView, setShowDataFlowView] = useState<boolean>(false);
-    const reactFlowWrapper = useRef<HTMLDivElement>(null);
-    const reactFlowInstance = useReactFlow();
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [edges, setEdges] = useState<Edge[]>([]);
+  const [selectedElements, setSelectedElements] = useState<{
+    nodes: Node[];
+    edges: Edge[];
+  }>({ nodes: [], edges: [] });
+  const [showLoadDialog, setShowLoadDialog] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showDataFlowView, setShowDataFlowView] = useState<boolean>(false);
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const reactFlowInstance = useReactFlow();
 
-    // Register the workflow instance with the WorkflowService
-    useEffect(() => {
-        if (reactFlowInstance) {
-            // Create a workflow instance API for the WorkflowService
-            const workflowInstance = {
-                addNode: (type: string, nodeId: string, position = { x: 250, y: 250 }) => {
-                    try {
-                        const newNode: Node = {
-                            id: `${nodeId}-${getRandomString(5)}`,
-                            type,
-                            position,
-                            data: { nodeId }
-                        };
+  console.log('WorkflowData');
 
-                        // Add the new node to the flow
-                        setNodes((nds) => nds.concat(newNode));
-                        return newNode;
-                    } catch (error) {
-                        console.error('Error adding node:', error);
-                        return null;
-                    }
-                },
-                getNodes: () => reactFlowInstance.getNodes(),
-                getEdges: () => reactFlowInstance.getEdges(),
-                // Add methods for importing workflow data
-                setNodes: (nodes: Node[]) => {
-                    setNodes(nodes);
-                },
-                setEdges: (edges: Edge[]) => {
-                    // Ensure all edges have the custom type
-                    const edgesWithCustomType = edges.map((edge: Edge) => ({
-                        ...edge,
-                        type: edge.type || 'custom'
-                    }));
-                    setEdges(edgesWithCustomType);
-                },
-                clear: () => {
-                    setNodes([]);
-                    setEdges([]);
-                }
-            };
-
-            // Register the workflow instance
-            WorkflowService.registerWorkflowInstance(workflowInstance);
-            
-            // Expose the workflow instance to the window object for the import wizard
-            window['workflowInstance'] = workflowInstance;
-
-            return () => {
-                // Unregister the workflow instance when the component unmounts
-                WorkflowService.registerWorkflowInstance(null);
-                // Remove from window object
-                delete window['workflowInstance'];
-            };
-        }
-    }, [reactFlowInstance]);
-
-    // Track selected elements
-    useOnSelectionChange({
-        onChange: ({ nodes, edges }) => {
-            setSelectedElements({ nodes, edges });
-        },
-    });
-
-    // Save workflow data
-    const handleSaveWorkflow = useCallback(() => {
-        if (!reactFlowInstance) return;
-
-        const flowData: WorkflowData = {
-            nodes: reactFlowInstance.getNodes(),
-            edges: reactFlowInstance.getEdges(),
-            lastSaved: new Date().toISOString()
-        };
-
-        // For demo purposes, we'll save to localStorage
-        // In a real app, you would send this to your server API
-        localStorage.setItem('savedWorkflow', JSON.stringify(flowData));
-        setShowForm(!showForm);
-    }, [reactFlowInstance]);
-
-    // Show load dialog
-    const handleShowLoadDialog = useCallback((showDialog) => {
-        setShowLoadDialog(showDialog);
-    }, []);
-
-    // Handle flow selection
-    const handleFlowSelect = useCallback((rowEvent: string, rowId: string, row: any) => {
-        try {
-            if (row && row.data && row.data.flow) {
-                const flowData = row.data.flow;
-
-                if (flowData.nodes && flowData.edges) {
-                    setNodes(flowData.nodes);
-                    // Ensure all edges have the custom type
-                    const edgesWithCustomType = flowData.edges.map((edge: Edge) => ({
-                        ...edge,
-                        type: 'custom'
-                    }));
-                    setEdges(edgesWithCustomType);
-                    console.log('Workflow loaded:', flowData);
-                    setShowLoadDialog(false);
-                    alert(`Workflow "${row.data.title}" loaded successfully!`);
-                }
-            } else {
-                alert('Selected flow does not contain valid workflow data');
-            }
-        } catch (error) {
-            console.error('Error loading workflow:', error);
-            alert('Error loading workflow data');
-        }
-    }, [setNodes, setEdges]);
-
-    const handleFormEvent = useCallback((event: string, data: any) => {
-        try {
-           
-        } catch (error) {
-            console.error('Error loading workflow:', error);
-            alert('Error loading workflow data');
-        }
-    }, [setNodes, setEdges]);
-
-    // Close load dialog
-    const handleCloseLoadDialog = useCallback(() => {
-        setShowLoadDialog(false);
-    }, []);
-
-    // Export workflow data as JSON file
-    const handleExportWorkflow = useCallback(() => {
-        if (!reactFlowInstance) return;
-
-        const flowData: WorkflowData = {
-            nodes: reactFlowInstance.getNodes(),
-            edges: reactFlowInstance.getEdges(),
-            lastSaved: new Date().toISOString()
-        };
-
-        const dataStr = JSON.stringify(flowData, null, 2);
-        const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-
-        const exportFileDefaultName = `workflow-${new Date().toISOString().slice(0, 10)}.json`;
-
-        const linkElement = document.createElement('a');
-        linkElement.setAttribute('href', dataUri);
-        linkElement.setAttribute('download', exportFileDefaultName);
-        linkElement.click();
-    }, [reactFlowInstance]);
-
-    const handleImportWorkflow = useCallback(() => {
-        // Reset the data import store state
-        useDataImportStore.getState().setStateItem({ 
-            isClose: false,
-            activeStep: 0,
-            dataSource: undefined,
-            error: undefined,
-            done: false,
-            jsonData: undefined,
-            uploadReport: undefined
-        });
-    }, []);
-
-    // Handle when a node is dropped on the canvas
-    const onDrop = useCallback(
-        (event: DragEvent<HTMLDivElement>) => {
-            event.preventDefault();
-
-            if (!reactFlowWrapper.current || !reactFlowInstance) return;
-
-            const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-            const type = event.dataTransfer.getData('application/reactflow/type');
-            const name = event.dataTransfer.getData('application/reactflow/name');
-            const nodeId = event.dataTransfer.getData('application/reactflow/id');
-
-            // Get position where the node was dropped
-            const position = reactFlowInstance.screenToFlowPosition({
-                x: event.clientX - reactFlowBounds.left,
-                y: event.clientY - reactFlowBounds.top
-            });
-
+  // Register the workflow instance with the WorkflowService
+  useEffect(() => {
+    if (reactFlowInstance) {
+      // Create a workflow instance API for the WorkflowService
+      const workflowInstance = {
+        addNode: (
+          type: string,
+          nodeId: string,
+          position = { x: 250, y: 250 }
+        ) => {
+          try {
             const newNode: Node = {
-                id: `${nodeId}-${getRandomString(5)}`,
-                type,
-                position,
-                data: { nodeId }
+              id: `${nodeId}-${getRandomString(5)}`,
+              type,
+              position,
+              data: { nodeId }
             };
 
             // Add the new node to the flow
             setNodes((nds) => nds.concat(newNode));
+            return newNode;
+          } catch (error) {
+            console.error('Error adding node:', error);
+            return null;
+          }
         },
-        [reactFlowInstance]
-    );
+        getNodes: () => reactFlowInstance.getNodes(),
+        getEdges: () => reactFlowInstance.getEdges(),
+        // Add methods for importing workflow data
+        setNodes: (nodes: Node[]) => {
+          setNodes(nodes);
+        },
+        setEdges: (edges: Edge[]) => {
+          // Ensure all edges have the custom type
+          const edgesWithCustomType = edges.map((edge: Edge) => ({
+            ...edge,
+            type: edge.type || 'custom'
+          }));
+          setEdges(edgesWithCustomType);
+        },
+        clear: () => {
+          setNodes([]);
+          setEdges([]);
+        }
+      };
 
-    // Handle drag over event
-    const onDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
-    }, []);
+      // Register the workflow instance
+      WorkflowService.registerWorkflowInstance(workflowInstance);
 
-    return (
-        <div className="h-full w-full" ref={reactFlowWrapper}>
-            <ErrorBoundary fallback={
-                <div className="flex items-center justify-center h-full w-full bg-gray-50">
-                    <div className="p-6 max-w-md bg-white rounded-lg border border-gray-200 shadow-md">
-                        <h3 className="text-xl font-bold text-red-600 mb-4">Workflow Error</h3>
-                        <p className="mb-4">There was an error rendering the workflow. This could be due to invalid workflow data or a component error.</p>
-                        <div className="flex gap-2">
-                            <button 
-                                onClick={() => {
-                                    setNodes([]);
-                                    setEdges([]);
-                                    window.location.reload();
-                                }}
-                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                            >
-                                Reset Workflow
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            }>
-                <ReactFlow
-                    nodes={nodes}
-                    edges={edges}
-                    onNodesChange={(changes) => {
-                        setNodes((nds) => {
-                            return applyNodeChanges(changes, nds);
-                        });
-                    }}
-                    onEdgesChange={(changes) => {
-                        setEdges((eds) => {
-                            return applyEdgeChanges(changes, eds);
-                        });
-                    }}
-                    onConnect={(connection) => {
-                        setEdges((eds) => addEdge({ ...connection, type: 'custom' }, eds));
-                    }}
-                    nodeTypes={nodeTypes}
-                    edgeTypes={edgeTypes}
-                    onDrop={onDrop}
-                    onDragOver={onDragOver}
-                // fitView
+      // Expose the workflow instance to the window object for the import wizard
+      window['workflowInstance'] = workflowInstance;
+
+      return () => {
+        // Unregister the workflow instance when the component unmounts
+        WorkflowService.registerWorkflowInstance(null);
+        // Remove from window object
+        delete window['workflowInstance'];
+      };
+    }
+  }, [reactFlowInstance]);
+
+  // Track selected elements
+  useOnSelectionChange({
+    onChange: ({ nodes, edges }) => {
+      setSelectedElements({ nodes, edges });
+    }
+  });
+
+  // Save workflow data
+  const handleSaveWorkflow = useCallback(() => {
+    if (!reactFlowInstance) return;
+
+    const flowData: WorkflowData = {
+      nodes: reactFlowInstance.getNodes(),
+      edges: reactFlowInstance.getEdges(),
+      lastSaved: new Date().toISOString()
+    };
+
+    // For demo purposes, we'll save to localStorage
+    // In a real app, you would send this to your server API
+    localStorage.setItem('savedWorkflow', JSON.stringify(flowData));
+    setShowForm(!showForm);
+  }, [reactFlowInstance]);
+
+  // Show load dialog
+  const handleShowLoadDialog = useCallback((showDialog) => {
+    setShowLoadDialog(showDialog);
+  }, []);
+
+  // Handle flow selection
+  const handleFlowSelect = useCallback(
+    (rowEvent: string, rowId: string, row: any) => {
+      try {
+        if (row && row.data && row.data.flow) {
+          const flowData = row.data.flow;
+
+          if (flowData.nodes && flowData.edges) {
+            setNodes(flowData.nodes);
+            // Ensure all edges have the custom type
+            const edgesWithCustomType = flowData.edges.map((edge: Edge) => ({
+              ...edge,
+              type: 'custom'
+            }));
+            setEdges(edgesWithCustomType);
+            console.log('Workflow loaded:', flowData);
+            setShowLoadDialog(false);
+            alert(`Workflow "${row.data.title}" loaded successfully!`);
+          }
+        } else {
+          alert('Selected flow does not contain valid workflow data');
+        }
+      } catch (error) {
+        console.error('Error loading workflow:', error);
+        alert('Error loading workflow data');
+      }
+    },
+    [setNodes, setEdges]
+  );
+
+  const handleFormEvent = useCallback(
+    (event: string, data: any) => {
+      try {
+      } catch (error) {
+        console.error('Error loading workflow:', error);
+        alert('Error loading workflow data');
+      }
+    },
+    [setNodes, setEdges]
+  );
+
+  // Close load dialog
+  const handleCloseLoadDialog = useCallback(() => {
+    setShowLoadDialog(false);
+  }, []);
+
+  // Export workflow data as JSON file
+  const handleExportWorkflow = useCallback(() => {
+    if (!reactFlowInstance) return;
+
+    const flowData: WorkflowData = {
+      nodes: reactFlowInstance.getNodes(),
+      edges: reactFlowInstance.getEdges(),
+      lastSaved: new Date().toISOString()
+    };
+
+    const dataStr = JSON.stringify(flowData, null, 2);
+    const dataUri =
+      'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+    const exportFileDefaultName = `workflow-${new Date().toISOString().slice(0, 10)}.json`;
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  }, [reactFlowInstance]);
+
+  const handleImportWorkflow = useCallback(() => {
+    // Reset the data import store state
+    useDataImportStore.getState().setStateItem({
+      isClose: false,
+      activeStep: 0,
+      dataSource: undefined,
+      error: undefined,
+      done: false,
+      jsonData: undefined,
+      uploadReport: undefined
+    });
+  }, []);
+
+  // Handle when a node is dropped on the canvas
+  const onDrop = useCallback(
+    (event: DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+
+      if (!reactFlowWrapper.current || !reactFlowInstance) return;
+
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow/type');
+      const name = event.dataTransfer.getData('application/reactflow/name');
+      const nodeId = event.dataTransfer.getData('application/reactflow/id');
+
+      // Get position where the node was dropped
+      const position = reactFlowInstance.screenToFlowPosition({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top
+      });
+
+      const newNode: Node = {
+        id: `${nodeId}-${getRandomString(5)}`,
+        type,
+        position,
+        data: { nodeId }
+      };
+
+      // Add the new node to the flow
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [reactFlowInstance]
+  );
+
+  // Handle drag over event
+  const onDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  return (
+    <div className="h-full w-full" ref={reactFlowWrapper}>
+      <ErrorBoundary
+        fallback={
+          <div className="flex items-center justify-center h-full w-full bg-gray-50">
+            <div className="p-6 max-w-md bg-white rounded-lg border border-gray-200 shadow-md">
+              <h3 className="text-xl font-bold text-red-600 mb-4">
+                Workflow Error
+              </h3>
+              <p className="mb-4">
+                There was an error rendering the workflow. This could be due to
+                invalid workflow data or a component error.
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setNodes([]);
+                    setEdges([]);
+                    window.location.reload();
+                  }}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                 >
-                <Background />
-                <Controls />
-                <MiniMap />
-                
-                {/* Show add component in the middle when canvas is empty */}
-                {nodes.length === 0 && <CanvasAddNode />}
-                <Panel position="top-left" className="bg-background border rounded-md shadow-md flex">
-                    <button
-                        onClick={handleSaveWorkflow}
-                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
-                        title="Save workflow"
-                    >
-                        <Save className="h-4 w-4" />
-                        <span className="text-sm font-medium">Workflow Designer - New Flow</span>
-                    </button>
-                    <div className='border-r border-r-gray-300'></div>
-                    <button
-                        onClick={() => handleShowLoadDialog(!showLoadDialog)}
-                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
-                        title="Save workflow"
-                    >
-                        <FolderOpen className="h-4 w-4" />
-                        <span>Open</span>
-                    </button>
-                </Panel>
-                <Panel position="top-right" className="bg-background border rounded-md shadow-md flex gap-2">
-                    <button
-                        onClick={handleImportWorkflow}
-                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
-                        title="Load workflow"
-                    >
-                        <Upload className="h-4 w-4" />
-                        <span>Import</span>
-                    </button>
-                    <button
-                        onClick={handleExportWorkflow}
-                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
-                        title="Export workflow as JSON"
-                    >
-                        <Download className="h-4 w-4" />
-                        <span>Export</span>
-                    </button>
-                    <button
-                        onClick={() => setShowDataFlowView(true)}
-                        className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
-                        title="View data flow between nodes"
-                        disabled={nodes.length === 0}
-                    >
-                        <Activity className="h-4 w-4" />
-                        <span>Data Flow</span>
-                    </button>
-                </Panel>
+                  Reset Workflow
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      >
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={(changes) => {
+            setNodes((nds) => {
+              return applyNodeChanges(changes, nds);
+            });
+          }}
+          onEdgesChange={(changes) => {
+            setEdges((eds) => {
+              return applyEdgeChanges(changes, eds);
+            });
+          }}
+          onConnect={(connection) => {
+            setEdges((eds) => addEdge({ ...connection, type: 'custom' }, eds));
+          }}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          // fitView
+        >
+          <Background />
+          <Controls />
+          <MiniMap />
 
+          {/* Show add component in the middle when canvas is empty */}
+          {nodes.length === 0 && <CanvasAddNode />}
+          <Panel
+            position="top-left"
+            className="bg-background border rounded-md shadow-md flex"
+          >
+            <button
+              onClick={handleSaveWorkflow}
+              className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+              title="Save workflow"
+            >
+              <Save className="h-4 w-4" />
+              <span className="text-sm font-medium">
+                Workflow Designer - New Flow
+              </span>
+            </button>
+            <div className="border-r border-r-gray-300"></div>
+            <button
+              onClick={() => handleShowLoadDialog(!showLoadDialog)}
+              className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+              title="Save workflow"
+            >
+              <FolderOpen className="h-4 w-4" />
+              <span>Open</span>
+            </button>
+          </Panel>
+          <Panel
+            position="top-right"
+            className="bg-background border rounded-md shadow-md flex gap-2"
+          >
+            <button
+              onClick={handleImportWorkflow}
+              className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+              title="Load workflow"
+            >
+              <Upload className="h-4 w-4" />
+              <span>Import</span>
+            </button>
+            <button
+              onClick={handleExportWorkflow}
+              className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+              title="Export workflow as JSON"
+            >
+              <Download className="h-4 w-4" />
+              <span>Export</span>
+            </button>
+            <button
+              onClick={() => setShowDataFlowView(true)}
+              className="p-2 hover:bg-gray-100 rounded flex items-center gap-1 text-sm"
+              title="View data flow between nodes"
+              disabled={nodes.length === 0}
+            >
+              <Activity className="h-4 w-4" />
+              <span>Data Flow</span>
+            </button>
+          </Panel>
+        </ReactFlow>
+      </ErrorBoundary>
 
-                </ReactFlow>
-            </ErrorBoundary>
-            
-            {/* Data Flow View */}
-            {showDataFlowView && (
-                <DataFlowView
-                    isVisible={showDataFlowView}
-                    onClose={() => setShowDataFlowView(false)}
-                />
-            )}
-            
-            {/* Load Flow Dialog */}
-            <DataList
-                show={showLoadDialog}
-                datatype={'mintflow'}
-                title='Mintflows'
-                onRowClick={handleFlowSelect}
-                onClose={() => handleShowLoadDialog(false)}
-            />
-            <DataForm
-                show={showForm}
-                schema={MintflowSchema()}
-                data={{} as BaseModel<any>}
-                datatype={'mintflow'}
-                title={`Save Flow ${''}`}
-                onFormEvent={handleFormEvent}
-                onClose={() => handleShowLoadDialog(false)}
-            />
-            <DataImportApp />
-        </div>
-    );
+      {/* Data Flow View */}
+      {showDataFlowView && (
+        <DataFlowView
+          isVisible={showDataFlowView}
+          onClose={() => setShowDataFlowView(false)}
+        />
+      )}
+
+      {/* Load Flow Dialog */}
+      <DataList
+        show={showLoadDialog}
+        datatype={'mintflow'}
+        title="Mintflows"
+        onRowClick={handleFlowSelect}
+        onClose={() => handleShowLoadDialog(false)}
+      />
+      <DataForm
+        show={showForm}
+        schema={MintflowSchema()}
+        data={{} as BaseModel<any>}
+        datatype={'mintflow'}
+        title={`Save Flow ${''}`}
+        onFormEvent={handleFormEvent}
+        onClose={() => handleShowLoadDialog(false)}
+      />
+      <DataImportApp />
+    </div>
+  );
 }
 
 // Main workflow designer component with split layout
-export function WorkflowDesigner({ componentTypes, componentGroups }: { componentTypes: any, componentGroups: any }) {
+export function WorkflowDesigner({
+  componentTypes,
+  componentGroups
+}: {
+  componentTypes: any;
+  componentGroups: any;
+}) {
+  useEffect(() => {
+    useSiteStore()
+      .ui.getState()
+      .setStateItem({ componentTypes, componentGroups });
+  }, []);
 
-    useEffect(() => {
-        useSiteStore().ui.getState().setStateItem({componentTypes, componentGroups});
-    }, []);
-
-    return (
-        <ErrorBoundary>
-            <ReactFlowProvider>
-                <div className="flex flex-col h-full w-full relative">
-                    <div className="flex flex-1 min-h-0">
-                        <ComponentPanel componentTypes={componentTypes} componentGroups={componentGroups} />
-                        <div className="flex-1">
-                            <FlowCanvas componentTypes={componentTypes} />
-                        </div>
-                    </div>
-                    <ConsolePanel />
-                </div>
-            </ReactFlowProvider>
-        </ErrorBoundary>
-    );
+  return (
+    <ErrorBoundary>
+      <ReactFlowProvider>
+        <div className="flex flex-col h-full w-full relative">
+          <div className="flex flex-1 min-h-0">
+            <ComponentPanel
+              componentTypes={componentTypes}
+              componentGroups={componentGroups}
+            />
+            <div className="flex-1">
+              <FlowCanvas componentTypes={componentTypes} />
+            </div>
+          </div>
+          <ConsolePanel />
+        </div>
+      </ReactFlowProvider>
+    </ErrorBoundary>
+  );
 }

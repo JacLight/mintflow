@@ -97,9 +97,11 @@ pnpm run --filter=@mintflow/mail build
 pnpm run --filter=@mintflow/array build
 pnpm run --filter=@mintflow/ui-web build
 pnpm run --filter=@mintflow/array test
+pnpm run --filter=@mintflow/mail build
 pnpm nx show project
 pnpm nx run server:dev
 pnpm generate:tempalate fetch
+pnpm nx run-many --target=test --all
 pnpm nx run-many --target=test --all
 pnpm nx run-many --target=build --all
 npx jest

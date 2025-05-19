@@ -44,7 +44,7 @@ CREATE TABLE products (
 );
 ```
 
-Then, uncomment `app/api/seed.ts` and hit `http://localhost:3000/api/seed` to seed the database with products.
+Then, uncomment `app/api/seed.ts` and hit `http://localhost:3600/api/seed` to seed the database with products.
 
 Next, copy the `.env.example` file to `.env` and update the values. Follow the instructions in the `.env.example` file to set up your GitHub OAuth application.
 
@@ -61,7 +61,7 @@ pnpm install
 pnpm dev
 ```
 
-You should now be able to access the application at <http://localhost:3000>.
+You should now be able to access the application at <http://localhost:3600>.
 
 rm -rf node_modules/.yarn-state.yml
 rm -rf .next

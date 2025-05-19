@@ -16,6 +16,6 @@ export default async function GitHubCallbackPage({
     const result = await processOAuthCallback('github', code, state);
     await setAuthCookies(result);
 
-    const redirectUrl = result.redirectTo || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    const redirectUrl = result.redirectTo || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3600'
     redirect(redirectUrl)
 }

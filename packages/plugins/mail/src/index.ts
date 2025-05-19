@@ -11,8 +11,8 @@ interface ServerConfig {
   port: string;
   user: string;
   pass: string;
-  ssl: string;
-  tls: string;
+  ssl: string | boolean;
+  tls: string | boolean;
 }
 
 interface MailInput {
@@ -39,6 +39,25 @@ interface ChangeMailStatusInput {
   messageId: string;
   status: 'read' | 'unread';
 }
+
+const getServerConfig = (serverConfig: ServerConfig) => {
+  const { host, port, user, pass, ssl, tls } = serverConfig || {};
+  const secure = ssl === 'true' || ssl === true;
+  const tlsConfig =
+    tls === 'true' || tls === true ? { rejectUnauthorized: false } : undefined;
+  const config = {
+    host: host,
+    port: parseInt(port),
+    secure: secure,
+    auth: {
+      user: user,
+      pass: pass,
+    },
+    tls: tlsConfig,
+  };
+
+  return config;
+};
 
 //smtp, imap, pop3
 const mailPlugin = {
@@ -78,22 +97,10 @@ const mailPlugin = {
   },
   actions: [
     {
-      'name': 'connect',
-      'description': 'Connect to the mail server',
-      execute: async (input: ServerConfig) => {
-        const { host, port, user, pass, ssl, tls } = input;
-
-        const client = new ImapFlow({
-          host: host,
-          port: parseInt(port),
-          secure: ssl === 'true',
-          auth: {
-            user: user,
-            pass: pass,
-          },
-          tls: tls === 'true' ? { rejectUnauthorized: false } : undefined,
-        });
-
+      name: 'connect',
+      description: 'Connect to the mail server',
+      execute: async (input: MailInput) => {
+        const client = new ImapFlow(getServerConfig(input.server));
         try {
           await client.connect();
           console.log('Connected to mail server');
@@ -103,8 +110,8 @@ const mailPlugin = {
           console.error('Error connecting to mail server: %s', error);
           return { success: false, error: (error as Error).message };
         }
-      }
-    }, 
+      },
+    },
     {
       name: 'sendMail',
       execute: async (input: MailInput) => {
@@ -120,26 +127,7 @@ const mailPlugin = {
           attach,
           options,
         } = input;
-
-        let transporterConfig = {
-          host: server.host,
-          port: parseInt(server.port),
-          secure: server.ssl === 'true', // true for 465, false for other ports
-          auth: {
-            user: server.user,
-            pass: server.pass,
-          },
-          tls: { rejectUnauthorized: false },
-        };
-
-        if (server.tls === 'true') {
-          transporterConfig.tls = {
-            rejectUnauthorized: false,
-          };
-        }
-
-        let transporter = nodemailer.createTransport(transporterConfig);
-
+        let transporter = nodemailer.createTransport(getServerConfig(server));
         let mailOptions = {
           from: from,
           to: to,
@@ -165,19 +153,7 @@ const mailPlugin = {
       name: 'readMail',
       execute: async (input: ReadMailInput) => {
         const { server, folder, filter } = input;
-
-        const client = new ImapFlow({
-          host: server.host,
-          port: parseInt(server.port),
-          secure: server.ssl === 'true',
-          auth: {
-            user: server.user,
-            pass: server.pass,
-          },
-          tls:
-            server.tls === 'true' ? { rejectUnauthorized: false } : undefined,
-        });
-
+        const client = new ImapFlow(getServerConfig(server));
         try {
           await client.connect();
           await client.mailboxOpen(folder || 'INBOX');
@@ -212,19 +188,7 @@ const mailPlugin = {
       name: 'changeMailStatus',
       execute: async (input: ChangeMailStatusInput) => {
         const { server, messageId, status } = input;
-
-        const client = new ImapFlow({
-          host: server.host,
-          port: parseInt(server.port),
-          secure: server.ssl === 'true',
-          auth: {
-            user: server.user,
-            pass: server.pass,
-          },
-          tls:
-            server.tls === 'true' ? { rejectUnauthorized: false } : undefined,
-        });
-
+        const client = new ImapFlow(getServerConfig(server));
         try {
           await client.connect();
           await client.mailboxOpen('INBOX');

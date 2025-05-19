@@ -280,7 +280,7 @@ export const BaseNode = memo(
               {/* Status indicator */}
               <NodeRun
                 id={id}
-                input={data?.formData}
+                nodeData={data}
                 runStatus={runStatus}
                 nodeInfo={nodeInfo}
                 runTimestamp={runTimestamp}

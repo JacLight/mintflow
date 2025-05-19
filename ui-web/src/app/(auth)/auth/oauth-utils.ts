@@ -32,7 +32,7 @@ function generateState(callbackUrl: string): string {
 export function getOAuthUrl(provider: string, callbackUrl: string) {
     const config = providerConfig[provider];
     const state = generateState(callbackUrl);
-    const host = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const host = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3600';
     const redirectUrl = host + callbackUrl;
 
     // Build authorization URL

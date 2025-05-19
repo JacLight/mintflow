@@ -97,9 +97,9 @@ For OAuth to work correctly, you must configure the correct redirect URLs in eac
 
 In development, these would be:
 
-- `http://localhost:3000/api/auth/callback/google`
-- `http://localhost:3000/api/auth/callback/github`
-- `http://localhost:3000/api/auth/callback/facebook`
+- `http://localhost:3600/api/auth/callback/google`
+- `http://localhost:3600/api/auth/callback/github`
+- `http://localhost:3600/api/auth/callback/facebook`
 
 ### 4. Social Login Buttons
 

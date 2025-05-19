@@ -92,7 +92,7 @@ Here's a simple example of connecting to the logs namespace:
 ```javascript
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3000/logs', {
+const socket = io('http://localhost:3600/logs', {
   auth: {
     token: 'your_jwt_token' // Optional: JWT token for authentication
   }

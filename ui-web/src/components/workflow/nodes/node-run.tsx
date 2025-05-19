@@ -8,7 +8,7 @@ import { getResponseErrorMessage } from '@/lib-client/helpers';
 import { useSiteStore } from '@/context/site-store';
 interface NodeRunProps {
     id: string;
-    input: any;
+    nodeData: {formData,id, action} & any;
     nodeInfo: any;
     setRunStatus?: any;
     setIsRunning?: any;
@@ -17,7 +17,7 @@ interface NodeRunProps {
 }
 
 
-export const NodeRun: React.FC<NodeRunProps> = ({ id, input, runStatus, nodeInfo, runTimestamp, setIsRunning, setRunStatus }) => {
+export const NodeRun: React.FC<NodeRunProps> = ({ id, nodeData, runStatus, nodeInfo, runTimestamp, setIsRunning, setRunStatus }) => {
     const [activeTab, setActiveTab] = useState<'summary' | 'output' | 'raw' | 'view'>('summary');
     const [showRunDetails, setShowRunDetails] = useState(false);
     const [output, setRunOutput] = useState<any>(null);
@@ -43,7 +43,7 @@ export const NodeRun: React.FC<NodeRunProps> = ({ id, input, runStatus, nodeInfo
             // Get the node type from the id or data
             const nodeType = id.split('-')[0]; // Assuming id format is like "inject-123456"
             const plugin = nodeType;
-            const action = input?.action || nodeType; // Default action is same as plugin name
+            const action = nodeData?.action || nodeType; // Default action is same as plugin name
 
             // Get input values - this would need to be expanded based on your actual input handling
             console.log(`Running node ${id} (plugin: ${plugin}, action: ${action})`);
@@ -56,7 +56,7 @@ export const NodeRun: React.FC<NodeRunProps> = ({ id, input, runStatus, nodeInfo
                 nodeId: id,
                 plugin,
                 action,
-                input
+                input: nodeData.formData,
             };
 
             // Call the API to run the node

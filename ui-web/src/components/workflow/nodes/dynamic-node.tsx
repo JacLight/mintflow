@@ -1,14 +1,13 @@
 'use client';
 
-import { memo, useState, useCallback, use, useEffect } from 'react';
+import { memo, useState, useCallback } from 'react';
 import { NodeProps, Position, useReactFlow } from '@xyflow/react';
 import { BaseNode, BaseNodeData } from './base-node';
 import { AppmintForm } from 'appmint-form';
-import { isEmpty, isNotEmpty } from '@/lib-client/helpers';
+import { isEmpty } from '@/lib-client/helpers';
 import { useSiteStore } from '@/context/site-store';
 import ViewManager from '@/components/common/view-manager';
 import { IconRenderer } from '@/components/ui/icon-renderer';
-import { set } from 'date-fns';
 import ModernDropdown from '@/components/common/modern-dropdown';
 
 // Extended data type for dynamic nodes

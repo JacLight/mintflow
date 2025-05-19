@@ -19,6 +19,6 @@ export default async function FacebookCallbackPage({
     await setAuthCookies(result);
 
     // Create a redirect response
-    const redirectUrl = result.redirectTo || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    const redirectUrl = result.redirectTo || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3600'
     redirect(redirectUrl)
 }

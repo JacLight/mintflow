@@ -1,17 +1,18 @@
 {
   "private": true,
   "name": "@mintflow/ui-web",
+  "version": "0.0.1",
   "author": {
     "name": "Jac Light",
     "email": "imolewolede@gmail.com"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3600",
     "dev-turbo": "next dev --turbopack",
     "debug": "node --inspect node_modules/next/dist/bin/next dev",
     "debug-brk": "node --inspect-brk node_modules/next/dist/bin/next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 3600"
   },
   "dependencies": {
     "@ai-sdk/fireworks": "^0.1.10",
