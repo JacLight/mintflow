@@ -11,6 +11,7 @@ const handler = async (request: any) => {
         const clientInfo = {}
         const appengineClient = await getAppEngineClient();
         const apiPath = url.split('/api-appmint/')[1];
+        console.log('[API Proxy] Extracted apiPath:', apiPath);
         const rt = await appengineClient.processRequest(method, apiPath, deepCopy(body), authorization as string, query, clientInfo, isMultiPath);
         return NextResponse.json(rt, {
             status: 200, headers: {
