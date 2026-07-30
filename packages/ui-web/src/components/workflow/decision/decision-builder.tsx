@@ -1,102 +1,99 @@
-import React, { useEffect, useState } from 'react';
-import { MdAdd, MdDragIndicator, MdDragHandle, MdClose, MdKeyboardArrowDown, MdCode } from 'react-icons/md';
-import { INPUT_TYPES, NODE_TYPES } from './types';
+import React, { useState } from 'react';
+import { MdAdd, MdCode } from 'react-icons/md';
+import { NODE_TYPES } from './types';
 import { useNodeOperations } from './use-node-operations';
 import { useOptionOperations } from './use-option-operations';
 import { useDragAndDrop } from './use-drag-drop';
 import { QuestionNode } from './question-node';
 import { EditableText } from '@/components/common/editable-tex';
 
+const DecisionTreeBuilder = (props: { data; onUpdate }) => {
+  const { nodes, setNodes, addNode, updateNodeId, updateNodeText, removeNode } =
+    useNodeOperations(props.data, props.onUpdate);
 
-const DecisionTreeBuilder = (props: { data, onUpdate }) => {
-    const {
-        nodes,
-        setNodes,
-        addNode,
-        updateNodeId,
-        updateNodeText,
-        updateProcessorLogic,
-        removeNode
-    } = useNodeOperations(props.data, props.onUpdate);
+  const {
+    addOption,
+    removeOption,
+    updateOptionText,
+    updateOptionInputType,
+    updateOptionNextId
+  } = useOptionOperations(nodes, setNodes);
 
-    const {
-        addOption,
-        removeOption,
-        updateOptionText,
-        updateOptionInputType,
-        updateOptionNextId
-    } = useOptionOperations(nodes, setNodes);
+  const {
+    draggedItem,
+    dragOverItem,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd
+  } = useDragAndDrop(nodes, setNodes);
 
-    const {
-        draggedItem,
-        dragOverItem,
-        handleDragStart,
-        handleDragOver,
-        handleDragEnd
-    } = useDragAndDrop(nodes, setNodes);
+  const [name, setName] = useState<string>('New Decision Tree');
 
-    const [name, setName] = useState<string>('New Decision Tree');
-
-    return (
-        <div className="max-w-4xl mx-auto p-4 space-y-8 h-full">
-            <div className="flex justify-between items-center gap-5">
-                <h2 className="text-lg font-bold whitespace-nowrap">Decision Tree Builder</h2>
-                <EditableText value={name} buttonClassName={'w-fit px-2 py-1 bg-purple-100 rounded-lg text-sm cursor-pointer'} update={value => setName(value)} singleClick={true} />
-            </div>
-            <div className="flex justify-between items-center ">
-                <div className=" text-sm font-semibold">{nodes?.length} Nodes</div>
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => addNode(NODE_TYPES.PROMPT)}
-                        className="flex text-sm whitespace-nowrap items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
-                    >
-                        <MdAdd size={20} />
-                        Add Prompt
-                    </button>
-                    <button
-                        onClick={() => addNode(NODE_TYPES.PROCESSOR)}
-                        className="flex  text-sm whitespace-nowrap items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                    >
-                        <MdCode size={20} />
-                        Add Processor
-                    </button>
-                </div>
-            </div>
-            <div className=' overflow-auto h-[calc(100%-200px)] '>
-                {nodes
-                    ?.sort((a, b) => a.order - b.order)
-                    .map((node, index) => {
-                        return (
-                            <QuestionNode key={node.id}
-                                node={node}
-                                nodes={nodes}
-                                isLast={index === nodes.length - 1}
-                                dragOverItem={dragOverItem}
-                                onDragStart={handleDragStart}
-                                onDragOver={handleDragOver}
-                                onDragEnd={handleDragEnd}
-                                onQuestionIdChange={updateNodeId}
-                                onQuestionTextChange={updateNodeText}
-                                onOptionTextChange={updateOptionText}
-                                onOptionNextIdChange={updateOptionNextId}
-                                onOptionInputTypeChange={updateOptionInputType}
-                                onRemoveOption={removeOption}
-                                onRemoveNode={removeNode}
-                                onAddOption={addOption}
-                            />
-                        )
-                    })}
-            </div>
-
+  return (
+    <div className="max-w-4xl mx-auto p-4 space-y-8 h-full">
+      <div className="flex justify-between items-center gap-5">
+        <h2 className="text-lg font-bold whitespace-nowrap">
+          Decision Tree Builder
+        </h2>
+        <EditableText
+          value={name}
+          buttonClassName={
+            'w-fit px-2 py-1 bg-purple-100 rounded-lg text-sm cursor-pointer'
+          }
+          update={(value) => setName(value)}
+          singleClick={true}
+        />
+      </div>
+      <div className="flex justify-between items-center ">
+        <div className=" text-sm font-semibold">{nodes?.length} Nodes</div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => addNode(NODE_TYPES.PROMPT)}
+            className="flex text-sm whitespace-nowrap items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+          >
+            <MdAdd size={20} />
+            Add Prompt
+          </button>
+          <button
+            onClick={() => addNode(NODE_TYPES.PROCESSOR)}
+            className="flex  text-sm whitespace-nowrap items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            <MdCode size={20} />
+            Add Processor
+          </button>
         </div>
-    );
+      </div>
+      <div className=" overflow-auto h-[calc(100%-200px)] ">
+        {nodes
+          ?.sort((a, b) => a.order - b.order)
+          .map((node, index) => {
+            return (
+              <QuestionNode
+                key={node.id}
+                node={node}
+                nodes={nodes}
+                isLast={index === nodes.length - 1}
+                dragOverItem={dragOverItem}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDragEnd={handleDragEnd}
+                onQuestionIdChange={updateNodeId}
+                onQuestionTextChange={updateNodeText}
+                onOptionTextChange={updateOptionText}
+                onOptionNextIdChange={updateOptionNextId}
+                onOptionInputTypeChange={updateOptionInputType}
+                onRemoveOption={removeOption}
+                onRemoveNode={removeNode}
+                onAddOption={addOption}
+              />
+            );
+          })}
+      </div>
+    </div>
+  );
 };
 
 export default DecisionTreeBuilder;
-
-
-
-
 
 /*
 

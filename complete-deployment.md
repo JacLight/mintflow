@@ -10,7 +10,7 @@ MintFlow consists of several components that work together:
    - KeyDB/Redis: For job queues and caching
    - PostgreSQL: Primary database
    - MongoDB: Document database
-   - Weaviate/QDrant: Vector databases for AI features
+   - QDrant: Vector databases for AI features
 
 2. **Application Components**:
    - Main Server: Handles API requests, WebSocket connections, and UI serving
@@ -75,21 +75,6 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  weaviate:
-    image: semitechnologies/weaviate
-    container_name: weaviate
-    restart: always
-    environment:
-      QUERY_DEFAULTS_LIMIT: 50
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
-      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
-      DEFAULT_VECTORIZER_MODULE: "text2vec-openai"
-      ENABLE_MODULES: "text2vec-openai"
-    ports:
-      - "8080:8080"
-    networks:
-      - mintflow-network
-
   qdrant:
     image: qdrant/qdrant:latest
     container_name: qdrant
@@ -111,14 +96,12 @@ services:
       - keydb
       - postgres
       - mongodb
-      - weaviate
       - qdrant
     environment:
       - REDIS_HOST=keydb
       - REDIS_PORT=6379
       - DATABASE_URL=postgres://admin:admin@postgres:5432/mintflow
       - MONGO_URI=mongodb://admin:admin@mongodb:27017
-      - WEAVIATE_URL=http://weaviate:8080
       - QDRANT_URL=http://qdrant:6333
       - RUNNER_MODE=false
     ports:
@@ -137,14 +120,12 @@ services:
       - keydb
       - postgres
       - mongodb
-      - weaviate
       - qdrant
     environment:
       - REDIS_HOST=keydb
       - REDIS_PORT=6379
       - DATABASE_URL=postgres://admin:admin@postgres:5432/mintflow
       - MONGO_URI=mongodb://admin:admin@mongodb:27017
-      - WEAVIATE_URL=http://weaviate:8080
       - QDRANT_URL=http://qdrant:6333
       - RUNNER_MODE=true
       - TENANTS=tenantA,tenantB
@@ -188,8 +169,8 @@ For more flexibility, you can deploy components separately:
      -p 3600:3600 \
      -e DATABASE_URL=postgres://admin:admin@postgres:5432/mintflow \
      -e MONGO_URI=mongodb://admin:admin@mongodb:27017 \
-     -e WEAVIATE_URL=http://weaviate:8080 \
      -e KEYDB_URL=redis://keydb:6379 \
+     -e QDRANT_URL=http://qdrant-service:6333 \
      mintflow-app
    ```
 
@@ -201,7 +182,7 @@ For more flexibility, you can deploy components separately:
      -e REDIS_PORT=6379 \
      -e DATABASE_URL=postgres://admin:admin@postgres:5432/mintflow \
      -e MONGO_URI=mongodb://admin:admin@mongodb:27017 \
-     -e WEAVIATE_URL=http://weaviate:8080 \
+     -e QDRANT_URL=http://qdrant-service:6333 \     
      -e RUNNER_MODE=true \
      -e TENANTS=tenantA,tenantB \
      mintflow-app
@@ -263,7 +244,7 @@ spec:
   - port: 6379
     targetPort: 6379
 
-# Similar definitions for PostgreSQL, MongoDB, Weaviate, and QDrant
+# Similar definitions for PostgreSQL, MongoDB, and QDrant
 # ...
 ```
 
@@ -293,8 +274,6 @@ spec:
           value: postgres://admin:admin@postgres-service:5432/mintflow
         - name: MONGO_URI
           value: mongodb://admin:admin@mongodb-service:27017
-        - name: WEAVIATE_URL
-          value: http://weaviate-service:8080
         - name: KEYDB_URL
           value: redis://keydb-service:6379
         - name: QDRANT_URL
@@ -342,8 +321,8 @@ spec:
           value: postgres://admin:admin@postgres-service:5432/mintflow
         - name: MONGO_URI
           value: mongodb://admin:admin@mongodb-service:27017
-        - name: WEAVIATE_URL
-          value: http://weaviate-service:8080
+        - name: QDRANT_URL
+          value: http://qdrant-service:6333          
         - name: RUNNER_MODE
           value: "true"
         - name: TENANTS

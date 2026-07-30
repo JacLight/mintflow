@@ -6,7 +6,7 @@ This guide explains how to deploy MintFlow, with a specific focus on deploying t
 
 MintFlow uses a microservices architecture with the following components:
 
-1. **Infrastructure Services**: Databases and caches (PostgreSQL, MongoDB, KeyDB, Weaviate, QDrant)
+1. **Infrastructure Services**: Databases and caches (PostgreSQL, MongoDB, KeyDB, QDrant)
 2. **Main Application**: The core MintFlow server
 3. **Runner Instances**: Additional instances of the main server with communication services disabled
    - These instances only process workflow tasks and don't handle API requests
@@ -24,7 +24,7 @@ This is the simplest deployment method, suitable for development and testing env
 docker-compose up -d
 ```
 
-This will start PostgreSQL, MongoDB, KeyDB, Weaviate, and QDrant.
+This will start PostgreSQL, MongoDB, KeyDB, and QDrant.
 
 #### Step 2: Deploy the Main Server and Runner Instances
 
@@ -55,7 +55,7 @@ services:
       - keydb
       - postgres
       - mongodb
-      - weaviate
+      - adrant
 
   # Runner instance (same codebase, different configuration)
   runner:
@@ -76,7 +76,7 @@ services:
       - keydb
       - postgres
       - mongodb
-      - weaviate
+      - adrant
 
 networks:
   mintflow-network:
